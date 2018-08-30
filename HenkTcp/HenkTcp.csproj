@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Henkje</Authors>
+    <Company>HenkSharp</Company>
+    <Description>HenkTcp is a async,opensource TcpServer/TcpClient library. It mades tcp easy to use and is fast. It also support encryption for your data.</Description>
+    <Version>0.0.0.1</Version>
+    <PackageProjectUrl>https://github.com/GHenkje/HenkTcp/tree/master</PackageProjectUrl>
+    <NeutralLanguage></NeutralLanguage>
+    <PackageReleaseNotes>not released yet.</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags>tcpclient, tcpserver, tcp, socket, server, client, HenkTcp</PackageTags>
+  </PropertyGroup>
+
+</Project>
