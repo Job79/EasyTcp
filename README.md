@@ -64,7 +64,8 @@ namespace async_tcp_server
             //server.WriteEncrypted(e, "Welcome to the server");
         }
     }
-}```
+}
+```
 
 example client: 
 
