@@ -1,61 +1,56 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using System.Linq;
-using System.Timers;
 
 namespace HenkTcp
 {
     internal class ServerListener
     {
         private List<TcpClient> _ConnectedClients = new List<TcpClient>();
-        public List<TcpClient> ConnectedClients { get { CheckClients(null, null); return _ConnectedClients.ToList(); } }
-        public void Stop() { _Listener.Stop(); }
+        public List<TcpClient> ConnectedClients { get { return _ConnectedClients.ToList(); } }
+        public void Stop() { Listener.Stop(); }
 
-        private TcpListener _Listener;
-        private Timer Timer = new Timer();
+        public TcpListener Listener { get; }
         private readonly int _BufferSize;
         private readonly int _MaxConnections;
         private readonly HenkTcpServer _Parent;
 
-        public ServerListener(TcpListener Listener, HenkTcpServer Parent, int MaxConnections, int RemoveDisconnectedClientsTimeout, int BufferSize)
+        public ServerListener(TcpListener Listener, HenkTcpServer Parent, int MaxConnections, int BufferSize)
         {
-            //start the listener
-            _Listener = Listener;
-            _Listener.Start();
-            _Listener.BeginAcceptTcpClient(_OnClientConnect, _Listener);
+            try
+            {
+                _Parent = Parent;
+                _BufferSize = BufferSize;
+                _MaxConnections = MaxConnections;
 
-            _Parent = Parent;
-            _BufferSize = BufferSize;
-            _MaxConnections = MaxConnections;
-
-            //with the timer we will check for disconnected clients and remove them.
-            Timer.Interval = RemoveDisconnectedClientsTimeout;
-            Timer.Elapsed += CheckClients;
-            Timer.AutoReset = false;
-            Timer.Start();
+                //start the listener
+                this.Listener = Listener;
+                Listener.Start();
+                Listener.BeginAcceptTcpClient(_OnClientConnect, Listener);
+            }
+            catch (Exception ex) { _Parent.NotifyOnError(ex); }
         }
 
         private void _OnClientConnect(IAsyncResult ar)
         {
             try
             {
-                if (_ConnectedClients.Count >= _MaxConnections) { _Listener.EndAcceptTcpClient(ar).Close(); _Listener.BeginAcceptTcpClient(_OnClientConnect, _Listener); }
+                if (_ConnectedClients.Count >= _MaxConnections) { Listener.EndAcceptTcpClient(ar).Close(); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
                 else
                 {
                     ClientObject Client = new ClientObject();
-                    Client.TcpClient = _Listener.EndAcceptTcpClient(ar);
+                    Client.TcpClient = Listener.EndAcceptTcpClient(ar);
                     Client.Buffer = new byte[_BufferSize];
 
-                    _Listener.BeginAcceptTcpClient(_OnClientConnect, _Listener);
+                    Listener.BeginAcceptTcpClient(_OnClientConnect, Listener);
 
                     lock (_ConnectedClients) { _ConnectedClients.Add(Client.TcpClient); }
                     _Parent.NotifyClientConnected(Client.TcpClient);
                     Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
                 }
             }
-            catch { }
+            catch (Exception ex) { _Parent.NotifyOnError(ex); }
         }
 
         private void _OnDataReceive(IAsyncResult ar)
@@ -72,20 +67,8 @@ namespace HenkTcp
 
                 Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
             }
-            catch { }
-        }
-
-        public void CheckClients(object source, ElapsedEventArgs e)
-        {
-            Parallel.ForEach(_ConnectedClients.ToList(), c =>
-            {
-                if (c.Client.Poll(0, SelectMode.SelectRead) && c.Available == 0)
-                {
-                    _Parent.NotifyClientDisconnected(c);
-                    lock (_ConnectedClients) { _ConnectedClients.Remove(c); }
-                }
-            });
-            Timer.Start();//enable the timer again
+            catch (SocketException) { lock (_ConnectedClients) { lock (_ConnectedClients) { _ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient);  } } }
+            catch (Exception ex) { _Parent.NotifyOnError(ex); }
         }
     }
 }
