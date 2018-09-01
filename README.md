@@ -1,5 +1,9 @@
 # HenkTcp
-example server:
+
+# how do i use HenkTcp?
+
+1. add the nuget to your application.
+2. to create a server you can use this example:
 ```cs
 using System;
 using System.Net.Sockets;
@@ -68,7 +72,7 @@ namespace async_tcp_server
 }
 ```
 
-example client: 
+4. to create a client you can use the following:
 
 ```cs
 using System;
@@ -137,3 +141,4 @@ namespace async_TcpClient
     }
 }
 ```
+4. you are done.
