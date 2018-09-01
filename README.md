@@ -1,6 +1,7 @@
 # HenkTcp
 example server:
-```using System;
+```cs
+using System;
 using System.Net.Sockets;
 using HenkTcp;
 using System.Security.Cryptography;
@@ -69,7 +70,8 @@ namespace async_tcp_server
 
 example client: 
 
-```using System;
+```cs
+using System;
 using HenkTcp;
 using System.Security.Cryptography;
 
