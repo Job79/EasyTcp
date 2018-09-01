@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Net.Sockets;
 using System.Diagnostics;
@@ -9,36 +9,38 @@ namespace HenkTcp
 {
     public class HenkTcpClient
     {
-        private TcpClient _Client;
-        public TcpClient TcpClient { get { return _Client; } }
+        public TcpClient TcpClient { get; private set; }
 
         private SymmetricAlgorithm _Algorithm;
         private byte[] _EncryptionKey;
 
         public event EventHandler<Message> DataReceived;
+        public event EventHandler<HenkTcpClient> OnDisconnect;
+        public event EventHandler<Exception> OnError;
+
         public byte[] Buffer;
 
-        public bool Connect(string Ip, int Port, TimeSpan Timeout, int BufferSize = 1024) { return Connect(Ip,Port,Timeout,null,null,BufferSize); }
-        public bool Connect(string Ip, int Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm,byte[] EncryptionKey, int BufferSize = 1024)
+        public bool Connect(string Ip, int Port, TimeSpan Timeout, int BufferSize = 1024) { return Connect(Ip, Port, Timeout, null, null, BufferSize); }
+        public bool Connect(string Ip, int Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024)
         {
-            _Client = new TcpClient();
-            _Client.ConnectAsync(Ip, Port);
+            TcpClient = new TcpClient();
+            TcpClient.ConnectAsync(Ip, Port);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            while (!_Client.Client.Connected && sw.Elapsed < Timeout)
+            while (!TcpClient.Client.Connected && sw.Elapsed < Timeout)
             {
                 Task.Delay(5).Wait();
             }
 
-            if (_Client.Connected)
+            if (TcpClient.Connected)
             {
                 _Algorithm = Algorithm;
                 _EncryptionKey = EncryptionKey;
 
                 Buffer = new byte[BufferSize];
-                _Client.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, _Client);
+                TcpClient.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, TcpClient);
                 return true;
             }
             else
@@ -49,21 +51,27 @@ namespace HenkTcp
 
         public void Disconnect()
         {
-            if (_Client == null) { return; }
-            _Client.Dispose();
-            _Client = null;
+            if (TcpClient == null) { return; }
+            TcpClient.Dispose();
+            TcpClient = null;
         }
+
+        public bool IsConnected { get { return TcpClient != null; } }
 
         public void Write(string Data) { Write(Encoding.UTF8.GetBytes(Data)); }
         public void Write(byte[] Data)
         {
-            _Client.GetStream().Write(Data, 0, Data.Length);
+            try
+            {
+                TcpClient.GetStream().Write(Data, 0, Data.Length);
+            }
+            catch (Exception ex) { OnError(this, ex); }
         }
 
         public void WriteEncrypted(string Data) { WriteEncrypted(Encoding.UTF8.GetBytes(Data)); }
         public void WriteEncrypted(byte[] Data)
         {
-            if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
+            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return; }
             Write(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
         }
 
@@ -88,8 +96,8 @@ namespace HenkTcp
         public Message WriteAndGetReplyEncrypted(string Text, TimeSpan Timeout) { return WriteAndGetReplyEncrypted(Encoding.UTF8.GetBytes(Text), Timeout); }
         public Message WriteAndGetReplyEncrypted(byte[] Data, TimeSpan Timeout)
         {
-            if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
-            return WriteAndGetReply(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey),Timeout);
+            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return null; }
+            return WriteAndGetReply(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
         }
 
         private void _OnDataReceive(IAsyncResult ar)
@@ -102,12 +110,15 @@ namespace HenkTcp
                 byte[] ReceivedBytes = new byte[Client.Client.EndReceive(ar)];
                 Array.Copy(Buffer, ReceivedBytes, ReceivedBytes.Length);
 
-                Message m = new Message(ReceivedBytes, Client,_Algorithm,_EncryptionKey);
-                DataReceived(this, m);
+                Message m = new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey);
+                DataReceived?.Invoke(this, m);
 
-                _Client.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, _Client);
+                TcpClient.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, TcpClient);
             }
-            catch { }
+            catch (SocketException) { TcpClient.Dispose(); TcpClient = null; OnDisconnect?.Invoke(this,this); }
+            catch (Exception ex) { NotifyOnError(ex); }
         }
+
+        internal void NotifyOnError(Exception ex) { if (OnError != null) OnError(this, ex); else throw ex; }
     }
 }
