@@ -85,18 +85,17 @@ namespace async_TcpClient
 
         static void Main(string[] args)
         {
+            //enable the handlers
+            _Client.DataReceived += DataReceived;
+            _Client.OnDisconnect += Disconnected;
+            _Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
+                
             //connect with 127.0.0.1 on port 52525 witch can take maximum 1 second.
             if (_Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
             //connect but with encryption enabled.
             //need System.Security.Cryptography for this.
             //if (_Client.Connect("192.168.1.11",52525,TimeSpan.FromSeconds(1), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt")))
             {
-                Console.WriteLine("Connected");
-
-                _Client.DataReceived += DataReceived;
-                _Client.OnDisconnect += Disconnected;
-                _Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
-
                 while (true)
                 {
                     //write data to server
@@ -115,7 +114,7 @@ namespace async_TcpClient
         {
             Console.WriteLine("Disconnected");
 
-            if (e.Connect("192.168.1.11", 52525, TimeSpan.FromSeconds(1)))
+            if (e.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
             {
                 Console.WriteLine("reconnected");
                 //resume connected
