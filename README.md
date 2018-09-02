@@ -1,5 +1,3 @@
-# HenkTcp
-
 # how do i use HenkTcp?
 
 1. add the nuget to your application.
