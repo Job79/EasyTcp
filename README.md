@@ -1,6 +1,6 @@
 # how do i use HenkTcp?
 
-1. add the nuget to your application.
+1. add the nuget package to your application.
 2. to create a server you can use this example:
 ```cs
 using System;
@@ -16,18 +16,19 @@ namespace async_tcp_server
 
         static void Main(string[] args)
         {
-            //start the server on port 52525 on ip 0.0.0.0 and with max 10000 connections
-            server.Start("0.0.0.0", 52525, 10000);
-
-            //start the server, but with encryption enabled
-            //need System.Security.Cryptography for this.
-            //  server.Start("0.0.0.0", 52525, 10000, Aes.Create(), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt"));
-
             //set the handlers
             server.ClientConnected += ClientConnected;
             server.DataReceived += DataReceived;
             server.ClientDisconnected += ClientDisconnect;
             server.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
+            
+            //start the server on port 52525 and on ip 0.0.0.0 and with max 10000 connections
+            server.Start("0.0.0.0", 52525, 10000);
+
+            //start the server, but with encryption enabled
+            //need System.Security.Cryptography for this.
+            //in 0.0.0.3 can this be done easier
+            //  server.Start("0.0.0.0", 52525, 10000, Aes.Create(), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt"));
 
             while (true)
             {
@@ -37,7 +38,7 @@ namespace async_tcp_server
                 //send a message to all clients
                 server.Broadcast("Hey from server!");
 
-                //send a broadcast encrypted
+                //send a message to all clients, but encrypted
                 //server.BroadcastEncrypted("Hey from server!");
             }
         }
@@ -50,7 +51,7 @@ namespace async_tcp_server
         private static void DataReceived(object sender, Message e)
         {
             Console.WriteLine($"received: {e.MessageString} from: {e.TcpClient.GetHashCode()} ip:{e.senderIP}");
-            //reply the client
+            //reply to the client
             e.Reply(e.Data);
 
             //reply the data encrypted
@@ -85,7 +86,7 @@ namespace async_TcpClient
 
         static void Main(string[] args)
         {
-            //enable the handlers
+            //set the handlers
             _Client.DataReceived += DataReceived;
             _Client.OnDisconnect += Disconnected;
             _Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
@@ -94,11 +95,12 @@ namespace async_TcpClient
             if (_Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
             //connect but with encryption enabled.
             //need System.Security.Cryptography for this.
+            //in 0.0.0.3 can this be done easier
             //if (_Client.Connect("192.168.1.11",52525,TimeSpan.FromSeconds(1), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt")))
             {
                 while (true)
                 {
-                    //write data to server
+                    //write data to the server
                     _Client.Write(Console.ReadLine());
 
                     //get reply from the server
@@ -113,13 +115,14 @@ namespace async_TcpClient
         private static void Disconnected(object sender, HenkTcpClient e)
         {
             Console.WriteLine("Disconnected");
-
+            
+            //reconnect if possible
             if (e.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
             {
                 Console.WriteLine("reconnected");
                 //resume connected
             }
-            else
+            else//connect failed
             {
                 //close application
                 Console.ReadKey();
