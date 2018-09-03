@@ -7,7 +7,7 @@ namespace HenkTcp
 {
     public static class Encryption
     {
-        public static byte[] CreateKey(SymmetricAlgorithm Algorithm, string Password, int Iterations = 10000, int KeySize = 0, string Salt = "HenkTcpSalt")
+        public static byte[] CreateKey(SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0)
         {
             if (Salt.Length < 8) { throw new Exception("Salt is too short"); }
             Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Password, Encoding.UTF8.GetBytes(Salt), Iterations);
