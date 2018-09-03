@@ -17,16 +17,23 @@ namespace HenkTcp
         public event EventHandler<Message> DataReceived;
         public event EventHandler<Exception> OnError;
 
+        public List<string> BannedIps = new List<string>();
+
         private SymmetricAlgorithm _Algorithm;
         private byte[] _EncryptionKey;
 
-        public void Start(int Port, int MaxConnections = 10000) { Start(IPAddress.Any, Port, MaxConnections); }
+        public void Start(int Port, int MaxConnections = 10000, int BufferSize = 1024) { Start(IPAddress.Any, Port, MaxConnections, BufferSize); }
         public void Start(string Ip, int Port, int MaxConnections, int BufferSize = 1024) { Start(IPAddress.Parse(Ip), Port, MaxConnections, null, null, BufferSize); }
         public void Start(IPAddress Ip, int Port, int MaxConnections, int BufferSize = 1024) { Start(Ip, Port, MaxConnections, null, null, BufferSize); }
+
+        public void Start(string Ip, int Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024) { Start(IPAddress.Parse(Ip), Port, MaxConnections, Password, Salt, Iterations, KeySize, BufferSize); }
+        public void Start(IPAddress Ip, int Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024) { Start(Ip, Port, MaxConnections, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize); }
         public void Start(string Ip, int Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024) { Start(IPAddress.Parse(Ip), Port, MaxConnections, Algorithm, EncryptionKey, BufferSize); }
         public void Start(IPAddress Ip, int Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024)
         {
             if (_ServerListener != null) return;
+            if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
+            if(MaxConnections <= 0) throw new Exception("Invalid MaxConnections count");
 
             _ServerListener = new ServerListener(new TcpListener(Ip, Port), this, MaxConnections, BufferSize);
             _Algorithm = Algorithm;
@@ -34,7 +41,6 @@ namespace HenkTcp
         }
 
         public List<TcpClient> ConnectedClients { get { if (_ServerListener == null) return null; return _ServerListener.ConnectedClients; } }
-
         public int ConnectedClientsCount { get { if (_ServerListener == null) return 0; return _ServerListener.ConnectedClients.Count; } }
 
         public TcpListener Listener { get { return _ServerListener.Listener; } }
@@ -65,7 +71,8 @@ namespace HenkTcp
         public void Write(TcpClient Client, string Data) { Write(Client, Encoding.UTF8.GetBytes(Data)); }
         public void Write(TcpClient Client, byte[] Data)
         {
-            Client.GetStream().Write(Data, 0, Data.Length);
+            try { Client.GetStream().Write(Data, 0, Data.Length); }
+            catch (Exception ex) { NotifyOnError(ex); }
         }
 
         public void WriteEncrypted(TcpClient Client, string Data) { WriteEncrypted(Client, Encoding.UTF8.GetBytes(Data)); }
@@ -73,6 +80,31 @@ namespace HenkTcp
         {
             if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return; }
             Write(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
+        }
+
+        public Message WriteAndGetReply(TcpClient Client, string Text, TimeSpan Timeout) { return WriteAndGetReply(Client, Encoding.UTF8.GetBytes(Text), Timeout); }
+        public Message WriteAndGetReply(TcpClient Client, byte[] Data, TimeSpan Timeout)
+        {
+            Message Reply = null;
+
+            DataReceived += (x, r) => { Reply = r; };
+            Write(Client, Data);
+
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            while (!(Reply != null && Reply.TcpClient == Client) && sw.Elapsed < Timeout)
+            {
+                Task.Delay(1).Wait();
+            }
+            return Reply;
+        }
+
+        public Message WriteAndGetReplyEncrypted(TcpClient Client, string Text, TimeSpan Timeout) { return WriteAndGetReplyEncrypted(Client, Encoding.UTF8.GetBytes(Text), Timeout); }
+        public Message WriteAndGetReplyEncrypted(TcpClient Client, byte[] Data, TimeSpan Timeout)
+        {
+            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return null; }
+            return WriteAndGetReply(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
         }
 
         internal void NotifyClientConnected(TcpClient Client) { ClientConnected?.Invoke(this, Client); }
