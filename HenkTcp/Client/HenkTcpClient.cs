@@ -18,11 +18,15 @@ namespace HenkTcp
         public event EventHandler<HenkTcpClient> OnDisconnect;
         public event EventHandler<Exception> OnError;
 
-        public byte[] Buffer;
+        private byte[] _Buffer;
 
         public bool Connect(string Ip, int Port, TimeSpan Timeout, int BufferSize = 1024) { return Connect(Ip, Port, Timeout, null, null, BufferSize); }
+        public bool Connect(string Ip, int Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024) { return Connect(Ip, Port, Timeout, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize); }
         public bool Connect(string Ip, int Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024)
         {
+            if(string.IsNullOrEmpty(Ip)) throw new Exception("Invalid ip");
+            if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
+
             TcpClient = new TcpClient();
             TcpClient.ConnectAsync(Ip, Port);
 
@@ -39,8 +43,8 @@ namespace HenkTcp
                 _Algorithm = Algorithm;
                 _EncryptionKey = EncryptionKey;
 
-                Buffer = new byte[BufferSize];
-                TcpClient.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, TcpClient);
+                _Buffer = new byte[BufferSize];
+                TcpClient.GetStream().BeginRead(_Buffer, 0, _Buffer.Length, _OnDataReceive, TcpClient);
                 return true;
             }
             else
@@ -51,8 +55,8 @@ namespace HenkTcp
 
         public void Disconnect()
         {
-            if (TcpClient == null) { return; }
-            TcpClient.Dispose();
+            if (TcpClient == null) return;
+            TcpClient.Close();
             TcpClient = null;
         }
 
@@ -103,19 +107,22 @@ namespace HenkTcp
         private void _OnDataReceive(IAsyncResult ar)
         {
             TcpClient Client = ar.AsyncState as TcpClient;
-            if (Client == null) return;
+            if (Client == null || TcpClient == null) return;
 
             try
             {
-                byte[] ReceivedBytes = new byte[Client.Client.EndReceive(ar)];
-                Array.Copy(Buffer, ReceivedBytes, ReceivedBytes.Length);
+                int ReceivedBytesCount = Client.Client.EndReceive(ar);
+                if (ReceivedBytesCount <= 0) { if (Client.Client.Poll(0, SelectMode.SelectRead)) { Disconnect(); OnDisconnect?.Invoke(this, this); } return; }
+
+                byte[] ReceivedBytes = new byte[ReceivedBytesCount];
+                Array.Copy(_Buffer, ReceivedBytes, ReceivedBytes.Length);
 
                 Message m = new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey);
                 DataReceived?.Invoke(this, m);
 
-                TcpClient.GetStream().BeginRead(Buffer, 0, Buffer.Length, _OnDataReceive, TcpClient);
+                TcpClient.GetStream().BeginRead(_Buffer, 0, _Buffer.Length, _OnDataReceive, TcpClient);
             }
-            catch (SocketException) { TcpClient.Dispose(); TcpClient = null; OnDisconnect?.Invoke(this,this); }
+            catch (SocketException) { Disconnect(); OnDisconnect?.Invoke(this, this); }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
