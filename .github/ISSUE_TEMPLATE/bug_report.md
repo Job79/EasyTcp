@@ -4,5 +4,4 @@ about: Create a report to help us fix the problem
 ---
 
 **send me your code/error and when the bug happens**
-
-send it to henkje@pm.me, or contact me at discord: henkje#0033
+create a isue on this github, or contact me at discord: henkje#0033
