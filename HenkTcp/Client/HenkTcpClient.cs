@@ -24,7 +24,7 @@ namespace HenkTcp
         public bool Connect(string Ip, int Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024) { return Connect(Ip, Port, Timeout, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize); }
         public bool Connect(string Ip, int Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024)
         {
-            if(string.IsNullOrEmpty(Ip)) throw new Exception("Invalid ip");
+            if (string.IsNullOrEmpty(Ip)) throw new Exception("Invalid ip");
             if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
 
             TcpClient = new TcpClient();
@@ -53,11 +53,13 @@ namespace HenkTcp
             }
         }
 
-        public void Disconnect()
+        public void Disconnect(bool NotifyOnDisconnect = false)
         {
             if (TcpClient == null) return;
             TcpClient.Close();
             TcpClient = null;
+
+            if (NotifyOnDisconnect) OnDisconnect?.Invoke(this, this);
         }
 
         public bool IsConnected { get { return TcpClient != null; } }
