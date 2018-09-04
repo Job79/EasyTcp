@@ -71,7 +71,7 @@ namespace async_tcp_server
 }
 ```
 
-4. to create a client you can use the following:
+3. to create a client you can use the following:
 
 ```cs
 using System;
