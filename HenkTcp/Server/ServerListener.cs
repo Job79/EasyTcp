@@ -10,7 +10,6 @@ namespace HenkTcp
     {
         private List<TcpClient> _ConnectedClients = new List<TcpClient>();
         public List<TcpClient> ConnectedClients { get { return _ConnectedClients.ToList(); } }
-        public void Stop() { Listener.Stop(); }
 
         public TcpListener Listener { get; }
         private readonly int _BufferSize;
@@ -63,14 +62,14 @@ namespace HenkTcp
                 if (ReceivedBytesCount <= 0)
                 {
                     if (Client.TcpClient.Client.Poll(0, SelectMode.SelectRead)) lock (_ConnectedClients) { _ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); }
-                    return;
+                    else return;
                 }
 
                 byte[] ReceivedBytes = new byte[ReceivedBytesCount];
                 Array.Copy(Client.Buffer, ReceivedBytes, ReceivedBytes.Length);
 
-                _Parent.NotifyDataReceived(ReceivedBytes, Client.TcpClient);
                 Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
+                _Parent.NotifyDataReceived(ReceivedBytes, Client.TcpClient);
             }
             catch (SocketException) { lock (_ConnectedClients) { _ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); } }
             catch (Exception ex) { _Parent.NotifyOnError(ex); }
