@@ -45,7 +45,7 @@ namespace HenkTcp
 
         public TcpListener Listener { get { return _ServerListener.Listener; } }
         public bool IsRunning { get { return _ServerListener != null; } }
-        public void Stop() { _ServerListener.Stop(); _ServerListener = null; }
+        public void Stop() { _ServerListener.Listener.Stop(); _ServerListener = null; }
 
         public void Broadcast(string Data) { Broadcast(Encoding.UTF8.GetBytes(Data)); }
         public void Broadcast(byte[] Data)
@@ -93,7 +93,7 @@ namespace HenkTcp
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            while (!(Reply != null && Reply.TcpClient == Client) && sw.Elapsed < Timeout)
+            while (!(Reply != null && Reply.TcpClient == Client)&& sw.Elapsed < Timeout)
             {
                 Task.Delay(1).Wait();
             }
