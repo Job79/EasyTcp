@@ -10,8 +10,6 @@ It also support encryption, the encryption can be used with AES/TrippleDES/DES a
 
 # how do i use HenkTcp?
 
-outdated examples
-
 1. add the nuget package to your application.
 2. to create a server you can use this example:
 ```cs
@@ -20,64 +18,101 @@ using System.Net.Sockets;
 using HenkTcp;
 using System.Security.Cryptography;
 
-namespace async_tcp_server
+namespace HenkTcpServerExample
 {
     class Program
     {
-        static HenkTcpServer server = new HenkTcpServer();
+        static HenkTcpServer Server = new HenkTcpServer();
 
         static void Main(string[] args)
         {
-            //set the handlers
-            server.ClientConnected += ClientConnected;
-            server.DataReceived += DataReceived;
-            server.ClientDisconnected += ClientDisconnect;
-            server.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
-            
-            //start the server on port 52525 and on ip 0.0.0.0 and with max 10000 connections
-            server.Start("0.0.0.0", 52525, 10000);
+            //start server on 0.0.0.0 on port 52525 with max 10000 connections
+            //Server.Start("0.0.0.0",52525,10000);
+            //start server with aes encryption enabled and a password and salt
+            Server.Start("0.0.0.0", 52525, 10000, "password","YourSalt");
+            //advanced way to start a server with encryption
+            //create a key of 256 bits(32 bytes) and with 100000 interation(using PBKDF2) with the salt "salt"
+            //byte[] Key = Encryption.CreateKey(Aes.Create(),"password","YourSalt",100000,32);
+            //Server.Start("0.0.0.0", 52525, 10000, Aes.Create(),Key);
 
-            //start the server, but with encryption enabled
-            //need System.Security.Cryptography for this.
-            //in 0.0.0.3 can this be done easier
-            //  server.Start("0.0.0.0", 52525, 10000, Aes.Create(), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt"));
+            //start server on port 1234 on IPAddress.Any
+            //this way can't be used with encryption
+            //Server.Start(1234);
+            //server can also be started with the System.Net.IPAddress
 
-            while (true)
+            //now we will set the event handlers
+            Server.DataReceived += DataReceived;
+            Server.ClientConnected += ClientConnected;
+            Server.ClientDisconnected += ClientDisconnect;
+            //handlers can also be set like this:
+            Server.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
+
+            //we can ban ips like this:
+            Server.BannedIps.Add("123.123.123.123");
+            //and unban them:
+            Server.BannedIps.Remove("123.123.123.123");
+            //or clear them:
+            Server.BannedIps.Clear();
+
+
+            while (Console.ReadKey().Key != ConsoleKey.C)
             {
-                Console.ReadLine();
-                //get the count off all conected clients
-                Console.WriteLine(server.ConnectedClientsCount);
-                //send a message to all clients
-                server.Broadcast("Hey from server!");
+                Console.WriteLine(Server.IsRunning ? "The server is running" : "The server is offline");
+                Console.WriteLine($"there are {Server.ConnectedClientsCount} clients connected");
 
-                //send a message to all clients, but encrypted
-                //server.BroadcastEncrypted("Hey from server!");
+                Console.WriteLine("enter a message to send to all users:");
+                Server.Broadcast(Console.ReadLine());
+
+                //encrypted way(use only if server is started with encryption enabled)
+                /*
+                Console.WriteLine("enter a message to send to all users:");
+                Server.BroadcastEncrypted(Console.ReadLine());
+                */
             }
+            //stop the server
+            Server.Stop();
         }
 
         private static void ClientDisconnect(object sender, TcpClient e)
         {
-            Console.WriteLine($"Client Disconnect {e.GetHashCode()}");
+            Console.WriteLine($"Client {e.GetHashCode()} Disconnect");
         }
 
         private static void DataReceived(object sender, Message e)
         {
-            Console.WriteLine($"received: {e.MessageString} from: {e.TcpClient.GetHashCode()} ip:{e.senderIP}");
-            //reply to the client
-            e.Reply(e.Data);
+            Console.WriteLine($"received: {e.MessageString} from: {e.TcpClient.GetHashCode()} ip:{e.SenderIP}");
 
-            //reply the data encrypted
-            //e.ReplyEncrypted(e.Data);
+            //display encrypted data:
+            //Console.WriteLine($"received: {e.DecryptedMessageString} from: {e.TcpClient.GetHashCode()} ip:{e.SenderIP}");
+            //byte[] data = e.Data;//get bytes of message
+            //byte[] decrypted = e.DecryptedData;
+            e.Reply("reply!");//reply message
+            //e.ReplyEncrypted("reply encrypted!");
+
+            //get tcpclient
+            //TcpClient Client = e.TcpClient;
         }
 
         private static void ClientConnected(object sender, TcpClient e)
         {
-            Console.WriteLine($"Client connected {e.GetHashCode()}");
-            //send a message to a tcpclient
-            server.Write(e,"Welcome to the server");
+            Console.WriteLine($"Client {e.GetHashCode()} connected");
 
-            //send message encrypted
-            //server.WriteEncrypted(e, "Welcome to the server");
+            //write something
+            Server.Write(e,"hey from server");
+            //write encrypted
+            //Server.WriteEncrypted(e,"hey encrypted!");
+
+            //write and wait for a reply,
+            //e = tcpclient
+            //timespan= time that it can take before resume, if not received it will return null
+
+            //Message Reply = Server.WriteAndGetReply(e,"hey",TimeSpan.FromSeconds(5));
+            //if (Reply == null) return;
+            //not it can be used like in the datareceived
+            //string s = Reply.MessageString;
+
+            //encrypted way
+            //Message Reply = Server.WriteAndGetReplyEncrypted(e, "hey", TimeSpan.FromSeconds(5));
         }
     }
 }
@@ -90,65 +125,79 @@ using System;
 using HenkTcp;
 using System.Security.Cryptography;
 
-namespace async_TcpClient
+namespace HenkTcpClientExample
 {
     class Program
     {
-        private static HenkTcpClient _Client = new HenkTcpClient();
+        static HenkTcpClient Client = new HenkTcpClient();
 
         static void Main(string[] args)
         {
-            //set the handlers
-            _Client.DataReceived += DataReceived;
-            _Client.OnDisconnect += Disconnected;
-            _Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
-                
-            //connect with 127.0.0.1 on port 52525 witch can take maximum 1 second.
-            if (_Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
-            //connect but with encryption enabled.
-            //need System.Security.Cryptography for this.
-            //in 0.0.0.3 can this be done easier
-            //if (_Client.Connect("192.168.1.11",52525,TimeSpan.FromSeconds(1), Encryption.CreateKey(Aes.Create(), "Password", Salt: "YourSalt")))
-            {
-                while (true)
-                {
-                    //write data to the server
-                    _Client.Write(Console.ReadLine());
+            //first we will set the handlers of the client
+            Client.DataReceived += DataReceived;
+            Client.OnDisconnect += Disconnected;
+            //handlers can also be set like this:
+            Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
 
-                    //get reply from the server
-                    //_Client.DataReceived -= DataReceived;//disable the datareceiver so it will not be triggerd
-                    //string reply = _Client.WriteAndGetReply("get reply",TimeSpan.FromSeconds(5)).MessageString;
-                    //Console.WriteLine($"reply:{reply}");
-                    //_Client.DataReceived += DataReceived;//enable again
+            //connect to 127.0.0.1:52525 witch can take max 1 second with a password and salt for the encryption
+            if (Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1), "password", "YourSalt"))
+            {
+                //connect with key advanced way
+                //create a key of 256 bits(32 bytes) and with 100000 interation(using PBKDF2) with the salt "salt"
+                //byte[] Key = Encryption.CreateKey(Aes.Create(),"password","YourSalt",100000,32);
+                //Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1), Aes.Create(),Key);
+
+                //connect without encryption used:
+                //Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1));
+
+                while (Console.ReadKey().Key != ConsoleKey.C)
+                {
+                    Console.WriteLine(Client.IsConnected ? "The client is connected" : "the client is disconnected");
+
+                    Console.WriteLine("enter a message to send to the server:");
+                    Client.Write(Console.ReadLine());
+
+                    //encrypted way:
+                    //the client need to be connected with encryption enabled for this
+                    //Console.WriteLine("enter a message to send to the server encrypted:");
+                    //Client.WriteEncrypted(Console.ReadLine());
+
+                    //write and wait for a reply,
+                    //e = tcpclient
+                    //timespan= time that it can take before resume, if not received it will return null
+
+                    //Message Reply = Client.WriteAndGetReply("hey",TimeSpan.FromSeconds(5));
+                    //if (Reply == null) return;
+                    //not it can be used like in the datareceived
+                    //string s = Reply.MessageString;
+
+                    //encrypted way
+                    //Message Reply = Client.WriteAndGetReplyEncrypted("hey", TimeSpan.FromSeconds(5));
                 }
+                //disconnect from server, without triggering ondisconnect
+                Client.Disconnect();
+                //disconnect from server with triggering ondisconnect
+                Client.Disconnect(true);
             }
+            else { Console.WriteLine("Could not connect with the server :("); Console.ReadLine(); }
         }
 
         private static void Disconnected(object sender, HenkTcpClient e)
         {
-            Console.WriteLine("Disconnected");
-            
-            //reconnect if possible
-            if (e.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1)))
-            {
-                Console.WriteLine("reconnected");
-                //resume connected
-            }
-            else//connect failed
-            {
-                //close application
-                Console.ReadKey();
-                Environment.Exit(1);
-            }
+            Console.WriteLine("Disconnected from server");
         }
 
         private static void DataReceived(object sender, Message e)
         {
-            //show a normal message
-            Console.WriteLine($"Received: {e.MessageString}");
+            Console.WriteLine($"received: {e.MessageString}");
 
-            //show a encrypted message
-            //Console.WriteLine($"ReceivedEncrypted: {e.DecryptedMessageString}");
+            //display encrypted data:
+            //Console.WriteLine($"received: {e.DecryptedMessageString}");
+
+            //byte[] data = e.Data;//get bytes of message
+            //byte[] decrypted = e.DecryptedData;
+            //e.Reply("reply!");//reply message
+            //e.ReplyEncrypted("reply encrypted!");
         }
     }
 }
