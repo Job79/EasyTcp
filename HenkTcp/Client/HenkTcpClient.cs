@@ -28,7 +28,7 @@ namespace HenkTcp
             if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
 
             TcpClient = new TcpClient();
-            TcpClient.ConnectAsync(Ip, Port);
+            var x =TcpClient.ConnectAsync(Ip, Port);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
