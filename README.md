@@ -10,6 +10,8 @@ It also support encryption, the encryption can be used with AES/TrippleDES/DES a
 
 # how do i use HenkTcp?
 
+outdated examples
+
 1. add the nuget package to your application.
 2. to create a server you can use this example:
 ```cs
