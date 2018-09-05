@@ -1,3 +1,8 @@
+# what is HenkTcp?
+HenkTcp is a async/simple tcp server/client library.
+HenkTcp is easy to use and can be used with strings, and byte arrays.
+It also support encryption, the encryption can be used with AES/TrippleDES/DES and the other symmetric algorithms.
+
 # how do i use HenkTcp?
 
 1. add the nuget package to your application.
