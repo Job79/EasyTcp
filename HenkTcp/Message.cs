@@ -23,14 +23,17 @@ namespace HenkTcp
         }
 
         public byte[] Data { get; }
-        public byte[] DecryptedData()
+        public byte[] DecryptedData
         {
-            if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
-            return Encryption.Decrypt(_Algorithm, Data, _EncryptionKey);
+            get
+            {
+                if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
+                return Encryption.Decrypt(_Algorithm, Data, _EncryptionKey);
+            }
         }
 
         public string MessageString { get { return Encoding.UTF8.GetString(Data); } }
-        public string DecryptedMessageString { get { return Encoding.UTF8.GetString(DecryptedData()); } }
+        public string DecryptedMessageString { get { return Encoding.UTF8.GetString(DecryptedData); } }
 
         public string SenderIP { get { return ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); } }
 
