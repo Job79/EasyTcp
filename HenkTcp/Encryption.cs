@@ -15,9 +15,9 @@ namespace HenkTcp
             else { return key.GetBytes(KeySize); }
         }
 
-        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password) { return Encrypt(Algorithm, Text, CreateKey(Algorithm, Password)); }
+        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { return Encrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); }
         public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) { return Convert.ToBase64String(Encrypt(Algorithm, Encoding.UTF8.GetBytes(Text), Key)); }
-        public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password) { return Encrypt(Algorithm, Data, CreateKey(Algorithm, Password)); }
+        public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { return Encrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); }
         public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
         {
             try
@@ -39,9 +39,9 @@ namespace HenkTcp
             catch { return null; }
         }
 
-        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password) { return Decrypt(Algorithm, Text, CreateKey(Algorithm, Password)); }
+        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { return Decrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); }
         public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) { return Encoding.UTF8.GetString(Decrypt(Algorithm, Convert.FromBase64String(Text), Key)); }
-        public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password) { return Decrypt(Algorithm, Data, CreateKey(Algorithm, Password)); }
+        public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { return Decrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); }
         public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
         {
             try
