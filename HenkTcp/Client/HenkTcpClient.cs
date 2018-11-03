@@ -53,6 +53,13 @@ namespace HenkTcp
             }
         }
 
+        public void SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { SetEncryption(Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize)); }
+        public void SetEncryption(SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
+        {
+            _Algorithm = Algorithm;
+            _EncryptionKey = EncryptionKey;
+        }
+
         public void Disconnect(bool NotifyOnDisconnect = false)
         {
             if (TcpClient == null) return;
@@ -85,8 +92,9 @@ namespace HenkTcp
         public Message WriteAndGetReply(byte[] Data, TimeSpan Timeout)
         {
             Message Reply = null;
+            void Event(object sender, Message e) { Reply = e; DataReceived -= Event; };
 
-            DataReceived += (x, r) => { Reply = r; };
+            DataReceived += Event;
             Write(Data);
 
             Stopwatch sw = new Stopwatch();
