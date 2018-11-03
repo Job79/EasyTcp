@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Linq;
 using System.Net;
 
 namespace HenkTcp
 {
     internal class ServerListener
     {
-        private List<TcpClient> _ConnectedClients = new List<TcpClient>();
-        public List<TcpClient> ConnectedClients { get { return _ConnectedClients; } }
+        public List<TcpClient> ConnectedClients { get; } = new List<TcpClient>();
 
         public TcpListener Listener { get; }
         private readonly int _BufferSize;
@@ -36,19 +34,19 @@ namespace HenkTcp
             try
             {
                 TcpClient Client = Listener.EndAcceptTcpClient(ar);
-                if (_ConnectedClients.Count >= _MaxConnections || _Parent.BannedIps.Contains(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString())) { Client.Close(); Console.WriteLine("Kicked client"); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
+                if (ConnectedClients.Count >= _MaxConnections || _Parent.BannedIps.Contains(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString())) { Console.WriteLine($"[Server]Denied {((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString()}"); Client.Close(); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
                 else
                 {
                     ClientObject ClientObject = new ClientObject() { TcpClient = Client, Buffer = new byte[_BufferSize] };
 
-                    _ConnectedClients.Add(Client);
+                    ConnectedClients.Add(Client);
                     _Parent.NotifyClientConnected(Client);
 
                     Client.GetStream().BeginRead(ClientObject.Buffer, 0, ClientObject.Buffer.Length, _OnDataReceive, ClientObject);
-                    Listener.BeginAcceptTcpClient(_OnClientConnect, Listener);
+                    Listener.BeginAcceptTcpClient(_OnClientConnect, Listener);                   
                 }
             }
-            catch (Exception ex) { _Parent.NotifyOnError(ex); }
+            catch (Exception ex) { if (_Parent.IsRunning) _Parent.NotifyOnError(ex); }
         }
 
         private void _OnDataReceive(IAsyncResult ar)
@@ -59,11 +57,7 @@ namespace HenkTcp
             try
             {
                 int ReceivedBytesCount = Client.TcpClient.Client.EndReceive(ar);
-                if (ReceivedBytesCount <= 0)
-                {
-                    if (Client.TcpClient.Client.Poll(0, SelectMode.SelectRead)) lock (_ConnectedClients) { _ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); } 
-                    else return;
-                }
+                if (ReceivedBytesCount <= 0)  lock (ConnectedClients) { ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); return; }
 
                 byte[] ReceivedBytes = new byte[ReceivedBytesCount];
                 Array.Copy(Client.Buffer, ReceivedBytes, ReceivedBytes.Length);
@@ -71,8 +65,7 @@ namespace HenkTcp
                 Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
                 _Parent.NotifyDataReceived(ReceivedBytes, Client.TcpClient);
             }
-            catch (SocketException) { lock (_ConnectedClients) { _ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); } }
-            catch (Exception ex) { _Parent.NotifyOnError(ex); }
+            catch { lock (ConnectedClients) { ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); } }
         }
     }
 }
