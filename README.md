@@ -3,7 +3,7 @@
 
 HenkTcp is a async, fast, simple tcp server/client library.
 HenkTcp is easy to use and can be used with strings, and byte arrays.
-It also support encryption, the encryption can be used with AES and the other symmetric algorithms(DES/TrippleDES).
+It also supports encryption, the encryption can be used with AES and the other symmetric algorithms(DES/TripleDES).
 
 # how do i use HenkTcp?
 
