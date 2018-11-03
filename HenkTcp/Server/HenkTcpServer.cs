@@ -33,9 +33,16 @@ namespace HenkTcp
         {
             if (_ServerListener != null) return;
             if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
-            if(MaxConnections <= 0) throw new Exception("Invalid MaxConnections count");
+            if (MaxConnections <= 0) throw new Exception("Invalid MaxConnections count");
 
             _ServerListener = new ServerListener(new TcpListener(Ip, Port), this, MaxConnections, BufferSize);
+            _Algorithm = Algorithm;
+            _EncryptionKey = EncryptionKey;
+        }
+
+        public void SetEncryption(string Password,string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) { SetEncryption(Aes.Create(),Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize)); }
+        public void SetEncryption(SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
+        {
             _Algorithm = Algorithm;
             _EncryptionKey = EncryptionKey;
         }
@@ -51,14 +58,15 @@ namespace HenkTcp
         public void Broadcast(byte[] Data)
         {
             if (_ServerListener == null) return;
-            Parallel.ForEach(_ServerListener.ConnectedClients, Client =>
+            try
             {
-                try
+                Parallel.ForEach(_ServerListener.ConnectedClients, Client =>
                 {
+
                     Client.GetStream().WriteAsync(Data, 0, Data.Length);
-                }
-                catch (Exception ex) { NotifyOnError(ex); }
-            });
+                });
+            }
+            catch (Exception ex) { NotifyOnError(ex); }
         }
 
         public void BroadcastEncrypted(string Data) { BroadcastEncrypted(Encoding.UTF8.GetBytes(Data)); }
@@ -86,14 +94,15 @@ namespace HenkTcp
         public Message WriteAndGetReply(TcpClient Client, byte[] Data, TimeSpan Timeout)
         {
             Message Reply = null;
+            void Event(object sender, Message e) { Reply = e; DataReceived -= Event; };
 
-            DataReceived += (x, r) => { Reply = r; };
+            DataReceived += Event;
             Write(Client, Data);
 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            while (!(Reply != null && Reply.TcpClient == Client)&& sw.Elapsed < Timeout)
+            while (!(Reply != null && Reply.TcpClient == Client) && sw.Elapsed < Timeout)
             {
                 Task.Delay(1).Wait();
             }
