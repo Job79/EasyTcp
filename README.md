@@ -105,7 +105,7 @@ namespace HenkTcpServerExample
 
             //Message Reply = Server.WriteAndGetReply(e,"hey",TimeSpan.FromSeconds(5));
             //if (Reply == null) return;
-            //not it can be used like in the datareceived
+            //now it can be used like in the datareceived
             //string s = Reply.MessageString;
 
             //encrypted way
@@ -160,12 +160,11 @@ namespace HenkTcpClientExample
                     //Client.WriteEncrypted(Console.ReadLine());
 
                     //write and wait for a reply,
-                    //e = tcpclient
                     //timespan= time that it can take before resume, if not received it will return null
 
                     //Message Reply = Client.WriteAndGetReply("hey",TimeSpan.FromSeconds(5));
                     //if (Reply == null) return;
-                    //not it can be used like in the datareceived
+                    //now it can be used like in the datareceived
                     //string s = Reply.MessageString;
 
                     //encrypted way
