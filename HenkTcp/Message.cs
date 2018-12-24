@@ -8,10 +8,10 @@ namespace HenkTcp
 {
     public class Message
     {
-        public TcpClient TcpClient;
+        public readonly TcpClient TcpClient;
 
-        private byte[] _EncryptionKey;
-        private SymmetricAlgorithm _Algorithm;
+        private readonly byte[] _EncryptionKey;
+        private readonly SymmetricAlgorithm _Algorithm;
 
         public Message(byte[] Data, TcpClient Client, SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
         {
@@ -22,7 +22,7 @@ namespace HenkTcp
             _Algorithm = Algorithm;
         }
 
-        public byte[] Data { get; }
+        public readonly byte[] Data;
         public byte[] DecryptedData
         {
             get
@@ -37,11 +37,8 @@ namespace HenkTcp
 
         public string SenderIP { get { return ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); } }
 
-        public void Reply(string data) { Reply(Encoding.UTF8.GetBytes(data)); }
-        public void Reply(byte[] data)
-        {
-            TcpClient.GetStream().Write(data, 0, data.Length);
-        }
+        public void Reply(string data)=> Reply(Encoding.UTF8.GetBytes(data));
+        public void Reply(byte[] data)=> TcpClient.GetStream().Write(data, 0, data.Length);
 
         public void ReplyEncrypted(string Data) { ReplyEncrypted(Encoding.UTF8.GetBytes(Data)); }
         public void ReplyEncrypted(byte[] Data)
