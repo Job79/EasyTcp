@@ -34,7 +34,9 @@ namespace HenkTcp
             try
             {
                 TcpClient Client = Listener.EndAcceptTcpClient(ar);
-                if (ConnectedClients.Count >= _MaxConnections || _Parent.BannedIps.Contains(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString())) { Console.WriteLine($"[Server]Denied {((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString()}"); Client.Close(); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
+                if (ConnectedClients.Count >= _MaxConnections || _Parent.BannedIps.Contains(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString())) {
+                    Console.WriteLine($"[Server]Denied {((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString()}");
+                    Client.Close(); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
                 else
                 {
                     ClientObject ClientObject = new ClientObject() { TcpClient = Client, Buffer = new byte[_BufferSize] };
@@ -57,15 +59,17 @@ namespace HenkTcp
             try
             {
                 int ReceivedBytesCount = Client.TcpClient.Client.EndReceive(ar);
-                if (ReceivedBytesCount <= 0)  lock (ConnectedClients) { ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); return; }
+                if (ReceivedBytesCount <= 0) { lock (ConnectedClients) ConnectedClients.Remove(Client.TcpClient);
+                    _Parent.NotifyClientDisconnected(Client.TcpClient); return; }
 
                 byte[] ReceivedBytes = new byte[ReceivedBytesCount];
-                Array.Copy(Client.Buffer, ReceivedBytes, ReceivedBytes.Length);
+                Buffer.BlockCopy(Client.Buffer,0,ReceivedBytes,0,ReceivedBytesCount);
 
                 Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
                 _Parent.NotifyDataReceived(ReceivedBytes, Client.TcpClient);
             }
-            catch { lock (ConnectedClients) { ConnectedClients.Remove(Client.TcpClient); _Parent.NotifyClientDisconnected(Client.TcpClient); } }
+            catch { lock (ConnectedClients) ConnectedClients.Remove(Client.TcpClient);
+                _Parent.NotifyClientDisconnected(Client.TcpClient); }
         }
     }
 }

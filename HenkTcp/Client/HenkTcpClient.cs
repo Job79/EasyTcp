@@ -116,7 +116,7 @@ namespace HenkTcp
                 if (ReceivedBytesCount <= 0) { if (Client.Client.Poll(0, SelectMode.SelectRead)) { Disconnect(); OnDisconnect?.Invoke(this, this); } return; }
 
                 byte[] ReceivedBytes = new byte[ReceivedBytesCount];
-                Array.Copy(_Buffer, ReceivedBytes, ReceivedBytes.Length);
+                Buffer.BlockCopy(_Buffer,0,ReceivedBytes,0,ReceivedBytesCount);
 
                 Message m = new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey);
                 DataReceived?.Invoke(this, m);
