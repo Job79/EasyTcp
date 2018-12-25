@@ -1,5 +1,5 @@
 
-# What is HenkTcp?
+# HenkTcp
 
 HenkTcp is a async, fast, simple tcp server/client library.
 HenkTcp is easy to use and can be used with strings, and byte arrays.
