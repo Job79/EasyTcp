@@ -7,7 +7,7 @@ It supports encryption, the encryption can be used with AES and the other symmet
 
 # How do i use HenkTcp?
 
-1. Add the nuget package to your application.
+1. Add the nuget package to your application or download this project and inport the classes.
 2. To create a server you can use this example:
 ```cs
 using System;
