@@ -10,8 +10,8 @@ It supports encryption, the encryption can be used with AES and the other symmet
 ```cs
 using System;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using HenkTcp;
+using System.Threading.Tasks;
 
 namespace HenkTcpServerExample
 {
@@ -169,7 +169,7 @@ namespace HenkTcpServerExample
             ///Message e = Server.SendAndGetReply(Client,"HelloWorld!",TimeSpan.FromSeconds(5));
 
             //!~Infinite wait~!
-            Task.Delay(-1);
+            Task.Delay(-1).Wait();
         }
 
         private static void DataReceived(object sender, Message e)
@@ -237,8 +237,8 @@ namespace HenkTcpServerExample
 
 ```cs
 using System;
+using System.Threading.Tasks;
 using HenkTcp;
-using System.Security.Cryptography;
 
 namespace HenkTcpClientExample
 {
@@ -248,52 +248,89 @@ namespace HenkTcpClientExample
 
         static void Main(string[] args)
         {
-            //first we will set the handlers of the client
+            /* Event Hanlers,
+             * 
+            EventHandler<Message> DataReceived
+             * Will be called if client received data from server.
+             * 
+            EventHandler<HenkTcpClient> OnDisconnect
+             * Will be called if client disconnects from the server.
+             */
+
+            //Set EventHandlers:
             Client.DataReceived += DataReceived;
             Client.OnDisconnect += Disconnected;
-            //handlers can also be set like this:
+            //EventHandlers can also be set like this:
+            //NOTE, if a event is set like this it can't be removed, but here it isn't a problem.
             Client.OnError += (object sender, Exception e) => { Console.WriteLine(e.ToString()); };
 
-            //connect to 127.0.0.1:52525 witch can take max 1 second with a password and salt for the encryption
+            /* Connect
+             * Connect to a server.
+            bool Connect(string Ip, int Port, TimeSpan Timeout, int BufferSize = 1024)
+            bool Connect(string Ip, int Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024)
+            bool Connect(string Ip, int Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024)
+             */
+            //Example:
+            //Connect to 127.0.0.1/52525 witch can take max 1 second with a password and salt for the encryption.
             if (Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1), "password", "YourSalt"))
             {
-                //connect with key advanced way
-                //create a key of 256 bits(32 bytes) and with 100000 interation(using PBKDF2) with the salt "salt"
-                //byte[] Key = Encryption.CreateKey(Aes.Create(),"password","YourSalt",100000,32);
-                //Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1), Aes.Create(),Key);
+                //Connect with a key advanced way
+                //Create a key of 256 bits(32 bytes) with 100000 interation(using PBKDF2) and with Password/Salt.
+                ///byte[] Key = Encryption.CreateKey(Aes.Create(),"password","YourSalt",100000,32);
+                ///Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1), Aes.Create(),Key);
 
-                //connect without encryption used:
+                //Connect without encryption:
                 //Client.Connect("127.0.0.1", 52525, TimeSpan.FromSeconds(1));
 
-                while (Console.ReadKey().Key != ConsoleKey.C)
-                {
-                    Console.WriteLine(Client.IsConnected ? "The client is connected" : "the client is disconnected");
+                /* Set encryption
+                 * Encryption can also be changed/enabled with SetEncryption.
+                SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0)
+                SetEncryption(SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
+                 */
 
-                    Console.WriteLine("enter a message to send to the server:");
-                    Client.Write(Console.ReadLine());
+                /* Disconnect
+                 * Disconnect from server.
+                Disconnect(bool NotifyOnDisconnect = false)
+                 * NotifyOnDisconnect will trigger the event handler for disconnect if set to true.
+                 * IT WILL NOT TRIGGER IF SET TO FALSE(AUTO).
+                 */
 
-                    //encrypted way:
-                    //the client need to be connected with encryption enabled for this
-                    //Console.WriteLine("enter a message to send to the server encrypted:");
-                    //Client.WriteEncrypted(Console.ReadLine());
+                /* IsConnected
+                 * Get the state of the Client.
+                 bool IsConnected
+                 */
 
-                    //write and wait for a reply,
-                    //timespan= time that it can take before resume, if not received it will return null
+                /* Send
+                 * Send data to server.
+                Send(string Data)               UTF8 will be used for strings
+                Send(byte[] Data)
+                 * 
+                 * SendEncrypted
+                 * Send data to server.
+                 * The message will be encrypted with our selected algorithm/key.
+                SendEncrypted(string Data)      UTF8 will be used for strings
+                SendEncrypted(byte[] Data)
+                 */
+                //Example:
+                ///Client.Send("Hello World!");
+                ///Client.SendEncrypted("Hello World!");
 
-                    //Message Reply = Client.WriteAndGetReply("hey",TimeSpan.FromSeconds(5));
-                    //if (Reply == null) return;
-                    //now it can be used like in the datareceived
-                    //string s = Reply.MessageString;
+                /* SendAndGetReply
+                 * Send data to server and wait for a reply. 
+                Message SendAndGetReply(string Text, TimeSpan Timeout)              UTF8 will be used for strings
+                Message SendAndGetReply(byte[] Data, TimeSpan Timeout)
+                 *
+                 * SendAndGetReplyEncrypted
+                 * Send data to server and wait for a reply.
+                 * The message will be encrypted with our selected algorithm/key.
+                Message SendAndGetReplyEncrypted(string Text, TimeSpan Timeout)     UTF8 will be used for strings
+                Message SendAndGetReplyEncrypted(byte[] Data, TimeSpan Timeout)
+                 */
 
-                    //encrypted way
-                    //Message Reply = Client.WriteAndGetReplyEncrypted("hey", TimeSpan.FromSeconds(5));
-                }
-                //disconnect from server, without triggering ondisconnect
-                Client.Disconnect();
-                //disconnect from server with triggering ondisconnect
-                Client.Disconnect(true);
+                //!~Infinite wait~!
+                Task.Delay(-1).Wait();
             }
-            else { Console.WriteLine("Could not connect with the server :("); Console.ReadLine(); }
+            else { Console.WriteLine("Could not connect..."); Console.ReadLine(); }
         }
 
         private static void Disconnected(object sender, HenkTcpClient e)
@@ -303,20 +340,54 @@ namespace HenkTcpClientExample
 
         private static void DataReceived(object sender, Message e)
         {
-            Console.WriteLine($"received: {e.MessageString}");
+            /* TcpClient
+             * Get the TcpClient who send the message.
+            readonly TcpClient TcpClient;
+             */
 
-            //display encrypted data:
-            //Console.WriteLine($"received: {e.DecryptedMessageString}");
+            /* Data
+             * Get the Received Data.
+            readonly byte[] Data;
+             */
 
-            //byte[] data = e.Data;//get bytes of message
-            //byte[] decrypted = e.DecryptedData;
-            //e.Reply("reply!");//reply message
-            //e.ReplyEncrypted("reply encrypted!");
+            /* DecryptedData
+             * Get the Received Data decrypted.
+            byte[] DecryptedData;
+             * IF ALGORITHM/KEY IS INCORRECT DECRYPTEDDATA WILL RETURN NULL.
+             */
+
+            /* MessageString
+             * Get the received string.
+             string MessageString;              UTF8 will used for strings
+             */
+
+            /* DecryptedMessageString
+             * Get the received string decrypted.
+             string DecryptedMessageString;     UTF8 will used for strings
+             * IF ALGORITHM/KEY IS INCORRECT DECRYPTEDMESSAGESTRING WILL THROW AN ERROR.
+             */
+
+            /* ClientIP
+             * Get the Ip of the TcpClient who send the message.
+             */
+
+            /* Reply
+             * Send data back to Client.
+            Reply(string data)                  UTF8 will used for strings
+            Reply(byte[] data)
+
+             * ReplyEncrypted
+             * Send data back to Client encrypted.
+            ReplyEncrypted(string Data)         UTF8 will used for strings
+            ReplyEncrypted(byte[] Data)
+             */
+
+            Console.WriteLine($"Received: {e.MessageString}");
         }
     }
 }
 ```
 4. You're finished
 
-# contributing
+# Contributing / Help
 Contact me at discord(henkje#0033) or send my a email(henkje@pm.me).
