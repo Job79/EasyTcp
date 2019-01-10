@@ -1,5 +1,5 @@
 /* HenkTcp
- * Copyright (C) 2018  henkje (henkje@pm.me)
+ * Copyright (C) 2019  henkje (henkje@pm.me)
  * 
  * MIT license
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -40,7 +40,7 @@ namespace HenkTcp
             if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
 
             TcpClient = new TcpClient();
-            var x = TcpClient.ConnectAsync(Ip, Port);
+            Task x = TcpClient.ConnectAsync(Ip, Port);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -78,28 +78,28 @@ namespace HenkTcp
 
         public bool IsConnected { get { return TcpClient != null; } }
 
-        public void Write(string Data) => Write(Encoding.UTF8.GetBytes(Data));
-        public void Write(byte[] Data)
+        public void Send(string Data) => Send(Encoding.UTF8.GetBytes(Data));
+        public void Send(byte[] Data)
         {
             try { TcpClient.GetStream().Write(Data, 0, Data.Length); }
             catch (Exception ex) { OnError(this, ex); }
         }
 
-        public void WriteEncrypted(string Data) => WriteEncrypted(Encoding.UTF8.GetBytes(Data));
-        public void WriteEncrypted(byte[] Data)
+        public void SendEncrypted(string Data) => SendEncrypted(Encoding.UTF8.GetBytes(Data));
+        public void SendEncrypted(byte[] Data)
         {
             if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return; }
-            Write(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
+            Send(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
         }
 
-        public Message WriteAndGetReply(string Text, TimeSpan Timeout) => WriteAndGetReply(Encoding.UTF8.GetBytes(Text), Timeout);
-        public Message WriteAndGetReply(byte[] Data, TimeSpan Timeout)
+        public Message SendAndGetReply(string Text, TimeSpan Timeout) => SendAndGetReply(Encoding.UTF8.GetBytes(Text), Timeout);
+        public Message SendAndGetReply(byte[] Data, TimeSpan Timeout)
         {
             Message Reply = null;
             void Event(object sender, Message e) { Reply = e; DataReceived -= Event; };
 
             DataReceived += Event;
-            Write(Data);
+            Send(Data);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -110,17 +110,17 @@ namespace HenkTcp
             return Reply;
         }
 
-        public Message WriteAndGetReplyEncrypted(string Text, TimeSpan Timeout) => WriteAndGetReplyEncrypted(Encoding.UTF8.GetBytes(Text), Timeout);
-        public Message WriteAndGetReplyEncrypted(byte[] Data, TimeSpan Timeout)
+        public Message SendAndGetReplyEncrypted(string Text, TimeSpan Timeout) => SendAndGetReplyEncrypted(Encoding.UTF8.GetBytes(Text), Timeout);
+        public Message SendAndGetReplyEncrypted(byte[] Data, TimeSpan Timeout)
         {
             if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return null; }
-            return WriteAndGetReply(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
+            return SendAndGetReply(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
         }
 
         private void _OnDataReceive(IAsyncResult ar)
         {
             TcpClient Client = ar.AsyncState as TcpClient;
-            if (Client == null || TcpClient == null) return;
+            if (Client == null) return;
 
             try
             {
@@ -133,7 +133,7 @@ namespace HenkTcp
                 Message m = new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey);
                 DataReceived?.Invoke(this, m);
 
-                TcpClient.GetStream().BeginRead(_Buffer, 0, _Buffer.Length, _OnDataReceive, TcpClient);
+                Client.GetStream().BeginRead(_Buffer, 0, _Buffer.Length, _OnDataReceive, Client);
             }
             catch (SocketException) { Disconnect(); OnDisconnect?.Invoke(this, this); }
             catch (Exception ex) { NotifyOnError(ex); }

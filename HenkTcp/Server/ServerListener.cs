@@ -1,3 +1,15 @@
+/* HenkTcp
+ * Copyright (C) 2019  henkje (henkje@pm.me)
+ * 
+ * MIT license
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -13,14 +25,16 @@ namespace HenkTcp
         private readonly int _BufferSize;
         private readonly int _MaxConnections;
         private readonly HenkTcpServer _Parent;
+        private readonly bool _PrintDeniedMessage;
 
-        public ServerListener(TcpListener Listener, HenkTcpServer Parent, int MaxConnections, int BufferSize)
+        public ServerListener(TcpListener Listener, HenkTcpServer Parent, int MaxConnections, int BufferSize, bool PrintDeniedMessage)
         {
             try
             {
                 _Parent = Parent;
                 _BufferSize = BufferSize;
                 _MaxConnections = MaxConnections;
+                _PrintDeniedMessage = PrintDeniedMessage;
 
                 this.Listener = Listener;
                 this.Listener.Start();
@@ -35,7 +49,7 @@ namespace HenkTcp
             {
                 TcpClient Client = Listener.EndAcceptTcpClient(ar);
                 if (ConnectedClients.Count >= _MaxConnections || _Parent.BannedIps.Contains(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString())) {
-                    Console.WriteLine($"[Server]Denied {((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString()}");
+                    if(_PrintDeniedMessage) Console.WriteLine($"[Server]Denied {((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString()}");
                     Client.Close(); Listener.BeginAcceptTcpClient(_OnClientConnect, Listener); }
                 else
                 {

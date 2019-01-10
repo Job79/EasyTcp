@@ -35,12 +35,12 @@ namespace HenkTcp
         public string MessageString { get { return Encoding.UTF8.GetString(Data); } }
         public string DecryptedMessageString { get { return Encoding.UTF8.GetString(DecryptedData); } }
 
-        public string SenderIP { get { return ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); } }
+        public string ClientIP { get { return ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); } }
 
         public void Reply(string data)=> Reply(Encoding.UTF8.GetBytes(data));
         public void Reply(byte[] data)=> TcpClient.GetStream().Write(data, 0, data.Length);
 
-        public void ReplyEncrypted(string Data) { ReplyEncrypted(Encoding.UTF8.GetBytes(Data)); }
+        public void ReplyEncrypted(string Data) => ReplyEncrypted(Encoding.UTF8.GetBytes(Data)); 
         public void ReplyEncrypted(byte[] Data)
         {
             if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");

@@ -1,3 +1,15 @@
+/* HenkTcp
+ * Copyright (C) 2019  henkje (henkje@pm.me)
+ * 
+ * MIT license
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 using System;
 using System.Security.Cryptography;
 using System.IO;
@@ -16,7 +28,7 @@ namespace HenkTcp
             else { return key.GetBytes(KeySize); }
         }
 
-        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) =>  Encrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
+        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Encrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) => Convert.ToBase64String(Encrypt(Algorithm, Encoding.UTF8.GetBytes(Text), Key));
         public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Encrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
@@ -36,9 +48,9 @@ namespace HenkTcp
             }
         }
 
-        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) =>  Decrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); 
-        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) => Encoding.UTF8.GetString(Decrypt(Algorithm, Convert.FromBase64String(Text), Key)); 
-        public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize)); 
+        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
+        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) => Encoding.UTF8.GetString(Decrypt(Algorithm, Convert.FromBase64String(Text), Key));
+        public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
         {
             Algorithm.Key = Key;
