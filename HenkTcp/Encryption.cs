@@ -23,23 +23,28 @@ namespace HenkTcp
         {
             if (Salt.Length < 8) throw new Exception("Salt is too short.");
 
-            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Password, Encoding.UTF8.GetBytes(Salt), Iterations);
-            if (KeySize <= 0) { return key.GetBytes(Algorithm.Key.Length); }
-            else { return key.GetBytes(KeySize); }
+            //Generate new key with PBKDF2
+            Rfc2898DeriveBytes Key = new Rfc2898DeriveBytes(Password, Encoding.UTF8.GetBytes(Salt), Iterations);
+            if (KeySize <= 0) { return Key.GetBytes(Algorithm.Key.Length); }//Use default key length for alghoritm
+            else { return Key.GetBytes(KeySize); }//Use custom key length for alghoritm
         }
+
+        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password, Encoding Encoder, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Encrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize), Encoder);
+        public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key, Encoding Encoder) => Convert.ToBase64String(Encrypt(Algorithm, Encoder.GetBytes(Text), Key));
 
         public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Encrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static string Encrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) => Convert.ToBase64String(Encrypt(Algorithm, Encoding.UTF8.GetBytes(Text), Key));
+
         public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Encrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static byte[] Encrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
         {
             Algorithm.Key = Key;
             Algorithm.GenerateIV();
 
-            using (var ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
-                ms.Write(Algorithm.IV, 0, Algorithm.IV.Length);
-                using (var cs = new CryptoStream(ms, Algorithm.CreateEncryptor(Algorithm.Key, Algorithm.IV), CryptoStreamMode.Write))
+                ms.Write(Algorithm.IV, 0, Algorithm.IV.Length);//Write IV to ms(first 16 bytes)
+                using (CryptoStream cs = new CryptoStream(ms, Algorithm.CreateEncryptor(Algorithm.Key, Algorithm.IV), CryptoStreamMode.Write))
                 {
                     cs.Write(Data, 0, Data.Length);
                     cs.FlushFinalBlock();
@@ -48,19 +53,23 @@ namespace HenkTcp
             }
         }
 
+        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password, Encoding Encoder, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
+        public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key, Encoding Encoder) => Encoder.GetString(Decrypt(Algorithm, Convert.FromBase64String(Text), Key));
+
         public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Text, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static string Decrypt(SymmetricAlgorithm Algorithm, string Text, byte[] Key) => Encoding.UTF8.GetString(Decrypt(Algorithm, Convert.FromBase64String(Text), Key));
+
         public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, string Password, string Salt = "HenkEncryptSalt", int Iterations = 10000, int KeySize = 0) => Decrypt(Algorithm, Data, CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public static byte[] Decrypt(SymmetricAlgorithm Algorithm, byte[] Data, byte[] Key)
         {
             Algorithm.Key = Key;
-            using (var ms = new MemoryStream(Data))
+            using (MemoryStream ms = new MemoryStream(Data))
             {
-                byte[] iv = new byte[Algorithm.IV.Length];
-                ms.Read(iv, 0, iv.Length);
-                Algorithm.IV = iv;
+                byte[] IV = new byte[Algorithm.IV.Length];
+                ms.Read(IV, 0, IV.Length);//Get IV from ms(first 16 bytes)
+                Algorithm.IV = IV;
 
-                using (var cs = new CryptoStream(ms, Algorithm.CreateDecryptor(Algorithm.Key, Algorithm.IV), CryptoStreamMode.Read))
+                using (CryptoStream cs = new CryptoStream(ms, Algorithm.CreateDecryptor(Algorithm.Key, Algorithm.IV), CryptoStreamMode.Read))
                 {
                     byte[] Decrypted = new byte[Data.Length];
                     int byteCount = cs.Read(Decrypted, 0, Data.Length);
