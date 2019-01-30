@@ -14,8 +14,15 @@ namespace HenkTcp.Server
 {
     public class RefusedClient
     {
-        public string IP;
-        public bool IsBanned;
+        /// <summary>
+        /// Get the IP of the refused client.
+        /// </summary>
+        public readonly string IP;
+
+        /// <summary>
+        /// Check if the client is banned, or refused because of to much connections.
+        /// </summary>
+        public readonly bool IsBanned;
 
         public RefusedClient(string IP, bool IsBanned)
         {

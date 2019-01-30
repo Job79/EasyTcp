@@ -10,8 +10,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace HenkTcp.Server
 {
@@ -19,10 +19,14 @@ namespace HenkTcp.Server
     {
         public TcpClient TcpClient;
 
-        //Buffer will be used for receiving data.
+        /// <summary>
+        /// Buffer is used for receiving data.
+        /// </summary>
         public byte[] Buffer;
 
-        //DataBuffer will be used when client sends a to big message for the buffer.
-        public List<byte> DataBuffer = new List<byte>();
+        /// <summary>
+        /// DataBuffer will be used when client sends a to big message for the buffer.
+        /// </summary>
+        public List<byte> DataBuffer;
     }
 }

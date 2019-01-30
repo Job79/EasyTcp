@@ -4,22 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Henkje</Authors>
     <Company>HenkSharp</Company>
-    <Description>HenkTcp is a async, fast, simple tcp server/client library.
-HenkTcp is easy to use and can be used with strings, and byte arrays.
-It also supports encryption, the encryption can be used with AES and the other symmetric algorithms(DES/TripleDES).
-Look for an example here: https://github.com/GHenkje/HenkTcp</Description>
-    <Version>1.0.1.0</Version>
+    <Description>!Need to be edited!</Description>
+    <Version>2.0</Version>
     <PackageProjectUrl>https://github.com/GHenkje/HenkTcp</PackageProjectUrl>
     <NeutralLanguage></NeutralLanguage>
-    <PackageReleaseNotes>- Changed the name of some functions.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>tcpclient, tcpserver,TCP, socket, server, client, HenkTcp, networking</PackageTags>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <PackageLicenseUrl>https://github.com/GHenkje/HenkTcp/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>Copyright (c) 2019 henkje</Copyright>
     <RepositoryUrl>https://github.com/GHenkje/HenkTcp</RepositoryUrl>
-    <FileVersion>1.0.1.0</FileVersion>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <FileVersion>2.0.0.0</FileVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>HenkTcp</PackageId>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
 </Project>
