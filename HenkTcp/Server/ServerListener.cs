@@ -12,6 +12,7 @@
 
 using System;
 using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 using System.Collections.Generic;
 
@@ -19,21 +20,31 @@ namespace HenkTcp.Server
 {
     internal class ServerListener
     {
+        /// <summary>
+        /// Server listener.
+        /// </summary>
         public TcpListener Listener { get; }
+
+        /// <summary>
+        /// HenkTcpServer class, will be used to call handlers.
+        /// </summary>
         private readonly HenkTcpServer _Parent;
 
         /// <summary>
         /// HashSet of all current connected clients.
         /// </summary>
         public HashSet<TcpClient> ConnectedClients { get; } = new HashSet<TcpClient>();
+
         /// <summary>
         /// BufferSize, the size of the buffer at HenkTcp.Server/ClientObject/Buffer
         /// </summary>
         private readonly ushort _BufferSize;
+
         /// <summary>
         /// MaxConnections, max connected clients the server can have.
         /// </summary>
         private readonly int _MaxConnections;
+
         /// <summary>
         /// MaxDataSize, max bytes HenkTcp.Server/ClientObject/DataBuffer can have.
         /// </summary>
@@ -49,6 +60,7 @@ namespace HenkTcp.Server
                 _MaxConnections = MaxConnections;
                 _MaxDataSize = MaxDataSize;
 
+                Listener.Server.DualMode = true;
                 this.Listener = Listener;
                 this.Listener.Start();
 
@@ -59,7 +71,7 @@ namespace HenkTcp.Server
         }
 
         /// <summary>
-        /// Called when a new client connect's
+        /// Called when a new client connect's.
         /// </summary>
         private void _OnClientConnect(IAsyncResult ar)
         {
@@ -70,13 +82,13 @@ namespace HenkTcp.Server
                 {
                     RefusedClient RefusedClient = new RefusedClient(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString(), true);//IP, IsBanned
                     Client.Close();//Refuse connection
-                    _Parent.NotifyOnRefusedConnection(RefusedClient);
+                    _Parent.NotifyClientRefused(RefusedClient);
                 }
                 else if (ConnectedClients.Count >= _MaxConnections)//Check if there are to many connections
                 {
                     RefusedClient RefusedClient = new RefusedClient(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString(), false);//IP, IsBanned
                     Client.Close();//Refuse connection
-                    _Parent.NotifyOnRefusedConnection(RefusedClient);
+                    _Parent.NotifyClientRefused(RefusedClient);
                 }
                 else
                 {
@@ -117,8 +129,9 @@ namespace HenkTcp.Server
                     Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
                     return;
                 }
+
                 //When DataBuffer is used and no data is avaible next round OR DataBuffer is full.
-                if (Client.DataBuffer.Count > 0)
+                if (Client.DataBuffer.Any())
                 {
                     Client.DataBuffer.AddRange(ReceivedBytes);
                     ReceivedBytes = Client.DataBuffer.ToArray();
@@ -127,7 +140,8 @@ namespace HenkTcp.Server
                 _Parent.NotifyDataReceived(ReceivedBytes, Client.TcpClient);
                 Client.TcpClient.GetStream().BeginRead(Client.Buffer, 0, Client.Buffer.Length, _OnDataReceive, Client);
             }
-            catch { _CloseClientObject(Client); }
+            catch (SocketException) { _CloseClientObject(Client); }
+            catch (Exception ex) { _CloseClientObject(Client); _Parent.NotifyOnError(ex); }
         }
 
         /// <summary>
@@ -135,13 +149,19 @@ namespace HenkTcp.Server
         /// </summary>
         private void _CloseClientObject(ClientObject Client)
         {
-            lock (ConnectedClients) ConnectedClients.Remove(Client.TcpClient); //!Lock to acces list!
+            //~!Lock to acces list!~
+            //~!This function is called by the async funtion _OnDataReceive!~
+            lock (ConnectedClients) ConnectedClients.Remove(Client.TcpClient); 
 
             _Parent.NotifyClientDisconnected(Client.TcpClient);
             Client.TcpClient.GetStream().Close();
             Client.TcpClient.Close();
             Client.Buffer = null;
             Client.DataBuffer = null;
+            //We cleared everything here,
+            //Note that the GC will not Immediately remove everything from memory.
+            //Some OverlappedData will stay in memory and wait very long for collecion,
+            //please read: https://stackoverflow.com/questions/12296752/why-is-it-taking-so-long-to-gc-system-threading-overlappeddata
         }
     }
 }

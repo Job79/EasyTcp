@@ -11,18 +11,23 @@
  */
 
 using System;
+using System.Net;
 using System.Text;
+using System.Linq;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Linq;
 
 namespace HenkTcp.Client
 {
     public class HenkTcpClient
     {
+        /// <summary>
+        /// TcpClient will be used as client.
+        /// TcpClient will be null if not connected.
+        /// </summary>
         public TcpClient TcpClient { get; private set; }
 
         /// <summary>
@@ -31,22 +36,18 @@ namespace HenkTcp.Client
         public Encoding Encoding = Encoding.UTF8;
 
         /// <summary>
-        /// MaxData is used to set a limit on _DataBuffer.
-        /// </summary>
-        private int _MaxDataSize;
-
-        /// <summary>
         /// Variables that are used for the encryption.
         /// </summary>
         private SymmetricAlgorithm _Algorithm;
         private byte[] _EncryptionKey;
 
         /// <summary>
-        /// DataReceived will be triggerd when a full message is received.
+        /// DataReceived will be triggerd when a message is received and no other data is avaible.
         /// </summary>
         public event EventHandler<Message> DataReceived;
+
         /// <summary>
-        /// OnDisconect will be triggerd when the client disconnect's.
+        /// OnDisconect will be triggerd when the client disconnect's from the server.
         /// </summary>
         public event EventHandler<HenkTcpClient> OnDisconnect;
         /// <summary>
@@ -55,37 +56,63 @@ namespace HenkTcp.Client
         public event EventHandler<Exception> OnError;
 
         /// <summary>
-        /// Buffer is used for receiving data.
+        /// MaxData is used to set a limit on the size of _DataBuffer.
+        /// If set to a equal size then the buffer the DataBuffer will be unavaible.
+        /// </summary>
+        private int _MaxDataSize;
+
+        /// <summary>
+        /// Buffer is used for receiving data from the networkstream of TcpClient.
         /// </summary>
         private byte[] _Buffer;
 
         /// <summary>
-        /// DataBuffer will be used when server sends a to big message for the buffer.
+        /// DataBuffer will be used when there is more data avaible then fits in the buffer.
         /// </summary>
         private List<byte> _DataBuffer = new List<byte>();
+
+        /// <summary>
+        /// Convert string to IPAddress.
+        /// Used by the Connect overloads.
+        /// </summary>
+        private IPAddress _GetIP(string IPString)
+        {
+            IPAddress IP;
+            if (!IPAddress.TryParse(IPString, out IP)) throw new Exception("Invalid IPv4/IPv6 address.");
+            return IP;
+        }
 
         /// <summary>
         /// Connect without encryption.
         /// </summary>
         public bool Connect(string IP, ushort Port, TimeSpan Timeout, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Connect(_GetIP(IP), Port, Timeout, null, null, BufferSize, MaxDataSize);
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, ushort BufferSize = 1024, int MaxDataSize = 10240)
             => Connect(IP, Port, Timeout, null, null, BufferSize, MaxDataSize);
-
         /// <summary>
         /// Connect with encryption.
         /// </summary>
-        public bool Connect(string IP, ushort Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Connect(IP, Port, Timeout, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
         public bool Connect(string IP, ushort Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Connect(_GetIP(IP), Port, Timeout, Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
             => Connect(IP, Port, Timeout, Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
+
+        public bool Connect(string IP, ushort Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Connect(_GetIP(IP), Port, Timeout, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Connect(IP, Port, Timeout, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
+
         public bool Connect(string IP, ushort Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Connect(_GetIP(IP), Port, Timeout, Algorithm, EncryptionKey, BufferSize, MaxDataSize);
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, ushort BufferSize = 1024, int MaxDataSize = 10240)
         {
-            if (string.IsNullOrEmpty(IP)) throw new Exception("Invalid IP.");
+            if (IP == null) throw new Exception("Invalid IP.");
             else if (Port == 0) throw new Exception("Invalid Port.");
             else if (Timeout.Ticks.Equals(0)) throw new Exception("Invalid Timeout.");
             else if (BufferSize == 0) throw new Exception("Invalid BufferSize.");
-            else if (MaxDataSize <= 0) throw new Exception("Invalid MaxDataSize.");
+            else if (MaxDataSize < BufferSize) throw new Exception("Invalid MaxDataSize.");
 
-            TcpClient = new TcpClient();
+            TcpClient = new TcpClient(IP.AddressFamily);
             TcpClient.ConnectAsync(IP, Port);
 
             Stopwatch sw = new Stopwatch();
@@ -97,7 +124,7 @@ namespace HenkTcp.Client
 
             if (TcpClient.Connected)
             {
-                //Test if connection realy is established.
+                //Test if connection is realy established. Else client can be banned/rufused/wrong connected, return false.
                 if (TcpClient.Client.Poll(0, SelectMode.SelectRead) && TcpClient.Available.Equals(0)) { TcpClient = null; return false; }
 
                 _Algorithm = Algorithm;
@@ -134,18 +161,19 @@ namespace HenkTcp.Client
         public void Disconnect(bool NotifyOnDisconnect = false)
         {
             if (TcpClient == null) return;//Client is not connected.
+
             try
             {
                 TcpClient.Client.Shutdown(SocketShutdown.Both);//Shudown connection.
                 TcpClient = null;//Set client to null.
             }
-            catch(Exception ex) { _NotifyOnError(ex); }
+            catch (Exception ex) { _NotifyOnError(ex); }
 
             if (NotifyOnDisconnect) OnDisconnect?.Invoke(this, this);//Call OnDisconnect.
         }
 
         /// <summary>
-        /// Return the state of TcpClient.
+        /// Return the connection state of TcpClient.
         /// </summary>
         public bool IsConnected
         {
@@ -258,16 +286,14 @@ namespace HenkTcp.Client
                 }
 
                 //When DataBuffer is used and no data is avaible next round OR DataBuffer is full.
-                if (_DataBuffer.Count > 0)
+                if (_DataBuffer.Any())
                 {
                     _DataBuffer.AddRange(ReceivedBytes);
                     ReceivedBytes = _DataBuffer.ToArray();
                     _DataBuffer.Clear();
                 }
 
-                Message m = new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey, Encoding);
-                DataReceived?.Invoke(this, m);
-
+                DataReceived?.Invoke(this, new Message(ReceivedBytes, Client, _Algorithm, _EncryptionKey, Encoding));
                 Client.GetStream().BeginRead(_Buffer, 0, _Buffer.Length, _OnDataReceive, Client);
             }
             catch (SocketException) { Disconnect(false); OnDisconnect?.Invoke(this, this); }

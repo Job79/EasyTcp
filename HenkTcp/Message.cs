@@ -47,6 +47,19 @@ namespace HenkTcp
         }
 
         /// <summary>
+        /// Return the received bytes.
+        /// </summary>
+        public readonly byte[] Data;
+        public byte[] DataDecrypted
+        {
+            get
+            {
+                if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
+                return Encryption.Decrypt(_Algorithm, Data, _EncryptionKey);
+            }
+        }
+
+        /// <summary>
         /// Convert and return the data as Short(Int16).
         /// </summary>
         public short GetShort { get { return BitConverter.ToInt16(Data,0); } }
@@ -101,24 +114,6 @@ namespace HenkTcp
         /// </summary>
         public string GetString { get { return _Encoding.GetString(Data); } }
         public string GetStringDecrypted { get { return _Encoding.GetString(DataDecrypted); } }
-
-        /// <summary>
-        /// Return the length of the received bytes.
-        /// </summary>
-        public int BytesLength { get { return Data.Length; } }
-
-        /// <summary>
-        /// Return the received bytes.
-        /// </summary>
-        public readonly byte[] Data;
-        public byte[] DataDecrypted
-        {
-            get
-            {
-                if (_EncryptionKey == null || _Algorithm == null) throw new Exception("Alghoritm/Key not set");
-                return Encryption.Decrypt(_Algorithm, Data, _EncryptionKey);
-            }
-        }
 
         /// <summary>
         /// Send data to the sender.

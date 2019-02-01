@@ -30,7 +30,7 @@ namespace HenkTcp
         }
 
         /// <summary>
-        /// Deserialize an object(byte[]) and return the object
+        /// Deserialize an object(byte[]) and return the object.
         /// </summary>
         public static T Deserialize<T>(byte[] Byte) where T : class
         {

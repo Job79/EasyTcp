@@ -13,6 +13,7 @@
 using System;
 using System.Net;
 using System.Text;
+using System.Linq;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -21,31 +22,40 @@ using System.Security.Cryptography;
 
 namespace HenkTcp.Server
 {
+
     public class HenkTcpServer
     {
+        /// <summary>
+        /// The ServerListener class will control all the event's.
+        /// ServerListener will be null if the server is not running.
+        /// </summary>
         private ServerListener _ServerListener;
 
         /// <summary>
         /// ClientConnected will be triggerd when a new client connected.
         /// </summary>
         public event EventHandler<TcpClient> ClientConnected;
+
         /// <summary>
         /// ClientDisconnected will be triggerd when a client disconneced.
         /// </summary>
         public event EventHandler<TcpClient> ClientDisconnected;
+
         /// <summary>
         /// DataReceived will be triggerd when new data is received.
         /// </summary>
         public event EventHandler<Message> DataReceived;
+
         /// <summary>
         /// OnError will be triggerd when an error occurs.
         /// </summary>
         public event EventHandler<Exception> OnError;
+
         /// <summary>
-        /// OnRefusedConnect will be triggerd when a client is refused.
+        /// ClientRefused will be triggerd when a client is refused.
         /// Client will be refused when banned or when there are to many clients connected.
         /// </summary>
-        public event EventHandler<RefusedClient> OnRefusedConnect;
+        public event EventHandler<RefusedClient> ClientRefused;
 
         /// <summary>
         /// BannedIPs will be used to ban IPs.
@@ -65,39 +75,55 @@ namespace HenkTcp.Server
         private byte[] _EncryptionKey;
 
         /// <summary>
+        /// Convert string to IPAddress.
+        /// Used by the Start overloads.
+        /// </summary>
+        private IPAddress _GetIP(string IPString)
+        {
+            IPAddress IP;
+            if (!IPAddress.TryParse(IPString, out IP)) throw new Exception("Invalid IPv4/IPv6 address.");
+            return IP;
+        }
+
+        /// <summary>
         /// Start server without encrypion.
         /// </summary>
-        public void Start(ushort Port, int MaxConnections = 10000, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IPAddress.Any, Port, MaxConnections, BufferSize, MaxDataSize);
-        public void Start(string IP, ushort Port, int MaxConnections, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IPAddress.Parse(IP), Port, MaxConnections, null, null, BufferSize, MaxDataSize);
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IP, Port, MaxConnections, null, null, BufferSize, MaxDataSize);
+        public void Start(ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IPAddress.Any, Port, MaxConnections,DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, null, null,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, null, null,DualMode, BufferSize, MaxDataSize);
 
         /// <summary>
         /// Start server with encrypion.
         /// </summary>
-        public void Start(string IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IPAddress.Parse(IP), Port, MaxConnections, Password, Salt, Iterations, KeySize, BufferSize, MaxDataSize);
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IP, Port, MaxConnections, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
-        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IPAddress.Parse(IP), Port, MaxConnections, Algorithm, Password, Salt, Iterations, KeySize, BufferSize, MaxDataSize);
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IP, Port, MaxConnections, Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize), BufferSize, MaxDataSize);
-        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, ushort BufferSize = 1024, int MaxDataSize = 10240)
-            => Start(IPAddress.Parse(IP), Port, MaxConnections, Algorithm, EncryptionKey, BufferSize, MaxDataSize);
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, ushort BufferSize = 1024, int MaxDataSize = 10240)
+        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Algorithm, Password, Salt, Iterations, KeySize,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize),DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Password, Salt, Iterations, KeySize,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false , ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Algorithm, EncryptionKey, DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
         {
             if (_ServerListener != null) throw new Exception("Server is already running.");
             else if(IP == null) throw new Exception("Invalid IP.");
             else if (Port == 0) throw new Exception("Invalid Port.");
             else if (MaxConnections <= 0) throw new Exception("Invalid MaxConnections count.");
             else if (BufferSize == 0) throw new Exception("Invalid BufferSize.");
-            else if (MaxDataSize <= 0) throw new Exception("Invalid MaxDataSize.");
+            else if (MaxDataSize < BufferSize) throw new Exception("Invalid MaxDataSize.");
 
-            //Create class ServerListener, this will start the passed serverlistener and handle the events.
-            _ServerListener = new ServerListener(new TcpListener(IP, Port), this, MaxConnections, BufferSize, MaxDataSize);
+            //Create class ServerListener, this will start the passed TcpListener and handle the events.
+            TcpListener Listener = new TcpListener(IP, Port);
+            Listener.Server.DualMode = DualMode;
+            _ServerListener = new ServerListener(Listener, this, MaxConnections, BufferSize, MaxDataSize);
 
             _Algorithm = Algorithm;
             _EncryptionKey = EncryptionKey;
@@ -106,7 +132,10 @@ namespace HenkTcp.Server
         /// <summary>
         /// Set an new EncryptionKey and Algorithm for the encryption.
         /// </summary>
-        public void SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0) => SetEncryption(Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize));
+        public void SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0)
+            => SetEncryption(Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize));
+        public void SetEncryption(SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0)
+            => SetEncryption(Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public void SetEncryption(SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
         {
             if (Algorithm == null) throw new Exception("Algorithm can't be null.");
@@ -119,27 +148,33 @@ namespace HenkTcp.Server
         /// <summary>
         /// Return all the ConnectedClients.
         /// </summary>
-        public IEnumerable<TcpClient> ConnectedClients { get { if (_ServerListener == null) return null; return _ServerListener.ConnectedClients; } }
+        public IEnumerable<TcpClient> ConnectedClients { get { if (_ServerListener == null) return null; return _ServerListener.ConnectedClients.ToList(); } }
+
         /// <summary>
         /// Return the count of all ConnectedClients.
         /// </summary>
         public int ConnectedClientsCount { get { if (_ServerListener == null) return 0; return _ServerListener.ConnectedClients.Count; } }
+
         /// <summary>
         /// Return the listener.
         /// </summary>
         public TcpListener Listener { get { if (_ServerListener == null) return null; else return _ServerListener.Listener; } }
+
         /// <summary>
         /// Return the state of the server.
         /// </summary>
         public bool IsRunning { get { return _ServerListener != null; } }
+
         /// <summary>
         /// Stop the server.
         /// </summary>
         public void Stop() { if (_ServerListener != null) { _ServerListener.Listener.Stop(); _ServerListener = null; } }
+
         /// <summary>
         /// Kick a TcpClient.
         /// </summary>
         public void Kick(TcpClient Client) { Client.Client.Shutdown(SocketShutdown.Both); }//Shutdown a connection of a client
+
         /// <summary>
         /// Ban a TcpClient.
         /// This will add the client's IP to BannedIPs and kick the client.
@@ -269,6 +304,6 @@ namespace HenkTcp.Server
         internal void NotifyClientDisconnected(TcpClient Client) => ClientDisconnected?.Invoke(this, Client);
         internal void NotifyDataReceived(byte[] Data, TcpClient Client) => DataReceived?.Invoke(this, new Message(Data, Client, _Algorithm, _EncryptionKey, Encoding));
         internal void NotifyOnError(Exception ex) { if (OnError != null) OnError(this, ex); else throw ex; }
-        internal void NotifyOnRefusedConnection(RefusedClient BannedClient) => OnRefusedConnect?.Invoke(this, BannedClient);
+        internal void NotifyClientRefused(RefusedClient BannedClient) => ClientRefused?.Invoke(this, BannedClient);
     }
 }
