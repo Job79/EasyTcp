@@ -11,97 +11,276 @@
  */
 
 using System;
-using System.Text;
 using System.Net;
-using System.Net.Sockets;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
+using System.Text;
+using System.Linq;
 using System.Diagnostics;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
-namespace HenkTcp
+namespace HenkTcp.Server
 {
+
     public class HenkTcpServer
     {
+        /// <summary>
+        /// The ServerListener class will control all the event's.
+        /// ServerListener will be null if the server is not running.
+        /// </summary>
         private ServerListener _ServerListener;
 
+        /// <summary>
+        /// ClientConnected will be triggerd when a new client connected.
+        /// </summary>
         public event EventHandler<TcpClient> ClientConnected;
+
+        /// <summary>
+        /// ClientDisconnected will be triggerd when a client disconneced.
+        /// </summary>
         public event EventHandler<TcpClient> ClientDisconnected;
+
+        /// <summary>
+        /// DataReceived will be triggerd when new data is received.
+        /// </summary>
         public event EventHandler<Message> DataReceived;
+
+        /// <summary>
+        /// OnError will be triggerd when an error occurs.
+        /// </summary>
         public event EventHandler<Exception> OnError;
 
-        public List<string> BannedIps = new List<string>();
+        /// <summary>
+        /// ClientRefused will be triggerd when a client is refused.
+        /// Client will be refused when banned or when there are to many clients connected.
+        /// </summary>
+        public event EventHandler<RefusedClient> ClientRefused;
 
+        /// <summary>
+        /// BannedIPs will be used to ban IPs.
+        /// BannedIPs contains all the banned IPs.
+        /// </summary>
+        public HashSet<string> BannedIPs = new HashSet<string>();
+
+        /// <summary>
+        /// Encoding will be used to encode string's.
+        /// </summary>
+        public Encoding Encoding = Encoding.UTF8;
+
+        /// <summary>
+        /// Variables that are used for the encryption.
+        /// </summary>
         private SymmetricAlgorithm _Algorithm;
         private byte[] _EncryptionKey;
 
-        public void Start(int Port, int MaxConnections = 10000, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(IPAddress.Any, Port, MaxConnections, BufferSize, PrintDeniedMessage);
-        public void Start(string Ip, int Port, int MaxConnections, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(IPAddress.Parse(Ip), Port, MaxConnections, null, null, BufferSize, PrintDeniedMessage);
-        public void Start(IPAddress Ip, int Port, int MaxConnections, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(Ip, Port, MaxConnections, null, null, BufferSize, PrintDeniedMessage);
-
-        public void Start(string Ip, int Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(IPAddress.Parse(Ip), Port, MaxConnections, Password, Salt, Iterations, KeySize, BufferSize, PrintDeniedMessage);
-        public void Start(IPAddress Ip, int Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(Ip, Port, MaxConnections, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), BufferSize, PrintDeniedMessage);
-        public void Start(string Ip, int Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024, bool PrintDeniedMessage = true) => Start(IPAddress.Parse(Ip), Port, MaxConnections, Algorithm, EncryptionKey, BufferSize, PrintDeniedMessage);
-        public void Start(IPAddress Ip, int Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, int BufferSize = 1024, bool PrintDeniedMessage = true)
+        /// <summary>
+        /// Convert string to IPAddress.
+        /// Used by the Start overloads.
+        /// </summary>
+        private IPAddress _GetIP(string IPString)
         {
-            if (_ServerListener != null) return;
-            if (Port <= 0 || Port > 65535) throw new Exception("Invalid port number");
-            if (MaxConnections <= 0) throw new Exception("Invalid MaxConnections count");
+            IPAddress IP;
+            if (!IPAddress.TryParse(IPString, out IP)) throw new Exception("Invalid IPv4/IPv6 address.");
+            return IP;
+        }
 
-            _ServerListener = new ServerListener(new TcpListener(Ip, Port), this, MaxConnections, BufferSize, PrintDeniedMessage);
+        /// <summary>
+        /// Start server without encrypion.
+        /// </summary>
+        public void Start(ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IPAddress.Any, Port, MaxConnections,DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, null, null,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, null, null,DualMode, BufferSize, MaxDataSize);
+
+        /// <summary>
+        /// Start server with encrypion.
+        /// </summary>
+        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Algorithm, Password, Salt, Iterations, KeySize,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize),DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Password, Salt, Iterations, KeySize,DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0, bool DualMode = false , ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(IP, Port, MaxConnections, Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize), DualMode, BufferSize, MaxDataSize);
+
+        public void Start(string IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+            => Start(_GetIP(IP), Port, MaxConnections, Algorithm, EncryptionKey, DualMode, BufferSize, MaxDataSize);
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, SymmetricAlgorithm Algorithm, byte[] EncryptionKey, bool DualMode = false, ushort BufferSize = 1024, int MaxDataSize = 10240)
+        {
+            if (_ServerListener != null) throw new Exception("Server is already running.");
+            else if(IP == null) throw new Exception("Invalid IP.");
+            else if (Port == 0) throw new Exception("Invalid Port.");
+            else if (MaxConnections <= 0) throw new Exception("Invalid MaxConnections count.");
+            else if (BufferSize == 0) throw new Exception("Invalid BufferSize.");
+            else if (MaxDataSize < BufferSize) throw new Exception("Invalid MaxDataSize.");
+
+            //Create class ServerListener, this will start the passed TcpListener and handle the events.
+            TcpListener Listener = new TcpListener(IP, Port);
+            Listener.Server.DualMode = DualMode;
+            _ServerListener = new ServerListener(Listener, this, MaxConnections, BufferSize, MaxDataSize);
+
             _Algorithm = Algorithm;
             _EncryptionKey = EncryptionKey;
         }
 
-        public void SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, int KeySize = 0) => SetEncryption(Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize));
+        /// <summary>
+        /// Set an new EncryptionKey and Algorithm for the encryption.
+        /// </summary>
+        public void SetEncryption(string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0)
+            => SetEncryption(Aes.Create(), Encryption.CreateKey(Aes.Create(), Password, Salt, Iterations, KeySize));
+        public void SetEncryption(SymmetricAlgorithm Algorithm, string Password, string Salt = "HenkTcpSalt", int Iterations = 10000, ushort KeySize = 0)
+            => SetEncryption(Algorithm, Encryption.CreateKey(Algorithm, Password, Salt, Iterations, KeySize));
         public void SetEncryption(SymmetricAlgorithm Algorithm, byte[] EncryptionKey)
         {
+            if (Algorithm == null) throw new Exception("Algorithm can't be null.");
+            else if (EncryptionKey == null) throw new Exception("EncryptionKey can't be null.");
+
             _Algorithm = Algorithm;
             _EncryptionKey = EncryptionKey;
         }
 
-        public List<TcpClient> ConnectedClients { get { if (_ServerListener == null) return null; return _ServerListener.ConnectedClients; } }
+        /// <summary>
+        /// Return all the ConnectedClients.
+        /// </summary>
+        public IEnumerable<TcpClient> ConnectedClients { get { if (_ServerListener == null) return null; return _ServerListener.ConnectedClients.ToList(); } }
+
+        /// <summary>
+        /// Return the count of all ConnectedClients.
+        /// </summary>
         public int ConnectedClientsCount { get { if (_ServerListener == null) return 0; return _ServerListener.ConnectedClients.Count; } }
 
-        public TcpListener Listener { get { return _ServerListener.Listener; } }
-        public bool IsRunning { get { return _ServerListener != null; } }
-        public void Stop() { _ServerListener.Listener.Stop(); _ServerListener = null; }
+        /// <summary>
+        /// Return the listener.
+        /// </summary>
+        public TcpListener Listener { get { if (_ServerListener == null) return null; else return _ServerListener.Listener; } }
 
-        public void Broadcast(string Data) { Broadcast(Encoding.UTF8.GetBytes(Data)); }
+        /// <summary>
+        /// Return the state of the server.
+        /// </summary>
+        public bool IsRunning { get { return _ServerListener != null; } }
+
+        /// <summary>
+        /// Stop the server.
+        /// </summary>
+        public void Stop() { if (_ServerListener != null) { _ServerListener.Listener.Stop(); _ServerListener = null; } }
+
+        /// <summary>
+        /// Kick a TcpClient.
+        /// </summary>
+        public void Kick(TcpClient Client) { Client.Client.Shutdown(SocketShutdown.Both); }//Shutdown a connection of a client
+
+        /// <summary>
+        /// Ban a TcpClient.
+        /// This will add the client's IP to BannedIPs and kick the client.
+        /// </summary>
+        public void Ban(TcpClient Client)
+        {
+            BannedIPs.Add(((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString());//Add client IP to banned IPs
+            Kick(Client);//Kick client
+        }
+
+        /// <summary>
+        /// Send a data to all connected client's.
+        /// </summary>
+        public void BroadcastEncrypted(short Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(int Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(long Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(double Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(float Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(bool Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(char Data) => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        public void BroadcastEncrypted(object Data) => BroadcastEncrypted(Serialization.Serialize(Data));
+        public void BroadcastEncrypted(string Data) => BroadcastEncrypted(Encoding.GetBytes(Data));
+        public void BroadcastEncrypted(byte[] Data) => Broadcast(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
+
+        public void Broadcast(short Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(int Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(long Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(double Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(float Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(bool Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(char Data) => Broadcast(BitConverter.GetBytes(Data));
+        public void Broadcast(object Data) => Broadcast(Serialization.Serialize(Data));
+        public void Broadcast(string Data) => Broadcast(Encoding.GetBytes(Data));
         public void Broadcast(byte[] Data)
         {
-            if (_ServerListener == null) return;
+            if(_ServerListener == null)
+            { NotifyOnError(new Exception("Could not send data: Server is not running.")); return; }
+            else if (Data == null)
+            { NotifyOnError(new Exception("Could not send data: Data is empty.")); return; }
+
             try
             {
-                Parallel.ForEach(_ServerListener.ConnectedClients, Client => {
+                Parallel.ForEach(_ServerListener.ConnectedClients, Client => { //Send every client a message
                     Client.GetStream().WriteAsync(Data, 0, Data.Length);
                 });
             }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
-        public void BroadcastEncrypted(string Data) => BroadcastEncrypted(Encoding.UTF8.GetBytes(Data));
-        public void BroadcastEncrypted(byte[] Data)
-        {
-            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return; }
-            Broadcast(Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
-        }
+        /// <summary>
+        /// Send data to 1 TcpClient.
+        /// </summary>
+        public void SendEncrypted(TcpClient Client, short Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, int Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, long Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, double Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, float Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, bool Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, char Data) => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, object Data) => SendEncrypted(Client, Serialization.Serialize(Data));
+        public void SendEncrypted(TcpClient Client, string Data) => SendEncrypted(Client, Encoding.GetBytes(Data));
+        public void SendEncrypted(TcpClient Client, byte[] Data) => Send(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
 
-        public void Send(TcpClient Client, string Data) => Send(Client, Encoding.UTF8.GetBytes(Data));
+        public void Send(TcpClient Client, short Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, int Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, long Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, double Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, float Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, bool Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, char Data) => Send(Client, BitConverter.GetBytes(Data));
+        public void Send(TcpClient Client, object Data) => Send(Client, Serialization.Serialize(Data));
+        public void Send(TcpClient Client, string Data) => Send(Client, Encoding.GetBytes(Data));
         public void Send(TcpClient Client, byte[] Data)
         {
-            try { Client.GetStream().Write(Data, 0, Data.Length); }
+            if (_ServerListener == null)
+            { NotifyOnError(new Exception("Could not send data: Server is not running.")); return; }
+            else if (Data == null)
+            { NotifyOnError(new Exception("Could not send data: Data is empty.")); return; }
+
+            try { Client.GetStream().WriteAsync(Data, 0, Data.Length); }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
-        public void SendEncrypted(TcpClient Client, string Data) => SendEncrypted(Client, Encoding.UTF8.GetBytes(Data));
-        public void SendEncrypted(TcpClient Client, byte[] Data)
-        {
-            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return; }
-            Send(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey));
-        }
+        /// <summary>
+        /// Sends data to 1 client and wait for a reply from the client.
+        /// </summary>
+        public Message SendAndGetReplyEncrypted(TcpClient Client, short Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, int Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, long Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, double Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, float Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, bool Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, char Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, object Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, Serialization.Serialize(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, string Data, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, Encoding.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(TcpClient Client, byte[] Data, TimeSpan Timeout) => SendAndGetReply(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
 
-        public Message SendAndGetReply(TcpClient Client, string Text, TimeSpan Timeout) => SendAndGetReply(Client, Encoding.UTF8.GetBytes(Text), Timeout);
+        public Message SendAndGetReply(TcpClient Client, short Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, int Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, long Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, double Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, float Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, bool Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, char Data, TimeSpan Timeout) => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, object Data, TimeSpan Timeout) => SendAndGetReply(Client, Serialization.Serialize(Data), Timeout);
+        public Message SendAndGetReply(TcpClient Client, string Data, TimeSpan Timeout) => SendAndGetReply(Client, Encoding.GetBytes(Data), Timeout);
         public Message SendAndGetReply(TcpClient Client, byte[] Data, TimeSpan Timeout)
         {
             Message Reply = null;
@@ -113,22 +292,18 @@ namespace HenkTcp
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            //Wait until reply is received from the right client, or time expired.
             while (!(Reply != null && Reply.TcpClient == Client) && sw.Elapsed < Timeout)
                 Task.Delay(1).Wait();
 
             return Reply;
         }
 
-        public Message SendAndGetReplyEncrypted(TcpClient Client, string Text, TimeSpan Timeout) => SendAndGetReplyEncrypted(Client, Encoding.UTF8.GetBytes(Text), Timeout);
-        public Message SendAndGetReplyEncrypted(TcpClient Client, byte[] Data, TimeSpan Timeout)
-        {
-            if (_EncryptionKey == null || _Algorithm == null) { NotifyOnError(new Exception("Could not send message: Alghoritm/Key not set")); return null; }
-            return SendAndGetReply(Client, Encryption.Encrypt(_Algorithm, Data, _EncryptionKey), Timeout);
-        }
-
+        /* This functions are used by the ServerListener class. */
         internal void NotifyClientConnected(TcpClient Client) => ClientConnected?.Invoke(this, Client);
         internal void NotifyClientDisconnected(TcpClient Client) => ClientDisconnected?.Invoke(this, Client);
-        internal void NotifyDataReceived(byte[] Data, TcpClient Client) => DataReceived?.Invoke(this, new Message(Data, Client, _Algorithm, _EncryptionKey));
+        internal void NotifyDataReceived(byte[] Data, TcpClient Client) => DataReceived?.Invoke(this, new Message(Data, Client, _Algorithm, _EncryptionKey, Encoding));
         internal void NotifyOnError(Exception ex) { if (OnError != null) OnError(this, ex); else throw ex; }
+        internal void NotifyClientRefused(RefusedClient BannedClient) => ClientRefused?.Invoke(this, BannedClient);
     }
 }

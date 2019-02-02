@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>HenkTcp</id>
+    <version>2.0.0</version>
+    <authors>Henkje</authors>
+    <owners>Henkje</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/GHenkje/HenkTcp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/GHenkje/HenkTcp</projectUrl>
+    <description>!Need to be edited!</description>
+    <copyright>Copyright (c) 2019 henkje</copyright>
+    <tags>tcpclient, tcpserver,TCP, socket, server, client, HenkTcp, networking</tags>
+    <repository url="https://github.com/GHenkje/HenkTcp" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\bin\Release\netstandard2.0\HenkTcp.dll" target="lib\netstandard2.0\HenkTcp.dll" />
+  </files>
+</package>
