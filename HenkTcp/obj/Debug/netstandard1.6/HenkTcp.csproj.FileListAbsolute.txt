@@ -1,4 +1,0 @@
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard1.6\HenkTcp.csprojAssemblyReference.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard1.6\HenkTcp.csproj.CoreCompileInputs.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard1.6\HenkTcp.AssemblyInfoInputs.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard1.6\HenkTcp.AssemblyInfo.cs

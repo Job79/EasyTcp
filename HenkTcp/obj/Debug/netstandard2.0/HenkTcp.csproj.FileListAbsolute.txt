@@ -1,9 +1,0 @@
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\bin\Debug\netstandard2.0\HenkTcp.deps.json
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\bin\Debug\netstandard2.0\HenkTcp.dll
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\bin\Debug\netstandard2.0\HenkTcp.pdb
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.csprojAssemblyReference.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.csproj.CoreCompileInputs.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.AssemblyInfoInputs.cache
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.AssemblyInfo.cs
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.dll
-C:\Users\henkje\Desktop\Github\HenkTcp\HenkTcp\obj\Debug\netstandard2.0\HenkTcp.pdb

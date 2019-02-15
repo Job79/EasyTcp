@@ -1,0 +1,29 @@
+﻿/* EasyTcp
+ * Copyright (C) 2019  henkje (henkje@pm.me)
+ * 
+ * MIT license
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+using System.Net.Sockets;
+
+namespace EasyTcp.Server
+{
+    internal class ClientObject
+    {
+        /// <summary>
+        /// Socket of a client.
+        /// </summary>
+        public Socket Socket;
+
+        /// <summary>
+        /// Data buffer for incoming data.
+        /// </summary>
+        public byte[] Buffer;
+    }
+}
