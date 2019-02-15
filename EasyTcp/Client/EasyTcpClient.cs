@@ -20,21 +20,18 @@ namespace EasyTcp.Client
 {
     public class EasyTcpClient
     {
-        /// <summary>
-        /// ClientSocket.
-        /// </summary>
         public Socket Socket { get; private set; }
 
         /// <summary>
-        /// DataReceived will be triggerd when a message is received and no other data is avaible.
+        /// DataReceived, triggerd when a message is received and no other data is avaible.
         /// </summary>
         public event EventHandler<Message> DataReceived;
         /// <summary>
-        /// OnDisconect will be triggerd when the client disconnect's from the server.
+        /// OnDisconect, triggerd when a client disconnect's from the server.
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
         /// <summary>
-        /// OnError will be triggerd when an error occurs.
+        /// OnError, triggerd when an error occurs.
         /// </summary>
         public event EventHandler<Exception> OnError;
 
@@ -42,7 +39,11 @@ namespace EasyTcp.Client
         /// Encoding to encode string's
         /// </summary>
         private Encoding _Encoding = Encoding.UTF8;
-        public Encoding Encoding { get { return _Encoding; } set { _Encoding = value ?? throw new ArgumentNullException("You can't set Encoding to null."); } }
+        public Encoding Encoding
+        {
+            get {return _Encoding; }
+            set { _Encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
+        }
 
         /// <summary>
         /// Encryption class for encrypting/decrypting data.
@@ -78,9 +79,9 @@ namespace EasyTcp.Client
         /// <param name="IP">IP address as string</param>
         /// <param name="Port">Port as ushort(0-65 535)</param>
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
-        /// <param name="Encryption">Encryption will set <see cref="Encryption"/></param>
-        /// <param name="MaxDataSize">Max bytes the client can receive in 1 message</param>
-        /// <returns>bool, true = Connected, false = can not connect</returns>
+        /// <param name="Encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
+        /// <param name="MaxDataSize">Max size of a message client can receive</param>
+        /// <returns>bool, true = Connected, false = failed to connect</returns>
         public bool Connect(string IP, ushort Port, TimeSpan Timeout, Encryption Encryption, int MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
@@ -92,9 +93,9 @@ namespace EasyTcp.Client
         /// <param name="IP">IP address as IPAddress</param>
         /// <param name="Port">Port as ushort(0-65 535)</param>
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
-        /// <param name="Encryption">Encryption will set <see cref="Encryption"/></param>
-        /// <param name="MaxDataSize">Max bytes the client can receive in 1 message</param>
-        /// <returns>bool, true = Connected, false = can not connect</returns>
+        /// <param name="Encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
+        /// <param name="MaxDataSize">Max size of a message client can receive</param>
+        /// <returns>bool, true = Connected, false = failed to connect</returns>
         public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, Encryption Encryption, int MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
@@ -106,8 +107,8 @@ namespace EasyTcp.Client
         /// <param name="IP">IP address as string</param>
         /// <param name="Port">Port as ushort(0-65 535)</param>
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
-        /// <param name="MaxDataSize">Max bytes the client can receive in 1 message</param>
-        /// <returns>bool, true = Connected, false = can not connect</returns>
+        /// <param name="MaxDataSize">Max size of a message client can receive</param>
+        /// <returns>bool, true = Connected, false = failed to connect</returns>
         public bool Connect(string IP, ushort Port, TimeSpan Timeout, int MaxDataSize = 10240)
             => Connect(_GetIP(IP), Port, Timeout, MaxDataSize);
         /// <summary>
@@ -116,8 +117,8 @@ namespace EasyTcp.Client
         /// <param name="IP">IP address as IPAddress</param>
         /// <param name="Port">Port as ushort(0-65 535)</param>
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
-        /// <param name="MaxDataSize">Max bytes the client can receive in 1 message</param>
-        /// <returns>bool, true = Connected, false = can not connect</returns>
+        /// <param name="MaxDataSize">Max size of a message client can receive</param>
+        /// <returns>bool, true = Connected, false = failed to connect</returns>
         public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, int MaxDataSize = 10240)
         {
             if (IP == null) throw new ArgumentNullException("Could not connect: Invalid IP.");
@@ -153,7 +154,11 @@ namespace EasyTcp.Client
         {
             if (Socket == null) return;//Client is not connected.
 
-            try { Socket.Shutdown(SocketShutdown.Both);  Socket = null; }
+            try
+            {
+                Socket.Shutdown(SocketShutdown.Both);
+                Socket = null;
+            }
             catch (Exception ex) { _NotifyOnError(ex); }
 
             if (NotifyOnDisconnect) OnDisconnect?.Invoke(this, this);//Call OnDisconnect.
@@ -484,7 +489,7 @@ namespace EasyTcp.Client
                 { Disconnect(true); return; }
 
                 DataReceived?.Invoke(this, new Message(_Buffer, Socket, Encryption, _Encoding));//Trigger event
-                Socket.BeginReceive(_Buffer = new byte[4], 0, _Buffer.Length, SocketFlags.None, _ReceiveLength, Socket);//Start receiving next length.
+                Socket.BeginReceive(_Buffer = new byte[4], 0, _Buffer.Length, SocketFlags.None, _ReceiveLength, Socket);//Start receiving next message.
             }
             catch (SocketException) { Disconnect(true); return; }
             catch (Exception ex) { _NotifyOnError(ex); }

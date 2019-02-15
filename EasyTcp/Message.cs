@@ -11,8 +11,8 @@
  */
 
 using System;
-using System.Text;
 using System.Net;
+using System.Text;
 using System.Net.Sockets;
 
 namespace EasyTcp
@@ -35,13 +35,6 @@ namespace EasyTcp
         /// </summary>
         private readonly Encryption Encryption;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Data">Received bytes</param>
-        /// <param name="TcpClient">sender</param>
-        /// <param name="Encryption">Encryption class, used to encrypt/decrypt data</param>
-        /// <param name="Encoding">Encoding set for encoding string's</param>
         public Message(byte[] Data, Socket Socket, Encryption Encryption, Encoding Encoding)
         {
             this.Data = Data;
@@ -60,11 +53,11 @@ namespace EasyTcp
         public byte[] DataDecrypted { get { return (Encryption ?? throw new NullReferenceException("Could not decrypt data: Encryption class is null.")).Decrypt(Data); } }
 
         /// <summary>
-        /// Convert and return the data as Short(Int16).
+        /// Convert and return the data as short(Int16).
         /// </summary>
         public short GetShort { get { return BitConverter.ToInt16(Data, 0); } }
         /// <summary>
-        /// Convert and return the data as Short(Int16).
+        /// Convert and return the data as short(Int16).
         /// </summary>
         public short GetShortDecrypted { get { return BitConverter.ToInt16(DataDecrypted, 0); } }
 
@@ -121,12 +114,10 @@ namespace EasyTcp
 
         /// <summary>
         /// Convert and return the data as string.
-        /// The selected encoding will be used. (Default UTF8)
         /// </summary>
         public string GetString { get { return Encoding.GetString(Data); } }
         /// <summary>
         /// Convert and return the data as string.
-        /// The selected encoding will be used. (Default UTF8)
         /// </summary>
         public string GetStringDecrypted { get { return Encoding.GetString(DataDecrypted); } }
 

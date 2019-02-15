@@ -16,9 +16,7 @@ namespace EasyTcp.Server
 {
     internal class ClientObject
     {
-        /// <summary>
-        /// Socket of a client.
-        /// </summary>
+        // Socket of a connected client.
         public Socket Socket;
 
         /// <summary>

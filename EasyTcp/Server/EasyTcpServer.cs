@@ -22,30 +22,28 @@ namespace EasyTcp.Server
 {
     public class EasyTcpServer
     {
-        /// <summary>
-        /// The ServerListener class controls all the event's.
-        /// ServerListener is set to null if the server is not running.
-        /// </summary>
+        /* The ServerListener class controls all the event's.
+         * ServerListener is set to null if the server is not running.*/
         private ServerListener _ServerListener;
 
         /// <summary>
-        /// ClientConnected will be triggerd when a new client connect's.
+        /// ClientConnected, triggerd when a new client connect's.
         /// </summary>
         public event EventHandler<Socket> ClientConnected;
         /// <summary>
-        /// ClientDisconnected will be triggerd when a client disconnect's.
+        /// ClientDisconnected, triggerd when a client disconnect's.
         /// </summary>
         public event EventHandler<Socket> ClientDisconnected;
         /// <summary>
-        /// DataReceived will be triggerd when new data is received.
+        /// DataReceived, triggerd when new data is received.
         /// </summary>
         public event EventHandler<Message> DataReceived;
         /// <summary>
-        /// OnError will be triggerd when an error occurs.
+        /// OnError, triggerd when an error occurs.
         /// </summary>
         public event EventHandler<Exception> OnError;
         /// <summary>
-        /// ClientRefused will be triggerd when a client is refused.
+        /// ClientRefused, triggerd when a client is refused.
         /// Client will be refused when banned or when there are to many clients connected.
         /// </summary>
         public event EventHandler<RefusedClient> ClientRefused;
@@ -54,7 +52,11 @@ namespace EasyTcp.Server
         /// Encoding to encode string's
         /// </summary>
         private Encoding _Encoding = Encoding.UTF8;
-        public Encoding Encoding { get { return _Encoding; } set { _Encoding = value ?? throw new ArgumentNullException("You can't set Encoding to null."); } }
+        public Encoding Encoding
+        {
+            get { return _Encoding; }
+            set { _Encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
+        }
 
         /// <summary>
         /// Encryption class for encrypting/decrypting data.
@@ -62,7 +64,7 @@ namespace EasyTcp.Server
         public Encryption Encryption;
 
         /// <summary>
-        /// BannedIPs contains all the banned IPs.
+        /// BannedIPs, refuse all ip's in this list.
         /// </summary>
         public HashSet<string> BannedIPs = new HashSet<string>();
 
@@ -84,10 +86,10 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IP">IP address as string</param>
         /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused(<see cref="ClientRefused"/>) if the maximum is reached</param>
-        /// <param name="Encryption">Encryption will set <see cref="Encryption"/></param>
+        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max bytes the server can receive in 1 message</param>
+        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
         public void Start(string IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, int MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
@@ -98,10 +100,10 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IP">IP address as IPAddress</param>
         /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused(<see cref="ClientRefused"/>) if the maximum is reached</param>
-        /// <param name="Encryption">Encryption will set <see cref="Encryption"/></param>
+        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max bytes the server can receive in 1 message</param>
+        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
         public void Start(IPAddress IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, int MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
@@ -112,9 +114,9 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IP">IP address as string</param>
         /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused(<see cref="ClientRefused"/>) if the maximum is reached</param>
+        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max bytes the server can receive in 1 message</param>
+        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
         public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, int MaxDataSize = 10240)
             => Start(_GetIP(IP), Port, MaxConnections, DualMode, MaxDataSize);
         /// <summary>
@@ -122,9 +124,9 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IP">IP address as IPAddress</param>
         /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused(<see cref="ClientRefused"/>) if the maximum is reached</param>
+        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max bytes the server can receive in 1 message</param>
+        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
         public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, int MaxDataSize = 10240)
         {
             if (IsRunning) throw new Exception("Could not start server: Server is already running.");
@@ -134,7 +136,7 @@ namespace EasyTcp.Server
             else if (MaxDataSize <= 0) throw new ArgumentException("Could not start server: Invalid MaxDataSize.");
 
             Socket Listener = new Socket(IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            if(IP.AddressFamily == AddressFamily.InterNetworkV6) Listener.DualMode = DualMode;
+            if (IP.AddressFamily == AddressFamily.InterNetworkV6) Listener.DualMode = DualMode;
             Listener.Bind(new IPEndPoint(IP, Port));
 
             //Create class ServerListener, this will start the passed socket and handle the events.
@@ -144,34 +146,70 @@ namespace EasyTcp.Server
         /// <summary>
         /// Return the ConnectedClients.
         /// </summary>
-        public IEnumerable<Socket> ConnectedClients { get { if (!IsRunning) return null; return _ServerListener.ConnectedClients.ToList(); } }
+        public IEnumerable<Socket> ConnectedClients
+        {
+            get
+            {
+                if (!IsRunning) return null;
+                else return _ServerListener.ConnectedClients.ToList();//.ToList because ConnectedClients is used by async funtions
+            }
+        }
         /// <summary>
         /// Return the count of ConnectedClients.
         /// </summary>
-        public int ConnectedClientsCount { get { if (!IsRunning) return 0; return _ServerListener.ConnectedClients.Count; } }
+        public int ConnectedClientsCount
+        {
+            get
+            {
+                if (!IsRunning) return 0;
+                else return _ServerListener.ConnectedClients.Count;
+            }
+        }
 
         /// <summary>
         /// Return the listener socket.
         /// </summary>
-        public Socket Listener { get { if (!IsRunning) return null; else return _ServerListener.Listener; } }
+        public Socket Listener
+        {
+            get
+            {
+                if (!IsRunning) return null;
+                else return _ServerListener.Listener;
+            }
+        }
 
         /// <summary>
         /// Return the state of the server.
         /// </summary>
-        public bool IsRunning { get { return _ServerListener != null; } }
+        public bool IsRunning
+        {
+            get
+            {
+                return _ServerListener != null;
+            }
+        }
 
         /// <summary>
         /// Stop the server.
         /// </summary>
-        public void Stop() { if (IsRunning) { _ServerListener.IsListerning = false; _ServerListener.Listener.Close(); _ServerListener = null; } }
+        public void Stop()
+        {
+            if (IsRunning)
+            {
+                _ServerListener.IsListerning = false;
+                _ServerListener.Listener.Close();
+                _ServerListener = null;
+            }
+        }
 
         /// <summary>
         /// Kick a Socket.
         /// </summary>
-        public void Kick(Socket Client) => (Client ?? throw new ArgumentNullException("Could not kick client: Socket is null")).Shutdown(SocketShutdown.Both); 
+        public void Kick(Socket Client) 
+            => (Client ?? throw new ArgumentNullException("Could not kick client: Socket is null")).Shutdown(SocketShutdown.Both);
 
         /// <summary>
-        /// This will add the client's IP to BannedIPs and kick the client.
+        /// Add the IP of the socket to BannedIPs and kick the client.
         /// </summary>
         public void Ban(Socket Client)
         {
@@ -619,6 +657,7 @@ namespace EasyTcp.Server
             return Reply;
         }
         #endregion
+
         /*This functions are used by the ServerListener class*/
         internal void NotifyClientConnected(Socket Client) => ClientConnected?.Invoke(this, Client);
         internal void NotifyClientDisconnected(Socket Client) => ClientDisconnected?.Invoke(this, Client);

@@ -44,10 +44,8 @@ namespace EasyTcp.Server
         /// </summary>
         private readonly int _MaxDataSize;
 
-        /// <summary>
-        /// Set to false to stop the server.
-        /// Else OnClienConnect will throw exeptions.
-        /// </summary>
+        /* Set to false to stop the server.
+         * Else OnClienConnect will throw exeptions.*/
         public bool IsListerning = true;
 
         public ServerListener(Socket Listener, EasyTcpServer Parent, int MaxConnections, int MaxDataSize)
@@ -62,7 +60,7 @@ namespace EasyTcp.Server
                 this.Listener.Listen(100);//100 = maximum pending connections.
 
                 //Start accepting new connections.
-                this.Listener.BeginAccept(_OnClientConnect, Listener);
+                this.Listener.BeginAccept(_OnClientConnect, null);
             }
             catch (Exception ex) { _Parent.NotifyOnError(ex); }
         }
@@ -70,7 +68,7 @@ namespace EasyTcp.Server
         /// <summary>
         /// Called when a new client connect's.
         /// </summary>
-        /// <param name="ar">Used to accept socket</param>
+        /// <param name="ar">Used to call </param>
         private void _OnClientConnect(IAsyncResult ar)
         {
             if (!IsListerning) return;
@@ -100,7 +98,7 @@ namespace EasyTcp.Server
         }
 
         /// <summary>
-        /// Refuse a connection, Called by _OnClientConnect.
+        /// Refuse a connection,Called by _OnClientConnect.
         /// </summary>
         private void _RefuseClient(Socket Client, bool IsBanned)
         {
@@ -120,7 +118,8 @@ namespace EasyTcp.Server
             try
             {
                 //Test if client is connected.
-                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0)) { _CloseClientObject(Client); return; }
+                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0))
+                { _CloseClientObject(Client); return; }
 
                 int DataLength = BitConverter.ToInt32(Client.Buffer, 0);//Get the length of the data.
 
@@ -142,7 +141,8 @@ namespace EasyTcp.Server
             try
             {
                 //Test if client is connected.
-                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0)) { _CloseClientObject(Client); return; }
+                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0))
+                { _CloseClientObject(Client); return; }
 
                 _Parent.NotifyDataReceived(Client.Buffer, Client.Socket);//Trigger event
                 Client.Socket.BeginReceive(Client.Buffer = new byte[4], 0, Client.Buffer.Length, SocketFlags.None, _ReceiveLength, Client);//Start receiving next length.
