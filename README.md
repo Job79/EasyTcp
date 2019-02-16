@@ -4,8 +4,9 @@ A high performance/async tcp server and client. (SocketBased) (Supports IPv6 & I
 # Performance
 Because EasyTcp is socket based and async it has very good performance.
 I write a test to see the performance.
-This test will send a message to the server, then the server reply the same message back.  
+This test will send a message to the server, then the server send the same message back.  
 If the client received the message it would send the next one.
+The average of this test: 0.582828ms (on localhost)
 <details>
   <summary>Click to see test code</summary>
   
