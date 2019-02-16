@@ -2,8 +2,8 @@
 A high performance/async tcp server and client. (SocketBased) (Supports IPv6 & IPv4) Simple and easy to use(but also advanced) and has a good documentation. https://www.nuget.org/packages/EasyTcp/
 
 # Performance
-Because EasyTcp is socket based and async it has very good performance.
-I write a test to see the performance.
+Because EasyTcp is socket based and async it has good performance.
+I writed a test to see the performance.
 This test will send a message to the server, then the server send the same message back.  
 If the client received the message it would send the next one.
 The average of this test: 0.582828ms (on localhost)
