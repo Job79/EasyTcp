@@ -5,9 +5,8 @@ A high performance/async tcp server and client. (SocketBased) (Supports IPv6 & I
 Because EasyTcp is socket based and async it has very good performance.
 I write a test to calculate the performance:
 <details>
-  <summary>Click to expand</summary>
-  whatever
-</details>
+  <summary>Click to see test code</summary>
+  Client:
 ```cs
 const int PORT = 1000;
 const int MESSAGES_COUNT = 10000;
@@ -31,5 +30,17 @@ void SpeedTest()
     Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / MESSAGES_COUNT}");
 }
 ```
+Server:
 ```cs
+const int PORT = 1000;
+
+        static void Main(string[] args)
+        {
+            EasyTcpServer Server = new EasyTcpServer();
+            Server.DataReceived += (object sender, Message e) => e.Reply(e.Data);
+            Server.Start(IPAddress.Any,PORT,1000);
+
+            Task.Delay(-1).Wait();
+        }
 ```
+</details>
