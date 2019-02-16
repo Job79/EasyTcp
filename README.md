@@ -50,12 +50,16 @@ static void Main(string[] args)
   <summary>Output</summary>
   Test1 = 56923ms
   56923ms / 1.000.000 messages = 0.56923ms
+  
   Test2 = 58287ms
   58287 / 1.000.000 messages = 0.58287ms
+  
   Test3 = 58577ms
   58577ms / 1.000.000 messages = 0.58577ms
+  
   Test4 = 58708ms
   58708ms / 1.000.000 messages = 0.58708ms
+  
   Test 5 = 59209ms
   58708ms / 1.000.000 messages = 0.59209ms
   
