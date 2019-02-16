@@ -49,20 +49,21 @@ static void Main(string[] args)
 <details>
   <summary>Output</summary>
   Test1 = 56923ms
+  
   56923ms / 1.000.000 messages = 0.56923ms
   
-  Test2 = 58287ms
+  Test2 = 58287ms  
   58287 / 1.000.000 messages = 0.58287ms
   
-  Test3 = 58577ms
+  Test3 = 58577ms  
   58577ms / 1.000.000 messages = 0.58577ms
   
-  Test4 = 58708ms
+  Test4 = 58708ms  
   58708ms / 1.000.000 messages = 0.58708ms
   
-  Test 5 = 59209ms
+  Test 5 = 59209ms  
   58708ms / 1.000.000 messages = 0.59209ms
-  
-  0.56923 + 0.58287 + 0.58577 + 0.58708 + 0.59209 = 2.91414ms
+ 
+  0.56923 + 0.58287 + 0.58577 + 0.58708 + 0.59209 = 2.91414ms  
   Average = 2.91414 / 5 = 0.582828ms
 </details>
