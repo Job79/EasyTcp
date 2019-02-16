@@ -1,20 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>2.0.0.0</Version>
-    <PackageTags>Socket, Networking, Tcp, TcpClient, TcpServer, HenkTcp, EasyTcp, SimpleTcp, AsyncTcp</PackageTags>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>EasyTcp.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.1</Version>
     <Authors>Henkje</Authors>
     <Company>HenkSharp</Company>
     <Description>A high performance/async tcp server and client. (SocketBased) (Supports IPv6 &amp; IPv4)
 Simple and easy to use(but also advanced) and has a good documentation.</Description>
-    <Copyright>Copyright (c) 2019 henkje</Copyright>
+    <Copyright>Copyright (c) 2019 Henkje</Copyright>
     <PackageLicenseUrl>https://github.com/GHenkje/EasyTcp/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/GHenkje/EasyTcp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GHenkje/EasyTcp</RepositoryUrl>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>EasyTcp.snk</AssemblyOriginatorKeyFile>
+    <RepositoryType></RepositoryType>
+    <PackageTags>Socket, Networking, Tcp, TcpClient, TcpServer, HenkTcp, EasyTcp, SimpleTcp, AsyncTcp</PackageTags>
+    <PackageReleaseNotes>- Moved to .net standard</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>

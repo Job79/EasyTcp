@@ -335,8 +335,11 @@ namespace EasyTcp.Server
             Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
             Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
 
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(Message, 0, Message.Length);
+
             foreach (var Client in ConnectedClients)
-                Client.SendAsync(Message, SocketFlags.None);
+                Client.SendAsync(e);
         }
         #endregion
 
@@ -475,7 +478,10 @@ namespace EasyTcp.Server
             Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
             Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
 
-            Client.SendAsync(Message, SocketFlags.None);
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(Message, 0, Message.Length);
+
+            Client.SendAsync(e);
         }
         #endregion
 

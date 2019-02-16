@@ -228,7 +228,10 @@ namespace EasyTcp
             Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
             Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
 
-            Socket.SendAsync(Message, SocketFlags.None);
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(Message, 0, Message.Length);
+
+            Socket.SendAsync(e);
         }
 
         /// <summary>

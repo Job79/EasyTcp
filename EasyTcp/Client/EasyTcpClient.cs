@@ -41,7 +41,7 @@ namespace EasyTcp.Client
         private Encoding _Encoding = Encoding.UTF8;
         public Encoding Encoding
         {
-            get {return _Encoding; }
+            get { return _Encoding; }
             set { _Encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
         }
 
@@ -290,11 +290,14 @@ namespace EasyTcp.Client
             if (Data == null) throw new ArgumentNullException("Could not send data: Data is null.");
             else if (Socket == null) throw new Exception("Could not send data: Socket not connected.");
 
-                byte[] Message = new byte[Data.Length + 4];
-                Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
-                Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
+            byte[] Message = new byte[Data.Length + 4];
+            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
+            Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
 
-                Socket.SendAsync(Message, SocketFlags.None);//Write async so it won't block UI applications.
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(Message, 0, Message.Length);
+
+            Socket.SendAsync(e);//Write async so it won't block UI applications.
         }
         #endregion
 
@@ -471,7 +474,7 @@ namespace EasyTcp.Client
 
                 int DataLength = BitConverter.ToInt32(_Buffer, 0);//Get the length of the data.
 
-                if (DataLength <= 0||DataLength > _MaxDataSize) { Disconnect(true); return; }//Invalid length, close connection.
+                if (DataLength <= 0 || DataLength > _MaxDataSize) { Disconnect(true); return; }//Invalid length, close connection.
                 else Socket.BeginReceive(_Buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, _ReceiveData, Socket);//Start accepting the data.
             }
             catch (SocketException) { Disconnect(false); OnDisconnect?.Invoke(this, this); }
