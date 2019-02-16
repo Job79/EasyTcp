@@ -6,6 +6,7 @@ Because EasyTcp is socket based and async it has very good performance.
 I write a test to calculate the performance:
 <details>
   <summary>Click to see test code</summary>
+  
   Client:
 ```cs
 const int PORT = 1000;
