@@ -90,7 +90,7 @@ namespace EasyTcp.Server
         /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
         /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(string IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, int MaxDataSize = 10240)
+        public void Start(string IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, ushort MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
             Start(_GetIP(IP), Port, MaxConnections, DualMode, MaxDataSize);
@@ -104,7 +104,7 @@ namespace EasyTcp.Server
         /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
         /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, int MaxDataSize = 10240)
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, ushort MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
             Start(IP, Port, MaxConnections, DualMode, MaxDataSize);
@@ -117,7 +117,7 @@ namespace EasyTcp.Server
         /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
         /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, int MaxDataSize = 10240)
+        public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, ushort MaxDataSize = 10240)
             => Start(_GetIP(IP), Port, MaxConnections, DualMode, MaxDataSize);
         /// <summary>
         /// Start the server.
@@ -127,13 +127,13 @@ namespace EasyTcp.Server
         /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
         /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
         /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, int MaxDataSize = 10240)
+        public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, ushort MaxDataSize = 10240)
         {
             if (IsRunning) throw new Exception("Could not start server: Server is already running.");
             else if (IP == null) throw new ArgumentNullException("Could not start server: Ip is null");
             else if (Port == 0) throw new ArgumentException("Could not start server: Invalid Port.");
             else if (MaxConnections <= 0) throw new ArgumentException("Could not start server: Invalid MaxConnections count.");
-            else if (MaxDataSize <= 0) throw new ArgumentException("Could not start server: Invalid MaxDataSize.");
+            else if (MaxDataSize == 0) throw new ArgumentException("Could not start server: Invalid MaxDataSize.");
 
             Socket Listener = new Socket(IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             if (IP.AddressFamily == AddressFamily.InterNetworkV6) Listener.DualMode = DualMode;
@@ -331,9 +331,9 @@ namespace EasyTcp.Server
             else if (!IsRunning)
             { NotifyOnError(new Exception("Could not send data: Server is not running.")); return; }
 
-            byte[] Message = new byte[Data.Length + 4];
-            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
-            Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
+            byte[] Message = new byte[Data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
+            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.SetBuffer(Message, 0, Message.Length);
@@ -474,9 +474,9 @@ namespace EasyTcp.Server
             if (Data == null) throw new ArgumentNullException("Could not send data: Data is null.");
             else if (!IsRunning) throw new Exception("Could not send data: Server is not running.");
 
-            byte[] Message = new byte[Data.Length + 4];
-            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
-            Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
+            byte[] Message = new byte[Data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
+            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.SetBuffer(Message, 0, Message.Length);

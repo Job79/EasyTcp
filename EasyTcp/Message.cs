@@ -224,9 +224,9 @@ namespace EasyTcp
         {
             if (Data == null) throw new Exception("Could not send data: Data is empty.");
 
-            byte[] Message = new byte[Data.Length + 4];
-            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
-            Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
+            byte[] Message = new byte[Data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
+            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.SetBuffer(Message, 0, Message.Length);

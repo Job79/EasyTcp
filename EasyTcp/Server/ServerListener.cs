@@ -42,13 +42,13 @@ namespace EasyTcp.Server
         /// <summary>
         /// Max bytes the server can receive at 1 time.
         /// </summary>
-        private readonly int _MaxDataSize;
+        private readonly ushort _MaxDataSize;
 
         /* Set to false to stop the server.
          * Else OnClienConnect will throw exeptions.*/
         public bool IsListerning = true;
 
-        public ServerListener(Socket Listener, EasyTcpServer Parent, int MaxConnections, int MaxDataSize)
+        public ServerListener(Socket Listener, EasyTcpServer Parent, int MaxConnections, ushort MaxDataSize)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace EasyTcp.Server
                     _RefuseClient(Client, false);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
                 else
                 {
-                    ClientObject ClientObject = new ClientObject() { Socket = Client, Buffer = new byte[4] };
+                    ClientObject ClientObject = new ClientObject() { Socket = Client, Buffer = new byte[2] };
 
                     ConnectedClients.Add(Client);
                     _Parent.NotifyClientConnected(Client);
@@ -121,7 +121,7 @@ namespace EasyTcp.Server
                 if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0))
                 { _CloseClientObject(Client); return; }
 
-                int DataLength = BitConverter.ToInt32(Client.Buffer, 0);//Get the length of the data.
+                ushort DataLength = BitConverter.ToUInt16(Client.Buffer, 0);//Get the length of the data.
 
                 if (DataLength <= 0 || DataLength > _MaxDataSize) _CloseClientObject(Client);//Invalid length, close connection.
                 else Client.Socket.BeginReceive(Client.Buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, _ReceiveData, Client);//Start accepting the data.
@@ -145,7 +145,7 @@ namespace EasyTcp.Server
                 { _CloseClientObject(Client); return; }
 
                 _Parent.NotifyDataReceived(Client.Buffer, Client.Socket);//Trigger event
-                Client.Socket.BeginReceive(Client.Buffer = new byte[4], 0, Client.Buffer.Length, SocketFlags.None, _ReceiveLength, Client);//Start receiving next length.
+                Client.Socket.BeginReceive(Client.Buffer = new byte[2], 0, Client.Buffer.Length, SocketFlags.None, _ReceiveLength, Client);//Start receiving next length.
             }
             catch (SocketException) { _CloseClientObject(Client); }
             catch (Exception ex) { _CloseClientObject(Client); _Parent.NotifyOnError(ex); }

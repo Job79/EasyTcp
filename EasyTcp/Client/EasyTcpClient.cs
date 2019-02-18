@@ -53,7 +53,7 @@ namespace EasyTcp.Client
         /// <summary>
         /// Max bytes the client can receive in 1 message.
         /// </summary>
-        private int _MaxDataSize;
+        private ushort _MaxDataSize;
 
         /// <summary>
         /// Data buffer for incoming data.
@@ -82,7 +82,7 @@ namespace EasyTcp.Client
         /// <param name="Encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
         /// <param name="MaxDataSize">Max size of a message client can receive</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(string IP, ushort Port, TimeSpan Timeout, Encryption Encryption, int MaxDataSize = 10240)
+        public bool Connect(string IP, ushort Port, TimeSpan Timeout, Encryption Encryption, ushort MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
             return Connect(_GetIP(IP), Port, Timeout, MaxDataSize);
@@ -96,7 +96,7 @@ namespace EasyTcp.Client
         /// <param name="Encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
         /// <param name="MaxDataSize">Max size of a message client can receive</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, Encryption Encryption, int MaxDataSize = 10240)
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, Encryption Encryption, ushort MaxDataSize = 10240)
         {
             this.Encryption = Encryption;
             return Connect(IP, Port, Timeout, MaxDataSize);
@@ -109,7 +109,7 @@ namespace EasyTcp.Client
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
         /// <param name="MaxDataSize">Max size of a message client can receive</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(string IP, ushort Port, TimeSpan Timeout, int MaxDataSize = 10240)
+        public bool Connect(string IP, ushort Port, TimeSpan Timeout, ushort MaxDataSize = 10240)
             => Connect(_GetIP(IP), Port, Timeout, MaxDataSize);
         /// <summary>
         /// Connect to server.
@@ -119,7 +119,7 @@ namespace EasyTcp.Client
         /// <param name="Timeout">Time it maximum can take to connect to server</param>
         /// <param name="MaxDataSize">Max size of a message client can receive</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, int MaxDataSize = 10240)
+        public bool Connect(IPAddress IP, ushort Port, TimeSpan Timeout, ushort MaxDataSize = 10240)
         {
             if (IP == null) throw new ArgumentNullException("Could not connect: Invalid IP.");
             else if (Port == 0) throw new ArgumentException("Could not connect: Invalid Port.");
@@ -137,7 +137,7 @@ namespace EasyTcp.Client
             if (Socket.Connected)
             {
                 _MaxDataSize = MaxDataSize;
-                _Buffer = new byte[4];
+                _Buffer = new byte[2];
 
                 //Start listerning for data.
                 Socket.BeginReceive(_Buffer, 0, _Buffer.Length, SocketFlags.None, _ReceiveLength, Socket);
@@ -290,9 +290,9 @@ namespace EasyTcp.Client
             if (Data == null) throw new ArgumentNullException("Could not send data: Data is null.");
             else if (Socket == null) throw new Exception("Could not send data: Socket not connected.");
 
-            byte[] Message = new byte[Data.Length + 4];
-            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, Message, 0, 4);
-            Buffer.BlockCopy(Data, 0, Message, 4, Data.Length);
+            byte[] Message = new byte[Data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
+            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.SetBuffer(Message, 0, Message.Length);
@@ -472,7 +472,7 @@ namespace EasyTcp.Client
                 if (Socket.Poll(0, SelectMode.SelectRead) && Socket.Available.Equals(0))
                 { Disconnect(true); return; }
 
-                int DataLength = BitConverter.ToInt32(_Buffer, 0);//Get the length of the data.
+                ushort DataLength = BitConverter.ToUInt16(_Buffer, 0);//Get the length of the data.
 
                 if (DataLength <= 0 || DataLength > _MaxDataSize) { Disconnect(true); return; }//Invalid length, close connection.
                 else Socket.BeginReceive(_Buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, _ReceiveData, Socket);//Start accepting the data.
