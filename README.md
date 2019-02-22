@@ -50,7 +50,7 @@ static void Main(string[] args)
 </details>
 
 <details>
-  <summary>Output</summary>
+  <summary>Click to see output</summary>
   Test1 = 56923ms
   
   56923ms / 1.000.000 messages = 0.56923ms
