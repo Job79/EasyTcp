@@ -5,7 +5,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EasyTcp.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Authors>Henkje</Authors>
     <Company>HenkSharp</Company>
     <Description>A high performance/async tcp server and client. (SocketBased) (Supports IPv6 &amp; IPv4)
@@ -16,10 +16,9 @@ Simple and easy to use(but also advanced) and has a good documentation.</Descrip
     <RepositoryUrl>https://github.com/GHenkje/EasyTcp</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageTags>Socket, Networking, Tcp, TcpClient, TcpServer, HenkTcp, EasyTcp, SimpleTcp, AsyncTcp</PackageTags>
-    <PackageReleaseNotes>- Changed data tag to ushort.
-- Changed MaxDataSize to ushort.
-</PackageReleaseNotes>
-    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <PackageReleaseNotes>- Bug fix(First 2 bytes where removed when receiving on the client)</PackageReleaseNotes>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
+    <FileVersion>2.0.3.0</FileVersion>
   </PropertyGroup>
 
 </Project>

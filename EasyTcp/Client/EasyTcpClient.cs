@@ -492,7 +492,7 @@ namespace EasyTcp.Client
                 { Disconnect(true); return; }
 
                 DataReceived?.Invoke(this, new Message(_Buffer, Socket, Encryption, _Encoding));//Trigger event
-                Socket.BeginReceive(_Buffer = new byte[4], 0, _Buffer.Length, SocketFlags.None, _ReceiveLength, Socket);//Start receiving next message.
+                Socket.BeginReceive(_Buffer = new byte[2], 0, _Buffer.Length, SocketFlags.None, _ReceiveLength, Socket);//Start receiving next message.
             }
             catch (SocketException) { Disconnect(true); return; }
             catch (Exception ex) { _NotifyOnError(ex); }
