@@ -1,7 +1,16 @@
 ﻿/* EasyTcp
- * Copyright (C) 2019  henkje (henkje@pm.me)
  * 
- * MIT license
+ * Copyright (c) 2019 henkje
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,7 +36,7 @@ namespace EasyTcp.Server
         /// <summary>
         /// EasyTcpserver class, used to call handlers.
         /// </summary>
-        private readonly EasyTcpServer _Parent;
+        private readonly EasyTcpServer parent;
 
         /// <summary>
         /// HashSet of all current connected clients.
@@ -37,118 +46,116 @@ namespace EasyTcp.Server
         /// <summary>
         /// Max connected clients the server can have.
         /// </summary>
-        private readonly int _MaxConnections;
+        private readonly int maxConnections;
 
         /// <summary>
         /// Max bytes the server can receive at 1 time.
         /// </summary>
-        private readonly ushort _MaxDataSize;
+        private readonly ushort maxDataSize;
 
         /* Set to false to stop the server.
          * Else OnClienConnect will throw exeptions.*/
         public bool IsListerning = true;
 
-        public ServerListener(Socket Listener, EasyTcpServer Parent, int MaxConnections, ushort MaxDataSize)
+        public ServerListener(Socket listener, EasyTcpServer parent, int maxConnections, ushort maxDataSize)
         {
             try
             {
-                _Parent = Parent;
-                _MaxConnections = MaxConnections;
-                _MaxDataSize = MaxDataSize;
+                this.parent = parent;
+                this.maxConnections = maxConnections;
+                this.maxDataSize = maxDataSize;
 
-                this.Listener = Listener;
-                this.Listener.Listen(100);//100 = maximum pending connections.
+                Listener = listener;
+                Listener.Listen(100);//100 = maximum pending connections.
 
                 //Start accepting new connections.
-                this.Listener.BeginAccept(_OnClientConnect, null);
+                Listener.BeginAccept(onClientConnect, null);
             }
-            catch (Exception ex) { _Parent.NotifyOnError(ex); }
+            catch (Exception ex) { parent.NotifyOnError(ex); }
         }
 
         /// <summary>
         /// Called when a new client connect's.
         /// </summary>
-        /// <param name="ar">Used to call </param>
-        private void _OnClientConnect(IAsyncResult ar)
+        /// <param name="ar">Used to call EndAccept</param>
+        private void onClientConnect(IAsyncResult ar)
         {
             if (!IsListerning) return;
 
             try
             {
-                Socket Client = Listener.EndAccept(ar);//Accept socket.
+                Socket client = Listener.EndAccept(ar);//Accept socket.
 
-                if (_Parent.BannedIPs.Contains(((IPEndPoint)Client.RemoteEndPoint).Address.ToString()))//Check if client is banned.
-                    _RefuseClient(Client, true);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
-                else if (ConnectedClients.Count >= _MaxConnections)//Check if there are to many connections.
-                    _RefuseClient(Client, false);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
+                if (parent.BannedIPs.Contains(((IPEndPoint)client.RemoteEndPoint).Address.ToString()))//Check if client is banned.
+                    refuseClient(client, true);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
+                else if (ConnectedClients.Count >= maxConnections)//Check if there are to many connections.
+                    refuseClient(client, false);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
                 else
                 {
-                    ClientObject ClientObject = new ClientObject() { Socket = Client, Buffer = new byte[2] };
+                    ClientObject clientObject = new ClientObject() { Socket = client, Buffer = new byte[2] };
 
-                    ConnectedClients.Add(Client);
-                    _Parent.NotifyClientConnected(Client);
+                    ConnectedClients.Add(client);
+                    parent.NotifyClientConnected(client);
 
                     //Start listerning for data.
-                    Client.BeginReceive(ClientObject.Buffer, 0, ClientObject.Buffer.Length, SocketFlags.None, _ReceiveLength, ClientObject);
+                    client.BeginReceive(clientObject.Buffer, 0, clientObject.Buffer.Length, SocketFlags.None, onReceiveLength, clientObject);
                 }
             }
-            catch (Exception ex) { if (_Parent.IsRunning) _Parent.NotifyOnError(ex); }
+            catch (Exception ex) { if (parent.IsRunning) parent.NotifyOnError(ex); }
 
-            Listener.BeginAccept(_OnClientConnect, Listener);//Wait for next client
+            Listener.BeginAccept(onClientConnect, Listener);//Wait for next client
         }
 
         /// <summary>
-        /// Refuse a connection,Called by _OnClientConnect.
+        /// Refuse a connection,Called by onClientConnect.
         /// </summary>
-        private void _RefuseClient(Socket Client, bool IsBanned)
+        private void refuseClient(Socket client, bool isBanned)
         {
-            string IP = ((IPEndPoint)Client.RemoteEndPoint).Address.ToString();
-            Client.Close();
-            _Parent.NotifyClientRefused(new RefusedClient(IP, IsBanned));
+            string IP = ((IPEndPoint)client.RemoteEndPoint).Address.ToString();
+            client.Close();
+            parent.NotifyClientRefused(new RefusedClient(IP, isBanned));
         }
 
         /// <summary>
         /// Receive length of a message, triggert first when receiving a message.
         /// </summary>
         /// <param name="ar"></param>
-        private void _ReceiveLength(IAsyncResult ar)
+        private void onReceiveLength(IAsyncResult ar)
         {
-            ClientObject Client = ar.AsyncState as ClientObject;
+            ClientObject client = ar.AsyncState as ClientObject;
 
             try
             {
                 //Test if client is connected.
-                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0))
-                { _CloseClientObject(Client); return; }
+                if (client.Socket.Poll(0, SelectMode.SelectRead) && client.Socket.Available.Equals(0))
+                { _CloseClientObject(client); return; }
 
-                ushort DataLength = BitConverter.ToUInt16(Client.Buffer, 0);//Get the length of the data.
+                ushort dataLength = BitConverter.ToUInt16(client.Buffer, 0);//Get the length of the data.
 
-                if (DataLength <= 0 || DataLength > _MaxDataSize) _CloseClientObject(Client);//Invalid length, close connection.
-                else Client.Socket.BeginReceive(Client.Buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, _ReceiveData, Client);//Start accepting the data.
+                if (dataLength <= 0 || dataLength > maxDataSize) _CloseClientObject(client);//Invalid length, close connection.
+                else client.Socket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None, onReceiveData, client);//Start accepting the data.
             }
-            catch (SocketException) { _CloseClientObject(Client); }
-            catch (Exception ex) { _CloseClientObject(Client); _Parent.NotifyOnError(ex); }
+            catch (Exception ex) { _CloseClientObject(client); parent.NotifyOnError(ex); }
         }
 
         /// <summary>
         /// Receive data, triggerd after <see cref="_ReceiveLength(IAsyncResult)"/>
         /// </summary>
         /// <param name="ar">Contains <see cref="ClientObject"/></param>
-        private void _ReceiveData(IAsyncResult ar)
+        private void onReceiveData(IAsyncResult ar)
         {
-            ClientObject Client = ar.AsyncState as ClientObject;
+            ClientObject client = ar.AsyncState as ClientObject;
 
             try
             {
                 //Test if client is connected.
-                if (Client.Socket.Poll(0, SelectMode.SelectRead) && Client.Socket.Available.Equals(0))
-                { _CloseClientObject(Client); return; }
+                if (client.Socket.Poll(0, SelectMode.SelectRead) && client.Socket.Available.Equals(0))
+                { _CloseClientObject(client); return; }
 
-                _Parent.NotifyDataReceived(Client.Buffer, Client.Socket);//Trigger event
-                Client.Socket.BeginReceive(Client.Buffer = new byte[2], 0, Client.Buffer.Length, SocketFlags.None, _ReceiveLength, Client);//Start receiving next length.
+                parent.NotifyDataReceived(client.Buffer, client.Socket);//Trigger event
+                client.Socket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None, onReceiveLength, client);//Start receiving next length.
             }
-            catch (SocketException) { _CloseClientObject(Client); }
-            catch (Exception ex) { _CloseClientObject(Client); _Parent.NotifyOnError(ex); }
+            catch (Exception ex) { _CloseClientObject(client); parent.NotifyOnError(ex); }
         }
 
         /// <summary>
@@ -160,7 +167,7 @@ namespace EasyTcp.Server
             lock (ConnectedClients) ConnectedClients.Remove(Client.Socket);
 
             ///Call <see cref="HenkTcpServer.ClientDisconnected"/> 
-            _Parent.NotifyClientDisconnected(Client.Socket);
+            parent.NotifyClientDisconnected(Client.Socket);
 
             Client.Socket.Shutdown(SocketShutdown.Both);
             Client.Socket.Close();

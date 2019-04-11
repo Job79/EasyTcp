@@ -1,7 +1,16 @@
 ﻿/* EasyTcp
- * Copyright (C) 2019  henkje (henkje@pm.me)
  * 
- * MIT license
+ * Copyright (c) 2019 henkje
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,14 +42,14 @@ namespace EasyTcp
         /// <summary>
         /// Encryption class for encrypting/decrypting data.
         /// </summary>
-        private readonly Encryption Encryption;
+        private readonly Encryption encryption;
 
-        public Message(byte[] Data, Socket Socket, Encryption Encryption, Encoding Encoding)
+        public Message(byte[] data, Socket socket, Encryption encryption, Encoding encoding)
         {
-            this.Data = Data;
-            this.Socket = Socket;
-            this.Encryption = Encryption;
-            this.Encoding = Encoding;
+            Data = data;
+            Socket = socket;
+            this.encryption = encryption;
+            Encoding = encoding;
         }
 
         /// <summary>
@@ -50,7 +59,7 @@ namespace EasyTcp
         /// <summary>
         /// Return the received byte's
         /// </summary>
-        public byte[] DataDecrypted { get { return (Encryption ?? throw new NullReferenceException("Could not decrypt data: Encryption class is null.")).Decrypt(Data); } }
+        public byte[] DataDecrypted { get { return (encryption ?? throw new NullReferenceException("Could not decrypt data: Encryption class is null.")).Decrypt(Data); } }
 
         /// <summary>
         /// Convert and return the data as short(Int16).
@@ -124,112 +133,112 @@ namespace EasyTcp
         /// <summary>
         /// Encrypt data and send data(short) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(short Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(short data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         ///Encrypt data and send data(int) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(int Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(int data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(long) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(long Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(long data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(double) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(double Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(double data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(float) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(float Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(float data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(bool) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(bool Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(bool data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(char) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(char Data)
-            => ReplyEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(char data)
+            => ReplyEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data and send data(string) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(string Data)
-            => ReplyEncrypted(Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(string data)
+            => ReplyEncrypted(Encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Encrypt data and send data(byte[]) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void ReplyEncrypted(byte[] Data)
-            => Reply((Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="data">Data that will be send to sender</param>
+        public void ReplyEncrypted(byte[] data)
+            => Reply((encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
 
         /// <summary>
         /// Send data(short) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(short Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(short data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(int) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(int Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(int data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(long) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(long Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(long data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(double) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(double Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(double data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(float) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(float Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(float data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(bool) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(bool Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(bool data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(char) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(char Data) => Reply(BitConverter.GetBytes(Data));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(char data) => Reply(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(string) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(string Data) => Reply(Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(string data) => Reply(Encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Send data(byte[]) to the sender.
         /// </summary>
-        /// <param name="Data">Data that will be send to sender</param>
-        public void Reply(byte[] Data)
+        /// <param name="data">Data that will be send to sender</param>
+        public void Reply(byte[] data)
         {
-            if (Data == null) throw new Exception("Could not send data: Data is empty.");
+            if (data == null) throw new Exception("Could not send data: Data is empty.");
 
-            byte[] Message = new byte[Data.Length + 2];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
-            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
+            byte[] message = new byte[data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
+            Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(Message, 0, Message.Length);
+            e.SetBuffer(message, 0, message.Length);
 
             Socket.SendAsync(e);
         }

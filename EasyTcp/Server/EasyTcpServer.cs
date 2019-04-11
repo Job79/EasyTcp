@@ -1,7 +1,16 @@
 ﻿/* EasyTcp
- * Copyright (C) 2019  henkje (henkje@pm.me)
  * 
- * MIT license
+ * Copyright (c) 2019 henkje
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,7 +33,7 @@ namespace EasyTcp.Server
     {
         /* The ServerListener class controls all the event's.
          * ServerListener is set to null if the server is not running.*/
-        private ServerListener _ServerListener;
+        private ServerListener serverListener;
 
         /// <summary>
         /// ClientConnected, triggerd when a new client connect's.
@@ -51,11 +60,11 @@ namespace EasyTcp.Server
         /// <summary>
         /// Encoding to encode string's
         /// </summary>
-        private Encoding _Encoding = Encoding.UTF8;
+        private Encoding encoding = Encoding.UTF8;
         public Encoding Encoding
         {
-            get { return _Encoding; }
-            set { _Encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
+            get { return encoding; }
+            set { encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
         }
 
         /// <summary>
@@ -74,7 +83,7 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IPString">IP(IPv4 or IPv6) as string</param>
         /// <returns>IP as IPAddress</returns>
-        private IPAddress _GetIP(string IPString)
+        private IPAddress getIP(string IPString)
         {
             IPAddress IP;
             if (!IPAddress.TryParse(IPString, out IP)) throw new ArgumentException("Invalid IPv4/IPv6 address.");
@@ -85,62 +94,62 @@ namespace EasyTcp.Server
         /// Start the server and overide encryption.
         /// </summary>
         /// <param name="IP">IP address as string</param>
-        /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
-        /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
-        /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(string IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, ushort MaxDataSize = 10240)
+        /// <param name="port">Port as ushort(0-65,535)</param>
+        /// <param name="maxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
+        /// <param name="dualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
+        /// <param name="maxDataSize">Max size of a message the server can receive</param>
+        public void Start(string IP, ushort port, int maxConnections, Encryption encryption, bool dualMode = false, ushort maxDataSize = 1024)
         {
-            this.Encryption = Encryption;
-            Start(_GetIP(IP), Port, MaxConnections, DualMode, MaxDataSize);
+            Encryption = encryption;
+            Start(getIP(IP), port, maxConnections, dualMode, maxDataSize);
         }
         /// <summary>
         /// Start the server and overide encryption.
         /// </summary>
         /// <param name="IP">IP address as IPAddress</param>
-        /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
-        /// <param name="Encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
-        /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, Encryption Encryption, bool DualMode = false, ushort MaxDataSize = 10240)
+        /// <param name="port">Port as ushort(0-65,535)</param>
+        /// <param name="maxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="encryption">Encryption class <see cref="EasyTcp.Encryption"/></param>
+        /// <param name="dualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
+        /// <param name="maxDataSize">Max size of a message the server can receive</param>
+        public void Start(IPAddress IP, ushort port, int maxConnections, Encryption encryption, bool dualMode = false, ushort maxDataSize = 1024)
         {
-            this.Encryption = Encryption;
-            Start(IP, Port, MaxConnections, DualMode, MaxDataSize);
+            Encryption = encryption;
+            Start(IP, port, maxConnections, dualMode, maxDataSize);
         }
         /// <summary>
         /// Start the server.
         /// </summary>
         /// <param name="IP">IP address as string</param>
-        /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
-        /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(string IP, ushort Port, int MaxConnections, bool DualMode = false, ushort MaxDataSize = 10240)
-            => Start(_GetIP(IP), Port, MaxConnections, DualMode, MaxDataSize);
+        /// <param name="port">Port as ushort(0-65,535)</param>
+        /// <param name="maxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="dualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
+        /// <param name="maxDataSize">Max size of a message the server can receive</param>
+        public void Start(string IP, ushort port, int maxConnections, bool dualMode = false, ushort maxDataSize = 1024)
+            => Start(getIP(IP), port, maxConnections, dualMode, maxDataSize);
         /// <summary>
         /// Start the server.
         /// </summary>
         /// <param name="IP">IP address as IPAddress</param>
-        /// <param name="Port">Port as ushort(0-65,535)</param>
-        /// <param name="MaxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
-        /// <param name="DualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
-        /// <param name="MaxDataSize">Max size of a message the server can receive</param>
-        public void Start(IPAddress IP, ushort Port, int MaxConnections, bool DualMode = false, ushort MaxDataSize = 10240)
+        /// <param name="port">Port as ushort(0-65,535)</param>
+        /// <param name="maxConnections">MaxConnectedCount, client will be refused if the maximum is reached</param>
+        /// <param name="dualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
+        /// <param name="maxDataSize">Max size of a message the server can receive</param>
+        public void Start(IPAddress IP, ushort port, int maxConnections, bool dualMode = false, ushort maxDataSize = 1024)
         {
             if (IsRunning) throw new Exception("Could not start server: Server is already running.");
             else if (IP == null) throw new ArgumentNullException("Could not start server: Ip is null");
-            else if (Port == 0) throw new ArgumentException("Could not start server: Invalid Port.");
-            else if (MaxConnections <= 0) throw new ArgumentException("Could not start server: Invalid MaxConnections count.");
-            else if (MaxDataSize == 0) throw new ArgumentException("Could not start server: Invalid MaxDataSize.");
+            else if (port == 0) throw new ArgumentException("Could not start server: Invalid Port.");
+            else if (maxConnections <= 0) throw new ArgumentException("Could not start server: Invalid MaxConnections count.");
+            else if (maxDataSize == 0) throw new ArgumentException("Could not start server: Invalid MaxDataSize.");
 
-            Socket Listener = new Socket(IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            if (IP.AddressFamily == AddressFamily.InterNetworkV6) Listener.DualMode = DualMode;
-            Listener.Bind(new IPEndPoint(IP, Port));
+            Socket listener = new Socket(IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            if (IP.AddressFamily == AddressFamily.InterNetworkV6) listener.DualMode = dualMode;
+            listener.Bind(new IPEndPoint(IP, port));
 
             //Create class ServerListener, this will start the passed socket and handle the events.
-            _ServerListener = new ServerListener(Listener, this, MaxConnections, MaxDataSize);
+            serverListener = new ServerListener(listener, this, maxConnections, maxDataSize);
         }
 
         /// <summary>
@@ -151,7 +160,7 @@ namespace EasyTcp.Server
             get
             {
                 if (!IsRunning) return null;
-                else return _ServerListener.ConnectedClients.ToList();//.ToList because ConnectedClients is used by async funtions
+                else return serverListener.ConnectedClients.ToList();//.ToList because ConnectedClients is used by async funtions.
             }
         }
         /// <summary>
@@ -162,7 +171,7 @@ namespace EasyTcp.Server
             get
             {
                 if (!IsRunning) return 0;
-                else return _ServerListener.ConnectedClients.Count;
+                else return serverListener.ConnectedClients.Count;
             }
         }
 
@@ -174,7 +183,7 @@ namespace EasyTcp.Server
             get
             {
                 if (!IsRunning) return null;
-                else return _ServerListener.Listener;
+                else return serverListener.Listener;
             }
         }
 
@@ -185,7 +194,7 @@ namespace EasyTcp.Server
         {
             get
             {
-                return _ServerListener != null;
+                return serverListener != null;
             }
         }
 
@@ -196,150 +205,150 @@ namespace EasyTcp.Server
         {
             if (IsRunning)
             {
-                _ServerListener.IsListerning = false;
-                _ServerListener.Listener.Close();
-                _ServerListener = null;
+                serverListener.IsListerning = false;
+                serverListener.Listener.Close();
+                serverListener = null;
             }
         }
 
         /// <summary>
         /// Kick a Socket.
         /// </summary>
-        public void Kick(Socket Client) 
-            => (Client ?? throw new ArgumentNullException("Could not kick client: Socket is null")).Shutdown(SocketShutdown.Both);
+        public void Kick(Socket client)
+            => (client ?? throw new ArgumentNullException("Could not kick client: Socket is null")).Shutdown(SocketShutdown.Both);
 
         /// <summary>
         /// Add the IP of the socket to BannedIPs and kick the client.
         /// </summary>
-        public void Ban(Socket Client)
+        public void Ban(Socket client)
         {
-            BannedIPs.Add(((IPEndPoint)(Client ?? throw new ArgumentNullException("Could not ban client: Socket is null")).RemoteEndPoint).Address.ToString());//Add client IP to banned IPs
-            Kick(Client);//Kick client
+            BannedIPs.Add(((IPEndPoint)(client ?? throw new ArgumentNullException("Could not ban client: Socket is null")).RemoteEndPoint).Address.ToString());//Add client IP to banned IPs
+            Kick(client);//Kick client
         }
 
         #region Broadcast
         /// <summary>
         /// Encrypt data(short) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(short Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(short data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(int) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(int Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(int data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(long) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(long Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(long data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(double) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(double Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(double data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(float) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(float Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(float data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(bool) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(bool Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(bool data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(char) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(char Data)
-            => BroadcastEncrypted(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(char data)
+            => BroadcastEncrypted(BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(string) and send it to all clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(string Data)
-            => BroadcastEncrypted(_Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="data">Data to send to clients</param>
+        public void BroadcastEncrypted(string data)
+            => BroadcastEncrypted(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Encrypt data(byte[]) and send it to all clients.
         /// </summary>
         /// <param name="Data">Data to send to clients</param>
-        public void BroadcastEncrypted(byte[] Data)
-            => Broadcast((Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        public void BroadcastEncrypted(byte[] data)
+            => Broadcast((Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
 
         /// <summary>
         /// Send data(short) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(short Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(short data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(int) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(int Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(int data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(long) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(long Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(long data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(double) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(double Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(double data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(float) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(float Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(float data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(bool) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(bool Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(bool data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(char) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(char Data)
-            => Broadcast(BitConverter.GetBytes(Data));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(char data)
+            => Broadcast(BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(string) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(string Data)
-            => Broadcast(_Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(string data)
+            => Broadcast(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Send data(byte[]) to all connected clients.
         /// </summary>
-        /// <param name="Data">Data to send to clients</param>
-        public void Broadcast(byte[] Data)
+        /// <param name="data">Data to send to clients</param>
+        public void Broadcast(byte[] data)
         {
-            if (Data == null) throw new ArgumentNullException("Could not send data: Data is null.");
+            if (data == null) throw new ArgumentNullException("Could not send data: Data is null.");
             else if (!IsRunning)
             { NotifyOnError(new Exception("Could not send data: Server is not running.")); return; }
 
-            byte[] Message = new byte[Data.Length + 2];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
-            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
+            byte[] message = new byte[data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
+            Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(Message, 0, Message.Length);
+            e.SetBuffer(message, 0, message.Length);
 
-            foreach (var Client in ConnectedClients)
-                Client.SendAsync(e);
+            foreach (var client in ConnectedClients)
+                client.SendAsync(e);
         }
         #endregion
 
@@ -347,24 +356,24 @@ namespace EasyTcp.Server
         /// <summary>
         /// Encrypt data(short) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, short Data)
-            => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, short data)
+            => SendEncrypted(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(int) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, int Data)
-            => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, int data)
+            => SendEncrypted(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(long) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, long Data)
-            => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, long data)
+            => SendEncrypted(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(double) and send it to 1 client.
         /// </summary>
@@ -375,10 +384,10 @@ namespace EasyTcp.Server
         /// <summary>
         /// Encrypt data(float) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, float Data)
-            => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, float data)
+            => SendEncrypted(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(bool) and send it to 1 client.
         /// </summary>
@@ -389,99 +398,99 @@ namespace EasyTcp.Server
         /// <summary>
         /// Encrypt data(char) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, char Data)
-            => SendEncrypted(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, char data)
+            => SendEncrypted(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Encrypt data(string) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, string Data)
-            => SendEncrypted(Client, _Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, string data)
+            => SendEncrypted(client, encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Encrypt data(byte[]) and send it to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void SendEncrypted(Socket Client, byte[] Data)
-            => Send(Client, (Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void SendEncrypted(Socket client, byte[] data)
+            => Send(client, (Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
 
         /// <summary>
         /// Send data(short) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, short Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, short data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(int) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, int Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, int data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(long) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, long Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, long data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(double) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, double Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, double data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(float) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, float Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, float data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(bool) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, bool Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, bool data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(char) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, char Data)
-            => Send(Client, BitConverter.GetBytes(Data));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, char data)
+            => Send(client, BitConverter.GetBytes(data));
         /// <summary>
         /// Send data(string) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, string Data)
-            => Send(Client, _Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, string data)
+            => Send(client, encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
         /// <summary>
         /// Send data(byte[]) to 1 client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send to client</param>
-        public void Send(Socket Client, byte[] Data)
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send to client</param>
+        public void Send(Socket client, byte[] data)
         {
-            if (Data == null) throw new ArgumentNullException("Could not send data: Data is null.");
+            if (data == null) throw new ArgumentNullException("Could not send data: Data is null.");
             else if (!IsRunning) throw new Exception("Could not send data: Server is not running.");
 
-            byte[] Message = new byte[Data.Length + 2];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort)Data.Length), 0, Message, 0, 2);
-            Buffer.BlockCopy(Data, 0, Message, 2, Data.Length);
+            byte[] message = new byte[data.Length + 2];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
+            Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(Message, 0, Message.Length);
+            e.SetBuffer(message, 0, message.Length);
 
-            Client.SendAsync(e);
+            client.SendAsync(e);
         }
         #endregion
 
@@ -489,121 +498,121 @@ namespace EasyTcp.Server
         /// <summary>
         /// Encrpt data(short) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, short Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, short data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(int) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, int Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, int data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(long) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, long Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, long data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(double) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, double Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, double data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(float) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, float Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, float data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(bool) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, bool Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, bool data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(char) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, char Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, char data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Encrpt data(string) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, string Data, TimeSpan Timeout)
-            => SendAndGetReplyEncrypted(Client, _Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, string data, TimeSpan timeout)
+            => SendAndGetReplyEncrypted(client, encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
         /// <summary>
         /// Encrpt data(byte[]) and send data to 1 client, then wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReplyEncrypted(Socket Client, byte[] Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, (Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")), Timeout);
+        public Message SendAndGetReplyEncrypted(Socket client, byte[] data, TimeSpan timeout)
+            => SendAndGetReply(client, (Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
 
         /// <summary>
         /// Send data(short) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, short Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, short data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(int) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, int Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, int data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(long) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, long Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, long data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(double) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, double Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, double data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(float) to 1 client and wait for a reply from the client.
         /// </summary>
@@ -616,59 +625,59 @@ namespace EasyTcp.Server
         /// <summary>
         /// Send data(bool) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, bool Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, bool data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(char) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, char Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, BitConverter.GetBytes(Data), Timeout);
+        public Message SendAndGetReply(Socket client, char data, TimeSpan timeout)
+            => SendAndGetReply(client, BitConverter.GetBytes(data), timeout);
         /// <summary>
         /// Send data(string) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, string Data, TimeSpan Timeout)
-            => SendAndGetReply(Client, _Encoding.GetBytes(Data ?? throw new ArgumentNullException("Could not send data: Data is null.")), Timeout);
+        public Message SendAndGetReply(Socket client, string data, TimeSpan timeout)
+            => SendAndGetReply(client, encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
         /// <summary>
         /// Send data(byte[]) to 1 client and wait for a reply from the client.
         /// </summary>
-        /// <param name="Client">Client to send data to</param>
-        /// <param name="Data">Data to send</param>
-        /// <param name="Timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="client">Client to send data to</param>
+        /// <param name="data">Data to send</param>
+        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>The reply of the client</returns>
-        public Message SendAndGetReply(Socket Client, byte[] Data, TimeSpan Timeout)
+        public Message SendAndGetReply(Socket client, byte[] data, TimeSpan timeout)
         {
-            if (Timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
+            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
 
-            Message Reply = null;
-            ManualResetEventSlim Signal = new ManualResetEventSlim();
+            Message reply = null;
+            ManualResetEventSlim signal = new ManualResetEventSlim();
 
-            void Event(object sender, Message e) { if (e.Socket.Equals(Client)) { Reply = e; DataReceived -= Event; Signal.Set(); } };
+            void Event(object sender, Message e) { if (e.Socket.Equals(client)) { reply = e; DataReceived -= Event; signal.Set(); } };
 
             DataReceived += Event;
-            Send(Client, Data);
+            Send(client, data);
 
-            Signal.Wait(Timeout);
-            return Reply;
+            signal.Wait(timeout);
+            return reply;
         }
         #endregion
 
         /*This functions are used by the ServerListener class*/
-        internal void NotifyClientConnected(Socket Client) => ClientConnected?.Invoke(this, Client);
-        internal void NotifyClientDisconnected(Socket Client) => ClientDisconnected?.Invoke(this, Client);
-        internal void NotifyDataReceived(byte[] Data, Socket Client) => DataReceived?.Invoke(this, new Message(Data, Client, Encryption, _Encoding));
+        internal void NotifyClientConnected(Socket client) => ClientConnected?.Invoke(this, client);
+        internal void NotifyClientDisconnected(Socket client) => ClientDisconnected?.Invoke(this, client);
+        internal void NotifyDataReceived(byte[] data, Socket client) => DataReceived?.Invoke(this, new Message(data, client, Encryption, encoding));
         internal void NotifyOnError(Exception ex) { if (OnError != null) OnError(this, ex); else throw ex; }
-        internal void NotifyClientRefused(RefusedClient BannedClient) => ClientRefused?.Invoke(this, BannedClient);
+        internal void NotifyClientRefused(RefusedClient bannedClient) => ClientRefused?.Invoke(this, bannedClient);
     }
 }
