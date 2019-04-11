@@ -3,7 +3,7 @@ A high performance/async tcp server and client. (SocketBased) (Supports IPv6 & I
 
 # Performance
 Because EasyTcp is socket based and async it has good performance.
-I writed a test to see the performance.
+I made a test to show the performance.
 This test will send a message to the server, then the server send the same message back.  
 If the client received the message it would send the next one.
 The average of this test: 0.582828ms (on localhost)
@@ -12,40 +12,40 @@ The average of this test: 0.582828ms (on localhost)
   
   Client:
 ```cs
-const int PORT = 1000;
-const int MESSAGES_COUNT = 1000000;
-const string MESSAGE = "Message";
+    const int Port = 1000;
+    const int MessageCount = 1000000;
+    const string Message = "Message";
 
-void SpeedTest()
-{
-    EasyTcpClient Client = new EasyTcpClient();
+    void SpeedTest()
+    {
+        EasyTcpClient client = new EasyTcpClient();
 
-    if (Client.Connect(IPAddress.Loopback, PORT, TimeSpan.FromSeconds(1))) Console.WriteLine("Client connected");
-    else { Console.WriteLine("Could not connect"); Console.ReadKey(); return; }
+        if (client.Connect(IPAddress.Loopback, Port, TimeSpan.FromSeconds(1))) Console.WriteLine("Client connected");
+        else { Console.WriteLine("Could not connect"); Console.ReadKey(); return; }
 
-    byte[] Message = Encoding.UTF8.GetBytes(MESSAGE);
-    Stopwatch sw = new Stopwatch();
-    sw.Start();
+        byte[] message = Encoding.UTF8.GetBytes(Message);
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
 
-    for (int x = 0; x < MESSAGES_COUNT; x++) { Client.SendAndGetReply(Message, TimeSpan.FromSeconds(1)); }
+        for (int x = 0; x < MessageCount; x++) { client.SendAndGetReply(message, TimeSpan.FromSeconds(1)); }
 
-    sw.Stop();
-    Console.WriteLine($"ElapsedMilliseconds SpeedTest: {sw.ElapsedMilliseconds}");
-    Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / MESSAGES_COUNT}");
-}
+        sw.Stop();
+        Console.WriteLine($"ElapsedMilliseconds SpeedTest: {sw.ElapsedMilliseconds}");
+        Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / MessageCount}");
+    }
 ```
 Server:
 ```cs
-const int PORT = 1000;
+    const int Port = 1000;
 
-static void Main(string[] args)
-{
-    EasyTcpServer Server = new EasyTcpServer();
-    Server.DataReceived += (object sender, Message e) => e.Reply(e.Data);
-    Server.Start(IPAddress.Any, PORT, 1000);
+    static void Main(string[] args)
+    {
+        EasyTcpServer server = new EasyTcpServer();
+        server.DataReceived += (object sender, Message e) => e.Reply(e.Data);
+        server.Start(IPAddress.Any, Port, 1000);
 
-    Task.Delay(-1).Wait();
-}
+        Task.Delay(-1).Wait();
+    }
 ```
 </details>
 
