@@ -37,26 +37,26 @@ namespace EasyTcp.Test
         [TestMethod]
         public void TestEncryption()
         {
-            const string Input = "input";
-            const string Password = "Password";
-            const string Salt = "12345678";
+            const string input = "input";
+            const string password = "Password";
+            const string salt = "12345678";
 
             SymmetricAlgorithm algorithm = TripleDES.Create();
-            algorithm.Key = Encryption.CreateKey(algorithm, Password, Salt);
-            string encrypted = new Encryption(algorithm).Encrypt(Input);
+            algorithm.Key = Encryption.CreateKey(algorithm, password, salt);
+            string encrypted = new Encryption(algorithm).Encrypt(input);
             string decrypted = new Encryption(algorithm).Decrypt(encrypted);
 
-            Assert.AreEqual(Input, decrypted);
+            Assert.AreEqual(input, decrypted);
 
-            encrypted = new Encryption(algorithm, Password, Salt).Encrypt(Input);
-            decrypted = new Encryption(algorithm, Password, Salt).Decrypt(encrypted);
+            encrypted = new Encryption(algorithm, password, salt).Encrypt(input);
+            decrypted = new Encryption(algorithm, password, salt).Decrypt(encrypted);
 
-            Assert.AreEqual(Input, decrypted);
+            Assert.AreEqual(input, decrypted);
 
-            encrypted = new Encryption(algorithm, Password, Salt).Encrypt(Input, Encoding.Unicode);
-            decrypted = new Encryption(algorithm, Password, Salt).Decrypt(encrypted, Encoding.Unicode);
+            encrypted = new Encryption(algorithm, password, salt).Encrypt(input, Encoding.Unicode);
+            decrypted = new Encryption(algorithm, password, salt).Decrypt(encrypted, Encoding.Unicode);
 
-            Assert.AreEqual(Input, decrypted);
+            Assert.AreEqual(input, decrypted);
         }
 
         [TestMethod]
