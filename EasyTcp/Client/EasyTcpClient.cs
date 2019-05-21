@@ -75,10 +75,10 @@ namespace EasyTcp.Client
         /// </summary>
         /// <param name="IPString">IP(IPv4 or IPv6) as string</param>
         /// <returns>IP as IPAddress</returns>
-        private IPAddress _GetIP(string IPString)
+        private IPAddress GetIP(string IPString)
         {
-            IPAddress IP;
-            if (!IPAddress.TryParse(IPString, out IP)) throw new ArgumentException("Invalid IPv4/IPv6 address.");
+            if (!IPAddress.TryParse(IPString, out IPAddress IP))
+                throw new ArgumentException("Invalid IPv4/IPv6 address.");
             return IP;
         }
 
@@ -94,7 +94,7 @@ namespace EasyTcp.Client
         public bool Connect(string IP, ushort port, TimeSpan timeout, Encryption encryption, ushort maxDataSize = 1024)
         {
             Encryption = encryption;
-            return Connect(_GetIP(IP), port, timeout, maxDataSize);
+            return Connect(GetIP(IP), port, timeout, maxDataSize);
         }
         /// <summary>
         /// Connect to server and set encryption.
@@ -119,7 +119,7 @@ namespace EasyTcp.Client
         /// <param name="MaxDataSize">Max size of a message client can receive</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
         public bool Connect(string IP, ushort port, TimeSpan timeout, ushort maxDataSize = 1024)
-            => Connect(_GetIP(IP), port, timeout, maxDataSize);
+            => Connect(GetIP(IP), port, timeout, maxDataSize);
         /// <summary>
         /// Connect to server.
         /// </summary>
@@ -149,7 +149,7 @@ namespace EasyTcp.Client
                 buffer = new byte[2];
 
                 //Start listerning for data.
-                Socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, onReceiveLength, Socket);
+                Socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, OnReceiveLength, Socket);
                 return true;
             }
             else { Socket = null; return false; }
@@ -168,7 +168,7 @@ namespace EasyTcp.Client
                 Socket.Shutdown(SocketShutdown.Both);
                 Socket = null;
             }
-            catch (Exception ex) { notifyOnError(ex); }
+            catch (Exception ex) { NotifyOnError(ex); }
 
             if (notifyOnDisconnect) OnDisconnect?.Invoke(this, this);//Call OnDisconnect.
         }
@@ -472,7 +472,7 @@ namespace EasyTcp.Client
         #endregion
 
 
-        private void onReceiveLength(IAsyncResult ar)
+        private void OnReceiveLength(IAsyncResult ar)
         {
             Socket socket = ar.AsyncState as Socket;
 
@@ -485,13 +485,13 @@ namespace EasyTcp.Client
                 ushort DataLength = BitConverter.ToUInt16(buffer, 0);//Get the length of the data.
 
                 if (DataLength <= 0 || DataLength > maxDataSize) { Disconnect(true); return; }//Invalid length, close connection.
-                else socket.BeginReceive(buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, onReceiveData, socket);//Start accepting the data.
+                else socket.BeginReceive(buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, OnReceiveData, socket);//Start accepting the data.
             }
             catch (SocketException) { Disconnect(false); OnDisconnect?.Invoke(this, this); }
-            catch (Exception ex) { notifyOnError(ex); }
+            catch (Exception ex) { NotifyOnError(ex); }
         }
 
-        private void onReceiveData(IAsyncResult ar)
+        private void OnReceiveData(IAsyncResult ar)
         {
             Socket socket = ar.AsyncState as Socket;
 
@@ -502,13 +502,17 @@ namespace EasyTcp.Client
                 { Disconnect(true); return; }
 
                 DataReceived?.Invoke(this, new Message(buffer, socket, Encryption, encoding));//Trigger event
-                socket.BeginReceive(buffer = new byte[2], 0, buffer.Length, SocketFlags.None, onReceiveLength, socket);//Start receiving next message.
+                socket.BeginReceive(buffer = new byte[2], 0, buffer.Length, SocketFlags.None, OnReceiveLength, socket);//Start receiving next message.
             }
             catch (SocketException) { Disconnect(true); return; }
-            catch (Exception ex) { notifyOnError(ex); }
+            catch (Exception ex) { NotifyOnError(ex); }
         }
 
         /*This function is used to handle errors*/
-        private void notifyOnError(Exception ex) { if (OnError != null) OnError(this, ex); else throw ex; }
+        private void NotifyOnError(Exception ex)
+        {
+            if (OnError != null)
+                OnError(this, ex); else throw ex;
+        }
     }
 }

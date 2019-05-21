@@ -69,7 +69,7 @@ namespace EasyTcp.Server
                 Listener.Listen(100);//100 = maximum pending connections.
 
                 //Start accepting new connections.
-                Listener.BeginAccept(onClientConnect, null);
+                Listener.BeginAccept(OnClientConnect, null);
             }
             catch (Exception ex) { parent.NotifyOnError(ex); }
         }
@@ -78,7 +78,7 @@ namespace EasyTcp.Server
         /// Called when a new client connect's.
         /// </summary>
         /// <param name="ar">Used to call EndAccept</param>
-        private void onClientConnect(IAsyncResult ar)
+        private void OnClientConnect(IAsyncResult ar)
         {
             if (!IsListerning) return;
 
@@ -87,9 +87,9 @@ namespace EasyTcp.Server
                 Socket client = Listener.EndAccept(ar);//Accept socket.
 
                 if (parent.BannedIPs.Contains(((IPEndPoint)client.RemoteEndPoint).Address.ToString()))//Check if client is banned.
-                    refuseClient(client, true);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
+                    RefuseClient(client, true);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
                 else if (ConnectedClients.Count >= maxConnections)//Check if there are to many connections.
-                    refuseClient(client, false);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
+                    RefuseClient(client, false);///Refuse connection and call <see cref="HenkTcpServer.ClientRefused"/>.
                 else
                 {
                     ClientObject clientObject = new ClientObject() { Socket = client, Buffer = new byte[2] };
@@ -98,18 +98,18 @@ namespace EasyTcp.Server
                     parent.NotifyClientConnected(client);
 
                     //Start listerning for data.
-                    client.BeginReceive(clientObject.Buffer, 0, clientObject.Buffer.Length, SocketFlags.None, onReceiveLength, clientObject);
+                    client.BeginReceive(clientObject.Buffer, 0, clientObject.Buffer.Length, SocketFlags.None, OnReceiveLength, clientObject);
                 }
             }
             catch (Exception ex) { if (parent.IsRunning) parent.NotifyOnError(ex); }
 
-            Listener.BeginAccept(onClientConnect, Listener);//Wait for next client
+            Listener.BeginAccept(OnClientConnect, Listener);//Wait for next client
         }
 
         /// <summary>
         /// Refuse a connection,Called by onClientConnect.
         /// </summary>
-        private void refuseClient(Socket client, bool isBanned)
+        private void RefuseClient(Socket client, bool isBanned)
         {
             string IP = ((IPEndPoint)client.RemoteEndPoint).Address.ToString();
             client.Close();
@@ -120,7 +120,7 @@ namespace EasyTcp.Server
         /// Receive length of a message, triggert first when receiving a message.
         /// </summary>
         /// <param name="ar"></param>
-        private void onReceiveLength(IAsyncResult ar)
+        private void OnReceiveLength(IAsyncResult ar)
         {
             ClientObject client = ar.AsyncState as ClientObject;
 
@@ -128,21 +128,21 @@ namespace EasyTcp.Server
             {
                 //Test if client is connected.
                 if (client.Socket.Poll(0, SelectMode.SelectRead) && client.Socket.Available.Equals(0))
-                { _CloseClientObject(client); return; }
+                { CloseClientObject(client); return; }
 
                 ushort dataLength = BitConverter.ToUInt16(client.Buffer, 0);//Get the length of the data.
 
-                if (dataLength <= 0 || dataLength > maxDataSize) _CloseClientObject(client);//Invalid length, close connection.
-                else client.Socket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None, onReceiveData, client);//Start accepting the data.
+                if (dataLength <= 0 || dataLength > maxDataSize) CloseClientObject(client);//Invalid length, close connection.
+                else client.Socket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None, OnReceiveData, client);//Start accepting the data.
             }
-            catch (Exception ex) { _CloseClientObject(client); parent.NotifyOnError(ex); }
+            catch (Exception ex) { CloseClientObject(client); parent.NotifyOnError(ex); }
         }
 
         /// <summary>
-        /// Receive data, triggerd after <see cref="_ReceiveLength(IAsyncResult)"/>
+        /// Receive data, triggerd after <see cref="ReceiveLength(IAsyncResult)"/>
         /// </summary>
         /// <param name="ar">Contains <see cref="ClientObject"/></param>
-        private void onReceiveData(IAsyncResult ar)
+        private void OnReceiveData(IAsyncResult ar)
         {
             ClientObject client = ar.AsyncState as ClientObject;
 
@@ -150,18 +150,18 @@ namespace EasyTcp.Server
             {
                 //Test if client is connected.
                 if (client.Socket.Poll(0, SelectMode.SelectRead) && client.Socket.Available.Equals(0))
-                { _CloseClientObject(client); return; }
+                { CloseClientObject(client); return; }
 
                 parent.NotifyDataReceived(client.Buffer, client.Socket);//Trigger event
-                client.Socket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None, onReceiveLength, client);//Start receiving next length.
+                client.Socket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None, OnReceiveLength, client);//Start receiving next length.
             }
-            catch (Exception ex) { _CloseClientObject(client); parent.NotifyOnError(ex); }
+            catch (Exception ex) { CloseClientObject(client); parent.NotifyOnError(ex); }
         }
 
         /// <summary>
-        /// Close a disconnected connetion, Called by _OnDataReceive.
+        /// Close a disconnected connetion, Called by OnDataReceive.
         /// </summary>
-        private void _CloseClientObject(ClientObject Client)
+        private void CloseClientObject(ClientObject Client)
         {
             ///~!This function is called by an async funtion(<see cref="_OnDataReceive(IAsyncResult)"/>) so need to be locked!~
             lock (ConnectedClients) ConnectedClients.Remove(Client.Socket);

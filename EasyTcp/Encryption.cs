@@ -31,7 +31,7 @@ namespace EasyTcp
         /// <summary>
         /// Algorithm for encryption and decryption data.
         /// </summary> 
-        private SymmetricAlgorithm algorithm;
+        private readonly SymmetricAlgorithm algorithm;
 
         /// <summary>
         /// Create class with an already set up algorithm.

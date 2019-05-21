@@ -83,10 +83,10 @@ namespace EasyTcp.Server
         /// </summary>
         /// <param name="IPString">IP(IPv4 or IPv6) as string</param>
         /// <returns>IP as IPAddress</returns>
-        private IPAddress getIP(string IPString)
+        private IPAddress GetIP(string IPString)
         {
-            IPAddress IP;
-            if (!IPAddress.TryParse(IPString, out IP)) throw new ArgumentException("Invalid IPv4/IPv6 address.");
+            if (!IPAddress.TryParse(IPString, out IPAddress IP))
+                throw new ArgumentException("Invalid IPv4/IPv6 address.");
             return IP;
         }
 
@@ -102,7 +102,7 @@ namespace EasyTcp.Server
         public void Start(string IP, ushort port, int maxConnections, Encryption encryption, bool dualMode = false, ushort maxDataSize = 1024)
         {
             Encryption = encryption;
-            Start(getIP(IP), port, maxConnections, dualMode, maxDataSize);
+            Start(GetIP(IP), port, maxConnections, dualMode, maxDataSize);
         }
         /// <summary>
         /// Start the server and overide encryption.
@@ -127,7 +127,7 @@ namespace EasyTcp.Server
         /// <param name="dualMode">DualMode will specifies whether the Socket is a dual-mode socket used for both IPv4 and IPv6. DualMode sockets need to be started with an IPv6 address</param>
         /// <param name="maxDataSize">Max size of a message the server can receive</param>
         public void Start(string IP, ushort port, int maxConnections, bool dualMode = false, ushort maxDataSize = 1024)
-            => Start(getIP(IP), port, maxConnections, dualMode, maxDataSize);
+            => Start(GetIP(IP), port, maxConnections, dualMode, maxDataSize);
         /// <summary>
         /// Start the server.
         /// </summary>
