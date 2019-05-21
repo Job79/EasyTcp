@@ -79,3 +79,5 @@ Server:
   0.56923 + 0.58287 + 0.58577 + 0.58708 + 0.59209 = 2.91414ms  
   Average = 2.91414 / 5 = 0.582828ms
 </details>
+
+# [Documentation](https://github.com/GHenkje/EasyTcp/wiki)
