@@ -1,11 +1,20 @@
-# EasyTcp
-A high performance/async tcp server and client. (SocketBased) (Supports IPv6 & IPv4) Simple and easy to use(but also advanced) and has a good documentation. https://www.nuget.org/packages/EasyTcp/
+<p align="center">
+  <b>EasyTcp</b>
+  <br/>
+  <img src="https://img.shields.io/badge/License-MIT-green.svg">
+  <img src="https://img.shields.io/badge/version-2.0.4-green.svg">
+  <img src="https://img.shields.io/badge/build-passing-green.svg">
+  <br/>
+  <br/>
+  <a>A high performance tcp server and client. (Async) (IPv6 & IPv4)<br/>Simple and easy to use. See the documentation: https://github.com/GHenkje/EasyTcp/wiki<a/>
+  <br/><br/>
+</p>
 
 # Performance
 Because EasyTcp is socket based and async it has good performance.
-I made a test to show the performance.
-This test will send a message to the server, then the server send the same message back.  
-If the client received the message it would send the next one.
+I made a test to see the performance.
+This test will send a message to the server, then the server send the same message back.
+If the client received the message it sends the next one.
 The average of this test: 0.582828ms (on localhost)
 <details>
   <summary>Click to see test code</summary>
@@ -70,3 +79,5 @@ Server:
   0.56923 + 0.58287 + 0.58577 + 0.58708 + 0.59209 = 2.91414ms  
   Average = 2.91414 / 5 = 0.582828ms
 </details>
+
+# [Documentation](https://github.com/GHenkje/EasyTcp/wiki)
