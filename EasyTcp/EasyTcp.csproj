@@ -5,13 +5,13 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EasyTcp.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.4</Version>
+    <Version>2.0.4.1</Version>
     <Authors>Henkje</Authors>
     <Company>HenkSharp</Company>
-    <Description>A high performance/async tcp server and client. (SocketBased) (Supports IPv6 &amp; IPv4)
-Simple and easy to use(but also advanced) and has a good documentation.</Description>
+    <Description>A high performance tcp server and client. (Async) (IPv6 &amp; IPv4) Simple and easy to use. See the documentation: https://github.com/GHenkje/EasyTcp/wiki 
+</Description>
     <Copyright>Copyright (c) 2019 Henkje</Copyright>
-    <PackageLicenseUrl>https://github.com/GHenkje/EasyTcp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/GHenkje/EasyTcp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GHenkje/EasyTcp</RepositoryUrl>
     <RepositoryType></RepositoryType>
@@ -19,8 +19,9 @@ Simple and easy to use(but also advanced) and has a good documentation.</Descrip
     <PackageReleaseNotes>- Updated encryption class
   - Added GetKey();
 </PackageReleaseNotes>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
-    <FileVersion>2.0.4.0</FileVersion>
+    <AssemblyVersion>2.0.4.1</AssemblyVersion>
+    <FileVersion>2.0.4.1</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
