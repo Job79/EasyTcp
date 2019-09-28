@@ -40,7 +40,7 @@ The average of this test: 0.0582828ms (on localhost)
 
         sw.Stop();
         Console.WriteLine($"ElapsedMilliseconds SpeedTest: {sw.ElapsedMilliseconds}");
-        Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / MessageCount}");
+        Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / (decimal)MessageCount}");
     }
 ```
 Server:
