@@ -62,22 +62,22 @@ Server:
   <summary>Click to see output</summary>
   Test1 = 56923ms
   
-  56923ms / 1.000.000 messages = 0.56923ms
+  56923ms / 1.000.000 messages = 0.056923ms
   
   Test2 = 58287ms  
-  58287 / 1.000.000 messages = 0.58287ms
+  58287 / 1.000.000 messages = 0.058287ms
   
   Test3 = 58577ms  
-  58577ms / 1.000.000 messages = 0.58577ms
+  58577ms / 1.000.000 messages = 0.058577ms
   
   Test4 = 58708ms  
-  58708ms / 1.000.000 messages = 0.58708ms
+  58708ms / 1.000.000 messages = 0.058708ms
   
   Test 5 = 59209ms  
-  58708ms / 1.000.000 messages = 0.59209ms
+  58708ms / 1.000.000 messages = 0.059209ms
  
-  0.56923 + 0.58287 + 0.58577 + 0.58708 + 0.59209 = 2.91414ms  
-  Average = 2.91414 / 5 = 0.582828ms
+  0.056923 + 0.058287 + 0.058577 + 0.058708 + 0.059209 = 0.291414ms  
+  Average = 0.291414 / 5 = 0.0582828ms
 </details>
 
 # [Documentation](https://github.com/GHenkje/EasyTcp/wiki)
