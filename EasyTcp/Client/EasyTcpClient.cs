@@ -303,10 +303,11 @@ namespace EasyTcp.Client
             Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
             Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(message, 0, message.Length);
-
-            Socket.SendAsync(e);//Write async so it won't block UI applications.
+            using (SocketAsyncEventArgs e = new SocketAsyncEventArgs())
+            {
+                e.SetBuffer(message, 0, message.Length);
+                Socket.SendAsync(e);//Write async so it won't block UI applications.
+            }
         }
         #endregion
 
@@ -459,15 +460,16 @@ namespace EasyTcp.Client
             if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
 
             Message reply = null;
-            ManualResetEventSlim signal = new ManualResetEventSlim();
+            using (ManualResetEventSlim signal = new ManualResetEventSlim())
+            {
+                void Event(object sender, Message e) { reply = e; DataReceived -= Event; signal.Set(); };
 
-            void Event(object sender, Message e) { reply = e; DataReceived -= Event; signal.Set(); };
+                DataReceived += Event;
+                Send(data);
 
-            DataReceived += Event;
-            Send(data);
-
-            signal.Wait(timeout);
-            return reply;
+                signal.Wait(timeout);
+                return reply;
+            }
         }
         #endregion
 

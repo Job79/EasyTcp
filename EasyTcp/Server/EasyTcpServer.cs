@@ -344,11 +344,13 @@ namespace EasyTcp.Server
             Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
             Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(message, 0, message.Length);
+            using (SocketAsyncEventArgs e = new SocketAsyncEventArgs())
+            {
+                e.SetBuffer(message, 0, message.Length);
 
-            foreach (var client in ConnectedClients)
-                client.SendAsync(e);
+                foreach (var client in ConnectedClients)
+                    client.SendAsync(e);
+            }
         }
         #endregion
 
@@ -487,10 +489,11 @@ namespace EasyTcp.Server
             Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
             Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(message, 0, message.Length);
-
-            client.SendAsync(e);
+            using (SocketAsyncEventArgs e = new SocketAsyncEventArgs())
+            {
+                e.SetBuffer(message, 0, message.Length);
+                client.SendAsync(e);//Write async so it won't block UI applications.
+            }
         }
         #endregion
 
@@ -661,15 +664,16 @@ namespace EasyTcp.Server
             if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
 
             Message reply = null;
-            ManualResetEventSlim signal = new ManualResetEventSlim();
+            using (ManualResetEventSlim signal = new ManualResetEventSlim())
+            {
+                void Event(object sender, Message e) { if (e.Socket.Equals(client)) { reply = e; DataReceived -= Event; signal.Set(); } };
 
-            void Event(object sender, Message e) { if (e.Socket.Equals(client)) { reply = e; DataReceived -= Event; signal.Set(); } };
+                DataReceived += Event;
+                Send(client, data);
 
-            DataReceived += Event;
-            Send(client, data);
-
-            signal.Wait(timeout);
-            return reply;
+                signal.Wait(timeout);
+                return reply;
+            }
         }
         #endregion
 

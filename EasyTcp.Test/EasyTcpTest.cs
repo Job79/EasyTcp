@@ -129,7 +129,7 @@ namespace EasyTcp.Test
             client.SendEncrypted(1);
             server.BroadcastEncrypted(1);
 
-            Task.Delay(10).Wait();//Little wait to receive messages
+            Task.Delay(10).Wait();//Little wait to receive messages.
 
             Console.WriteLine(serverReceive);
             Console.WriteLine(clientReceive);

@@ -237,10 +237,11 @@ namespace EasyTcp
             Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
             Buffer.BlockCopy(data, 0, message, 2, data.Length);
 
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(message, 0, message.Length);
-
-            Socket.SendAsync(e);
+            using (SocketAsyncEventArgs e = new SocketAsyncEventArgs())
+            {
+                e.SetBuffer(message, 0, message.Length);
+                Socket.SendAsync(e);//Write async so it won't block UI applications.
+            }
         }
 
         /// <summary>
