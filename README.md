@@ -15,7 +15,7 @@ Because EasyTcp is socket based and async it has good performance.
 I made a test to see the performance.
 This test will send a message to the server, then the server send the same message back.
 If the client received the message it sends the next one.
-The average of this test: 0.582828ms (on localhost)
+The average of this test: 0.0582828ms (on localhost)
 <details>
   <summary>Click to see test code</summary>
   
