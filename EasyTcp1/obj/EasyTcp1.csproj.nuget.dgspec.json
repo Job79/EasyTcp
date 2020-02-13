@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/job/Documents/Projects/EasyTcp/EasyTcp1/EasyTcp1.csproj": {}
+  },
+  "projects": {
+    "/home/job/Documents/Projects/EasyTcp/EasyTcp1/EasyTcp1.csproj": {
+      "version": "2.0.4.2",
+      "restore": {
+        "projectUniqueName": "/home/job/Documents/Projects/EasyTcp/EasyTcp1/EasyTcp1.csproj",
+        "projectName": "EasyTcp1",
+        "projectPath": "/home/job/Documents/Projects/EasyTcp/EasyTcp1/EasyTcp1.csproj",
+        "packagesPath": "/home/job/.nuget/packages/",
+        "outputPath": "/home/job/Documents/Projects/EasyTcp/EasyTcp1/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/job/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

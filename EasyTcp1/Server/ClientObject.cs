@@ -1,4 +1,4 @@
-﻿/* EasyTcp
+﻿/* EasyTcp1
  * 
  * Copyright (c) 2019 henkje
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,25 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using System.Net.Sockets;
+
 namespace EasyTcp.Server
 {
-    public class RefusedClient
+    internal class ClientObject
     {
-        /// <summary>
-        /// Returns the IP of the refused client.
-        /// </summary>
-        public readonly string IP;
+        //Client socket.
+        public Socket Socket;
 
         /// <summary>
-        /// Returns true if client is banned.
-        /// Returns false if client is refused because of to much connections.
+        /// Data buffer for incoming data.
         /// </summary>
-        public readonly bool IsBanned;
-
-        public RefusedClient(string IP, bool isBanned)
-        {
-            this.IP = IP;
-            this.IsBanned = isBanned;
-        }
+        public byte[] Buffer;
     }
 }

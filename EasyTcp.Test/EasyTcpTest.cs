@@ -1,4 +1,4 @@
-/* EasyTcp.Test
+/* EasyTcp1.Test
  * 
  * Copyright (c) 2019 henkje
  * Permission is hereby granted, free of charge, to any person obtaining a copy

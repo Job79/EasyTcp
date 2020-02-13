@@ -1,27 +1,7 @@
-﻿/* EasyTcp
- * 
- * Copyright (c) 2019 henkje
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 using System;
 using System.Net;
 using System.Text;
+using EasyTcp.Core;
 using System.Threading;
 using System.Net.Sockets;
 
@@ -29,218 +9,132 @@ namespace EasyTcp.Client
 {
     public class EasyTcpClient
     {
-        public Socket Socket { get; private set; }
+        /// <summary>
+        /// Raw client socket
+        /// </summary>
+        public Socket Socket { get; protected set; }
 
         /// <summary>
-        /// DataReceived, triggerd when a message is received and no other data is avaible.
+        /// DataReceived, triggered when a message is received and no other data is available.
         /// </summary>
         public event EventHandler<Message> DataReceived;
+
         /// <summary>
-        /// OnDisconect, triggerd when a client disconnect's from the server.
+        /// OnDisconnect, triggered when a client disconnects from the server.
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
+
         /// <summary>
-        /// OnError, triggerd when an error occurs.
+        /// OnError, triggered when an error occurs.
+        /// If not used error will be thrown.
         /// </summary>
         public event EventHandler<Exception> OnError;
 
         /// <summary>
-        /// Encoding to encode string's
+        /// Encoding to handle strings
+        /// Used for sending and receiving data.
+        /// Default: UTF8
         /// </summary>
-        private Encoding encoding = Encoding.UTF8;
+        private Encoding _encoding = Encoding.UTF8;
         public Encoding Encoding
         {
-            get { return encoding; }
-            set { encoding = value ?? throw new ArgumentNullException("Encoding can't be set to null."); }
+            get => _encoding;
+            set => _encoding = value ?? throw new ArgumentException("Encoding can't be set to null.");
         }
-
-        /// <summary>
-        /// Encryption class for encrypting/decrypting data.
-        /// </summary>
-        public Encryption Encryption;
-
-        /// <summary>
-        /// Max bytes the client can receive in 1 message.
-        /// </summary>
-        private ushort maxDataSize;
 
         /// <summary>
         /// Data buffer for incoming data.
         /// </summary>
-        private byte[] buffer;
+        private byte[] _buffer;
 
         /// <summary>
-        /// Convert string to IPAddress.
-        /// Used by the Connect overloads.
+        /// Connect to server with ip as string
         /// </summary>
-        /// <param name="IPString">IP(IPv4 or IPv6) as string</param>
-        /// <returns>IP as IPAddress</returns>
-        private IPAddress GetIP(string IPString)
+        /// <param name="ipString">IP address as string</param>
+        /// <param name="port">Port as ushort(1-65 535)</param>
+        /// <param name="timeout">Maximum timeout for connecting to server</param>
+        /// <returns>bool, true = Connected, false = failed to connect</returns>>
+        public bool Connect(string ipString, ushort port, TimeSpan timeout)
         {
-            if (!IPAddress.TryParse(IPString, out IPAddress IP))
+            if (!IPAddress.TryParse(ipString, out IPAddress ip))
                 throw new ArgumentException("Invalid IPv4/IPv6 address.");
-            return IP;
-        }
-
-        /// <summary>
-        /// Connect to server and set encryption.
-        /// </summary>
-        /// <param name="IP">IP address as string</param>
-        /// <param name="port">Port as ushort(0-65 535)</param>
-        /// <param name="timeout">Time it maximum can take to connect to server</param>
-        /// <param name="encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
-        /// <param name="maxDataSize">Max size of a message client can receive</param>
-        /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(string IP, ushort port, TimeSpan timeout, Encryption encryption, ushort maxDataSize = 1024)
-        {
-            Encryption = encryption;
-            return Connect(GetIP(IP), port, timeout, maxDataSize);
-        }
-        /// <summary>
-        /// Connect to server and set encryption.
-        /// </summary>
-        /// <param name="IP">IP address as IPAddress</param>
-        /// <param name="port">Port as ushort(0-65 535)</param>
-        /// <param name="timeout">Time it maximum can take to connect to server</param>
-        /// <param name="encryption">Encryption will set <see cref="EasyTcp.Encryption"/></param>
-        /// <param name="maxDataSize">Max size of a message client can receive</param>
-        /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(IPAddress IP, ushort port, TimeSpan timeout, Encryption encryption, ushort maxDataSize = 1024)
-        {
-            Encryption = encryption;
-            return Connect(IP, port, timeout, maxDataSize);
+            return Connect(ip, port, timeout);
         }
         /// <summary>
         /// Connect to server.
         /// </summary>
-        /// <param name="IP">IP address as string</param>
-        /// <param name="Port">Port as ushort(0-65 535)</param>
-        /// <param name="Timeout">Time it maximum can take to connect to server</param>
-        /// <param name="MaxDataSize">Max size of a message client can receive</param>
+        /// <param name="ip">IP address as IPAddress</param>
+        /// <param name="port">Port as ushort(1-65 535)</param>
+        /// <param name="timeout">Maximum timeout for connecting to server</param>
         /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(string IP, ushort port, TimeSpan timeout, ushort maxDataSize = 1024)
-            => Connect(GetIP(IP), port, timeout, maxDataSize);
-        /// <summary>
-        /// Connect to server.
-        /// </summary>
-        /// <param name="IP">IP address as IPAddress</param>
-        /// <param name="port">Port as ushort(0-65 535)</param>
-        /// <param name="timeout">Time it maximum can take to connect to server</param>
-        /// <param name="maxDataSize">Max size of a message client can receive</param>
-        /// <returns>bool, true = Connected, false = failed to connect</returns>
-        public bool Connect(IPAddress IP, ushort port, TimeSpan timeout, ushort maxDataSize = 1024)
+        public bool Connect(IPAddress ip, ushort port, TimeSpan timeout)
         {
-            if (IP == null) throw new ArgumentNullException("Could not connect: Invalid IP.");
-            else if (port == 0) throw new ArgumentException("Could not connect: Invalid Port.");
-            else if (timeout.Ticks.Equals(0)) throw new ArgumentException("Could not connect: Invalid Timeout.");
-            else if (maxDataSize <= 0) throw new ArgumentException("Could not connect: Invalid MaxDataSize.");
+            if (ip == null) throw new ArgumentException("Could not connect: IP is null.");
+            if (port == 0) throw new ArgumentException("Could not connect: Invalid Port.");
 
             //Create socket.
-            Socket = new Socket(IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            var socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             //Try to connect.
-            try { Socket.BeginConnect(IP, port,null,null).AsyncWaitHandle.WaitOne(timeout); }
-            catch { Socket = null; return false; }
-
-            //Check if socket is connected or timout exired.
-            if (Socket.Connected)
+            try
             {
-                this.maxDataSize = maxDataSize;
-                buffer = new byte[2];
-
-                //Start listerning for data.
-                Socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, OnReceiveLength, Socket);
-                return true;
+                socket.BeginConnect(ip, port, null, null).AsyncWaitHandle.WaitOne(timeout);
             }
-            else { Socket = null; return false; }
+            catch//ToDo: fix duplicated code
+            {
+                socket.Close();
+                return false;
+            }
+
+            if (!Socket.Connected)//Check if socket is connected or timeout is expired.
+            {
+                socket.Close();
+                return false;
+            }
+          
+            //Start listening for data.
+            _buffer = new byte[2];
+            Socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, OnReceiveLength, null);
+            return true;
         }
 
         /// <summary>
         /// Disconnect from server.
         /// </summary>
-        /// <param name="notifyOnDisconnect">Calls the OnDisconnect handler if set to true</param>
-        public void Disconnect(bool notifyOnDisconnect = false)
+        /// <param name="notifyOnDisconnect">Calls the OnDisconnect handler if set to true, default true</param>
+        public void Disconnect(bool notifyOnDisconnect = true)
         {
-            if (Socket == null) return;//Client is not connected.
-
+            if (Socket == null) return;
             try
             {
                 Socket.Shutdown(SocketShutdown.Both);
                 Socket = null;
             }
-            catch (Exception ex) { NotifyOnError(ex); }
+            catch (Exception ex)
+            {
+                NotifyOnError(ex);
+            }
 
-            if (notifyOnDisconnect) OnDisconnect?.Invoke(this, this);//Call OnDisconnect.
+            if (notifyOnDisconnect)
+                OnDisconnect?.Invoke(this, this); //Call OnDisconnect.
         }
 
+        //ToDo: Update documentation
         /// <summary>
-        /// Return the connection state of the connection.
+        /// Return the current connection state of the client socket.
         /// </summary>
         public bool IsConnected
         {
             get
             {
-                if (Socket == null) return false;
-                else if (Socket.Poll(0, SelectMode.SelectRead) && Socket.Available.Equals(0)) { Disconnect(true); return false; }
+                if (Socket == null || Socket.Poll(0, SelectMode.SelectRead) && Socket.Available.Equals(0))
+                {
+                    Disconnect(true);
+                    return false;
+                }
                 else return true;
             }
         }
-
-        #region Send
-        /// <summary>
-        /// Encrypt data(short) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(short data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(int) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(int data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(long) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(long data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(double) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(double data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(float) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(float data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(bool) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(bool data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(char) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(char data)
-            => SendEncrypted(BitConverter.GetBytes(data));
-        /// <summary>
-        /// Encrypt data(string) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(string data)
-            => SendEncrypted(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
-        /// <summary>
-        /// Encrypt data(byte[]) and send data to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        public void SendEncrypted(byte[] data)
-            => Send((Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
 
         /// <summary>
         /// Send data(short) to server.
@@ -289,101 +183,21 @@ namespace EasyTcp.Client
         /// </summary>
         /// <param name="data">Data to send to server</param>
         public void Send(string data)
-            => Send(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")));
-        /// <summary>
-        /// Send data(byte[]) to server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
+            => Send(_encoding.GetBytes(data ?? throw new ArgumentException("Could not send data: Data is null.")));
         public void Send(byte[] data)
         {
-            if (data == null) throw new ArgumentNullException("Could not send data: Data is null.");
-            else if (Socket == null) throw new Exception("Could not send data: Socket not connected.");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not send data: Data is empty.");
+            if (Socket == null) throw new Exception("Could not send data: Socket not connected.");
 
             byte[] message = new byte[data.Length + 2];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort)data.Length), 0, message, 0, 2);
-            Buffer.BlockCopy(data, 0, message, 2, data.Length);
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort) data.Length), 0, message, 0,
+                2); //Write length of data to message.
+            Buffer.BlockCopy(data, 0, message, 2, data.Length); //Write data to message.
 
-            using (SocketAsyncEventArgs e = new SocketAsyncEventArgs())
-            {
-                e.SetBuffer(message, 0, message.Length);
-                Socket.SendAsync(e);//Write async so it won't block UI applications.
-            }
+            using SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(message, 0, message.Length);
+            Socket.SendAsync(e); //Write async so it won't block UI applications.
         }
-        #endregion
-
-        #region SendAndGetReplyEncrypted
-        /// <summary>
-        /// Encrypt data(short) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(short data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(int) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(int data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(long) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(long data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(double) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(double data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(float) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(float data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(bool) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(bool data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(char) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(char data, TimeSpan timeout) 
-            => SendAndGetReplyEncrypted(BitConverter.GetBytes(data), timeout);
-        /// <summary>
-        /// Encrypt data(string) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(string data, TimeSpan timeout)
-            => SendAndGetReplyEncrypted(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
-        /// <summary>
-        /// Encrypt data(byte[]) and send data to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
-        public Message SendAndGetReplyEncrypted(byte[] data, TimeSpan timeout)
-            => SendAndGetReply((Encryption ?? throw new NullReferenceException("Could not encrypt data: Encryption class is null.")).Encrypt(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
 
         /// <summary>
         /// Send data(short) to server. Then wait for a reply from the server.
@@ -448,65 +262,53 @@ namespace EasyTcp.Client
         /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>received data</returns>
         public Message SendAndGetReply(string data, TimeSpan timeout)
-            => SendAndGetReply(encoding.GetBytes(data ?? throw new ArgumentNullException("Could not send data: Data is null.")), timeout);
-        /// <summary>
-        /// Send data(byte[]) to server. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <returns>received data</returns>
+            => SendAndGetReply(_encoding.GetBytes(data ?? throw new ArgumentException("Could not send data: Data is null.")), timeout);
         public Message SendAndGetReply(byte[] data, TimeSpan timeout)
         {
-            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
-
             Message reply = null;
-            using (ManualResetEventSlim signal = new ManualResetEventSlim())
+            using ManualResetEventSlim signal = new ManualResetEventSlim();
+
+            void Event(object sender, Message e)
             {
-                void Event(object sender, Message e) { reply = e; DataReceived -= Event; signal.Set(); };
-
-                DataReceived += Event;
-                Send(data);
-
-                signal.Wait(timeout);
-                return reply;
+                reply = e;
+                DataReceived -= Event;
+                signal.Set(); // Method can't be triggered after signal is disposed.
             }
+
+            DataReceived += Event;
+            Send(data);
+
+            signal.Wait(timeout);
+
+            if (reply == null) DataReceived -= Event;
+            return reply;
         }
-        #endregion
 
-
-        private void OnReceiveLength(IAsyncResult ar)
+        private void OnReceiveLength(IAsyncResult ar) //TODO: Check if poll can be removed an <= can be replaced with ==
         {
-            Socket socket = ar.AsyncState as Socket;
-
+            if(!IsConnected) return;
+            
             try
             {
-                //Test if client is connected.
-                if (socket.Poll(0, SelectMode.SelectRead) && socket.Available.Equals(0))
-                { Disconnect(true); return; }
+                ushort dataLength = BitConverter.ToUInt16(_buffer, 0); //Get the length of the upcoming data.
 
-                ushort DataLength = BitConverter.ToUInt16(buffer, 0);//Get the length of the data.
-
-                if (DataLength <= 0 || DataLength > maxDataSize) { Disconnect(true); return; }//Invalid length, close connection.
-                else socket.BeginReceive(buffer = new byte[DataLength], 0, DataLength, SocketFlags.None, OnReceiveData, socket);//Start accepting the data.
+                if (dataLength <= 0) Disconnect(true); //Invalid length, close connection. 
+                else Socket.BeginReceive(_buffer = new byte[dataLength], 0, dataLength, SocketFlags.None, OnReceiveData, null); //Start accepting the data.
             }
-            catch (SocketException) { Disconnect(false); OnDisconnect?.Invoke(this, this); }
+            catch (SocketException) { Disconnect(true); }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
         private void OnReceiveData(IAsyncResult ar)
         {
-            Socket socket = ar.AsyncState as Socket;
+            if(!IsConnected) return;
 
             try
             {
-                //Test if client is connected.
-                if (socket.Poll(0, SelectMode.SelectRead) && socket.Available.Equals(0))
-                { Disconnect(true); return; }
-
-                DataReceived?.Invoke(this, new Message(buffer, socket, Encryption, encoding));//Trigger event
-                socket.BeginReceive(buffer = new byte[2], 0, buffer.Length, SocketFlags.None, OnReceiveLength, socket);//Start receiving next message.
+                DataReceived?.Invoke(this, new Message(_buffer, Socket, _encoding)); //Trigger event
+                Socket.BeginReceive(_buffer = new byte[2], 0, _buffer.Length, SocketFlags.None, OnReceiveLength, null); //Start receiving next message.
             }
-            catch (SocketException) { Disconnect(true); return; }
+            catch (SocketException){ Disconnect(true); }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
@@ -514,7 +316,8 @@ namespace EasyTcp.Client
         private void NotifyOnError(Exception ex)
         {
             if (OnError != null)
-                OnError(this, ex); else throw ex;
+                OnError(this, ex);
+            else throw ex;
         }
     }
 }
