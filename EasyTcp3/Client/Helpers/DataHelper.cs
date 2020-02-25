@@ -1,6 +1,6 @@
-namespace EasyTcp3.Client.Helpers
+namespace EasyTcp3.Client
 {
-    public class DataHelper
+    public static class DataHelper
     {
         
     }
