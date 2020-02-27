@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp3", "EasyTcp3\EasyTc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp3.Test", "EasyTcp3.Test\EasyTcp3.Test.csproj", "{5D9800EB-B538-41A4-B612-124F81171325}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp.Cli", "EasyTcp.Cli\EasyTcp.Cli.csproj", "{753626CB-3B8D-4EF9-B8B1-A6F887DF7338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp.Cli2", "EasyTcp.Cli2\EasyTcp.Cli2.csproj", "{4EC65D36-69F4-46B1-AC4D-A64C480D97FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{5D9800EB-B538-41A4-B612-124F81171325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9800EB-B538-41A4-B612-124F81171325}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9800EB-B538-41A4-B612-124F81171325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{753626CB-3B8D-4EF9-B8B1-A6F887DF7338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{753626CB-3B8D-4EF9-B8B1-A6F887DF7338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{753626CB-3B8D-4EF9-B8B1-A6F887DF7338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{753626CB-3B8D-4EF9-B8B1-A6F887DF7338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EC65D36-69F4-46B1-AC4D-A64C480D97FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EC65D36-69F4-46B1-AC4D-A64C480D97FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EC65D36-69F4-46B1-AC4D-A64C480D97FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EC65D36-69F4-46B1-AC4D-A64C480D97FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
