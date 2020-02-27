@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EasyTcp3.Client;
@@ -25,6 +26,10 @@ namespace EasyTcp.cli
             Console.ReadLine();
             Console.WriteLine("Shutting down the server...");
             server.Dispose();
+            
+            while (Console.ReadLine() != "c") Console.WriteLine(server.ConnectedClients.Count());
+            Main(null);
+            Task.Delay(-1).Wait();
         }
     }
 }

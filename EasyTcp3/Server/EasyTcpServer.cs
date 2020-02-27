@@ -72,6 +72,7 @@ namespace EasyTcp3.Server
         {
             if(BaseSocket == null) return;
             _isRunning = false;
+            foreach (var client in _connectedClients) client.Close();
             _connectedClients.Clear();
             BaseSocket.Dispose();
             BaseSocket = null;
