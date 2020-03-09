@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Text;
 using System.Net.Sockets;
 
 namespace EasyTcp3.Client
@@ -15,27 +14,18 @@ namespace EasyTcp3.Client
         /// <summary>
         /// Receive buffer
         /// </summary>
-        private byte[] _buffer;
+        public byte[] Buffer;
 
         public event EventHandler<Message> OnDataReceive;
         public event EventHandler<EasyTcpClient> OnConnect;
         public event EventHandler<EasyTcpClient> OnDisconnect;
         public event EventHandler<Exception> OnError;
-
-        /// <summary>
-        /// Encoding used for strings
-        /// </summary>
-        private Encoding _encoding = Encoding.UTF8;
-        public Encoding Encoding
-        {
-            get => _encoding;
-            set => _encoding = value ?? throw new ArgumentException("Encoding can't be set to null.");
-        }
+        
         
         /// <summary>
         /// Determines whether the next item to be received data or length
         /// </summary>
-        private bool _receiveData;
+        public bool ReceiveData;
 
         public EasyTcpClient()
         {
@@ -60,8 +50,8 @@ namespace EasyTcp3.Client
                 if (BaseSocket.Connected)
                 {
                     OnConnect?.Invoke(this, this);
-                    _buffer = new byte[2]; //Start listening for data
-                    BaseSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, OnReceive, BaseSocket);
+                    Buffer = new byte[2]; //Start listening for data
+                    BaseSocket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, OnReceive, BaseSocket);
                     return true;
                 }
             }
@@ -92,17 +82,17 @@ namespace EasyTcp3.Client
             try
             {
                 ushort dataLength = 2;
-                if (_receiveData = !_receiveData) //If receiving length
+                if (ReceiveData = !ReceiveData) //If receiving length
                 {
-                    if ((dataLength = BitConverter.ToUInt16(_buffer, 0)) == 0)
+                    if ((dataLength = BitConverter.ToUInt16(Buffer, 0)) == 0)
                     {
                         HandleDisconnect();
                         return;
                     }
                 }
-                else OnDataReceive?.Invoke(this, new Message(_buffer, this)); //Trigger event
+                else OnDataReceive?.Invoke(this, new Message(Buffer, this)); //Trigger event
 
-                BaseSocket.BeginReceive(_buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
+                BaseSocket.BeginReceive(Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
                     OnReceive, BaseSocket); //Start accepting the data.
             }
             catch (SocketException)

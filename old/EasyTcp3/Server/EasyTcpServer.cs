@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using EasyTcp3.Client;
 
 namespace EasyTcp3.Server
@@ -25,23 +24,15 @@ namespace EasyTcp3.Server
         /// <summary>
         /// List of all connected clients
         /// </summary>
-        private readonly HashSet<Socket> _connectedClients = new HashSet<Socket>();
-        public IEnumerable<Socket> ConnectedClients => _connectedClients.ToList(); //ToList to create deep copy
+        private readonly HashSet<EasyTcpClient> _connectedClients = new HashSet<EasyTcpClient>();
+        public IEnumerable<EasyTcpClient> ConnectedClients => _connectedClients.ToList(); //ToList to create deep copy
+        public IEnumerable<Socket> ConnectedSockets => ConnectedClients.Select(x=>x.BaseSocket);
+
 
         public event EventHandler<EasyTcpClient> OnClientConnect;
         public event EventHandler<EasyTcpClient> OnClientDisconnect;
         public event EventHandler<Message> OnDataReceive;
         public event EventHandler<Exception> OnError;
-
-        /// <summary>
-        /// Encoding used for strings
-        /// </summary>
-        private Encoding _encoding = Encoding.UTF8;
-        public Encoding Encoding
-        {
-            get => _encoding;
-            set => _encoding = value ?? throw new ArgumentException("Encoding can't be set to null");
-        }
 
         /// <summary>
         /// Start the server
@@ -72,7 +63,7 @@ namespace EasyTcp3.Server
         {
             if(BaseSocket == null) return;
             _isRunning = false;
-            foreach (var client in _connectedClients) client.Close();
+            foreach (var client in _connectedClients) client.Dispose();
             _connectedClients.Clear();
             BaseSocket.Dispose();
             BaseSocket = null;
@@ -88,13 +79,12 @@ namespace EasyTcp3.Server
 
             try
             {
-                var client = BaseSocket.EndAccept(ar); //Accept socket.
-                var clientObject = new ClientObject {Socket = client, Buffer = new byte[2]};
+                var client = new EasyTcpClient(BaseSocket.EndAccept(ar)) {Buffer = new byte[2]}; //Accept socket.
 
                 _connectedClients.Add(client);
-                OnClientConnect?.Invoke(this,new EasyTcpClient(client));
-                client.BeginReceive(clientObject.Buffer, 0, clientObject.Buffer.Length, SocketFlags.None,
-                    OnReceive, clientObject);
+                OnClientConnect?.Invoke(this,client);
+                client.BaseSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None,
+                    OnReceive, client);
             }
             catch (Exception ex) { if (IsRunning) NotifyOnError(ex); }
 
@@ -108,7 +98,7 @@ namespace EasyTcp3.Server
         private void OnReceive(IAsyncResult ar)
         {
             if (!IsRunning) return;
-            var client = ar.AsyncState as ClientObject;
+            var client = ar.AsyncState as EasyTcpClient;
 
             try
             {
@@ -121,20 +111,23 @@ namespace EasyTcp3.Server
                         return;
                     }
                 }
-                else OnDataReceive?.Invoke(this, new Message(client.Buffer, new EasyTcpClient(client.Socket))); //Trigger event
+                else 
+                {
+                    OnDataReceive?.Invoke(this, new Message(client.Buffer, client)); //Trigger event
+                }
 
-                client.Socket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
+                client.BaseSocket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
                     OnReceive, client); //Start accepting the data.
             }
             catch (SocketException) { HandleDisconnect(client); }
             catch (Exception ex) { NotifyOnError(ex); }
         }
 
-        private void HandleDisconnect(ClientObject client)
+        private void HandleDisconnect(EasyTcpClient client)
         {
-            lock (ConnectedClients) _connectedClients.Remove(client.Socket);
-            OnClientDisconnect?.Invoke(this, new EasyTcpClient(client.Socket));
-            client.Socket.Close();
+            lock (ConnectedClients) _connectedClients.Remove(client);
+            OnClientDisconnect?.Invoke(this, client);
+            client.Dispose();
         }
         
         /*This function is used to handle errors*/
