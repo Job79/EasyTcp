@@ -9,4 +9,4 @@
   <a>A high performance tcp server and client. (Async) (IPv6 & IPv4)<br/>Simple and easy to use.<a/>
   <br/><br/>
 </p>
-# Documentation (https://github.com/GHenkje/EasyTcp/wiki)
+# [Documentation] (https://github.com/GHenkje/EasyTcp/wiki)
