@@ -8,23 +8,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/ConnectTest.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Internal/OnReceive.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Events/ReceivingDataTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Events/ConnectTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test2/TestHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/Internal/OnClientConnect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Message.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/Stop.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/Internal/OnClientConnect.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Internal/OnReceive.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/OnConnect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test2/Events/UnitTest1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8AE63D8C-5294-4718-A734-5B9BFB1B63BC/4a/50eca11e/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Events/DisconnectTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Events/ReceivingDataTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpServer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -36,27 +42,35 @@
         <option value="$PROJECT_DIR$/EasyTcp3/Server/IsRunning.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/Send.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/Internal/OnReceive.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/ReceivingDataTest.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Shared/Internal/OnReceive.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpServer.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/ReceivingDataTest.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/ConnectTest.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/DisconnectTest.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/Start.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/Stop.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Message.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/SendAll.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Client/Internal/OnReceive.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Connect.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/IsConnected.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Client/Connect.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/ReceivingDataTest.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test2/UnitTest1.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test2/Events/UnitTest1.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/DisconnectTest.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Client/IsConnected.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Client/Connect.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Client/Send.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/SendAll.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/Stop.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/DisconnectTest2.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/ConnectTest.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/DisconnectTest.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/Start.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/Internal/OnClientConnect.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Client/Internal/OnReceive.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/SendAll.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/OnConnect.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/OnDataReceive.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
       </list>
     </option>
   </component>
@@ -83,6 +97,7 @@
       <workItem from="1583584838370" duration="4071000" />
       <workItem from="1583761101892" duration="173000" />
       <workItem from="1583762226741" duration="3867000" />
+      <workItem from="1583940117785" duration="11962000" />
     </task>
     <servers />
   </component>
@@ -90,7 +105,7 @@
     <option name="coveragePercentColumnWidth" value="150" />
     <option name="sortOrder" value="DESCENDING" />
     <option name="sortedColumn" value="1" />
-    <option name="symbolColumnWidth" value="234" />
+    <option name="symbolColumnWidth" value="313" />
     <coverage-tree-state>
       <expand>
         <path>
@@ -106,119 +121,97 @@
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
           <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
           <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="123" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-        </path>
-        <path>
-          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="123" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="126" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-        </path>
-        <path>
-          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="123" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="126" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="111" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-        </path>
-        <path>
-          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="123" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="127" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="214" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
       </expand>
       <select />
     </coverage-tree-state>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.0.bottom" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.0.center" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.0.center" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.0.left" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.0.left" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.0.right" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.0.right" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.1.bottom" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.1.center" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.1.center" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.1.left" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.1.left" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.1.right" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.1.right" timestamp="1583954229431">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229431" />
+    <state width="1878" height="368" key="GridCell.Tab.2.bottom" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.2.center" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.2.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.2.center" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.2.left" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.2.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.2.left" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.2.right" timestamp="1583766093438">
+    <state width="1878" height="368" key="GridCell.Tab.2.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.2.right" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093438" />
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.2.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.3.bottom" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.3.center" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.3.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.3.center" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.3.left" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.3.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.3.left" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.3.right" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.3.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.3.right" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.4.bottom" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.4.center" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.4.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.4.center" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.4.left" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.4.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.4.left" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state width="1878" height="368" key="GridCell.Tab.4.right" timestamp="1583766093439">
+    <state width="1878" height="368" key="GridCell.Tab.4.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state width="1878" height="368" key="GridCell.Tab.4.right" timestamp="1583954229432">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583766093439" />
-    <state x="1031" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1583418670424">
+    <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583954229432" />
+    <state x="1029" y="220" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1583941952704">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="1031" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583418670424" />
+    <state x="1029" y="220" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583941952704" />
     <state x="1275" y="195" width="315" height="599" key="RiderGenerateDialog" timestamp="1583418967233">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -227,6 +220,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="520" y="208" width="858" height="510" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583585417716" />
+    <state x="1918" y="-16" width="1364" height="786" key="dock-window-1" timestamp="1583944787281">
+      <screen x="1920" y="0" width="1360" height="768" />
+    </state>
+    <state x="1918" y="-16" width="1364" height="786" key="dock-window-1/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1583944787281" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -3,6 +3,11 @@ using System.Net.Sockets;
 
 namespace EasyTcp3.Client.Internal
 {
+    /// Protocol: 
+    /// Begin receiving data
+    /// Receive length of the data, allocate buffer of given length (ushort, 2 bytes)
+    /// Receive data with the specified length
+    /// Receive next data
     internal static class _OnReceive
     {
         /// <summary>
@@ -26,7 +31,7 @@ namespace EasyTcp3.Client.Internal
             try
             {
                 ushort dataLength = 2;
-                if (client.ReceivingData = !client.ReceivingData) //If receiving length
+                if (client.ReceivingData ^= true) //If receiving length
                 {
                     if ((dataLength = BitConverter.ToUInt16(client.Buffer, 0)) == 0)
                     {
@@ -49,6 +54,10 @@ namespace EasyTcp3.Client.Internal
             }
         }
 
+        /// <summary>
+        /// Handle disconnect for a specific client
+        /// </summary>
+        /// <param name="client"></param>
         internal static void HandleDisconnect(EasyTcpClient client)
         {
             client.FireOnDisconnect();

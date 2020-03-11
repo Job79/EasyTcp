@@ -22,7 +22,8 @@ namespace EasyTcp3.Client
         public static bool IsConnected(this EasyTcpClient client, bool poll = false)
         {
             if (client?.BaseSocket == null) return false;
-            if (!client.BaseSocket.Connected || !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) && client.BaseSocket.Available.Equals(0))
+            if (!client.BaseSocket.Connected || !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) &&
+                client.BaseSocket.Available.Equals(0))
             {
                 Internal._OnReceive.HandleDisconnect(client);
                 return false;

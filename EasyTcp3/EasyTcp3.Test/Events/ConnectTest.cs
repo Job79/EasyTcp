@@ -12,8 +12,8 @@ namespace EasyTcp3.Test
         public void TestConnect()
         {
             var port = TestHelper.GetPort();
-            var client = new EasyTcpClient();
-            var server = new EasyTcpServer();
+            using var client = new EasyTcpClient();
+            using var server = new EasyTcpServer();
             server.Start(IPAddress.Any, port);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port, TestHelper.DefaultTimeout),"Client did not connect");
@@ -31,7 +31,7 @@ namespace EasyTcp3.Test
             client.OnConnect += (o, c) => x++;
             Assert.IsTrue(client.Connect(IPAddress.Any, port, TestHelper.DefaultTimeout), "Client did not connect");
             
-            TestHelper.Wait(()=>x != 0);
+            TestHelper.WaitWhileFalse(()=>x != 0);
             Assert.AreNotEqual(0,x, "OnConnect event was not fired");
             Assert.AreEqual(1,x);
         }
@@ -48,11 +48,12 @@ namespace EasyTcp3.Test
             server.OnConnect += (o, c) => x++;
             Assert.IsTrue(client.Connect(IPAddress.Any, port, TestHelper.DefaultTimeout),"Client did not connect");
             
-            TestHelper.Wait(()=>x != 0);
+            TestHelper.WaitWhileFalse(()=>x != 0);
             Assert.AreNotEqual(0,x, "OnConnect event was not fired");
             Assert.AreEqual(1,x);
         }
 
+        /*
         [Test]
         public void TestMultipleConnections()
         {
@@ -72,6 +73,6 @@ namespace EasyTcp3.Test
             Assert.AreEqual(server.ConnectedClientsCount, amountOfClients,
                 "Number of connectedClients is not the same as the amount of clients connected to the server");
             foreach (var client in clients) client.Dispose();
-        }
+        }*/
     }
 }

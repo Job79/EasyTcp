@@ -7,7 +7,7 @@ namespace EasyTcp3.Client
     public static class _Connect
     {
         private const int DefaultTimeout = 5_000;
-        
+
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>
@@ -23,10 +23,10 @@ namespace EasyTcp3.Client
         /// </example>
         public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port, TimeSpan timeout)
         {
-            if(client == null) throw new ArgumentException("Could not connect: client is null");
+            if (client == null) throw new ArgumentException("Could not connect: client is null");
             if (ipAddress == null) throw new ArgumentException("Could not connect: ipAddress is null");
             if (port == 0) throw new ArgumentException("Could not connect: Invalid port");
-            if(client.BaseSocket != null) throw new ArgumentException("Could not connect: client is still connected");
+            if (client.BaseSocket != null) throw new ArgumentException("Could not connect: client is still connected");
 
             try
             {
@@ -80,7 +80,7 @@ namespace EasyTcp3.Client
                 throw new ArgumentException("Could not connect: ipAddress is not a valid IPv4/IPv6 address");
             return client.Connect(address, port, timeout);
         }
-            
+
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>

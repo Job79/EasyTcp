@@ -17,6 +17,25 @@ namespace EasyTcp3
         /// <summary>
         /// Fired when the client connects to the server
         /// </summary>
+        ///
+        /// <example>
+        /// ushort port = TestHelper.GetPort();
+        /// using var server = new EasyTcpServer();
+        /// server.Start(IPAddress.Any, port);
+        ///
+        /// int connectCount = 0;
+        /// server.OnConnect += (sender, client) =>
+        /// {
+        ///    Interlocked.Increment(ref connectCount);//Async lambda, thread safe increase integer
+        ///    Console.WriteLine($"Client {connectCount} connected");
+        /// };
+        ///
+        /// using var client = new EasyTcpClient();
+        /// Assert.IsTrue(client.Connect(IPAddress.Any, port));
+        /// 
+        /// TestHelper.WaitWhileTrue(()=>connectCount == 0);
+        /// Assert.AreEqual(1,connectCount);
+        /// </example>
         public event EventHandler<EasyTcpClient> OnConnect;
         protected internal void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
 
@@ -57,7 +76,11 @@ namespace EasyTcp3
         /// </summary>
         public void Dispose()
         {
-            this.Stop();
+            if(BaseSocket == null) return;
+            IsRunning = false;
+            foreach (var client in ConnectedClients) client.Dispose();
+            ConnectedClients.Clear();
+            
             BaseSocket?.Dispose();
             BaseSocket = null;
         }

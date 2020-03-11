@@ -2,13 +2,13 @@ using System;
 
 namespace EasyTcp3.Server.Internal
 {
-    internal static class OnClientConnect
+    internal static class _OnClientConnect
     {
         /// <summary>
         /// Triggered when a new client connects
         /// </summary>
         /// <param name="ar"></param>
-        internal static void _OnClientConnect(IAsyncResult ar)
+        internal static void OnClientConnect(IAsyncResult ar)
         {
             var server = ar.AsyncState as EasyTcpServer;
             if (server == null || !server.IsRunning) return;
@@ -26,7 +26,7 @@ namespace EasyTcp3.Server.Internal
                 if (server.IsRunning) server.FireOnError(ex);
             }
 
-            server.BaseSocket.BeginAccept(_OnClientConnect, server); //Accept next client
+            server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
         }
     }
 }
