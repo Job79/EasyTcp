@@ -18,6 +18,7 @@
             <e p="OnReceiveUtil.cs" t="Include" />
           </e>
           <e p="IsConnectedUtil.cs" t="Include" />
+          <e p="SendAndGetReplyAsyncUtil.cs" t="Include" />
           <e p="SendAndGetReplyUtil.cs" t="Include" />
           <e p="SendUtil.cs" t="Include" />
         </e>
