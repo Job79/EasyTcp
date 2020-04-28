@@ -8,119 +8,61 @@ namespace EasyTcp3
         /// <summary>
         /// BaseSocket of this Client,
         /// Gets disposed when calling Dispose()
+        /// Null if disconnected
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
-
+        
         /// <summary>
-        /// Determines whether the next receiving data is length of data or actual data.
-        /// See OnReceive for the protocol
+        /// Determines whether the next receiving data is the length of data or actual data. [Length of data (4)] ["Data"] 
+        /// See OnReceive for more information about the protocol
         /// </summary>
         protected internal bool ReceivingData;
         
         /// <summary>
         /// Buffer used for receiving incoming data
         /// </summary>
-        protected internal byte[] Buffer;
-
+        protected internal byte[] Buffer = new byte[2];
+        
         /// <summary>
         /// Fired when a client connects to the server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
-
-        protected internal void FireOnConnect() => OnConnect?.Invoke(null, this);
-
+        
         /// <summary>
         /// Fired when a client connects to the server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
-
-        protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(null, this);
-
+        
         /// <summary>
         /// Fired when a client connects to the server
         /// </summary>
-        ///
-        /// <example>
-        /// // Example receiving for the server
-        /// ushort port = TestHelper.GetPort();
-        /// using var server = new EasyTcpServer();
-        /// server.Start(IPAddress.Any, port);
-        ///
-        /// const string message = "Hello server!";
-        /// int receiveCount = 0;
-        ///
-        /// server.OnConnect += (sender, client) =>
-        /// {
-        ///     client.OnDataReceive += (sender, receivedMessage) =>
-        ///     {
-        ///         //Async lambda, thread safe increase integer
-        ///         if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
-        ///         Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
-        ///     };
-        ///     Console.WriteLine("Client connected");
-        /// };
-        ///
-        /// using var client = new EasyTcpClient();
-        /// Assert.IsTrue(client.Connect(IPAddress.Any, port));
-        /// client.Send(message);
-        ///
-        /// TestHelper.WaitWhileTrue(() => receiveCount == 0);
-        /// Assert.AreEqual(1, receiveCount);
-        /// </example>
-        ///
-        /// <example>
-        /// //Example receiving for the client
-        /// ushort port = TestHelper.GetPort();
-        /// using var server = new EasyTcpServer();
-        /// server.Start(IPAddress.Any, port);
-        /// 
-        /// using var client = new EasyTcpClient();
-        /// Assert.IsTrue(client.Connect(IPAddress.Any, port));
-        ///
-        /// const string message = "Hello server!";
-        /// int receiveCount = 0;
-        ///
-        /// client.OnDataReceive += (sender, receivedMessage) =>
-        /// {
-        ///     //Async lambda, thread safe increase integer
-        ///     if(message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount); 
-        ///     Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
-        /// };
-        ///    
-        /// server.SendAll(message);
-        ///
-        /// TestHelper.WaitWhileTrue(() => receiveCount == 0);
-        /// Assert.AreEqual(1, receiveCount);
-        /// </example>
         public event EventHandler<Message> OnDataReceive;
-
-        protected internal void FireOnDataReceive(Message e) => OnDataReceive?.Invoke(this, e);
-
+        
         /// <summary>
         /// Fired when an error occurs,
         /// if not set errors will be thrown
         /// </summary>
         public event EventHandler<Exception> OnError;
-
+        
+        protected internal void FireOnConnect() => OnConnect?.Invoke(null, this);
+        protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(null, this);
+        protected internal void FireOnDataReceive(Message e) => OnDataReceive?.Invoke(this, e);
         protected internal void FireOnError(Exception e)
         {
             if (OnError != null) OnError.Invoke(this, e);
             else throw e;
         }
+        
+        public EasyTcpClient() { }
+        public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
 
         /// <summary>
-        /// Dispose current instance of the baseSocket
+        /// Dispose current instance of the baseSocket if not null
         /// </summary>
         public void Dispose()
         {
             BaseSocket?.Dispose();
             BaseSocket = null;
         }
-
-        public EasyTcpClient()
-        {
-        }
-
-        public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
     }
 }

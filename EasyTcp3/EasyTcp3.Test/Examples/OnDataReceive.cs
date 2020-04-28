@@ -1,11 +1,12 @@
 using System;
 using System.Net;
 using System.Threading;
-using EasyTcp3.Client;
+using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
+using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Examples
+namespace EasyTcp3.Test.Examples.Client
 {
     public class OnDataReceive
     {
@@ -15,7 +16,7 @@ namespace EasyTcp3.Test.Examples
             // Example receiving for the server
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             const string message = "Hello server!";
             int receiveCount = 0;
@@ -24,7 +25,7 @@ namespace EasyTcp3.Test.Examples
             {
                 client.OnDataReceive += (sender, receivedMessage) =>
                 {
-                    //Async lambda, thread safe increase integer
+                    //Async lambda, so thread safe increase integer
                     if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
                     Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
                 };
@@ -34,9 +35,10 @@ namespace EasyTcp3.Test.Examples
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             client.Send(message);
+            client.Send(message);
 
-            TestHelper.WaitWhileTrue(() => receiveCount == 0);
-            Assert.AreEqual(1, receiveCount);
+            TestHelper.WaitWhileTrue(() => receiveCount < 2);
+            Assert.AreEqual(2, receiveCount);
         }
 
         [Test]
@@ -45,25 +47,26 @@ namespace EasyTcp3.Test.Examples
             // Example receiving for the client
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
-            const string message = "Hello server!";
+            const string message = "Hello client!";
             int receiveCount = 0;
 
             client.OnDataReceive += (sender, receivedMessage) =>
             {
-                //Async lambda, thread safe increase integer
+                //Async lambda, so thread safe increase integer
                 if(message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount); 
                 Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
             };
             
             server.SendAll(message);
+            server.SendAll(message);
 
-            TestHelper.WaitWhileTrue(() => receiveCount == 0);
-            Assert.AreEqual(1, receiveCount);
+            TestHelper.WaitWhileTrue(() => receiveCount < 2);
+            Assert.AreEqual(2, receiveCount);
         }
     }
 }

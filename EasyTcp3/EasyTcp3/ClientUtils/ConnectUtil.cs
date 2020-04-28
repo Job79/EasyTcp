@@ -1,26 +1,22 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using EasyTcp3.ClientUtils.Internal;
 
-namespace EasyTcp3.Client
+namespace EasyTcp3.ClientUtils
 {
-    public static class _Connect
+    public static class ConnectUtil
     {
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of host</param>
         /// <param name="port">port of host</param>
         /// <param name="timeout">max timeout of the connection</param>
         /// <returns>true = client connected successful, false = connecting failed</returns>
-        ///
-        /// <example>
-        /// using var client = new EasyTcpClient();
-        /// bool isConnected = client.Connect(IPAddress.Any, port, TimeSpan.FromSeconds(1));
-        /// Assert.IsTrue(isConnected);
-        /// </example>
         public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port, TimeSpan timeout)
         {
             if (client == null) throw new ArgumentException("Could not connect: client is null");
@@ -35,7 +31,7 @@ namespace EasyTcp3.Client
                 if (client.BaseSocket.Connected)
                 {
                     client.FireOnConnect();
-                    Internal._OnReceive.StartListening(client);
+                    OnReceiveUtil.StartListening(client);
                     return true;
                 }
             }
@@ -48,32 +44,22 @@ namespace EasyTcp3.Client
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of host</param>
         /// <param name="port">port of host</param>
         /// <returns>true = client connected successful, false = connecting failed</returns>
-        /// 
-        /// <example>
-        /// using var client = new EasyTcpClient();
-        /// bool isConnected = client.Connect(IPAddress.Any, port); //Use default timeout of 5 seconds
-        /// Assert.IsTrue(isConnected);
-        /// </example>
         public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port)
             => Connect(client, ipAddress, port, TimeSpan.FromMilliseconds(DefaultTimeout));
 
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of host as string</param>
         /// <param name="port">port of host</param>
         /// <param name="timeout">max timeout of the connection</param>
         /// <returns>true = client connected successful, false = connecting failed</returns>
         /// <exception cref="ArgumentException">ipAddress is not a valid IPv4/IPv6 address</exception>
-        ///
-        /// <example>
-        /// using var client = new EasyTcpClient();
-        /// bool isConnected = client.Connect("127.0.0.1", port, TimeSpan.FromSeconds(1));
-        /// Assert.IsTrue(isConnected);
-        /// </example>
         public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port, TimeSpan timeout)
         {
             if (!IPAddress.TryParse(ipAddress, out IPAddress address))
@@ -84,15 +70,10 @@ namespace EasyTcp3.Client
         /// <summary>
         /// Establishes a connection to a remote host
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of host as string</param>
         /// <param name="port">port of host</param>
         /// <returns>true = client connected successful, false = connecting failed</returns>
-        ///
-        /// <example>
-        /// using var client = new EasyTcpClient();
-        /// bool isConnected = client.Connect("127.0.0.1", port); //Use default timeout of 5 seconds
-        /// Assert.IsTrue(isConnected);
-        /// </example>
         public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port)
             => Connect(client, ipAddress, port, TimeSpan.FromMilliseconds(DefaultTimeout));
     }

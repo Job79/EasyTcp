@@ -1,20 +1,21 @@
 using System.Net;
 using System.Text;
-using EasyTcp3.Client;
+using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
+using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Examples
+namespace EasyTcp3.Test.Examples.Client
 {
     public class Send
-    {
+    { 
         private ushort port;
         [SetUp]
         public void Setup()
         {
             port = TestHelper.GetPort();
             var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
         }
 
         [Test]

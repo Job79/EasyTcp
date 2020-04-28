@@ -1,26 +1,27 @@
 using System.Net;
-using EasyTcp3.Client;
+using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
+using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Examples
+namespace EasyTcp3.Test.Examples.Client
 {
     public class IsConnected
     {
-        private ushort port;
+        private ushort _port;
         [SetUp]
         public void Setup()
         {
-            port = TestHelper.GetPort();
+            _port = TestHelper.GetPort();
             var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(_port);
         }
 
         [Test]
         public void IsConnected1()
         {
             using var client = new EasyTcpClient();
-            client.Connect(IPAddress.Any, port);
+            client.Connect(IPAddress.Any, _port);
             
             Assert.IsTrue(client.IsConnected(true));
             client.Dispose(); //Disconnect

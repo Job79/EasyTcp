@@ -2,53 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using EasyTcp3.Server;
 
-namespace EasyTcp3
+namespace EasyTcp3.Server
 {
     public class EasyTcpServer : IDisposable
     {
+        
         public Socket BaseSocket { get; protected internal set; }
         /// <summary>
         /// Gets a value that determines if this client is connected to a host
         /// </summary>
         public bool IsRunning { get; protected internal set; }
-
-        /// <summary>
-        /// Fired when the client connects to the server
-        /// </summary>
-        ///
-        /// <example>
-        /// ushort port = TestHelper.GetPort();
-        /// using var server = new EasyTcpServer();
-        /// server.Start(IPAddress.Any, port);
-        ///
-        /// int connectCount = 0;
-        /// server.OnConnect += (sender, client) =>
-        /// {
-        ///    Interlocked.Increment(ref connectCount);//Async lambda, thread safe increase integer
-        ///    Console.WriteLine($"Client {connectCount} connected");
-        /// };
-        ///
-        /// using var client = new EasyTcpClient();
-        /// Assert.IsTrue(client.Connect(IPAddress.Any, port));
-        /// 
-        /// TestHelper.WaitWhileTrue(()=>connectCount == 0);
-        /// Assert.AreEqual(1,connectCount);
-        /// </example>
-        public event EventHandler<EasyTcpClient> OnConnect;
-        protected internal void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
-
-        /// <summary>
-        /// Fired when an error occurs,
-        /// if not set errors will be thrown
-        /// </summary>
-        public event EventHandler<Exception> OnError;
-        protected internal void FireOnError(Exception e)
-        {
-            if (OnError != null) OnError.Invoke(this, e);
-            else throw e;
-        }
 
         /// <summary>
         /// List with all the connected clients
@@ -71,6 +35,24 @@ namespace EasyTcp3
         /// <returns>Copy of the sockets in ConnectedClients</returns>
         public IEnumerable<Socket> GetConnectedSockets() => GetConnectedClients().Select(c=>c.BaseSocket);
 
+        /// <summary>
+        /// Fired when the client connects to the server
+        /// </summary>
+        public event EventHandler<EasyTcpClient> OnConnect;
+
+        /// <summary>
+        /// Fired when an error occurs,
+        /// if not set errors will be thrown
+        /// </summary>
+        public event EventHandler<Exception> OnError;
+        
+        protected internal void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
+        protected internal void FireOnError(Exception e)
+        {
+            if (OnError != null) OnError.Invoke(this, e);
+            else throw e;
+        }
+        
         /// <summary>
         /// Dispose current instance of the baseSocket
         /// </summary>

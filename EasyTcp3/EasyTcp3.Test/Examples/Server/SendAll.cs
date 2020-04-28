@@ -1,7 +1,8 @@
 using System.Net;
 using System.Text;
-using EasyTcp3.Client;
+using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
+using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
 namespace EasyTcp3.Test.Examples.Server
@@ -13,7 +14,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -27,7 +28,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             using var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -41,7 +42,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -55,7 +56,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -69,7 +70,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -83,7 +84,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -97,7 +98,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
             
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -111,7 +112,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
             
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -125,7 +126,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
@@ -139,7 +140,7 @@ namespace EasyTcp3.Test.Examples.Server
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            server.Start(port);
 
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);

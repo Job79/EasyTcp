@@ -1,8 +1,9 @@
 using System;
+using EasyTcp3.ClientUtils.Internal;
 
-namespace EasyTcp3.Server.Internal
+namespace EasyTcp3.Server.ServerUtils.Internal
 {
-    internal static class _OnClientConnect
+    public static class OnConnectUtil
     {
         /// <summary>
         /// Triggered when a new client connects
@@ -15,11 +16,12 @@ namespace EasyTcp3.Server.Internal
 
             try
             {
-                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar)) {Buffer = new byte[2]};
-
-                Client.Internal._OnReceive.StartListening(client);
-                server.ConnectedClients.Add(client);
+                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar));
+                
+                //TODO: Cancel connect in event handler
                 server.FireOnConnect(client);
+                server.ConnectedClients.Add(client);
+                OnReceiveUtil.StartListening(client);
             }
             catch (Exception ex)
             {

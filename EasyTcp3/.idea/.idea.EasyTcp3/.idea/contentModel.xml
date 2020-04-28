@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_EasyTcp3.824016302.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_EasyTcp3.680979072.00" t="ExcludeRecursive" />
     <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.4.0/build/netcoreapp2.1" t="Include">
       <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
     </e>
@@ -12,24 +12,26 @@
     <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.15.1/build/netcoreapp2.0/nunit.engine.dll" t="Include" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="EasyTcp3" t="IncludeRecursive">
-        <e p="Client" t="Include">
-          <e p="Connect.cs" t="Include" />
+        <e p="ClientUtils" t="Include">
+          <e p="ConnectUtil.cs" t="Include" />
           <e p="Internal" t="Include">
-            <e p="OnReceive.cs" t="Include" />
+            <e p="OnReceiveUtil.cs" t="Include" />
           </e>
-          <e p="IsConnected.cs" t="Include" />
-          <e p="Send.cs" t="Include" />
+          <e p="IsConnectedUtil.cs" t="Include" />
+          <e p="SendUtil.cs" t="Include" />
         </e>
         <e p="EasyTcp3.csproj" t="IncludeRecursive" />
         <e p="EasyTcpClient.cs" t="Include" />
-        <e p="EasyTcpServer.cs" t="Include" />
         <e p="Message.cs" t="Include" />
         <e p="Server" t="Include">
-          <e p="Internal" t="Include">
-            <e p="OnClientConnect.cs" t="Include" />
+          <e p="EasyTcpServer.cs" t="Include" />
+          <e p="ServerUtils" t="Include">
+            <e p="Internal" t="Include">
+              <e p="OnConnectUtil.cs" t="Include" />
+            </e>
+            <e p="SendAllUtil.cs" t="Include" />
+            <e p="StartUtil.cs" t="Include" />
           </e>
-          <e p="SendAll.cs" t="Include" />
-          <e p="Start.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
@@ -42,18 +44,14 @@
       </e>
       <e p="EasyTcp3.Test" t="IncludeRecursive">
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
-        <e p="Events" t="Include">
-          <e p="ConnectTest.cs" t="Include" />
-          <e p="DisconnectTest.cs" t="Include" />
-          <e p="ReceivingDataTest.cs" t="Include" />
-        </e>
         <e p="Examples" t="Include">
           <e p="Client" t="Include">
             <e p="Connect.cs" t="Include" />
             <e p="IsConnected.cs" t="Include" />
-            <e p="OnDataReceive.cs" t="Include" />
             <e p="Send.cs" t="Include" />
           </e>
+          <e p="Message.cs" t="Include" />
+          <e p="OnDataReceive.cs" t="Include" />
           <e p="Server" t="Include">
             <e p="OnConnect.cs" t="Include" />
             <e p="SendAll.cs" t="Include" />

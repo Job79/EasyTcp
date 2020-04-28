@@ -1,28 +1,28 @@
 using System;
 using System.Net.Sockets;
 
-namespace EasyTcp3.Client.Internal
+namespace EasyTcp3.ClientUtils.Internal
 {
+    /// <summary>
     /// Protocol: 
-    /// Begin receiving data
-    /// Receive length of the data, allocate buffer of given length (ushort, 2 bytes)
-    /// Receive data with the specified length
-    /// Receive next data
-    internal static class _OnReceive
+    /// 1. Begin receiving data (Event)
+    /// 2. Receive length of the data, allocate buffer of given length (length is an ushort, 2 bytes)
+    /// 3. Receive data with the specified length
+    /// 4. Go back to step 1
+    /// </summary>
+    public static class OnReceiveUtil
     {
         /// <summary>
         /// Start listening for incoming data for a specific client
         /// </summary>
         /// <param name="client"></param>
         internal static void StartListening(EasyTcpClient client)
-            => client.BaseSocket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None,
-                OnReceive, client);
-
-
+            => client.BaseSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, OnReceive, client);
+        
         /// <summary>
         /// Function that gets triggered when data is received
         /// </summary>
-        /// <param name="ar">EasyTcpClient as IAsyncResult</param>
+        /// <param name="ar"></param>
         private static void OnReceive(IAsyncResult ar)
         {
             var client = ar.AsyncState as EasyTcpClient;
@@ -31,7 +31,8 @@ namespace EasyTcp3.Client.Internal
             try
             {
                 ushort dataLength = 2;
-                if (client.ReceivingData ^= true) //If receiving length
+                client.ReceivingData ^= true; 
+                if (client.ReceivingData) //If receiving length
                 {
                     if ((dataLength = BitConverter.ToUInt16(client.Buffer, 0)) == 0)
                     {
