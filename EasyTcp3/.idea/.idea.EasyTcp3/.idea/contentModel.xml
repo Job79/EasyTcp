@@ -51,8 +51,12 @@
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
         <e p="Message.cs" t="Include" />
         <e p="OnDataReceive.cs" t="Include" />
+        <e p="Random" t="Include">
+          <e p="CancelDisconnect.cs" t="Include" />
+        </e>
         <e p="Server" t="Include">
           <e p="OnConnect.cs" t="Include" />
+          <e p="OnDisconnect.cs" t="Include" />
           <e p="SendAll.cs" t="Include" />
           <e p="Start.cs" t="Include" />
         </e>

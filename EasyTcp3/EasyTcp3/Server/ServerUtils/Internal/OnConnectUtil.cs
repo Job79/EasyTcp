@@ -1,4 +1,5 @@
 using System;
+using EasyTcp3.ClientUtils;
 using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.Server.ServerUtils.Internal
@@ -21,10 +22,12 @@ namespace EasyTcp3.Server.ServerUtils.Internal
                 client.OnDisconnect += (sender, c) => server.FireOnDisconnect(c);
                 client.OnError += (sender, exception) => server.FireOnError(exception);
                 
-                //TODO: Cancel connect in event handler
                 server.FireOnConnect(client);
-                server.ConnectedClients.Add(client);
-                OnReceiveUtil.StartListening(client);
+                if (client.IsConnected()) //Check if user aborted
+                {
+                    server.ConnectedClients.Add(client);
+                    OnReceiveUtil.StartListening(client);
+                }
             }
             catch (Exception ex)
             {

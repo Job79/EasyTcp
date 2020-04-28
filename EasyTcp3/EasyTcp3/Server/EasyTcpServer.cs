@@ -37,6 +37,7 @@ namespace EasyTcp3.Server
 
         /// <summary>
         /// Fired when the client connects to the server
+        /// If called client.Dispose connection accept will be aborted
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
         
