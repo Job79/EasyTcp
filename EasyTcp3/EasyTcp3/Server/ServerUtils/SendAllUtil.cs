@@ -1,4 +1,5 @@
 using System;
+using System.Net.Sockets;
 using System.Text;
 using EasyTcp3.ClientUtils;
 
@@ -19,7 +20,14 @@ namespace EasyTcp3.Server.ServerUtils
             if (server == null || !server.IsRunning)
                 throw new Exception("Could not send data: Server not running or null");
 
-            foreach (var client in server.GetConnectedClients()) client.Send(data);
+            var message = new byte[2 + data.Length];
+            Buffer.BlockCopy(BitConverter.GetBytes((ushort) data.Length),
+                0, message, 0, 2); //Write length of data to message.
+            Buffer.BlockCopy(data, 0, message, 2, data.Length); //Write data to message.
+
+            using var e = new SocketAsyncEventArgs();
+            e.SetBuffer(message);
+            foreach (var client in server.GetConnectedClients()) client.BaseSocket.SendAsync(e);
         }
 
         /// <summary>

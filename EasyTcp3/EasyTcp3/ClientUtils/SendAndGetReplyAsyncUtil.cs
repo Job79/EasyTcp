@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils
@@ -14,7 +15,27 @@ namespace EasyTcp3.ClientUtils
         /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>received data</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data, TimeSpan timeout)
-            => await Task.Run(() => client.SendAndGetReplyAsync(data, timeout));
+        { 
+            //TODO: Finish function
+            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
+
+            Message reply = null;
+            using var signal = new SemaphoreSlim(0,1);
+
+            void Event(object sender, Message e)
+            {
+                reply = e;
+                client.OnDataReceive -= Event;
+                signal.Release();
+            }
+
+            client.OnDataReceive += Event;
+            client.Send(data);
+
+            await signal.WaitAsync(timeout);
+            if (reply == null) client.OnDataReceive -= Event;
+            return reply;
+        }
 
         /// <summary>
         /// Send data (ushort) to the remote host. Then wait for a reply from the server.

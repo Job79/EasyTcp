@@ -49,6 +49,8 @@
           <e p="Connect.cs" t="Include" />
           <e p="IsConnected.cs" t="Include" />
           <e p="Send.cs" t="Include" />
+          <e p="SendAndGetReply.cs" t="Include" />
+          <e p="SendAndGetReplyAsync.cs" t="Include" />
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
         <e p="Message.cs" t="Include" />

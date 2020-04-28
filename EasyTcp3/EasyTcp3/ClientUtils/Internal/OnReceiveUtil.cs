@@ -41,7 +41,7 @@ namespace EasyTcp3.ClientUtils.Internal
                     }
                 }
                 else client.FireOnDataReceive(new Message(client.Buffer, client));
-
+                
                 client.BaseSocket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
                     OnReceive, client);
             }
