@@ -9,14 +9,14 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/OnConnect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/OnConnect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/IsConnectedUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" root0="FORCE_HIGHLIGHTING" />
@@ -24,8 +24,8 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8AE63D8C-5294-4718-A734-5B9BFB1B63BC/4a/50eca11e/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Message.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -70,15 +70,15 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/OnDataReceive.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/OnConnect.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/OnDataReceive.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/SendAll.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/Internal/OnConnectUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/OnDataReceive.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" />
       </list>
     </option>
   </component>
@@ -107,15 +107,16 @@
       <workItem from="1583762226741" duration="3867000" />
       <workItem from="1583940117785" duration="11962000" />
       <workItem from="1588059900063" duration="6485000" />
-      <workItem from="1588070869606" duration="884000" />
+      <workItem from="1588070869606" duration="929000" />
+      <workItem from="1588081656724" duration="1148000" />
     </task>
     <servers />
   </component>
   <component name="UnitTestsCoverage.Settings">
-    <option name="coveragePercentColumnWidth" value="150" />
+    <option name="coveragePercentColumnWidth" value="118" />
     <option name="sortOrder" value="DESCENDING" />
     <option name="sortedColumn" value="1" />
-    <option name="symbolColumnWidth" value="313" />
+    <option name="symbolColumnWidth" value="243" />
     <coverage-tree-state>
       <expand>
         <path>
@@ -131,7 +132,14 @@
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
           <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
           <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="214" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="202" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="202" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="206" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
       </expand>
       <select />

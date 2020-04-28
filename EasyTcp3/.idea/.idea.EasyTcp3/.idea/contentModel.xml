@@ -43,20 +43,18 @@
         </e>
       </e>
       <e p="EasyTcp3.Test" t="IncludeRecursive">
+        <e p="Client" t="Include">
+          <e p="Connect.cs" t="Include" />
+          <e p="IsConnected.cs" t="Include" />
+          <e p="Send.cs" t="Include" />
+        </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
-        <e p="Examples" t="Include">
-          <e p="Client" t="Include">
-            <e p="Connect.cs" t="Include" />
-            <e p="IsConnected.cs" t="Include" />
-            <e p="Send.cs" t="Include" />
-          </e>
-          <e p="Message.cs" t="Include" />
-          <e p="OnDataReceive.cs" t="Include" />
-          <e p="Server" t="Include">
-            <e p="OnConnect.cs" t="Include" />
-            <e p="SendAll.cs" t="Include" />
-            <e p="Start.cs" t="Include" />
-          </e>
+        <e p="Message.cs" t="Include" />
+        <e p="OnDataReceive.cs" t="Include" />
+        <e p="Server" t="Include">
+          <e p="OnConnect.cs" t="Include" />
+          <e p="SendAll.cs" t="Include" />
+          <e p="Start.cs" t="Include" />
         </e>
         <e p="TestHelper.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />

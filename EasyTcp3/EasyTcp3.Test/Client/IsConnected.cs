@@ -4,7 +4,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Examples.Client
+namespace EasyTcp3.Test.Client
 {
     public class IsConnected
     {

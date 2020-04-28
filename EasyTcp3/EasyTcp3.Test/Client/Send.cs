@@ -5,24 +5,24 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Examples.Client
+namespace EasyTcp3.Test.Client
 {
     public class Send
     { 
-        private ushort port;
+        private ushort _port;
         [SetUp]
         public void Setup()
         {
-            port = TestHelper.GetPort();
+            _port = TestHelper.GetPort();
             var server = new EasyTcpServer();
-            server.Start(port);
+            server.Start(_port);
         }
 
         [Test]
         public void SendArray()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             byte[] data = new byte[100];
             client.Send(data);
@@ -32,7 +32,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendUShort()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ushort data = 123;
             client.Send(data);
@@ -42,7 +42,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendShort()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             short data = 123;
             client.Send(data);
@@ -52,7 +52,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendUInt()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             uint data = 123;
             client.Send(data);
@@ -62,7 +62,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendInt()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             int data = 123;
             client.Send(data);
@@ -72,7 +72,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendULong()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ulong data = 123;
             client.Send(data);
@@ -82,7 +82,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendLong()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             long data = 123;
             client.Send(data);
@@ -92,7 +92,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendDouble()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             double data = 123.0;
             client.Send(data);
@@ -102,7 +102,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendBool()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             bool data = true;
             client.Send(data);
@@ -112,7 +112,7 @@ namespace EasyTcp3.Test.Examples.Client
         public void SendString()
         {
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             string data = "Data";
             client.Send(data);
