@@ -8,17 +8,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/OnConnect.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/IsConnectedUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" root0="FORCE_HIGHLIGHTING" />
@@ -26,6 +24,8 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8AE63D8C-5294-4718-A734-5B9BFB1B63BC/4a/50eca11e/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Message.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -57,7 +57,6 @@
         <option value="$PROJECT_DIR$/EasyTcp3/Client/Internal/OnReceive.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/SendAll.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Message.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUti.cs" />
@@ -69,7 +68,6 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Connect.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/OnDataReceive.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/Internal/OnConnectUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Connect.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/IsConnected.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Client/Send.cs" />
@@ -79,6 +77,8 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Server/Start.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/Message.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/Internal/OnConnectUtil.cs" />
       </list>
     </option>
   </component>
@@ -107,6 +107,7 @@
       <workItem from="1583762226741" duration="3867000" />
       <workItem from="1583940117785" duration="11962000" />
       <workItem from="1588059900063" duration="6485000" />
+      <workItem from="1588070869606" duration="884000" />
     </task>
     <servers />
   </component>

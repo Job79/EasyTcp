@@ -17,6 +17,9 @@ namespace EasyTcp3.Server.ServerUtils.Internal
             try
             {
                 var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar));
+                client.OnDataReceive += (sender, message) => server.FireOnDataReceive(message);//TODO: Create and edit tests
+                client.OnDisconnect += (sender, c) => server.FireOnDisconnect(c);
+                client.OnError += (sender, exception) => server.FireOnError(exception);
                 
                 //TODO: Cancel connect in event handler
                 server.FireOnConnect(client);

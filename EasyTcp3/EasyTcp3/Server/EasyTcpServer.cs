@@ -39,7 +39,17 @@ namespace EasyTcp3.Server
         /// Fired when the client connects to the server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
+        
+        /// <summary>
+        /// Fired when the client connects to the server
+        /// </summary>
+        public event EventHandler<EasyTcpClient> OnDisconnect;
 
+        /// <summary>
+        /// Fired when the client connects to the server
+        /// </summary>
+        public event EventHandler<Message> OnDataReceive;
+        
         /// <summary>
         /// Fired when an error occurs,
         /// if not set errors will be thrown
@@ -47,6 +57,9 @@ namespace EasyTcp3.Server
         public event EventHandler<Exception> OnError;
         
         protected internal void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
+        protected internal void FireOnDisconnect(EasyTcpClient client) => OnDisconnect?.Invoke(this, client);
+        protected internal void FireOnDataReceive(Message client) => OnDataReceive?.Invoke(this, client);
+
         protected internal void FireOnError(Exception e)
         {
             if (OnError != null) OnError.Invoke(this, e);
