@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EasyTcp3.ClientUtils
+namespace EasyTcp3.ClientUtils.Async
 {
     public static class SendAndGetReplyAsyncUtil
     {
@@ -15,12 +15,11 @@ namespace EasyTcp3.ClientUtils
         /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
         /// <returns>received data</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data, TimeSpan timeout)
-        { 
-            //TODO: Finish function
+        {
             if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
 
             Message reply = null;
-            using var signal = new SemaphoreSlim(0,1);
+            using var signal = new SemaphoreSlim(0, 1);
 
             void Event(object sender, Message e)
             {

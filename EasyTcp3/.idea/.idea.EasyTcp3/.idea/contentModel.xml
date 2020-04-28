@@ -13,12 +13,15 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="EasyTcp3" t="IncludeRecursive">
         <e p="ClientUtils" t="Include">
+          <e p="Async" t="Include">
+            <e p="ConnectAsyncUtil.cs" t="Include" />
+            <e p="SendAndGetReplyAsyncUtil.cs" t="Include" />
+          </e>
           <e p="ConnectUtil.cs" t="Include" />
           <e p="Internal" t="Include">
             <e p="OnReceiveUtil.cs" t="Include" />
           </e>
           <e p="IsConnectedUtil.cs" t="Include" />
-          <e p="SendAndGetReplyAsyncUtil.cs" t="Include" />
           <e p="SendAndGetReplyUtil.cs" t="Include" />
           <e p="SendUtil.cs" t="Include" />
         </e>
@@ -47,6 +50,7 @@
       <e p="EasyTcp3.Test" t="IncludeRecursive">
         <e p="Client" t="Include">
           <e p="Connect.cs" t="Include" />
+          <e p="ConnectAsync.cs" t="Include" />
           <e p="IsConnected.cs" t="Include" />
           <e p="Send.cs" t="Include" />
           <e p="SendAndGetReply.cs" t="Include" />

@@ -8,7 +8,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
@@ -16,7 +16,10 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/ConnectAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/081D9397-183F-4CF2-9B2E-65E1893A3E47/b4/7a4727a8/SocketTaskExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -37,10 +40,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Examples/IsConnected.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Events/ReceivingDataTest.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test2/UnitTest1.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test2/Events/UnitTest1.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/DisconnectTest.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Client/IsConnected.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Client/Connect.cs" />
@@ -83,11 +82,15 @@
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Server/SendAll.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAsync.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAsyncUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAsync.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/ConnectAsync.cs" />
       </list>
     </option>
   </component>
@@ -120,7 +123,7 @@
       <workItem from="1588081656724" duration="3153000" />
       <workItem from="1588084822576" duration="32000" />
       <workItem from="1588084909841" duration="3089000" />
-      <workItem from="1588090441601" duration="4015000" />
+      <workItem from="1588090441601" duration="5185000" />
     </task>
     <servers />
   </component>
@@ -264,21 +267,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs</url>
-          <line>66</line>
-          <properties documentPath="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" initialLine="66">
-            <startOffsets>
-              <option value="2397" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2419" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="DotNet Exception Breakpoints" />
         <breakpoint type="DotNet Exception Breakpoints">
