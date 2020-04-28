@@ -13,26 +13,26 @@ namespace EasyTcp3.Test.Server
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(new IPEndPoint(IPAddress.Any, port));
-            
+
             //Start with dualMode socket
             ushort port2 = TestHelper.GetPort();
             using var server2 = new EasyTcpServer();
             server2.Start(new IPEndPoint(IPAddress.IPv6Any, port2), true);
         }
-        
+
         [Test]
         public void Start2()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(IPAddress.Any, port);
-            
+
             //Start with dualMode socket
             ushort port2 = TestHelper.GetPort();
             using var server2 = new EasyTcpServer();
             server2.Start(IPAddress.IPv6Any, port2, true);
         }
-        
+
         [Test]
         public void Start3()
         {

@@ -58,10 +58,10 @@ namespace EasyTcp3.Test
             client.OnDataReceive += (sender, receivedMessage) =>
             {
                 //Async lambda, so thread safe increase integer
-                if(message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount); 
+                if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
                 Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
             };
-            
+
             server.SendAll(message);
             server.SendAll(message);
 

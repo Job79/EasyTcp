@@ -9,6 +9,7 @@ namespace EasyTcp3.Test.Client
     public class IsConnected
     {
         private ushort _port;
+
         [SetUp]
         public void Setup()
         {
@@ -22,7 +23,7 @@ namespace EasyTcp3.Test.Client
         {
             using var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, _port);
-            
+
             Assert.IsTrue(client.IsConnected(true));
             client.Dispose(); //Disconnect
             Assert.IsFalse(client.IsConnected());

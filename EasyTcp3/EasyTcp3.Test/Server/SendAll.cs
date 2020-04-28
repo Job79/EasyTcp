@@ -99,7 +99,7 @@ namespace EasyTcp3.Test.Server
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-            
+
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
 
@@ -113,7 +113,7 @@ namespace EasyTcp3.Test.Server
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-            
+
             var client = new EasyTcpClient();
             client.Connect(IPAddress.Any, port);
 

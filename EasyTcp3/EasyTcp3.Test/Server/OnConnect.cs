@@ -20,15 +20,15 @@ namespace EasyTcp3.Test.Server
             int connectCount = 0;
             server.OnConnect += (sender, client) =>
             {
-                Interlocked.Increment(ref connectCount);//Async lambda, so thread safe increase integer
+                Interlocked.Increment(ref connectCount); //Async lambda, so thread safe increase integer
                 Console.WriteLine($"Client {connectCount} connected");
             };
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
-            
-            TestHelper.WaitWhileTrue(()=>connectCount == 0);
-            Assert.AreEqual(1,connectCount);
+
+            TestHelper.WaitWhileTrue(() => connectCount == 0);
+            Assert.AreEqual(1, connectCount);
         }
     }
 }

@@ -8,8 +8,9 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Client
 {
     public class Send
-    { 
+    {
         private ushort _port;
+
         [SetUp]
         public void Setup()
         {
@@ -27,7 +28,7 @@ namespace EasyTcp3.Test.Client
             byte[] data = new byte[100];
             client.Send(data);
         }
-        
+
         [Test]
         public void SendUShort()
         {
@@ -37,7 +38,7 @@ namespace EasyTcp3.Test.Client
             ushort data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendShort()
         {
@@ -47,7 +48,7 @@ namespace EasyTcp3.Test.Client
             short data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendUInt()
         {
@@ -57,7 +58,7 @@ namespace EasyTcp3.Test.Client
             uint data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendInt()
         {
@@ -67,7 +68,7 @@ namespace EasyTcp3.Test.Client
             int data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendULong()
         {
@@ -77,7 +78,7 @@ namespace EasyTcp3.Test.Client
             ulong data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendLong()
         {
@@ -87,7 +88,7 @@ namespace EasyTcp3.Test.Client
             long data = 123;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendDouble()
         {
@@ -97,7 +98,7 @@ namespace EasyTcp3.Test.Client
             double data = 123.0;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendBool()
         {
@@ -107,7 +108,7 @@ namespace EasyTcp3.Test.Client
             bool data = true;
             client.Send(data);
         }
-        
+
         [Test]
         public void SendString()
         {
@@ -116,7 +117,7 @@ namespace EasyTcp3.Test.Client
 
             string data = "Data";
             client.Send(data);
-            client.Send(data,Encoding.UTF32); //Send with different encoding
+            client.Send(data, Encoding.UTF32); //Send with different encoding
         }
     }
 }
