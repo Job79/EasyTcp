@@ -17,7 +17,7 @@ namespace EasyTcp3
         /// <summary></summary>
         /// <param name="data">Received data as byte[]</param>
         /// <param name="client">client that did receive this message</param>
-        public Message(byte[] data, EasyTcpClient client)
+        protected internal Message(byte[] data, EasyTcpClient client)
         {
             Data = data;
             Client = client;

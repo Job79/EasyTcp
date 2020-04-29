@@ -3,7 +3,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3
 {
-    //TODO: Add async functions (SendAndGetReply, Connect, Maybe send)
     //TODO: Add serialisation of custom classes
     //TODO: Add receive stream in Message and SendStream
     public class EasyTcpClient : IDisposable

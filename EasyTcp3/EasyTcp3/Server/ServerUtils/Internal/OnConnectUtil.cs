@@ -4,7 +4,7 @@ using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.Server.ServerUtils.Internal
 {
-    public static class OnConnectUtil
+    internal static class OnConnectUtil
     {
         /// <summary>
         /// Triggered when a new client connects

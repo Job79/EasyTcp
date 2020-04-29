@@ -10,7 +10,7 @@ namespace EasyTcp3.ClientUtils.Internal
     /// 3. Receive data with the specified length
     /// 4. Go back to step 1
     /// </summary>
-    public static class OnReceiveUtil
+    internal static class OnReceiveUtil
     {
         /// <summary>
         /// Start listening for incoming data for a specific client

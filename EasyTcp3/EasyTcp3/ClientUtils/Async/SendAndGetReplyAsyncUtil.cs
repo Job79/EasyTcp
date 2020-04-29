@@ -16,7 +16,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// <returns>received data</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data, TimeSpan timeout)
         {
-            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
+            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout");
 
             Message reply = null;
             using var signal = new SemaphoreSlim(0, 1);

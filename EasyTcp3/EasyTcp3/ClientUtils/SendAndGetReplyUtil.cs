@@ -15,7 +15,7 @@ namespace EasyTcp3.ClientUtils
         /// <returns>received data</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan timeout)
         {
-            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout.");
+            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout");
 
             Message reply = null;
             using var signal = new ManualResetEventSlim();

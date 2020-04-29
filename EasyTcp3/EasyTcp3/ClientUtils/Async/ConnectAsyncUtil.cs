@@ -15,7 +15,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="ipAddress">ipAddress of host</param>
         /// <param name="port">port of host</param>
         /// <returns>true = client connected successful, false = connecting failed</returns>
-        public static async  Task<bool> ConnectAsync(this EasyTcpClient client, IPAddress ipAddress, ushort port)
+        public static async Task<bool> ConnectAsync(this EasyTcpClient client, IPAddress ipAddress, ushort port)
         {
             if (client == null) throw new ArgumentException("Could not connect: client is null");
             if (ipAddress == null) throw new ArgumentException("Could not connect: ipAddress is null");

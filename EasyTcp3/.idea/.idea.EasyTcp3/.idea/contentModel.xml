@@ -24,6 +24,7 @@
           <e p="IsConnectedUtil.cs" t="Include" />
           <e p="SendAndGetReplyUtil.cs" t="Include" />
           <e p="SendUtil.cs" t="Include" />
+          <e p="StreamUtil.cs" t="Include" />
         </e>
         <e p="EasyTcp3.csproj" t="IncludeRecursive" />
         <e p="EasyTcpClient.cs" t="Include" />
@@ -47,6 +48,26 @@
           </e>
         </e>
       </e>
+      <e p="EasyTcp3.Examples" t="IncludeRecursive">
+        <e p="Basic" t="Include">
+          <e p="BasicClient.cs" t="Include" />
+          <e p="BasicServer.cs" t="Include" />
+        </e>
+        <e p="EasyTcp3.Examples.csproj" t="IncludeRecursive" />
+        <e p="Files" t="Include">
+          <e p="FileClient.cs" t="Include" />
+          <e p="FileServer.cs" t="Include" />
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="EasyTcp3.Examples.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
       <e p="EasyTcp3.Test" t="IncludeRecursive">
         <e p="Client" t="Include">
           <e p="Connect.cs" t="Include" />
@@ -55,6 +76,7 @@
           <e p="Send.cs" t="Include" />
           <e p="SendAndGetReply.cs" t="Include" />
           <e p="SendAndGetReplyAsync.cs" t="Include" />
+          <e p="Stream.cs" t="Include" />
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
         <e p="Message.cs" t="Include" />
