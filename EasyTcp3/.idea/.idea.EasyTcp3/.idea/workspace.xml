@@ -8,21 +8,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/IsConnectedUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" />
       </list>
     </option>
   </component>
@@ -64,7 +72,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588155676070</updated>
-      <workItem from="1588155678497" duration="1027000" />
+      <workItem from="1588155678497" duration="1706000" />
+      <workItem from="1588163036500" duration="1304000" />
     </task>
     <servers />
   </component>

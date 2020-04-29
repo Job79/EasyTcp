@@ -16,6 +16,7 @@
           <e p="Async" t="Include">
             <e p="ConnectAsyncUtil.cs" t="Include" />
             <e p="SendAndGetReplyAsyncUtil.cs" t="Include" />
+            <e p="StreamAsyncUtil.cs" t="Include" />
           </e>
           <e p="ConnectUtil.cs" t="Include" />
           <e p="Internal" t="Include">
