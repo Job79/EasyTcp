@@ -21,9 +21,9 @@ namespace EasyTcp3.Test
             const string message = "Hello server!";
             int receiveCount = 0;
 
-            server.OnConnect += (sender, client) =>
+            server.OnConnect += (s, c) =>
             {
-                client.OnDataReceive += (sender, receivedMessage) =>
+                c.OnDataReceive += (sender, receivedMessage) =>
                 {
                     //Async lambda, so thread safe increase integer
                     if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);

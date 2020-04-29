@@ -4,15 +4,9 @@ namespace EasyTcp3.Examples
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Hello World!");
         }
-
-        static void CreateBasicServer()
-        {
-            
-        }
-
     }
 }

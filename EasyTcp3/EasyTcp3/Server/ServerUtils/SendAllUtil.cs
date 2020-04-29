@@ -1,7 +1,6 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
-using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Server.ServerUtils
 {

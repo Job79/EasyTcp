@@ -18,7 +18,7 @@ namespace EasyTcp3.Test.Server
             server.Start(port);
 
             int connectCount = 0;
-            server.OnConnect += (sender, client) =>
+            server.OnConnect += (sender, c) =>
             {
                 Interlocked.Increment(ref connectCount); //Async lambda, so thread safe increase integer
                 Console.WriteLine($"Client {connectCount} connected");
