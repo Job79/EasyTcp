@@ -26,6 +26,7 @@
           <e p="IsConnectedUtil.cs" t="Include" />
           <e p="SendAndGetReplyUtil.cs" t="Include" />
           <e p="SendUtil.cs" t="Include" />
+          <e p="SerializationUtil.cs" t="Include" />
           <e p="StreamUtil.cs" t="Include" />
         </e>
         <e p="EasyTcp3.csproj" t="IncludeRecursive" />
@@ -85,6 +86,7 @@
           <e p="Send.cs" t="Include" />
           <e p="SendAndGetReply.cs" t="Include" />
           <e p="SendAndGetReplyAsync.cs" t="Include" />
+          <e p="Serialization.cs" t="Include" />
           <e p="Stream.cs" t="Include" />
           <e p="StreamAsync.cs" t="Include" />
         </e>

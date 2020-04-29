@@ -3,8 +3,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3
 {
-    //TODO: Add serialisation of custom classes
-    //TODO: Add receive stream in Message and SendStream
     public class EasyTcpClient : IDisposable
     {
         /// <summary>
@@ -54,7 +52,7 @@ namespace EasyTcp3
             if (OnError != null) OnError.Invoke(this, e);
             else throw e;
         }
-        
+
         public EasyTcpClient() { }
         public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
 

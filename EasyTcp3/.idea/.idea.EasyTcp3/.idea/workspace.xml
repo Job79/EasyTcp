@@ -9,23 +9,28 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Stream.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Serialisation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/IsConnectedUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SerialisationUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/HelloClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/EchoServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Information.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/InformationUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/StreamAsync.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -41,9 +46,13 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/StreamAsync.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Stream.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/InformationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/InformationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Information.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/InformationUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/SerialisationUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SerialisationUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Serialisation.cs" />
       </list>
     </option>
   </component>
@@ -86,7 +95,7 @@
       <option name="presentableId" value="Default" />
       <updated>1588155676070</updated>
       <workItem from="1588155678497" duration="1706000" />
-      <workItem from="1588163036500" duration="2845000" />
+      <workItem from="1588163036500" duration="5311000" />
     </task>
     <servers />
   </component>
@@ -106,85 +115,85 @@
     </coverage-tree-state>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom" timestamp="1588165981033">
+    <state width="1878" height="368" key="GridCell.Tab.0.bottom" timestamp="1588168074980">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981033" />
-    <state width="1878" height="368" key="GridCell.Tab.0.center" timestamp="1588165981032">
+    <state width="1878" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074980" />
+    <state width="1878" height="368" key="GridCell.Tab.0.center" timestamp="1588168074979">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981032" />
-    <state width="1878" height="368" key="GridCell.Tab.0.left" timestamp="1588165981032">
+    <state width="1878" height="368" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074979" />
+    <state width="1878" height="368" key="GridCell.Tab.0.left" timestamp="1588168074979">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981032" />
-    <state width="1878" height="368" key="GridCell.Tab.0.right" timestamp="1588165981032">
+    <state width="1878" height="368" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074979" />
+    <state width="1878" height="368" key="GridCell.Tab.0.right" timestamp="1588168074980">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981032" />
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom" timestamp="1588165981034">
+    <state width="1878" height="368" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074980" />
+    <state width="1878" height="368" key="GridCell.Tab.1.bottom" timestamp="1588168074982">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981034" />
-    <state width="1878" height="368" key="GridCell.Tab.1.center" timestamp="1588165981033">
+    <state width="1878" height="368" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074982" />
+    <state width="1878" height="368" key="GridCell.Tab.1.center" timestamp="1588168074981">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981033" />
-    <state width="1878" height="368" key="GridCell.Tab.1.left" timestamp="1588165981033">
+    <state width="1878" height="368" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074981" />
+    <state width="1878" height="368" key="GridCell.Tab.1.left" timestamp="1588168074980">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981033" />
-    <state width="1878" height="368" key="GridCell.Tab.1.right" timestamp="1588165981034">
+    <state width="1878" height="368" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074980" />
+    <state width="1878" height="368" key="GridCell.Tab.1.right" timestamp="1588168074981">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981034" />
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom" timestamp="1588165981035">
+    <state width="1878" height="368" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074981" />
+    <state width="1878" height="368" key="GridCell.Tab.2.bottom" timestamp="1588168074983">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981035" />
-    <state width="1878" height="368" key="GridCell.Tab.2.center" timestamp="1588165981035">
+    <state width="1878" height="368" key="GridCell.Tab.2.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074983" />
+    <state width="1878" height="368" key="GridCell.Tab.2.center" timestamp="1588168074982">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981035" />
-    <state width="1878" height="368" key="GridCell.Tab.2.left" timestamp="1588165981034">
+    <state width="1878" height="368" key="GridCell.Tab.2.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074982" />
+    <state width="1878" height="368" key="GridCell.Tab.2.left" timestamp="1588168074982">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981034" />
-    <state width="1878" height="368" key="GridCell.Tab.2.right" timestamp="1588165981035">
+    <state width="1878" height="368" key="GridCell.Tab.2.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074982" />
+    <state width="1878" height="368" key="GridCell.Tab.2.right" timestamp="1588168074983">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981035" />
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom" timestamp="1588165981037">
+    <state width="1878" height="368" key="GridCell.Tab.2.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074983" />
+    <state width="1878" height="368" key="GridCell.Tab.3.bottom" timestamp="1588168074985">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981037" />
-    <state width="1878" height="368" key="GridCell.Tab.3.center" timestamp="1588165981036">
+    <state width="1878" height="368" key="GridCell.Tab.3.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074985" />
+    <state width="1878" height="368" key="GridCell.Tab.3.center" timestamp="1588168074984">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981036" />
-    <state width="1878" height="368" key="GridCell.Tab.3.left" timestamp="1588165981036">
+    <state width="1878" height="368" key="GridCell.Tab.3.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074984" />
+    <state width="1878" height="368" key="GridCell.Tab.3.left" timestamp="1588168074983">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981036" />
-    <state width="1878" height="368" key="GridCell.Tab.3.right" timestamp="1588165981036">
+    <state width="1878" height="368" key="GridCell.Tab.3.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074983" />
+    <state width="1878" height="368" key="GridCell.Tab.3.right" timestamp="1588168074984">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981036" />
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom" timestamp="1588165981038">
+    <state width="1878" height="368" key="GridCell.Tab.3.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074984" />
+    <state width="1878" height="368" key="GridCell.Tab.4.bottom" timestamp="1588168074986">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981038" />
-    <state width="1878" height="368" key="GridCell.Tab.4.center" timestamp="1588165981037">
+    <state width="1878" height="368" key="GridCell.Tab.4.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074986" />
+    <state width="1878" height="368" key="GridCell.Tab.4.center" timestamp="1588168074985">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981037" />
-    <state width="1878" height="368" key="GridCell.Tab.4.left" timestamp="1588165981037">
+    <state width="1878" height="368" key="GridCell.Tab.4.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074985" />
+    <state width="1878" height="368" key="GridCell.Tab.4.left" timestamp="1588168074985">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981037" />
-    <state width="1878" height="368" key="GridCell.Tab.4.right" timestamp="1588165981038">
+    <state width="1878" height="368" key="GridCell.Tab.4.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074985" />
+    <state width="1878" height="368" key="GridCell.Tab.4.right" timestamp="1588168074986">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588165981038" />
+    <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074986" />
   </component>
 </project>
