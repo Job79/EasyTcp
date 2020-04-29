@@ -33,6 +33,9 @@ namespace EasyTcp3.Test.Client
             byte[] data = new byte[100];
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.IsTrue(data.SequenceEqual(m.Data));
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.IsTrue(data.SequenceEqual(m2.Data));
         }
 
         [Test]
@@ -44,6 +47,9 @@ namespace EasyTcp3.Test.Client
             ushort data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToUShort());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToUShort());
         }
 
         [Test]
@@ -55,6 +61,9 @@ namespace EasyTcp3.Test.Client
             short data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToShort());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToShort());
         }
 
         [Test]
@@ -66,6 +75,9 @@ namespace EasyTcp3.Test.Client
             uint data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToUInt());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToUInt());
         }
 
         [Test]
@@ -77,6 +89,9 @@ namespace EasyTcp3.Test.Client
             int data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToInt());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToInt());
         }
 
         [Test]
@@ -88,6 +103,9 @@ namespace EasyTcp3.Test.Client
             ulong data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToULong());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToULong());
         }
 
         [Test]
@@ -99,6 +117,9 @@ namespace EasyTcp3.Test.Client
             long data = 123;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToLong());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToLong());
         }
 
         [Test]
@@ -110,6 +131,9 @@ namespace EasyTcp3.Test.Client
             double data = 123.0;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToDouble());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToDouble());
         }
 
         [Test]
@@ -121,6 +145,9 @@ namespace EasyTcp3.Test.Client
             bool data = true;
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToBool());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToBool());
         }
 
         [Test]
@@ -132,6 +159,9 @@ namespace EasyTcp3.Test.Client
             string data = "123";
             var m = await client.SendAndGetReplyAsync(data, _timeout);
             Assert.AreEqual(data, m.ToString());
+            
+            var m2 = await client.SendAndGetReplyAsync(data);
+            Assert.AreEqual(data, m2.ToString());
         }
     }
 }
