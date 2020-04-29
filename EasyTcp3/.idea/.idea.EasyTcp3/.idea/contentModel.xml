@@ -52,6 +52,8 @@
         <e p="Basic" t="Include">
           <e p="BasicClient.cs" t="Include" />
           <e p="BasicServer.cs" t="Include" />
+          <e p="EchoServer.cs" t="Include" />
+          <e p="HelloClient.cs" t="Include" />
         </e>
         <e p="EasyTcp3.Examples.csproj" t="IncludeRecursive" />
         <e p="Files" t="Include">
@@ -59,6 +61,8 @@
           <e p="FileServer.cs" t="Include" />
         </e>
         <e p="Program.cs" t="Include" />
+        <e p="SpeedTest" t="Include" />
+        <e p="TestFile.txt" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

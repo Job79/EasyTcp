@@ -5,4 +5,18 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="SpeedTest" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="TestFile.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

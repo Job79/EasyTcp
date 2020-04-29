@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using EasyTcp3.Examples.Basic;
+using EasyTcp3.Examples.Files;
 
 namespace EasyTcp3.Examples
 {
@@ -6,7 +9,24 @@ namespace EasyTcp3.Examples
     {
         static void Main()
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("--    EchoServer/HelloClient    --");
+            EchoServer.StartEchoServer();
+            HelloClient.Connect();
+            
+            Task.Delay(50).Wait();//Wait 50 milliseconds to let HelloClient finish
+
+            Console.WriteLine("--    BasicServer/BasicClient    --");
+            BasicServer.StartBasicServer();
+            BasicClient.Connect();
+            
+            Task.Delay(50).Wait();//Wait 50 milliseconds to let BasicClient finish
+
+            Console.WriteLine("--    FileServer/FileClient    --");
+            FileServer.StartFileServer();
+            FileClient.Download("TestFile.txt","DownloadedTestFile.txt");
+            FileClient.Upload("TestFile.txt","UploadedTestFile.txt");
+            
+            Task.Delay(-1).Wait();
         }
     }
 }

@@ -46,8 +46,8 @@ namespace EasyTcp3
         /// </summary>
         public event EventHandler<Exception> OnError;
         
-        protected internal void FireOnConnect() => OnConnect?.Invoke(null, this);
-        protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(null, this);
+        protected internal void FireOnConnect() => OnConnect?.Invoke(this, this);
+        protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
         protected internal void FireOnDataReceive(Message e) => OnDataReceive?.Invoke(this, e);
         protected internal void FireOnError(Exception e)
         {
