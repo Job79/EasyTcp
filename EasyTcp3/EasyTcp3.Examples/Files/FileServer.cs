@@ -8,7 +8,7 @@ namespace EasyTcp3.Examples.Files
     /// <summary>
     /// This class contains an example of how to make a basic file server
     /// </summary>
-    public class FileServer
+    public static class FileServer
     {
         private const ushort Port = 5_002;
 

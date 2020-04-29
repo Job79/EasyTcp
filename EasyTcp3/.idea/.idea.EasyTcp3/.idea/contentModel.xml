@@ -61,7 +61,9 @@
           <e p="FileServer.cs" t="Include" />
         </e>
         <e p="Program.cs" t="Include" />
-        <e p="SpeedTest" t="Include" />
+        <e p="SpeedTest" t="Include">
+          <e p="SpeedTestClient.cs" t="Include" />
+        </e>
         <e p="TestFile.txt" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">

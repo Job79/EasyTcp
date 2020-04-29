@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EasyTcp3.Examples.Basic;
 using EasyTcp3.Examples.Files;
+using EasyTcp3.Examples.SpeedTest;
 
 namespace EasyTcp3.Examples
 {
@@ -25,6 +26,11 @@ namespace EasyTcp3.Examples
             FileServer.StartFileServer();
             FileClient.Download("TestFile.txt","DownloadedTestFile.txt");
             FileClient.Upload("TestFile.txt","UploadedTestFile.txt");
+            
+            Task.Delay(50).Wait();//Wait 50 milliseconds to let FileClient finish
+            
+            Console.WriteLine("--    EchoServer/SpeedTestClient    --");
+            SpeedTestClient.RunSpeedTest();
             
             Task.Delay(-1).Wait();
         }

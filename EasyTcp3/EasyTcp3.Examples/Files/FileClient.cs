@@ -5,7 +5,10 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.Files
 {
-    public class FileClient
+    /// <summary>
+    /// Example of a client that uploads and downloads files
+    /// </summary>
+    public static class FileClient
     {
         private const ushort Port = 5_002;
 

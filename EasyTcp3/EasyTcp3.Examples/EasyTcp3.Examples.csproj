@@ -10,10 +10,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="SpeedTest" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="TestFile.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
