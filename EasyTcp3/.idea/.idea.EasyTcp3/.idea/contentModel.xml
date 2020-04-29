@@ -19,6 +19,7 @@
             <e p="StreamAsyncUtil.cs" t="Include" />
           </e>
           <e p="ConnectUtil.cs" t="Include" />
+          <e p="InformationUtil.cs" t="Include" />
           <e p="Internal" t="Include">
             <e p="OnReceiveUtil.cs" t="Include" />
           </e>
@@ -79,6 +80,7 @@
         <e p="Client" t="Include">
           <e p="Connect.cs" t="Include" />
           <e p="ConnectAsync.cs" t="Include" />
+          <e p="Information.cs" t="Include" />
           <e p="IsConnected.cs" t="Include" />
           <e p="Send.cs" t="Include" />
           <e p="SendAndGetReply.cs" t="Include" />

@@ -21,7 +21,7 @@ namespace EasyTcp3.Examples.SpeedTest
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            for (int x = 0; x < MessageCount; x++) client.SendAndGetReply(message, TimeSpan.FromSeconds(1)); 
+            for (int x = 0; x < MessageCount; x++) client.SendAndGetReply(message); 
 
             sw.Stop();
             Console.WriteLine($"ElapsedMilliseconds SpeedTest: {sw.ElapsedMilliseconds}");

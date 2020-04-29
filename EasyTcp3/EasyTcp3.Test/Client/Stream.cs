@@ -68,5 +68,33 @@ namespace EasyTcp3.Test.Client
             TestHelper.WaitWhileTrue(() => data == null);
             Assert.AreEqual(testData, data);
         }
+        
+        [Test]
+        public void Stream3() //Client -> -(Stream)> Server     (Client sends message to server)
+        {
+            ushort port = TestHelper.GetPort();
+            using var server = new EasyTcpServer();
+            server.Start(port);
+            
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            
+            string testData = "123", data = null;
+
+            server.OnDataReceive += (sender, message) => //Receive stream from client
+            {
+                using var stream = new MemoryStream();
+                message.ReceiveStream(stream);
+                data = Encoding.UTF8.GetString(stream.ToArray());
+            };
+
+            //Send stream to server
+            using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
+            client.Send("Stream");
+            client.SendStream(dataStream);
+
+            TestHelper.WaitWhileTrue(() => data == null);
+            Assert.AreEqual(testData, data);
+        }
     }
 }
