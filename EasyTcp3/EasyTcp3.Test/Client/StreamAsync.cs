@@ -1,17 +1,19 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.ClientUtils.Async;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
 namespace EasyTcp3.Test.Client
 {
-    public class Stream
+    public class StreamAsync
     {
         [Test]
-        public void Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
+        public async Task Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
@@ -22,17 +24,17 @@ namespace EasyTcp3.Test.Client
             
             string testData = "123", data = null;
 
-            server.OnDataReceive += (sender, message) => //Receive stream from client
+            server.OnDataReceive += async (sender, message) => //Receive stream from client
             {
-                using var stream = new MemoryStream();
-                message.ReceiveStream(stream);
+                await using var stream = new MemoryStream();
+                await message.ReceiveStreamAsync(stream);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
 
             //Send stream to server
-            using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
+            await using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
             client.Send("Stream");
-            client.SendStream(dataStream);
+            await client.SendStreamAsync(dataStream);
 
             TestHelper.WaitWhileTrue(() => data == null);
             Assert.AreEqual(testData, data);
@@ -50,17 +52,17 @@ namespace EasyTcp3.Test.Client
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
-            server.OnDataReceive += (sender, message) => //Send stream if client requests
+            server.OnDataReceive += async (sender, message) => //Send stream if client requests
             {
-                using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
+                await using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
                 message.Client.Send("Stream");
-                message.Client.SendStream(dataStream);
+                await message.Client.SendStreamAsync(dataStream);
             };
             
-            client.OnDataReceive += (sender, message) => //Receive stream from server
+            client.OnDataReceive += async (sender, message) => //Receive stream from server
             {
-                using var stream = new MemoryStream();
-                message.ReceiveStream(stream);
+                await using var stream = new MemoryStream();
+                await message.ReceiveStreamAsync(stream);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
             client.Send("GetStream");//Request stream

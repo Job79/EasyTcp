@@ -84,6 +84,7 @@
           <e p="SendAndGetReply.cs" t="Include" />
           <e p="SendAndGetReplyAsync.cs" t="Include" />
           <e p="Stream.cs" t="Include" />
+          <e p="StreamAsync.cs" t="Include" />
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
         <e p="Message.cs" t="Include" />

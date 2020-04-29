@@ -37,7 +37,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="stream">Stream to write receiving stream to</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">Stream is not writable</exception>
-        public static async Task ReceiveStream(this Message message, Stream stream, int bufferSize = 1024)
+        public static async Task ReceiveStreamAsync(this Message message, Stream stream, int bufferSize = 1024)
         {
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
             
