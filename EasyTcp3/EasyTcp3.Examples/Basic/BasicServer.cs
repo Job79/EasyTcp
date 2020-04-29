@@ -11,11 +11,10 @@ namespace EasyTcp3.Examples.Basic
     public static class BasicServer
     {
         private const ushort Port = 5_000;
-
-        public static EasyTcpServer Server = new EasyTcpServer();
-
+        
         public static void StartBasicServer()
         {
+            var Server = new EasyTcpServer();
             Server.Start(Port); //Start server on 1 port. (See StartUtil for more options)
 
             /* Using the OnConnect event.

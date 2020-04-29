@@ -11,22 +11,31 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp.Actions/Class1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Message.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/ConnectAsync.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/IsConnected.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Stream.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Connect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Serialisation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Serialization.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/IsConnectedUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SerialisationUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SerializationUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/HelloClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/EchoServer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Files/FileClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Server/EasyTcpServer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Files/FileServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Client/Information.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -41,11 +50,9 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReply.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/SendAndGetReplyAsync.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/StreamAsync.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Stream.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/InformationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Information.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/InformationUtil.cs" />
@@ -53,6 +60,12 @@
         <option value="$PROJECT_DIR$/EasyTcp3/SerialisationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SerialisationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Serialisation.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Client/Stream.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Files/FileClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/StreamUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp.Actions/Class1.cs" />
       </list>
     </option>
   </component>
@@ -95,7 +108,7 @@
       <option name="presentableId" value="Default" />
       <updated>1588155676070</updated>
       <workItem from="1588155678497" duration="1706000" />
-      <workItem from="1588163036500" duration="5311000" />
+      <workItem from="1588163036500" duration="6907000" />
     </task>
     <servers />
   </component>
@@ -195,5 +208,9 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588168074986" />
+    <state x="551" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1588169916041">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="551" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080@0.0.1920.1080" timestamp="1588169916041" />
   </component>
 </project>

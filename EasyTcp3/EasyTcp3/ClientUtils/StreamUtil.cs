@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -31,7 +30,7 @@ namespace EasyTcp3.ClientUtils
 
         /// <summary>
         /// Receive a stream from a remote host,
-        /// This can only be done in an OnReceive event.
+        /// This can only be used in an OnReceive event. (Do not use this function on an message from SendAndGetReply!)
         /// </summary>
         /// <param name="message"></param>
         /// <param name="stream">Stream to write receiving stream to</param>

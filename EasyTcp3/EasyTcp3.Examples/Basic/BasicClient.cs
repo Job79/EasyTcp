@@ -47,6 +47,6 @@ namespace EasyTcp3.Examples.Basic
 
             if (connected) client.Send("Hello everyone!");
             else Console.WriteLine("Client: Could not connect to server");
-        } //Client get disposed by using statement and disconnects from server
+        } 
     }
 }
