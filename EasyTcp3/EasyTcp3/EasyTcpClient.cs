@@ -84,6 +84,7 @@ namespace EasyTcp3
 
         /// <summary>
         /// Dispose current instance of the baseSocket if not null
+        /// Client will disconnect when function is called
         /// </summary>
         public void Dispose()
         {
