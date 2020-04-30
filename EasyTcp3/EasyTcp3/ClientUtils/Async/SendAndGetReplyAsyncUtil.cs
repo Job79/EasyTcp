@@ -7,6 +7,7 @@ namespace EasyTcp3.ClientUtils.Async
 {
     /// <summary>
     /// Functions to async send a message to a remote host and then return the reply
+    /// ! These functions do not work in the OnDataReceive event
     /// </summary>
     public static class SendAndGetReplyAsyncUtil
     {

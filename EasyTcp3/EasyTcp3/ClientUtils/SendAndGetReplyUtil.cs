@@ -6,6 +6,7 @@ namespace EasyTcp3.ClientUtils
 {
     /// <summary>
     /// Functions to send a message to a remote host and then return the reply
+    /// ! These functions do not work in the OnDataReceive event
     /// </summary>
     public static class SendAndGetReplyUtil
     {
