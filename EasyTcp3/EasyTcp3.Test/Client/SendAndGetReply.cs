@@ -8,13 +8,16 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Client
 {
+    /// <summary>
+    /// Tests for the SendAndGetReply functions
+    /// </summary>
     public class SendAndGetReply
     {
         private ushort _port;
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
 
         [SetUp]
-        public void Setup()
+        public void Setup() // Simple echo server
         {
             _port = TestHelper.GetPort();
             var server = new EasyTcpServer();
@@ -22,6 +25,32 @@ namespace EasyTcp3.Test.Client
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
         }
 
+        [Test]
+        public void SendAndGetReplyTriggerOnDataReceive()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            bool triggered = false;
+            client.OnDataReceive += (sender, message) => triggered = true;
+
+            byte[] data = new byte[100];
+            var m = client.SendAndGetReply(data);
+            Assert.IsTrue(data.SequenceEqual(m.Data));
+            Assert.IsFalse(triggered);
+        }
+        
+        [Test]
+        public void SendAndGetReplyArrayWithoutTimeout()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            byte[] data = new byte[100];
+            var m = client.SendAndGetReply(data);
+            Assert.IsTrue(data.SequenceEqual(m.Data));
+        }
+        
         [Test]
         public void SendAndGetReplyArray()
         {
@@ -31,9 +60,6 @@ namespace EasyTcp3.Test.Client
             byte[] data = new byte[100];
             var m = client.SendAndGetReply(data, _timeout);
             Assert.IsTrue(data.SequenceEqual(m.Data));
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.IsTrue(data.SequenceEqual(m2.Data));
         }
 
         [Test]
@@ -45,9 +71,6 @@ namespace EasyTcp3.Test.Client
             ushort data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToUShort());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToUShort());
         }
 
         [Test]
@@ -59,9 +82,6 @@ namespace EasyTcp3.Test.Client
             short data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToShort());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToShort());
         }
 
         [Test]
@@ -73,9 +93,6 @@ namespace EasyTcp3.Test.Client
             uint data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToUInt());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToUInt());
         }
 
         [Test]
@@ -87,9 +104,6 @@ namespace EasyTcp3.Test.Client
             int data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToInt());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToInt());
         }
 
         [Test]
@@ -101,9 +115,6 @@ namespace EasyTcp3.Test.Client
             ulong data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToULong());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToULong());
         }
 
         [Test]
@@ -115,9 +126,6 @@ namespace EasyTcp3.Test.Client
             long data = 123;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToLong());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToLong());
         }
 
         [Test]
@@ -129,9 +137,6 @@ namespace EasyTcp3.Test.Client
             double data = 123.0;
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToDouble());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToDouble());
         }
 
         [Test]
@@ -141,11 +146,9 @@ namespace EasyTcp3.Test.Client
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             bool data = true;
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             var m = client.SendAndGetReply(data, _timeout);
-            Assert.AreEqual(data, m.ToBool());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToBool());
+            Assert.AreEqual(true, m.ToBool());
         }
 
         [Test]
@@ -157,9 +160,6 @@ namespace EasyTcp3.Test.Client
             string data = "123";
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToString());
-            
-            var m2 = client.SendAndGetReply(data);
-            Assert.AreEqual(data, m2.ToString());
         }
     }
 }

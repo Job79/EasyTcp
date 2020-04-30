@@ -1,39 +1,41 @@
 using System;
-using EasyTcp3.ClientUtils;
 using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.Server.ServerUtils.Internal
 {
+    /// <summary>
+    /// Internal functions to accept new connections
+    /// </summary>
     internal static class OnConnectUtil
     {
         /// <summary>
-        /// Triggered when a new client connects
+        /// Function that gets triggered when data a new client connects
         /// </summary>
         /// <param name="ar"></param>
         internal static void OnClientConnect(IAsyncResult ar)
         {
             var server = ar.AsyncState as EasyTcpServer;
-            if (server == null || !server.IsRunning) return;
+            if (server?.BaseSocket == null || !server.IsRunning) return;
 
             try
             {
                 var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar));
-                client.OnDataReceive += (sender, message) => server.FireOnDataReceive(message);
-                client.OnDisconnect += (sender, c) => server.FireOnDisconnect(c);
-                client.OnError += (sender, exception) => server.FireOnError(exception);
+                client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
+                client.OnError += (_, exception) => server.FireOnError(exception);
                 
                 server.FireOnConnect(client);
-                if (client.IsConnected()) //Check if user aborted
+                if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
                     server.ConnectedClients.Add(client);
-                    OnReceiveUtil.StartListening(client);
+                    client.StartListening();
                 }
             }
             catch (Exception ex)
             {
-                if (server.IsRunning) server.FireOnError(ex);
+                server.FireOnError(ex);
             }
-
+            
             server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
         }
     }

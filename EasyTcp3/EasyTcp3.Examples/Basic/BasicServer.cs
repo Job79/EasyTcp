@@ -5,8 +5,8 @@ using EasyTcp3.Server.ServerUtils;
 namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
-    /// This class contains examples for a basic broadcasting server, (it sends a received package to all connected clients)
-    /// this example explains all the events
+    /// This class contains an examples of a basic broadcasting server (it sends a received package to all connected clients)
+    /// This example explains all the events
     /// </summary>
     public static class BasicServer
     {
@@ -14,36 +14,36 @@ namespace EasyTcp3.Examples.Basic
         
         public static void StartBasicServer()
         {
-            var Server = new EasyTcpServer();
-            Server.Start(Port); //Start server on 1 port. (See StartUtil for more options)
+            var server = new EasyTcpServer();
+            server.Start(Port); //Start server on 1 port. (See StartUtil for more options)
 
             /* Using the OnConnect event.
              * Gets triggered when an new client connects,
              * Has as parameter an EasyTcpClient, events and functions on this client can be used as in BasicClient.cs
              */
 
-            Server.OnConnect += (sender, client) =>
+            server.OnConnect += (sender, client) =>
             {
                 Console.WriteLine("Server: Client connected");
-                Console.WriteLine($"Server: There are now {Server.ConnectedClientsCount+1} clients connected");
+                Console.WriteLine($"Server: There are now {server.ConnectedClientsCount+1} clients connected");
             };
 
             /* Using the OnDisconnect event.
-             * Gets triggered when a client is disconnects (After the client is disconnected!).             
+             * Gets triggered when a client is disconnects (After the client is disconnected!)          
              */
-            Server.OnDisconnect += (sender, client)
+            server.OnDisconnect += (sender, client)
                 => Console.WriteLine("Server: Client disconnected");
 
-            /* Using the OnDataReceive event on the function OnDataReceive.
-             * This gets triggered when any clients receives data, 
+            /* Using the OnDataReceive event.
+             * This gets triggered when any clients sends data, 
              * remember: Events can also be set for 1 client (See BasicClient.cs)
              */
-            Server.OnDataReceive += OnDataReceive;
+            server.OnDataReceive += OnDataReceive;
 
             /* OnError get triggered when an error occurs in the server code,
              * This includes errors in the events because these are triggered by the server
              */
-            Server.OnError += (sender, e) =>
+            server.OnError += (sender, e) =>
                 Console.WriteLine($"Server: Error occured, message: {e.Message}");
         }
 

@@ -6,10 +6,16 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.SpeedTest
 {
+    /// <summary>
+    /// This class contains a basic speedtest of the SendAndGetReply method,
+    /// this includes the Send and Receive functions
+    ///
+    /// It uses the echo server as test server
+    /// </summary>
     public static class SpeedTestClient
     {
         const int Port = 5_001;
-        const int MessageCount = 100_000;
+        const int MessageCount = 1000_000;
         const string Message = "Message";
         
         public static void RunSpeedTest()

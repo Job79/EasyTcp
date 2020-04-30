@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test
 {
+    /// <summary>
+    /// Tests for the OnDataReceive event
+    /// </summary>
     public class OnDataReceive
     {
         [Test]

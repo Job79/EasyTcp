@@ -8,6 +8,8 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Server
 {
     /// <summary>
+    /// Tests for the SendAll functions
+    ///
     /// This test does not have using statements,
     /// when added the test fails. TODO
     /// </summary>

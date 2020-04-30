@@ -7,6 +7,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Client
 {
+    /// <summary>
+    /// Tests for the Send functions
+    /// </summary>
     public class Send
     {
         private ushort _port;

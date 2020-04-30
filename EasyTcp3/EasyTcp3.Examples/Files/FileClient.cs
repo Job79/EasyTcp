@@ -6,7 +6,7 @@ using EasyTcp3.ClientUtils;
 namespace EasyTcp3.Examples.Files
 {
     /// <summary>
-    /// Example of a client that uploads and downloads files from/to a server
+    /// Example of a client that uploads/downloads files to/from a server
     /// </summary>
     public static class FileClient
     {

@@ -9,6 +9,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test
 {
+    /// <summary>
+    /// Tests for the Message functions
+    /// </summary>
     public class Message
     {
         private ushort _port;

@@ -16,7 +16,6 @@ namespace EasyTcp3.Examples.Files
         {
             var server = new EasyTcpServer();
             server.Start(Port);
-
             server.OnDataReceive += OnDataReceive;
         }
 
@@ -24,7 +23,7 @@ namespace EasyTcp3.Examples.Files
         {
             string message = e.ToString();
             
-            if (message.StartsWith("Download ")) // Client want to download a file
+            if (message.StartsWith("Download ")) // Client wants to download a file
             {
                 string file = message.Remove(0,9); // Remove "Download "
                 

@@ -3,8 +3,15 @@ using System.Threading;
 
 namespace EasyTcp3.Test
 {
+    /// <summary>
+    /// Class with basic functions to help with the tests
+    /// </summary>
     public static class TestHelper
     {
+        /// <summary>
+        /// Give every test an unique port,
+        /// ! This must be done thread safe
+        /// </summary>
         private static int _portCounter = 1200;
         public static ushort GetPort() => (ushort) Math.Min(Interlocked.Increment(ref _portCounter), ushort.MaxValue);
 
@@ -34,7 +41,6 @@ namespace EasyTcp3.Test
         /// Wait x milliseconds
         /// </summary>
         /// <param name="milliseconds"></param>
-        private static void Wait(int milliseconds)
-            => Thread.Sleep(milliseconds);
+        private static void Wait(int milliseconds) => Thread.Sleep(milliseconds);
     }
 }

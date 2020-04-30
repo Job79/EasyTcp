@@ -4,201 +4,123 @@ using System.Threading;
 
 namespace EasyTcp3.ClientUtils
 {
+    /// <summary>
+    /// Functions to send a message to a remote host and then return the reply
+    /// </summary>
     public static class SendAndGetReplyUtil
     {
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
-        /// Send data (byte[]) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <returns>received data</returns>
-        public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan timeout)
+        public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null)
         {
-            if (timeout.Ticks.Equals(0)) throw new ArgumentException("Invalid Timeout");
+            if (client == null) throw new ArgumentException("Could not send: client is null");
 
             Message reply = null;
             using var signal = new ManualResetEventSlim();
 
-            void Event(object sender, Message e)
+            client.FireOnDataReceive = message =>
             {
-                reply = e;
-                client.OnDataReceive -= Event;
+                reply = message;
+                client.FireOnDataReceive = client.FireOnDataReceiveEvent;
+                // Function is no longer used when signal is disposed, therefore ignore this warning
+                // ReSharper disable once AccessToDisposedClosure
                 signal.Set();
-            }
-
-            client.OnDataReceive += Event;
+            };
             client.Send(data);
 
-            signal.Wait(timeout);
-            if (reply == null) client.OnDataReceive -= Event;
+            signal.Wait(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
+            if (reply == null) client.FireOnDataReceive = client.FireOnDataReceiveEvent;
             return reply;
         }
 
         /// <summary>
-        /// Send data (byte[]) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <returns>received data</returns>
-        public static Message SendAndGetReply(this EasyTcpClient client, byte[] data)
-            => client.SendAndGetReply(data, TimeSpan.FromMilliseconds(DefaultTimeout));
-
-        /// <summary>
-        /// Send data (ushort) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, ushort data, TimeSpan timeout) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
-        
-        /// <summary>
-        /// Send data (ushort) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, ushort data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-
-        /// <summary>
-        /// Send data (short) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, short data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, ushort data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (short) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, short data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-        
-        /// <summary>
-        /// Send data (uint) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, uint data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, short data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (uint) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, uint data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-        
-        /// <summary>
-        /// Send data (int) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, int data, TimeSpan timeout) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
-        
-        /// <summary>
-        /// Send data (int) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, int data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-
-        /// <summary>
-        /// Send data (ulong) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, ulong data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, uint data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (ulong) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, ulong data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-        
-        /// <summary>
-        /// Send data (long) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, long data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, int data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (long) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, long data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
-        
-        /// <summary>
-        /// Send data (double) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, double data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, ulong data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
-        
-        /// <summary>
-        /// Send data (double) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, double data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
 
         /// <summary>
-        /// Send data (bool) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, bool data, TimeSpan timeout) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, long data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
-        
-        /// <summary>
-        /// Send data (bool) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, bool data) =>
-            client.SendAndGetReply(BitConverter.GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
 
         /// <summary>
-        /// Send data (string) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[]) to the remote host. Then return the reply.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="timeout">Time to wait for a reply, if time expired: return null</param>
-        /// <param name="encoding">Encoding type (Default: UTF8)</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, string data, TimeSpan timeout, Encoding encoding = null) =>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, double data, TimeSpan? timeout = null) =>
+            client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
+        /// Send data (byte[]) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, bool data, TimeSpan? timeout = null) =>
+            client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
+        /// Send data (byte[]) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="encoding">encoding type (Default: UTF8)</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, string data, TimeSpan? timeout = null,
+            Encoding encoding = null) =>
             client.SendAndGetReply((encoding ?? Encoding.UTF8).GetBytes(data), timeout);
-        
-        /// <summary>
-        /// Send data (string) to the remote host. Then wait for a reply from the server.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data">Data to send to server</param>
-        /// <param name="encoding">Encoding type (Default: UTF8)</param>
-        public static Message SendAndGetReply(this EasyTcpClient client, string data, Encoding encoding = null) =>
-            client.SendAndGetReply((encoding ?? Encoding.UTF8).GetBytes(data), TimeSpan.FromMilliseconds(DefaultTimeout));
     }
 }

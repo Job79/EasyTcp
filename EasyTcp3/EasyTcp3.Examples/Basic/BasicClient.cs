@@ -4,8 +4,8 @@ using EasyTcp3.ClientUtils;
 namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
-    /// This class contains examples for a basic client
-    /// this example explains all the events
+    /// This class contains an examples of a basic client
+    /// This example explains all the events
     /// </summary>
     public static class BasicClient
     {
@@ -38,8 +38,7 @@ namespace EasyTcp3.Examples.Basic
             */
             client.OnError += (sender, exception) =>
                 Console.WriteLine($"Server: Error occured, message: {exception.Message}");
-
-
+            
             /* Connect to server on ip 127.0.0.1 and port 5_000 (Our BasicServer.cs)
              * See ConnectUtil.cs and ConnectAsyncUtil.cs for the connect functions
              */

@@ -3,20 +3,25 @@ using System.Text;
 
 namespace EasyTcp3
 {
+    /// <summary>
+    /// Class that passed by the OnDataReceive event handler
+    /// Contains received data, socket and simple functions to convert data
+    /// </summary>
     public class Message
     {
         /// <summary>
-        /// Received data as byte[]
+        /// Received data
         /// </summary>
         public readonly byte[] Data;
+        
         /// <summary>
-        /// Client that did receive this message
+        /// Receiver of this message
         /// </summary>
         public readonly EasyTcpClient Client;
 
         /// <summary></summary>
-        /// <param name="data">Received data as byte[]</param>
-        /// <param name="client">client that did receive this message</param>
+        /// <param name="data">received data</param>
+        /// <param name="client">receiver</param>
         protected internal Message(byte[] data, EasyTcpClient client)
         {
             Data = data;
@@ -107,8 +112,8 @@ namespace EasyTcp3
         /// <summary>
         /// Received data as String
         /// </summary>
-        /// <param name="encoding">Encoding type (Default: UTF8)</param>
-        /// <returns>Data as string</returns>
+        /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <returns>data as string</returns>
         public string ToString(Encoding encoding = null) => (encoding ?? Encoding.UTF8).GetString(Data);
     }
 }

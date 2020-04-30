@@ -5,7 +5,7 @@ using EasyTcp3.ClientUtils;
 namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
-    /// This class contains an client that sends "Hello" to the echo server and prints the received data ("Hello")
+    /// This class contains a client that sends "Hello" to the echo server and prints the received data ("Hello")
     ///
     /// This is done with 5 lines of code
     /// </summary>

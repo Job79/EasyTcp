@@ -7,6 +7,10 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Client
 {
+    /// <summary>
+    /// Tests for the Serialization functions,
+    /// Uncomment only if EasyTcp is compiled correctly
+    /// </summary>
     public class Serialization
     {
         [Test]

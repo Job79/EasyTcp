@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Server
 {
+    /// <summary>
+    /// Tests for the OnConnect event
+    /// </summary>
     public class OnConnect
     {
         [Test]

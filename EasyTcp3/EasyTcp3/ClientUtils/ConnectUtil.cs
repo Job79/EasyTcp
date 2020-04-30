@@ -5,6 +5,9 @@ using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.ClientUtils
 {
+    /// <summary>
+    /// Functions to connect to a remote host
+    /// </summary>
     public static class ConnectUtil
     {
         private const int DefaultTimeout = 5_000;
@@ -13,11 +16,12 @@ namespace EasyTcp3.ClientUtils
         /// Establishes a connection to a remote host
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="ipAddress">ipAddress of host</param>
-        /// <param name="port">port of host</param>
-        /// <param name="timeout">max timeout of the connection</param>
-        /// <returns>true = client connected successful, false = connecting failed</returns>
-        public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port, TimeSpan timeout)
+        /// <param name="ipAddress">ipAddress of remote host</param>
+        /// <param name="port">port of remote host</param>
+        /// <param name="timeout">maximum time for connecting to remote host</param>
+        /// <returns>determines whether the client connected successfully</returns>
+        public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port,
+            TimeSpan? timeout = null)
         {
             if (client == null) throw new ArgumentException("Could not connect: client is null");
             if (ipAddress == null) throw new ArgumentException("Could not connect: ipAddress is null");
@@ -27,15 +31,21 @@ namespace EasyTcp3.ClientUtils
             try
             {
                 client.BaseSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                client.BaseSocket.BeginConnect(ipAddress, port, null, null).AsyncWaitHandle.WaitOne(timeout);
+                var result = client.BaseSocket.BeginConnect(ipAddress, port, null, null);
+                result.AsyncWaitHandle.WaitOne(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
+                client.BaseSocket.EndConnect(result);
+
                 if (client.BaseSocket.Connected)
                 {
                     client.FireOnConnect();
-                    OnReceiveUtil.StartListening(client);
+                    client.StartListening();
                     return true;
                 }
             }
-            catch { }
+            catch
+            {
+                //Ignore exception, dispose (&disconnect) client and return false
+            }
 
             client.Dispose();
             return false;
@@ -45,36 +55,16 @@ namespace EasyTcp3.ClientUtils
         /// Establishes a connection to a remote host
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="ipAddress">ipAddress of host</param>
-        /// <param name="port">port of host</param>
-        /// <returns>true = client connected successful, false = connecting failed</returns>
-        public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port)
-            => Connect(client, ipAddress, port, TimeSpan.FromMilliseconds(DefaultTimeout));
-
-        /// <summary>
-        /// Establishes a connection to a remote host
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="ipAddress">ipAddress of host as string</param>
-        /// <param name="port">port of host</param>
-        /// <param name="timeout">max timeout of the connection</param>
-        /// <returns>true = client connected successful, false = connecting failed</returns>
+        /// <param name="ipAddress">ipAddress of remote host as string</param>
+        /// <param name="port">port of remote host</param>
+        /// <param name="timeout">maximum time for connecting to remote host</param>
+        /// <returns>determines whether the client connected successfully</returns>
         /// <exception cref="ArgumentException">ipAddress is not a valid IPv4/IPv6 address</exception>
-        public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port, TimeSpan timeout)
+        public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port, TimeSpan? timeout = null)
         {
             if (!IPAddress.TryParse(ipAddress, out IPAddress address))
                 throw new ArgumentException("Could not connect: ipAddress is not a valid IPv4/IPv6 address");
             return client.Connect(address, port, timeout);
         }
-
-        /// <summary>
-        /// Establishes a connection to a remote host
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="ipAddress">ipAddress of host as string</param>
-        /// <param name="port">port of host</param>
-        /// <returns>true = client connected successful, false = connecting failed</returns>
-        public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port)
-            => Connect(client, ipAddress, port, TimeSpan.FromMilliseconds(DefaultTimeout));
     }
 }

@@ -1,9 +1,6 @@
-using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
@@ -11,6 +8,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Client
 {
+    /// <summary>
+    /// Tests for the Stream functions
+    /// </summary>
     public class Stream
     {
         [Test]
