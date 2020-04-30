@@ -3,14 +3,16 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>3.0.0</PackageVersion>
+        <PackageVersion>3.0.0-rc</PackageVersion>
         <Title>EasyTcp</Title>
         <Description>Easy and simple library for TCP clients and servers. Focused on performance and usability.</Description>
         <Copyright>Job79</Copyright>
-        <PackageProjectUrl>github.com/Job79/EasyTcp</PackageProjectUrl>
-        <PackageLicenseUrl>raw.githubusercontent.com/Job79/EasyTcp/master/LICENSE</PackageLicenseUrl>
-        <RepositoryUrl>github.com/Job79/EasyTcp</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer SimpleTcp EasyTcp AsyncTcp</PackageTags>
+        <PackageId>EasyTcp</PackageId>
+        <Authors>Job79</Authors>
     </PropertyGroup>
 
 </Project>
