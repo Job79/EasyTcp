@@ -22,7 +22,7 @@ namespace EasyTcp3
         /// <summary></summary>
         /// <param name="data">received data</param>
         /// <param name="client">receiver</param>
-        protected internal Message(byte[] data, EasyTcpClient client)
+        public Message(byte[] data, EasyTcpClient client)
         {
             Data = data;
             Client = client;
