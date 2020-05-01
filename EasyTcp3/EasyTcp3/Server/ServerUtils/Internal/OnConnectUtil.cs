@@ -1,0 +1,42 @@
+using System;
+using EasyTcp3.ClientUtils.Internal;
+
+namespace EasyTcp3.Server.ServerUtils.Internal
+{
+    /// <summary>
+    /// Internal functions to accept new connections
+    /// </summary>
+    internal static class OnConnectUtil
+    {
+        /// <summary>
+        /// Function that gets triggered when data a new client connects
+        /// </summary>
+        /// <param name="ar"></param>
+        internal static void OnClientConnect(IAsyncResult ar)
+        {
+            var server = ar.AsyncState as EasyTcpServer;
+            if (server?.BaseSocket == null || !server.IsRunning) return;
+
+            try
+            {
+                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar));
+                client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
+                client.OnError += (_, exception) => server.FireOnError(exception);
+                
+                server.FireOnConnect(client);
+                if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
+                {
+                    server.ConnectedClients.Add(client);
+                    client.StartListening();
+                }
+            }
+            catch (Exception ex)
+            {
+                server.FireOnError(ex);
+            }
+            
+            server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
+        }
+    }
+}
