@@ -6,4 +6,8 @@
         <Title>EasyTcp.Actions</Title>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+    </ItemGroup>
+
 </Project>
