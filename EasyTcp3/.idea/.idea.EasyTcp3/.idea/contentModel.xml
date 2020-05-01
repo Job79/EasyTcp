@@ -43,9 +43,20 @@
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netstandard2.1" t="Include">
               <e p="EasyTcp3.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="EasyTcp3.Actions" t="IncludeRecursive">
+        <e p="EasyTcp3.Actions.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Release" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="EasyTcp3.Actions.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -69,7 +80,7 @@
         <e p="TestFile.txt" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="EasyTcp3.Examples.AssemblyInfo.cs" t="Include" />
             </e>
@@ -77,30 +88,33 @@
         </e>
       </e>
       <e p="EasyTcp3.Test" t="IncludeRecursive">
-        <e p="Client" t="Include">
-          <e p="Connect.cs" t="Include" />
-          <e p="ConnectAsync.cs" t="Include" />
-          <e p="Information.cs" t="Include" />
-          <e p="Send.cs" t="Include" />
-          <e p="SendAndGetReply.cs" t="Include" />
-          <e p="SendAndGetReplyAsync.cs" t="Include" />
-          <e p="Serialization.cs" t="Include" />
-          <e p="Stream.cs" t="Include" />
-          <e p="StreamAsync.cs" t="Include" />
+        <e p="Actions" t="Include" />
+        <e p="EasyTcp" t="Include">
+          <e p="Client" t="Include">
+            <e p="Connect.cs" t="Include" />
+            <e p="ConnectAsync.cs" t="Include" />
+            <e p="Information.cs" t="Include" />
+            <e p="Send.cs" t="Include" />
+            <e p="SendAndGetReply.cs" t="Include" />
+            <e p="SendAndGetReplyAsync.cs" t="Include" />
+            <e p="Serialization.cs" t="Include" />
+            <e p="Stream.cs" t="Include" />
+            <e p="StreamAsync.cs" t="Include" />
+          </e>
+          <e p="Message.cs" t="Include" />
+          <e p="OnDataReceive.cs" t="Include" />
+          <e p="OnDisconnect.cs" t="Include" />
+          <e p="Server" t="Include">
+            <e p="OnConnect.cs" t="Include" />
+            <e p="SendAll.cs" t="Include" />
+            <e p="Start.cs" t="Include" />
+          </e>
+          <e p="TestHelper.cs" t="Include" />
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
-        <e p="Message.cs" t="Include" />
-        <e p="OnDataReceive.cs" t="Include" />
-        <e p="OnDisconnect.cs" t="Include" />
-        <e p="Server" t="Include">
-          <e p="OnConnect.cs" t="Include" />
-          <e p="SendAll.cs" t="Include" />
-          <e p="Start.cs" t="Include" />
-        </e>
-        <e p="TestHelper.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="EasyTcp3.Test.AssemblyInfo.cs" t="Include" />
             </e>
