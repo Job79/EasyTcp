@@ -1,6 +1,5 @@
 using EasyTcp3.Actions;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Actions
@@ -11,9 +10,8 @@ namespace EasyTcp3.Examples.Actions
 
         public static void StartEchoServer()
         {
-            var server = new EasyTcpServer();
+            var server = new EasyTcpActionServer();
             server.Start(Port);//Start server on port 5001
-            server.StartActionsUtil();
         }
 
         [EasyTcpAction(0)]

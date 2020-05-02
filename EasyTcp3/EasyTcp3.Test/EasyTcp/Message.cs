@@ -7,7 +7,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test
+namespace EasyTcp3.Test.EasyTcp
 {
     /// <summary>
     /// Tests for the Message functions
