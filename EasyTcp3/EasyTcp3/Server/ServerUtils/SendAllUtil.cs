@@ -45,7 +45,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// <summary>
         /// Send data (short) to all connected clients
         /// </summary>
-        /// <param name="server"> </param>
+        /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, short data) =>

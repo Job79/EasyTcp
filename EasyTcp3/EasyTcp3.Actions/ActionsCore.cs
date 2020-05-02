@@ -7,10 +7,13 @@ namespace EasyTcp3.Actions
 {
     /// <summary>
     /// Contains the core elements of the action system
+    ///
+    /// Protocol of the action system:
+    /// ([data length + action id length(4)]) [action id (int)] [data]
     /// </summary>
-    internal static class ActionsCore
+    public static class ActionsCore
     {
-        internal delegate void EasyTcpActionDelegate(object sender, Message message);
+        public delegate void EasyTcpActionDelegate(object sender, Message message);
 
         /// <summary>
         /// Get all methods with the EasyTcpAction attribute
@@ -63,10 +66,12 @@ namespace EasyTcp3.Actions
         /// Execute a received action
         /// </summary>
         /// <param name="actions"></param>
+        /// <param name="interceptor"></param>
         /// <param name="sender"></param>
         /// <param name="message"></param>
-        internal static void ExecuteAction(this Dictionary<int, EasyTcpActionDelegate> actions, object sender,
-            Message message) // TODO: Add interceptor
+        internal static void ExecuteAction(this Dictionary<int, EasyTcpActionDelegate> actions,
+            Func<int, Message, bool> interceptor, object sender,
+            Message message)
         {
             var actionCode = BitConverter.ToInt32(message.Data, 0);
             actions.TryGetValue(actionCode, out var action);
@@ -75,10 +80,25 @@ namespace EasyTcp3.Actions
 #if !NETSTANDARD2_1
             action.Invoke(sender, new Message(message.Data[4..], message.Client));
 #else
-            var data = new byte[message.Data.Length-4];
-            Buffer.BlockCopy(message.Data,4,data,0,data.Length);
-            action.Invoke(sender,new Message(data, message.Client));
+            var data = new byte[message.Data.Length - 4];
+            Buffer.BlockCopy(message.Data, 4, data, 0, data.Length);
 #endif
+            var m = new Message(data, message.Client);
+            if (interceptor?.Invoke(actionCode, m) != false) action.Invoke(sender, m);
+        }
+
+        /// <summary>
+        /// Convert a string to an ActionCode by using the djb2a hashing algorithm
+        /// ! Collision are surely possible, but this shouldn't be a problem here (for example: haggadot & loathsomenesses)
+        /// http://www.cse.yorku.ca/~oz/hash.html
+        /// </summary>
+        /// <param name="str">action id as string</param>
+        /// <returns>action id as int</returns>
+        public static int ToActionCode(this string str)
+        {
+            int hash = 5381;
+            foreach (var t in str) hash = ((hash << 5) + hash) ^ (byte) t;
+            return hash;
         }
     }
 }

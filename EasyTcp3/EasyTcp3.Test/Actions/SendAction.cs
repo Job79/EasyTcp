@@ -31,6 +31,7 @@ namespace EasyTcp3.Test.Actions
 
             byte[] data = new byte[100];
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -41,6 +42,7 @@ namespace EasyTcp3.Test.Actions
 
             ushort data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -51,6 +53,7 @@ namespace EasyTcp3.Test.Actions
 
             short data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -61,6 +64,7 @@ namespace EasyTcp3.Test.Actions
 
             uint data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -71,6 +75,7 @@ namespace EasyTcp3.Test.Actions
 
             int data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -81,6 +86,7 @@ namespace EasyTcp3.Test.Actions
 
             ulong data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -91,6 +97,7 @@ namespace EasyTcp3.Test.Actions
 
             long data = 123;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -101,6 +108,7 @@ namespace EasyTcp3.Test.Actions
 
             double data = 123.0;
             client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
@@ -110,6 +118,7 @@ namespace EasyTcp3.Test.Actions
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             client.SendAction(0, true);
+            client.SendAction("ECHO", true);
         }
 
         [Test]
@@ -119,6 +128,9 @@ namespace EasyTcp3.Test.Actions
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             string data = "Data";
+            client.SendAction(0, data);
+            client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
+            
             client.SendAction(0, data);
             client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
         }

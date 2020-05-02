@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
@@ -26,6 +27,9 @@ namespace EasyTcp3.Test.Actions
             string data = "test";
             var reply = client.SendActionAndGetReply(0, data);
             Assert.AreEqual(data, reply.ToString());
+            
+            reply = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, reply.ToString());
         }
         
         [Test]
@@ -36,12 +40,16 @@ namespace EasyTcp3.Test.Actions
             server.Start(port);
             
             using var client = new EasyTcpActionClient();
+            client.OnDataReceive += (sender, message) => Console.WriteLine("123");
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
 
             string data = "test";
             foreach (var c in server.GetConnectedClients())
             {
                 var reply = c.SendActionAndGetReply(0, data);
+                Assert.AreEqual(data, reply.ToString());
+                
+                reply = c.SendActionAndGetReply("ECHO", data);
                 Assert.AreEqual(data, reply.ToString());
             }
         }

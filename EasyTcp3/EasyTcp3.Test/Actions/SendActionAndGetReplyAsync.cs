@@ -43,17 +43,6 @@ namespace EasyTcp3.Test.Actions
         }
 
         [Test]
-        public async Task SendActionAndGetReplyAsyncArrayWithoutTimeout()
-        {
-            using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
-
-            byte[] data = new byte[100];
-            var m = await client.SendActionAndGetReplyAsync(0, data);
-            Assert.IsTrue(data.SequenceEqual(m.Data));
-        }
-
-        [Test]
         public async Task SendActionAndGetReplyAsyncArray()
         {
             using var client = new EasyTcpClient();
@@ -62,6 +51,9 @@ namespace EasyTcp3.Test.Actions
             byte[] data = new byte[100];
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.IsTrue(data.SequenceEqual(m.Data));
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.IsTrue(data.SequenceEqual(m2.Data));
         }
 
         [Test]
@@ -73,6 +65,9 @@ namespace EasyTcp3.Test.Actions
             ushort data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToUShort());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToUShort());
         }
 
         [Test]
@@ -84,6 +79,9 @@ namespace EasyTcp3.Test.Actions
             short data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToShort());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToShort());
         }
 
         [Test]
@@ -95,6 +93,9 @@ namespace EasyTcp3.Test.Actions
             uint data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToUInt());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToUInt());
         }
 
         [Test]
@@ -106,6 +107,9 @@ namespace EasyTcp3.Test.Actions
             int data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToInt());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToInt());
         }
 
         [Test]
@@ -117,6 +121,9 @@ namespace EasyTcp3.Test.Actions
             ulong data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToULong());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToULong());
         }
 
         [Test]
@@ -128,6 +135,9 @@ namespace EasyTcp3.Test.Actions
             long data = 123;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToLong());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToLong());
         }
 
         [Test]
@@ -139,6 +149,9 @@ namespace EasyTcp3.Test.Actions
             double data = 123.0;
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToDouble());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToDouble());
         }
 
         [Test]
@@ -147,10 +160,11 @@ namespace EasyTcp3.Test.Actions
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
-            bool data = true;
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
+            var m = await client.SendActionAndGetReplyAsync(0, true, _timeout);
             Assert.AreEqual(true, m.ToBool());
+
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", true);
+            Assert.AreEqual(true, m2.ToBool());
         }
 
         [Test]
@@ -162,6 +176,9 @@ namespace EasyTcp3.Test.Actions
             string data = "123";
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToString());
+            
+            var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
+            Assert.AreEqual(data, m2.ToString());
         }
     }
 }

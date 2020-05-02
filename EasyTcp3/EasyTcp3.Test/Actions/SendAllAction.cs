@@ -28,6 +28,7 @@ namespace EasyTcp3.Test.Actions
 
             byte[] data = new byte[100];
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -42,6 +43,7 @@ namespace EasyTcp3.Test.Actions
 
             ushort data = 123;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -56,6 +58,7 @@ namespace EasyTcp3.Test.Actions
 
             short data = 123;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -69,7 +72,8 @@ namespace EasyTcp3.Test.Actions
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             uint data = 123;
-            server.SendAllAction(0,data);
+            server.SendAllAction(0, data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -84,6 +88,7 @@ namespace EasyTcp3.Test.Actions
 
             int data = 123;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -98,6 +103,7 @@ namespace EasyTcp3.Test.Actions
 
             ulong data = 123;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -112,6 +118,7 @@ namespace EasyTcp3.Test.Actions
 
             long data = 123;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -126,6 +133,7 @@ namespace EasyTcp3.Test.Actions
 
             double data = 123.0;
             server.SendAllAction(0,data);
+            server.SendAllAction("ECHO",data);
         }
 
         [Test]
@@ -138,8 +146,8 @@ namespace EasyTcp3.Test.Actions
             var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
-            bool data = true;
-            server.SendAllAction(0,data);
+            server.SendAllAction(0,true);
+            server.SendAllAction("ECHO",true);
         }
 
         [Test]
@@ -155,6 +163,8 @@ namespace EasyTcp3.Test.Actions
             string data = "Data";
             server.SendAllAction(0,data);
             server.SendAllAction(0,data, Encoding.UTF32); //Send with different encoding
+            server.SendAllAction("ECHO",data);
+            server.SendAllAction("ECHO",data, Encoding.UTF32); //Send with different encoding
         }
     }
 }

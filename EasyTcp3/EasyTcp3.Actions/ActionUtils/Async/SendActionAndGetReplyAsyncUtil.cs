@@ -20,7 +20,7 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         /// Send action with data (byte[]) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns> 
@@ -48,10 +48,23 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         }
 
         /// <summary>
+        /// Send action with data (byte[]) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns> 
+        public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
+            byte[] data,
+            TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), data, timeout);
+
+        /// <summary>
         /// Send action with data (ushort) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -60,10 +73,23 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (ushort) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, ushort data,
+                TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (short) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -72,10 +98,23 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (short) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, short data,
+                TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (uint) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -84,10 +123,22 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (uint) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, uint data, TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (int) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -96,10 +147,22 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (int) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action, int data,
+            TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (ulong) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -108,10 +171,23 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (ulong) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, ulong data,
+                TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (long) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -120,10 +196,22 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (long) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, long data, TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (double) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -132,10 +220,23 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (double) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, double data,
+                TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (bool) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns>
@@ -144,10 +245,22 @@ namespace EasyTcp3.Actions.ActionUtils.Async
             await client.SendActionAndGetReplyAsync(action, BitConverter.GetBytes(data), timeout);
 
         /// <summary>
+        /// Send action with data (bool) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message>
+            SendActionAndGetReplyAsync(this EasyTcpClient client, string action, bool data, TimeSpan? timeout = null) =>
+            await client.SendActionAndGetReplyAsync(action.ToActionCode(), BitConverter.GetBytes(data), timeout);
+
+        /// <summary>
         /// Send action with data (string) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="action">action id</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <param name="encoding">Encoding type (Default: UTF8)</param>
@@ -155,5 +268,20 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, int action, string data,
             TimeSpan? timeout = null, Encoding encoding = null)
             => await client.SendActionAndGetReplyAsync(action, (encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+
+        /// <summary>
+        /// Send action with data (string) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="encoding">Encoding type (Default: UTF8)</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
+            string data,
+            TimeSpan? timeout = null, Encoding encoding = null)
+            => await client.SendActionAndGetReplyAsync(action.ToActionCode(),
+                (encoding ?? Encoding.UTF8).GetBytes(data), timeout);
     }
 }
