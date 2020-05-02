@@ -26,10 +26,10 @@ namespace EasyTcp3.ClientUtils
             Message reply = null;
             using var signal = new ManualResetEventSlim();
 
-            client.FireOnDataReceive = message =>
+            client.DataReceiveHandler = message =>
             {
                 reply = message;
-                client.FireOnDataReceive = client.FireOnDataReceiveEvent;
+                client.ResetDataReceiveHandler();
                 // Function is no longer used when signal is disposed, therefore ignore this warning
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Set();
@@ -37,7 +37,7 @@ namespace EasyTcp3.ClientUtils
             client.Send(data);
 
             signal.Wait(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
-            if (reply == null) client.FireOnDataReceive = client.FireOnDataReceiveEvent;
+            if (reply == null) client.ResetDataReceiveHandler();
             return reply;
         }
 

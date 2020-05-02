@@ -1,4 +1,4 @@
-#if NETCOREAPP3_1
+#if !NETSTANDARD2_1
 using System.Text.Json;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
@@ -23,7 +23,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="data">custom class</param>
         /// <returns>custom class as byte[]</returns>
-        private static byte[] Serialize(object data)
+        public static byte[] Serialize(object data)
             => JsonSerializer.SerializeToUtf8Bytes(data);
         
         /// <summary>
@@ -32,7 +32,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="data"></param>
         /// <typeparam name="T">custom class type</typeparam>
         /// <returns>byte[] as custom class</returns>
-        private static T Deserialize<T>(byte[] data)
+        public static T Deserialize<T>(byte[] data)
             => JsonSerializer.Deserialize<T>(data);
         
         

@@ -64,7 +64,7 @@ namespace EasyTcp3.ClientUtils.Internal
         {
             ushort dataLength = 2;
 
-            if (client.ReceivingData) client.FireOnDataReceive(new Message(client.Buffer, client));
+            if (client.ReceivingData) client.DataReceiveHandler(new Message(client.Buffer, client));
             else dataLength = BitConverter.ToUInt16(client.Buffer, 0);
 
             client.ReceivingData ^= true;
