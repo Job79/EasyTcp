@@ -17,7 +17,7 @@ namespace EasyTcp3.Test.Actions
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer
-                {Interceptor = (actionCode, message) => false }; // Create useless server
+                {Interceptor = (actionCode, m) => false }; // Create useless server
             server.Start(port);
 
             using var client = new EasyTcpClient();
@@ -31,7 +31,7 @@ namespace EasyTcp3.Test.Actions
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer
-                {Interceptor = (actionCode, message) => true};
+                {Interceptor = (actionCode, m) => true};
             server.Start(port);
 
             using var client = new EasyTcpClient();

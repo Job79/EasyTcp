@@ -12,9 +12,5 @@ namespace EasyTcp3.Test.Actions
         [EasyTcpAction("ECHO")]
         public static void Echo2(object s, Message e)
             => e.Client.Send(e.Data);
-        
-       // [EasyTcpAction(1)]
-       // public static void EchoAction(object s, Message e)
-       //     => e.Client.SendAction(1,e.Data);
     }
 }
