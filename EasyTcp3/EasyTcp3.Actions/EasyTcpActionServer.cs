@@ -11,14 +11,19 @@ namespace EasyTcp3.Actions
     /// </summary>
     public class EasyTcpActionServer : EasyTcpServer
     {
-        protected internal Dictionary<int, ActionsCore.EasyTcpActionDelegate> Actions;
-        
+        protected internal readonly Dictionary<int, ActionsCore.EasyTcpActionDelegate> Actions;
+
         public Func<int, Message, bool> Interceptor;
-        
+
+        public event EventHandler<EasyTcpServer> OnUnknownAction;
+
+        protected internal void FireOnUnknownAction() => OnUnknownAction?.Invoke(this, this);
+
         public EasyTcpActionServer(Assembly assembly = null, string nameSpace = null)
         {
-            Actions = ActionsCore.GetActions(assembly??Assembly.GetCallingAssembly(), nameSpace);
-            OnDataReceive += (sender, message) => Actions.ExecuteAction(Interceptor, sender, message);
+            Actions = ActionsCore.GetActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace);
+            OnDataReceive += (sender, message) =>
+                Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message);
         }
     }
 }

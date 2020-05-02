@@ -15,6 +15,6 @@ namespace EasyTcp3.Actions
         public int ActionCode { get; set; }
 
         public EasyTcpAction(int actionCode)  => ActionCode = actionCode;
-        public EasyTcpAction(string actionCode) => ActionCode = ActionsCore.ToActionCode(actionCode);
+        public EasyTcpAction(string actionCode) => ActionCode = actionCode.ToActionCode();
     }
 }

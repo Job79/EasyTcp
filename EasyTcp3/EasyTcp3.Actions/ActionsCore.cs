@@ -67,15 +67,20 @@ namespace EasyTcp3.Actions
         /// </summary>
         /// <param name="actions"></param>
         /// <param name="interceptor"></param>
+        /// <param name="onUnknownAction"></param>
         /// <param name="sender"></param>
         /// <param name="message"></param>
         internal static void ExecuteAction(this Dictionary<int, EasyTcpActionDelegate> actions,
-            Func<int, Message, bool> interceptor, object sender,
+            Func<int, Message, bool> interceptor, Action onUnknownAction, object sender,
             Message message)
         {
             var actionCode = BitConverter.ToInt32(message.Data, 0);
             actions.TryGetValue(actionCode, out var action);
-            if (action == null) return; // TODO Handle unknown actions
+            if (action == null)
+            {
+                onUnknownAction?.Invoke();
+                return;
+            }
 
 #if !NETSTANDARD2_1
             action.Invoke(sender, new Message(message.Data[4..], message.Client));
