@@ -15,7 +15,7 @@ namespace EasyTcp3.Examples.SpeedTest
     public static class SpeedTestClient
     {
         const int Port = 5_001;
-        const int MessageCount = 1000_000;
+        const int MessageCount = 100_000;
         const string Message = "Message";
         
         public static void RunSpeedTest()
