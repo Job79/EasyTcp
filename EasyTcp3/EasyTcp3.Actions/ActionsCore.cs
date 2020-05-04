@@ -71,14 +71,14 @@ namespace EasyTcp3.Actions
         /// <param name="sender"></param>
         /// <param name="message"></param>
         internal static void ExecuteAction(this Dictionary<int, EasyTcpActionDelegate> actions,
-            Func<int, Message, bool> interceptor, Action onUnknownAction, object sender,
+            Func<int, Message, bool> interceptor, Action<Message> onUnknownAction, object sender,
             Message message)
         {
             var actionCode = BitConverter.ToInt32(message.Data, 0);
             actions.TryGetValue(actionCode, out var action);
             if (action == null)
             {
-                onUnknownAction?.Invoke();
+                onUnknownAction?.Invoke(message);
                 return;
             }
 

@@ -14,9 +14,9 @@ namespace EasyTcp3.Actions
 
         public Func<int, Message, bool> Interceptor;
 
-        public event EventHandler<EasyTcpClient> OnUnknownAction;
+        public event EventHandler<Message> OnUnknownAction;
 
-        protected internal void FireOnUnknownAction() => OnUnknownAction?.Invoke(this, this);
+        protected internal void FireOnUnknownAction(Message e) => OnUnknownAction?.Invoke(this, e);
 
         public EasyTcpActionClient(Assembly assembly = null, string nameSpace = null)
         {
