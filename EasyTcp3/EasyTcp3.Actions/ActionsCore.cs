@@ -9,17 +9,25 @@ namespace EasyTcp3.Actions
     /// Contains the core elements of the action system
     ///
     /// Protocol of the action system:
-    /// ([data length + action id length(4)]) [action id (int)] [data]
+    /// (ushort: [data length + action id length(4)]) [int: action id] [data]
     /// </summary>
     public static class ActionsCore
     {
+        /// <summary>
+        /// Delegate of an EasyTcp action
+        /// See it as an template
+        /// </summary>
+        /// <param name="sender">EasyTcpClient or EasyTcpServer as object</param>
+        /// <param name="message">received message</param>
         public delegate void EasyTcpActionDelegate(object sender, Message message);
 
         /// <summary>
         /// Get all methods with the EasyTcpAction attribute
         /// </summary>
-        /// <param name="assembly">assembly with EasyTcpAction</param>
-        /// <param name="nameSpace">namespace with EasyTcpActions, filter is ignored when null</param>
+        /// <param name="assembly">assembly with EasyTcpActions</param>
+        /// <param name="nameSpace">filter for namespace with EasyTcpActions.
+        /// All actions in this namespace will be added, other will be ignored.
+        /// Filter is ignored when null</param>
         /// <returns>all EasyTcpAction functions within an assembly</returns>
         /// <exception cref="Exception">could not find any EasyTcpActions</exception>
         internal static Dictionary<int, EasyTcpActionDelegate> GetActions(Assembly assembly,
@@ -43,7 +51,7 @@ namespace EasyTcp3.Actions
             }
             catch (ArgumentException ex)
             {
-                throw new Exception("Could not load actions: multiple methods found with the same actionCode", ex);
+                throw new Exception("Could not load actions: multiple methods found with the same actionCode or method does not match EasyTcpActionDelegate", ex);
             }
         }
 
@@ -51,7 +59,7 @@ namespace EasyTcp3.Actions
         /// Determines whether a method is a valid action method
         /// </summary>
         /// <param name="m">method</param>
-        /// <returns></returns>
+        /// <returns>true if method is valid</returns>
         private static bool IsValidMethod(MethodInfo m)
         {
             if (!m.GetCustomAttributes().OfType<EasyTcpAction>().Any() || !m.IsStatic) return false;
@@ -65,11 +73,12 @@ namespace EasyTcp3.Actions
         /// <summary>
         /// Execute a received action
         /// </summary>
-        /// <param name="actions"></param>
-        /// <param name="interceptor"></param>
-        /// <param name="onUnknownAction"></param>
-        /// <param name="sender"></param>
-        /// <param name="message"></param>
+        /// <param name="actions">dictionary with all available actions</param>
+        /// <param name="interceptor">Function that gets called before action is executed.
+        /// If function returns false discard action. Ignore parameter when null</param>
+        /// <param name="onUnknownAction">action that gets triggered when an unknown action is received</param>
+        /// <param name="sender">EasyTcpClient or EasyTcpServer as object</param>
+        /// <param name="message">received data [int: action id] [data]</param>
         internal static void ExecuteAction(this Dictionary<int, EasyTcpActionDelegate> actions,
             Func<int, Message, bool> interceptor, Action<Message> onUnknownAction, object sender,
             Message message)
@@ -93,7 +102,7 @@ namespace EasyTcp3.Actions
         }
 
         /// <summary>
-        /// Convert a string to an ActionCode by using the djb2a hashing algorithm
+        /// Convert a string to an actionCode by using the djb2a hashing algorithm
         /// ! Collision are surely possible, but this shouldn't be a problem here (for example: haggadot & loathsomenesses)
         /// http://www.cse.yorku.ca/~oz/hash.html
         /// </summary>

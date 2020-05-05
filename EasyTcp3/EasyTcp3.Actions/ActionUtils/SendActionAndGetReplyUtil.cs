@@ -5,7 +5,7 @@ using System.Threading;
 namespace EasyTcp3.Actions.ActionUtils
 {
     /// <summary>
-    /// Functions to send a action to a remote host and then return the reply
+    /// Functions to send actions to a remote host and then return the reply
     /// ! These functions do not work in the OnDataReceive event
     /// </summary>
     public static class SendActionAndGetReplyUtil

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace EasyTcp3.Actions.ActionUtils.Async
 {
     /// <summary>
-    /// Functions to async send a action to a remote host and then return the reply
+    /// Functions to async send actions to a remote host and then return the reply
     /// ! These functions do not work in the OnDataReceive event
     /// </summary>
     public static class SendActionAndGetReplyAsyncUtil
