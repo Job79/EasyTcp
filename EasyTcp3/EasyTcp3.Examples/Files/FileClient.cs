@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.Files
@@ -23,7 +24,7 @@ namespace EasyTcp3.Examples.Files
             };
             
             if(!client.Connect(IPAddress.Any, Port)) return;
-            client.Send($"Download {fileName}");
+            client.SendAction("DOWNLOAD",fileName);
         }
         
         public static void Upload(string fileName, string saveAs)
@@ -31,7 +32,7 @@ namespace EasyTcp3.Examples.Files
             var client = new EasyTcpClient();
 
             if(!client.Connect(IPAddress.Any, Port)) return;
-            client.Send($"Upload {saveAs}");
+            client.SendAction("UPLOAD",saveAs);
             
             using var fileStream = new FileStream(fileName, FileMode.Open);
             client.SendStream(fileStream);

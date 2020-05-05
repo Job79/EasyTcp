@@ -1,16 +1,17 @@
 using System.Net;
 using System.Text;
+using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Client
+namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Tests for the Send functions
+    /// Tests for the SendAction functions
     /// </summary>
-    public class Send
+    public class SendAction
     {
         private ushort _port;
 
@@ -23,104 +24,115 @@ namespace EasyTcp3.Test.Client
         }
 
         [Test]
-        public void SendArray()
+        public void SendActionArray()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             byte[] data = new byte[100];
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendUShort()
+        public void SendActionUShort()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ushort data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendShort()
+        public void SendActionShort()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             short data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendUInt()
+        public void SendActionUInt()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             uint data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendInt()
+        public void SendActionInt()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             int data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendULong()
+        public void SendActionULong()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ulong data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendLong()
+        public void SendActionLong()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             long data = 123;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendDouble()
+        public void SendActionDouble()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             double data = 123.0;
-            client.Send(data);
+            client.SendAction(0, data);
+            client.SendAction("ECHO", data);
         }
 
         [Test]
-        public void SendBool()
+        public void SendActionBool()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
-            bool data = true;
-            client.Send(data);
+            client.SendAction(0, true);
+            client.SendAction("ECHO", true);
         }
 
         [Test]
-        public void SendString()
+        public void SendActionString()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             string data = "Data";
-            client.Send(data);
-            client.Send(data, Encoding.UTF32); //Send with different encoding
+            client.SendAction(0, data);
+            client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
+            
+            client.SendAction(0, data);
+            client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
         }
     }
 }

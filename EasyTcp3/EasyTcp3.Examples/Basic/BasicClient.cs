@@ -46,6 +46,9 @@ namespace EasyTcp3.Examples.Basic
 
             if (connected) client.Send("Hello everyone!");
             else Console.WriteLine("Client: Could not connect to server");
+
+            // Send a message and get the reply
+            Message reply = client.SendAndGetReply("Hello server!");
         } 
     }
 }

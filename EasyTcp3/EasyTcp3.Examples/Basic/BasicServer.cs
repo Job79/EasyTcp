@@ -14,8 +14,7 @@ namespace EasyTcp3.Examples.Basic
         
         public static void StartBasicServer()
         {
-            var server = new EasyTcpServer();
-            server.Start(Port); //Start server on 1 port. (See StartUtil for more options)
+            var server = new EasyTcpServer().Start(Port); // Start server on port 5000. (See StartUtil for more options)
 
             /* Using the OnConnect event.
              * Gets triggered when an new client connects,

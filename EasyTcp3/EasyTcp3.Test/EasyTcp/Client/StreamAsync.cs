@@ -1,4 +1,4 @@
-using System.IO;
+/*using System.IO;
 using System.Net;
 using System.Text;
 using EasyTcp3.ClientUtils;
@@ -7,7 +7,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Client
+namespace EasyTcp3.Test.EasyTcp.Client
 {
     /// <summary>
     /// Tests for the StreamAsync functions
@@ -15,7 +15,7 @@ namespace EasyTcp3.Test.Client
     public class StreamAsync
     {
         //TODO This test crashes sometimes, is it the test or the code in EasyTcp?
-        /*[Test]
+        [Test]
         public async Task Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
         {
             ushort port = TestHelper.GetPort();
@@ -41,7 +41,7 @@ namespace EasyTcp3.Test.Client
 
             TestHelper.WaitWhileTrue(() => data == "");
             Assert.AreEqual(testData, data);
-        }*/
+        }
 
         [Test]
         public void Stream2()//Client -> Server -(Stream)> Client     (Client requests stream from server)
@@ -74,4 +74,4 @@ namespace EasyTcp3.Test.Client
             Assert.AreEqual(testData, data);
         }
     }
-}
+}*/

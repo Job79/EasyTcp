@@ -31,10 +31,10 @@ namespace EasyTcp3.ClientUtils.Async
             Message reply = null;
             using var signal = new SemaphoreSlim(0, 1); //Use SemaphoreSlim as async ManualResetEventSlim
 
-            client.FireOnDataReceive = message =>
+            client.DataReceiveHandler = message =>
             {
                 reply = message;
-                client.FireOnDataReceive = client.FireOnDataReceiveEvent;
+                client.ResetDataReceiveHandler();
                 // Function is no longer used when signal is disposed, therefore ignore this warning
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Release();
@@ -42,7 +42,7 @@ namespace EasyTcp3.ClientUtils.Async
             client.Send(data);
 
             await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
-            if (reply == null) client.FireOnDataReceive = client.FireOnDataReceiveEvent;
+            if (reply == null) client.ResetDataReceiveHandler();
             return reply;
         }
 

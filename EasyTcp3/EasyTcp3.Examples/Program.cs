@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EasyTcp3.Examples.Actions;
 using EasyTcp3.Examples.Basic;
 using EasyTcp3.Examples.Files;
 using EasyTcp3.Examples.SpeedTest;
@@ -31,6 +32,10 @@ namespace EasyTcp3.Examples
             
             Console.WriteLine("--    EchoServer/SpeedTestClient    --");
             SpeedTestClient.RunSpeedTest();
+            
+            Console.WriteLine("--    ActionEchoServer/ActionSpeedTestClient    --");
+            ActionEchoServer.StartEchoServer();
+            ActionSpeedTestClient.RunSpeedTest();
             
             Task.Delay(-1).Wait();
         }

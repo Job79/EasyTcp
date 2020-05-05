@@ -6,7 +6,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Server
+namespace EasyTcp3.Test.EasyTcp.Server
 {
     /// <summary>
     /// Tests for the OnConnect event

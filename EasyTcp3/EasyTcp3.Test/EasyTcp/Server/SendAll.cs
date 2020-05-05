@@ -5,7 +5,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Server
+namespace EasyTcp3.Test.EasyTcp.Server
 {
     /// <summary>
     /// Tests for the SendAll functions
@@ -137,8 +137,7 @@ namespace EasyTcp3.Test.Server
             var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
-            bool data = true;
-            server.SendAll(data);
+            server.SendAll(true);
         }
 
         [Test]

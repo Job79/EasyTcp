@@ -5,7 +5,7 @@ using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Client
+namespace EasyTcp3.Test.EasyTcp.Client
 {
     /// <summary>
     /// Tests for the Connect functions

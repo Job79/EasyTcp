@@ -1,32 +1,33 @@
 using System;
 using System.Linq;
 using System.Net;
+using EasyTcp3.Actions;
+using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Client
+namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Tests for the SendAndGetReply functions
+    /// Tests for the SendActionAndGetReply functions
     /// </summary>
-    public class SendAndGetReply
+    public class SendActionAndGetReply
     {
         private ushort _port;
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
 
         [SetUp]
-        public void Setup() // Simple echo server
+        public void Setup()
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            var server = new EasyTcpActionServer();
             server.Start(_port);
-            server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
+            //See action in Actions.cs
         }
 
         [Test]
-        public void SendAndGetReplyTriggerOnDataReceive()
+        public void SendActionAndGetReplyTriggerOnDataReceive()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
@@ -35,131 +36,148 @@ namespace EasyTcp3.Test.Client
             client.OnDataReceive += (sender, message) => triggered = true;
 
             byte[] data = new byte[100];
-            var m = client.SendAndGetReply(data);
+            var m = client.SendActionAndGetReply(0, data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
             Assert.IsFalse(triggered);
         }
-        
+
         [Test]
-        public void SendAndGetReplyArrayWithoutTimeout()
+        public void SendActionAndGetReplyArray()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             byte[] data = new byte[100];
-            var m = client.SendAndGetReply(data);
+            var m = client.SendActionAndGetReply(0, data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
-        }
-        
-        [Test]
-        public void SendAndGetReplyArray()
-        {
-            using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
-
-            byte[] data = new byte[100];
-            var m = client.SendAndGetReply(data, _timeout);
-            Assert.IsTrue(data.SequenceEqual(m.Data));
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.IsTrue(data.SequenceEqual(m2.Data));
         }
 
         [Test]
-        public void SendAndGetReplyUShort()
+        public void SendActionAndGetReplyUShort()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ushort data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToUShort());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToUShort());
         }
 
         [Test]
-        public void SendAndGetReplyShort()
+        public void SendActionAndGetReplyShort()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             short data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToShort());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToShort());
         }
 
         [Test]
-        public void SendAndGetReplyUInt()
+        public void SendActionAndGetReplyUInt()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             uint data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToUInt());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToUInt());
         }
 
         [Test]
-        public void SendAndGetReplyInt()
+        public void SendActionAndGetReplyInt()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             int data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToInt());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToInt());
         }
 
         [Test]
-        public void SendAndGetReplyULong()
+        public void SendActionAndGetReplyULong()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             ulong data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToULong());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToULong());
         }
 
         [Test]
-        public void SendAndGetReplyLong()
+        public void SendActionAndGetReplyLong()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             long data = 123;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToLong());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToLong());
         }
 
         [Test]
-        public void SendAndGetReplyDouble()
+        public void SendActionAndGetReplyDouble()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             double data = 123.0;
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToDouble());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToDouble());
         }
 
         [Test]
-        public void SendAndGetReplyBool()
+        public void SendActionAndGetReplyBool()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
-            bool data = true;
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, true, _timeout);
             Assert.AreEqual(true, m.ToBool());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", true);
+            Assert.AreEqual(true, m2.ToBool());
         }
 
         [Test]
-        public void SendAndGetReplyString()
+        public void SendActionAndGetReplyString()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
             string data = "123";
-            var m = client.SendAndGetReply(data, _timeout);
+            var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToString());
+            
+            var m2 = client.SendActionAndGetReply("ECHO", data);
+            Assert.AreEqual(data, m2.ToString());
         }
     }
 }

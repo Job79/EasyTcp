@@ -50,7 +50,35 @@
           </e>
         </e>
       </e>
+      <e p="EasyTcp3.Actions" t="IncludeRecursive">
+        <e p="ActionUtils" t="Include">
+          <e p="Async" t="Include">
+            <e p="SendActionAndGetReplyAsyncUtil.cs" t="Include" />
+          </e>
+          <e p="SendActionAndGetReplyUtil.cs" t="Include" />
+          <e p="SendActionUtil.cs" t="Include" />
+          <e p="SendAllActionUtil.cs" t="Include" />
+          <e p="SerializationActionUtil.cs" t="Include" />
+        </e>
+        <e p="ActionsCore.cs" t="Include" />
+        <e p="EasyTcp3.Actions.csproj" t="IncludeRecursive" />
+        <e p="EasyTcpAction.cs" t="Include" />
+        <e p="EasyTcpActionClient.cs" t="Include" />
+        <e p="EasyTcpActionServer.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="EasyTcp3.Actions.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
       <e p="EasyTcp3.Examples" t="IncludeRecursive">
+        <e p="Actions" t="Include">
+          <e p="ActionClient.cs" t="Include" />
+          <e p="ActionEchoServer.cs" t="Include" />
+        </e>
         <e p="Basic" t="Include">
           <e p="BasicClient.cs" t="Include" />
           <e p="BasicServer.cs" t="Include" />
@@ -64,6 +92,7 @@
         </e>
         <e p="Program.cs" t="Include" />
         <e p="SpeedTest" t="Include">
+          <e p="ActionSpeedTestClient.cs" t="Include" />
           <e p="SpeedTestClient.cs" t="Include" />
         </e>
         <e p="TestFile.txt" t="Include" />
@@ -77,26 +106,37 @@
         </e>
       </e>
       <e p="EasyTcp3.Test" t="IncludeRecursive">
-        <e p="Client" t="Include">
-          <e p="Connect.cs" t="Include" />
-          <e p="ConnectAsync.cs" t="Include" />
-          <e p="Information.cs" t="Include" />
-          <e p="Send.cs" t="Include" />
-          <e p="SendAndGetReply.cs" t="Include" />
-          <e p="SendAndGetReplyAsync.cs" t="Include" />
-          <e p="Serialization.cs" t="Include" />
-          <e p="Stream.cs" t="Include" />
-          <e p="StreamAsync.cs" t="Include" />
+        <e p="Actions" t="Include">
+          <e p="Actions.cs" t="Include" />
+          <e p="ActionsCore.cs" t="Include" />
+          <e p="Interceptor.cs" t="Include" />
+          <e p="SendAction.cs" t="Include" />
+          <e p="SendActionAndGetReply.cs" t="Include" />
+          <e p="SendActionAndGetReplyAsync.cs" t="Include" />
+          <e p="SendAllAction.cs" t="Include" />
+        </e>
+        <e p="EasyTcp" t="Include">
+          <e p="Client" t="Include">
+            <e p="Connect.cs" t="Include" />
+            <e p="ConnectAsync.cs" t="Include" />
+            <e p="Information.cs" t="Include" />
+            <e p="Send.cs" t="Include" />
+            <e p="SendAndGetReply.cs" t="Include" />
+            <e p="SendAndGetReplyAsync.cs" t="Include" />
+            <e p="Serialization.cs" t="Include" />
+            <e p="Stream.cs" t="Include" />
+            <e p="StreamAsync.cs" t="Include" />
+          </e>
+          <e p="Message.cs" t="Include" />
+          <e p="OnDataReceive.cs" t="Include" />
+          <e p="OnDisconnect.cs" t="Include" />
+          <e p="Server" t="Include">
+            <e p="OnConnect.cs" t="Include" />
+            <e p="SendAll.cs" t="Include" />
+            <e p="Start.cs" t="Include" />
+          </e>
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
-        <e p="Message.cs" t="Include" />
-        <e p="OnDataReceive.cs" t="Include" />
-        <e p="OnDisconnect.cs" t="Include" />
-        <e p="Server" t="Include">
-          <e p="OnConnect.cs" t="Include" />
-          <e p="SendAll.cs" t="Include" />
-          <e p="Start.cs" t="Include" />
-        </e>
         <e p="TestHelper.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
