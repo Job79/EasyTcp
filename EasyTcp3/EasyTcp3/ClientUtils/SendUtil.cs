@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
+using EasyTcp3.Shared;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -14,13 +15,16 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <exception cref="ArgumentException">data array is empty or invalid client</exception>
-        public static void Send(this EasyTcpClient client, byte[] data)
+        public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not send data: Data array is empty");
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
+
+            if (compression) data = Compression.Compress(data);
 
             var message = new byte[2 + data.Length];
             Buffer.BlockCopy(BitConverter.GetBytes((ushort) data.Length),
@@ -93,8 +97,10 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
+        /// <param name="compression"></param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        public static void Send(this EasyTcpClient client, string data, Encoding encoding = null)
-            => client.Send((encoding ?? Encoding.UTF8).GetBytes(data));
+        public static void Send(this EasyTcpClient client, string data,
+            Encoding encoding = null, bool compression = false)
+            => client.Send((encoding ?? Encoding.UTF8).GetBytes(data), compression);
     }
 }

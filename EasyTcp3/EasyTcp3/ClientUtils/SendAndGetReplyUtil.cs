@@ -18,8 +18,9 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data</returns>
-        public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null)
+        public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null, bool compression = false)
         {
             if (client == null) throw new ArgumentException("Could not send: client is null");
 
@@ -34,7 +35,7 @@ namespace EasyTcp3.ClientUtils
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Set();
             };
-            client.Send(data);
+            client.Send(data, compression);
 
             signal.Wait(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
             if (reply == null) client.ResetDataReceiveHandler();
@@ -119,9 +120,10 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         public static Message SendAndGetReply(this EasyTcpClient client, string data, TimeSpan? timeout = null,
-            Encoding encoding = null) =>
-            client.SendAndGetReply((encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+            Encoding encoding = null, bool compression = false) =>
+            client.SendAndGetReply((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
     }
 }

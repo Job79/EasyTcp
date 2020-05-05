@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using EasyTcp3.Shared;
 
 namespace EasyTcp3
 {
@@ -12,8 +13,8 @@ namespace EasyTcp3
         /// <summary>
         /// Received data
         /// </summary>
-        public readonly byte[] Data;
-        
+        public byte[] Data { get; private set; }
+
         /// <summary>
         /// Receiver of this message
         /// </summary>
@@ -29,40 +30,57 @@ namespace EasyTcp3
         }
 
         /// <summary>
+        /// Decompress data
+        /// </summary>
+        /// <returns>this object [for inline code]</returns>
+        public Message Decompress()
+        {
+            Data = Compression.Decompress(Data);
+            return this;
+        }
+        
+        /// <summary>
         /// Determines whether the received data is a valid UShort 
         /// </summary>
         /// <returns></returns>
         public bool IsValidUShort() => Data.Length == 2;
+
         /// <summary>
         /// Determines whether the received data is a valid Short 
         /// </summary>
         /// <returns></returns>
         public bool IsValidShort() => Data.Length == 2;
+
         /// <summary>
         /// Determines whether the received data is a valid UInt 
         /// </summary>
         /// <returns></returns>
         public bool IsValidUInt() => Data.Length == 4;
+
         /// <summary>
         /// Determines whether the received data is a valid Int 
         /// </summary>
         /// <returns></returns>
         public bool IsValidInt() => Data.Length == 4;
+
         /// <summary>
         /// Determines whether the received data is a valid ULong 
         /// </summary>
         /// <returns></returns>
         public bool IsValidULong() => Data.Length == 8;
+
         /// <summary>
         /// Determines whether the received data is a valid Long 
         /// </summary>
         /// <returns></returns>
         public bool IsValidLong() => Data.Length == 8;
+
         /// <summary>
         /// Determines whether the received data is a valid Double 
         /// </summary>
         /// <returns></returns>
         public bool IsValidDouble() => Data.Length == 8;
+
         /// <summary>
         /// Determines whether the received data is a valid Bool 
         /// </summary>
@@ -74,41 +92,49 @@ namespace EasyTcp3
         /// </summary>
         /// <returns>data as UShort</returns>
         public ushort ToUShort() => BitConverter.ToUInt16(Data);
+
         /// <summary>
         /// Received data as Short
         /// </summary>
         /// <returns>data as Short</returns>
         public short ToShort() => BitConverter.ToInt16(Data);
+
         /// <summary>
         /// Received data as UInt
         /// </summary>
         /// <returns>data as UInt</returns>
         public uint ToUInt() => BitConverter.ToUInt32(Data);
+
         /// <summary>
         /// Received data as Int
         /// </summary>
         /// <returns>data as Int</returns>
         public int ToInt() => BitConverter.ToInt16(Data);
+
         /// <summary>
         /// Received data as ULong
         /// </summary>
         /// <returns>data as ULong</returns>
         public ulong ToULong() => BitConverter.ToUInt64(Data);
+
         /// <summary>
         /// Received data as Long
         /// </summary>
         /// <returns>data as Long</returns>
         public long ToLong() => BitConverter.ToInt64(Data);
+
         /// <summary>
         /// Received data as Double
         /// </summary>
         /// <returns>data as Double</returns>
         public double ToDouble() => BitConverter.ToDouble(Data);
+
         /// <summary>
         /// Received data as Bool
         /// </summary>
         /// <returns>data as Bool</returns>
         public bool ToBool() => BitConverter.ToBoolean(Data);
+
         /// <summary>
         /// Received data as String
         /// </summary>

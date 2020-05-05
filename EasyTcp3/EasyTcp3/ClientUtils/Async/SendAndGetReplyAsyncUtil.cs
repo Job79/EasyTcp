@@ -22,9 +22,10 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data or null</returns> 
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data,
-            TimeSpan? timeout = null)
+            TimeSpan? timeout = null, bool compression = false)
         {
             if (client == null) throw new ArgumentException("Could not send: client is null");
 
@@ -39,7 +40,7 @@ namespace EasyTcp3.ClientUtils.Async
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Release();
             };
-            client.Send(data);
+            client.Send(data, compression);
 
             await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
             if (reply == null) client.ResetDataReceiveHandler();
@@ -141,10 +142,11 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <param name="encoding">Encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, string data,
             TimeSpan? timeout = null,
-            Encoding encoding = null)
-            => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+            Encoding encoding = null, bool compression = false)
+            => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
     }
 }
