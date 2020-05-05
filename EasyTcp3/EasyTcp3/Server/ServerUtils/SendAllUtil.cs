@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
+using EasyTcp3.Shared;
 
 namespace EasyTcp3.Server.ServerUtils
 {
@@ -14,13 +15,16 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
-        public static void SendAll(this EasyTcpServer server, byte[] data)
+        public static void SendAll(this EasyTcpServer server, byte[] data, bool compression = false)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not send data: Data array is empty");
             if (server == null || !server.IsRunning)
                 throw new Exception("Could not send data: Server not running or null");
+
+            if (compression) data = Compression.Compress(data);
 
             var message = new byte[2 + data.Length];
             Buffer.BlockCopy(BitConverter.GetBytes((ushort) data.Length),
@@ -29,7 +33,7 @@ namespace EasyTcp3.Server.ServerUtils
 
             using var e = new SocketAsyncEventArgs();
             e.SetBuffer(message);
-            
+
             foreach (var client in server.GetConnectedClients()) client.BaseSocket.SendAsync(e);
         }
 
@@ -107,8 +111,10 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
-        public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null)
-            => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data));
+        public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null,
+            bool compression = false)
+            => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data), compression);
     }
 }
