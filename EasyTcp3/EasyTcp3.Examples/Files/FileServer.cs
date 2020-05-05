@@ -1,7 +1,6 @@
 using System.IO;
 using EasyTcp3.Actions;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Files
@@ -15,8 +14,7 @@ namespace EasyTcp3.Examples.Files
 
         public static void StartFileServer()
         {
-            var server = new EasyTcpActionServer();
-            server.Start(Port);
+            new EasyTcpActionServer().Start(Port);
         }
 
         [EasyTcpAction("DOWNLOAD")]
