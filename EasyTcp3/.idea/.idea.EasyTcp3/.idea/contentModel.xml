@@ -41,6 +41,9 @@
             <e p="StartUtil.cs" t="Include" />
           </e>
         </e>
+        <e p="Shared" t="Include">
+          <e p="Compression.cs" t="Include" />
+        </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -110,6 +113,7 @@
           <e p="Actions.cs" t="Include" />
           <e p="ActionsCore.cs" t="Include" />
           <e p="Interceptor.cs" t="Include" />
+          <e p="OnUnknownAction.cs" t="Include" />
           <e p="SendAction.cs" t="Include" />
           <e p="SendActionAndGetReply.cs" t="Include" />
           <e p="SendActionAndGetReplyAsync.cs" t="Include" />

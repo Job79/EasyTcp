@@ -20,25 +20,25 @@ namespace EasyTcp3.Test.Actions
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer();
             server.Start(port);
-            
+
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
 
             string data = "test";
             var reply = client.SendActionAndGetReply(0, data);
             Assert.AreEqual(data, reply.ToString());
-            
+
             reply = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, reply.ToString());
         }
-        
+
         [Test]
         public void TestClient()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-            
+
             using var client = new EasyTcpActionClient();
             client.OnDataReceive += (sender, message) => Console.WriteLine("123");
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
@@ -48,7 +48,7 @@ namespace EasyTcp3.Test.Actions
             {
                 var reply = c.SendActionAndGetReply(0, data);
                 Assert.AreEqual(data, reply.ToString());
-                
+
                 reply = c.SendActionAndGetReply("ECHO", data);
                 Assert.AreEqual(data, reply.ToString());
             }

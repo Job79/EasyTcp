@@ -50,7 +50,7 @@ namespace EasyTcp3.Test.Actions
             byte[] data = new byte[100];
             var m = client.SendActionAndGetReply(0, data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.IsTrue(data.SequenceEqual(m2.Data));
         }
@@ -64,7 +64,7 @@ namespace EasyTcp3.Test.Actions
             ushort data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToUShort());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToUShort());
         }
@@ -78,7 +78,7 @@ namespace EasyTcp3.Test.Actions
             short data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToShort());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToShort());
         }
@@ -92,7 +92,7 @@ namespace EasyTcp3.Test.Actions
             uint data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToUInt());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToUInt());
         }
@@ -106,7 +106,7 @@ namespace EasyTcp3.Test.Actions
             int data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToInt());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToInt());
         }
@@ -120,7 +120,7 @@ namespace EasyTcp3.Test.Actions
             ulong data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToULong());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToULong());
         }
@@ -134,7 +134,7 @@ namespace EasyTcp3.Test.Actions
             long data = 123;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToLong());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToLong());
         }
@@ -148,7 +148,7 @@ namespace EasyTcp3.Test.Actions
             double data = 123.0;
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToDouble());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToDouble());
         }
@@ -161,7 +161,7 @@ namespace EasyTcp3.Test.Actions
 
             var m = client.SendActionAndGetReply(0, true, _timeout);
             Assert.AreEqual(true, m.ToBool());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", true);
             Assert.AreEqual(true, m2.ToBool());
         }
@@ -175,7 +175,7 @@ namespace EasyTcp3.Test.Actions
             string data = "123";
             var m = client.SendActionAndGetReply(0, data, _timeout);
             Assert.AreEqual(data, m.ToString());
-            
+
             var m2 = client.SendActionAndGetReply("ECHO", data);
             Assert.AreEqual(data, m2.ToString());
         }

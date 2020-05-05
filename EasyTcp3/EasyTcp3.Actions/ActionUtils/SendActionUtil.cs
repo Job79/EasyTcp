@@ -62,7 +62,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, string action, ushort data) =>
             client.SendAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (short) to the remote host
         /// </summary>
@@ -71,7 +71,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, int action, short data) =>
             client.SendAction(action, BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (short) to the remote host
         /// </summary>
@@ -89,7 +89,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, int action, uint data) =>
             client.SendAction(action, BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (uint) to the remote host
         /// </summary>
@@ -116,7 +116,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, string action, int data) =>
             client.SendAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (ulong) to the remote host
         /// </summary>
@@ -134,7 +134,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, string action, ulong data) =>
             client.SendAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (long) to the remote host
         /// </summary>
@@ -152,7 +152,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, string action, long data) =>
             client.SendAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (double) to the remote host
         /// </summary>
@@ -161,7 +161,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, int action, double data) =>
             client.SendAction(action, BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (double) to the remote host
         /// </summary>
@@ -188,7 +188,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         public static void SendAction(this EasyTcpClient client, string action, bool data) =>
             client.SendAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (string) to the remote host
         /// </summary>
@@ -198,7 +198,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         public static void SendAction(this EasyTcpClient client, int action, string data, Encoding encoding = null)
             => client.SendAction(action, (encoding ?? Encoding.UTF8).GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (string) to the remote host
         /// </summary>

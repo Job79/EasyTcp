@@ -51,7 +51,9 @@ namespace EasyTcp3.Actions
             }
             catch (ArgumentException ex)
             {
-                throw new Exception("Could not load actions: multiple methods found with the same actionCode or method does not match EasyTcpActionDelegate", ex);
+                throw new Exception(
+                    "Could not load actions: multiple methods found with the same actionCode or method does not match EasyTcpActionDelegate",
+                    ex);
             }
         }
 

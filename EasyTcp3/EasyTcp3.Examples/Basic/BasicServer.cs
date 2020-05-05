@@ -11,7 +11,7 @@ namespace EasyTcp3.Examples.Basic
     public static class BasicServer
     {
         private const ushort Port = 5_000;
-        
+
         public static void StartBasicServer()
         {
             var server = new EasyTcpServer().Start(Port); // Start server on port 5000. (See StartUtil for more options)
@@ -24,7 +24,7 @@ namespace EasyTcp3.Examples.Basic
             server.OnConnect += (sender, client) =>
             {
                 Console.WriteLine("Server: Client connected");
-                Console.WriteLine($"Server: There are now {server.ConnectedClientsCount+1} clients connected");
+                Console.WriteLine($"Server: There are now {server.ConnectedClientsCount + 1} clients connected");
             };
 
             /* Using the OnDisconnect event.

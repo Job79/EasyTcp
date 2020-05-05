@@ -16,7 +16,7 @@ namespace EasyTcp3.Examples.Basic
 
         public static void StartEchoServer()
         {
-            var server = new EasyTcpServer().Start(Port);//Start server on port 5001
+            var server = new EasyTcpServer().Start(Port); //Start server on port 5001
 
             // Send received data back
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);

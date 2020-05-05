@@ -126,7 +126,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, string action, int data) =>
             server.SendAllAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (ulong) to all connected clients
         /// </summary>
@@ -146,7 +146,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, string action, ulong data) =>
             server.SendAllAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (long) to all connected clients
         /// </summary>
@@ -166,7 +166,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, string action, long data) =>
             server.SendAllAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (double) to all connected clients
         /// </summary>
@@ -186,7 +186,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, string action, double data) =>
             server.SendAllAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (bool) to all connected clients
         /// </summary>
@@ -206,7 +206,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, string action, bool data) =>
             server.SendAllAction(action.ToActionCode(), BitConverter.GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (string) to all connected clients
         /// </summary>
@@ -217,7 +217,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAllAction(this EasyTcpServer server, int action, string data, Encoding encoding = null)
             => server.SendAllAction(action, (encoding ?? Encoding.UTF8).GetBytes(data));
-        
+
         /// <summary>
         /// Send action with data (string) to all connected clients
         /// </summary>
@@ -226,7 +226,8 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
-        public static void SendAllAction(this EasyTcpServer server, string action, string data, Encoding encoding = null)
+        public static void SendAllAction(this EasyTcpServer server, string action, string data,
+            Encoding encoding = null)
             => server.SendAllAction(action.ToActionCode(), (encoding ?? Encoding.UTF8).GetBytes(data));
     }
 }
