@@ -94,7 +94,7 @@ namespace EasyTcp3.Actions
             }
 
 #if !NETSTANDARD2_1
-            action.Invoke(sender, new Message(message.Data[4..], message.Client));
+            var data = message.Data[4..];
 #else
             var data = new byte[message.Data.Length - 4];
             Buffer.BlockCopy(message.Data, 4, data, 0, data.Length);
