@@ -39,7 +39,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             Assert.IsTrue(data.SequenceEqual(m.Data));
             Assert.IsFalse(triggered);
         }
-        
+
         [Test]
         public void SendAndGetReplyArrayWithoutTimeout()
         {
@@ -50,7 +50,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             var m = client.SendAndGetReply(data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
         }
-        
+
         [Test]
         public void SendAndGetReplyArray()
         {

@@ -14,16 +14,17 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/StreamAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/Information.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/ActionsCore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/OnUnknownAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/B5F057D8-8CC4-4D63-B96F-C2B5AE70830C/8f/8a913e4c/JsonSerializer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/Interceptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2DBFBC25-8F2A-4D07-9DDA-AA146A0B126E/2c/4b04ad61/WaitHandle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3/Compression.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/ActionSpeedTestClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/SendAndGetReply.cs" root0="FORCE_HIGHLIGHTING" />
@@ -50,16 +51,17 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4F5F22FF-6DDB-4BDF-9CC4-20C4D8E005A7/a2/8bec86f9/BitConverter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Server/Start.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Server/SendAll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Server/OnConnect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Message.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/Send.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/OnDisconnect.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/ConnectAsync.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/OnDataReceive.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4D5B5FA4-364F-4C5F-82FD-EAE98C4EF229/7b/63ead364/Boolean.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/Actions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/SendAllAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/ConnectAsyncUtil.cs" root0="FORCE_HIGHLIGHTING" />
@@ -82,57 +84,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionSpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/ActionSpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Program.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/ActionsUtils/SendAndGetReply.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/ActionsUtils/SendActionUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/ActionsUtils/Async/SendAndGetReplyAsync.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/ActionsUtils/Async/SendActionAndGetReplyAsync.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/ActionsUtils/Async/SendActionAndGetReplyAsyncUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsUtils/SendAndGetReply.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsUtils/SendAllUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsUtils/StreamUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsUtils/SerializationUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsUtils/SendActionUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/EasyTcpAction.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Actions/EasyTcpActions.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActions.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/Actions.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SendActionAndGetReply.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SendAllAcionUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SerializationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SerializationAction.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/EchoServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendAndGetReply.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionEchoServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Server/SendAll.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/StreamAsync.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpAction.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/Actions.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/ActionsCore.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendAction.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendActionAndGetReply.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendAllAction.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendActionAndGetReplyAsync.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SerializationActionUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/SendActionAndGetReply.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/TestHelper.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/OnUnknownAction.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/Interceptor.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Program.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/ActionSpeedTestClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Files/FileClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/Actions.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpAction.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsCore.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/EchoServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Files/FileServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Internal/Compression.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/Send.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Message.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Message.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionEchoServer.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Shared/Compression.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SerializationUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SendAllActionUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/SendAndGetReplyUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Async/SendAndGetReplyAsyncUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Compression.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/SendAllUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SendActionUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/SendActionAndGetReplyUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionUtils/Async/SendActionAndGetReplyAsyncUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsCore.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/Interceptor.cs" />
       </list>
     </option>
   </component>
@@ -146,6 +148,7 @@
     <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="MTCustomThemeConfigurable" />
   </component>
   <component name="RunManager" selected=".NET Project.EasyTcp3.Examples">
     <configuration name="EasyTcp3.Examples" type="DotNetProject" factoryName=".NET Project">
@@ -186,7 +189,19 @@
       <workItem from="1588346021380" duration="295000" />
       <workItem from="1588346330657" duration="4680000" />
       <workItem from="1588406781139" duration="15860000" />
-      <workItem from="1588427665055" duration="9463000" />
+      <workItem from="1588427665055" duration="12532000" />
+      <workItem from="1588512860714" duration="806000" />
+      <workItem from="1588612662665" duration="1336000" />
+      <workItem from="1588665365029" duration="7797000" />
+      <workItem from="1588676269142" duration="4319000" />
+      <workItem from="1588698186683" duration="4516000" />
+      <workItem from="1588702753854" duration="73000" />
+      <workItem from="1588702876402" duration="138000" />
+      <workItem from="1588703045010" duration="130000" />
+      <workItem from="1588703201202" duration="154000" />
+      <workItem from="1588703375226" duration="68000" />
+      <workItem from="1588703458733" duration="1826000" />
+      <workItem from="1588771393743" duration="5701000" />
     </task>
     <servers />
   </component>
@@ -194,102 +209,145 @@
     <option name="coveragePercentColumnWidth" value="150" />
     <option name="sortOrder" value="DESCENDING" />
     <option name="sortedColumn" value="1" />
-    <option name="symbolColumnWidth" value="353" />
+    <option name="symbolColumnWidth" value="368" />
     <coverage-tree-state>
       <expand>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
           <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1150" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1150" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1121" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1150" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1121" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1125" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1150" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1121" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1125" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="184" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1150" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1121" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="1125" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="184" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="186" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
       </expand>
       <select />
     </coverage-tree-state>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom" timestamp="1588432558368">
+    <state x="553" y="178" width="804" height="665" key="#Notifications" timestamp="1588702768805">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558368" />
-    <state width="1878" height="368" key="GridCell.Tab.0.center" timestamp="1588432558367">
+    <state x="553" y="178" width="804" height="665" key="#Notifications/0.0.1920.1080@0.0.1920.1080" timestamp="1588702768805" />
+    <state width="1878" height="412" key="GridCell.Tab.0.bottom" timestamp="1588771970213">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558367" />
-    <state width="1878" height="368" key="GridCell.Tab.0.left" timestamp="1588432558367">
+    <state width="1878" height="412" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970213" />
+    <state width="1878" height="412" key="GridCell.Tab.0.center" timestamp="1588771970213">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558367" />
-    <state width="1878" height="368" key="GridCell.Tab.0.right" timestamp="1588432558368">
+    <state width="1878" height="412" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970213" />
+    <state width="1878" height="412" key="GridCell.Tab.0.left" timestamp="1588771970212">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558368" />
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom" timestamp="1588432558369">
+    <state width="1878" height="412" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970212" />
+    <state width="1878" height="412" key="GridCell.Tab.0.right" timestamp="1588771970213">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558369" />
-    <state width="1878" height="368" key="GridCell.Tab.1.center" timestamp="1588432558368">
+    <state width="1878" height="412" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970213" />
+    <state width="1878" height="412" key="GridCell.Tab.1.bottom" timestamp="1588771970214">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558368" />
-    <state width="1878" height="368" key="GridCell.Tab.1.left" timestamp="1588432558368">
+    <state width="1878" height="412" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970214" />
+    <state width="1878" height="412" key="GridCell.Tab.1.center" timestamp="1588771970214">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558368" />
-    <state width="1878" height="368" key="GridCell.Tab.1.right" timestamp="1588432558369">
+    <state width="1878" height="412" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970214" />
+    <state width="1878" height="412" key="GridCell.Tab.1.left" timestamp="1588771970213">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558369" />
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom" timestamp="1588432558370">
+    <state width="1878" height="412" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970213" />
+    <state width="1878" height="412" key="GridCell.Tab.1.right" timestamp="1588771970214">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558370" />
-    <state width="1878" height="368" key="GridCell.Tab.2.center" timestamp="1588432558370">
+    <state width="1878" height="412" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970214" />
+    <state width="1878" height="412" key="GridCell.Tab.2.bottom" timestamp="1588771970215">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558370" />
-    <state width="1878" height="368" key="GridCell.Tab.2.left" timestamp="1588432558369">
+    <state width="1878" height="412" key="GridCell.Tab.2.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970215" />
+    <state width="1878" height="412" key="GridCell.Tab.2.center" timestamp="1588771970215">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558369" />
-    <state width="1878" height="368" key="GridCell.Tab.2.right" timestamp="1588432558370">
+    <state width="1878" height="412" key="GridCell.Tab.2.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970215" />
+    <state width="1878" height="412" key="GridCell.Tab.2.left" timestamp="1588771970214">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.2.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558370" />
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom" timestamp="1588432558371">
+    <state width="1878" height="412" key="GridCell.Tab.2.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970214" />
+    <state width="1878" height="412" key="GridCell.Tab.2.right" timestamp="1588771970215">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558371" />
-    <state width="1878" height="368" key="GridCell.Tab.3.center" timestamp="1588432558371">
+    <state width="1878" height="412" key="GridCell.Tab.2.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970215" />
+    <state width="1878" height="412" key="GridCell.Tab.3.bottom" timestamp="1588771970216">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558371" />
-    <state width="1878" height="368" key="GridCell.Tab.3.left" timestamp="1588432558371">
+    <state width="1878" height="412" key="GridCell.Tab.3.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970216" />
+    <state width="1878" height="412" key="GridCell.Tab.3.center" timestamp="1588771970216">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558371" />
-    <state width="1878" height="368" key="GridCell.Tab.3.right" timestamp="1588432558371">
+    <state width="1878" height="412" key="GridCell.Tab.3.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970216" />
+    <state width="1878" height="412" key="GridCell.Tab.3.left" timestamp="1588771970215">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.3.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558371" />
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom" timestamp="1588432558372">
+    <state width="1878" height="412" key="GridCell.Tab.3.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970215" />
+    <state width="1878" height="412" key="GridCell.Tab.3.right" timestamp="1588771970216">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558372" />
-    <state width="1878" height="368" key="GridCell.Tab.4.center" timestamp="1588432558372">
+    <state width="1878" height="412" key="GridCell.Tab.3.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970216" />
+    <state width="1878" height="412" key="GridCell.Tab.4.bottom" timestamp="1588771970217">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558372" />
-    <state width="1878" height="368" key="GridCell.Tab.4.left" timestamp="1588432558371">
+    <state width="1878" height="412" key="GridCell.Tab.4.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970217" />
+    <state width="1878" height="412" key="GridCell.Tab.4.center" timestamp="1588771970217">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558371" />
-    <state width="1878" height="368" key="GridCell.Tab.4.right" timestamp="1588432558372">
+    <state width="1878" height="412" key="GridCell.Tab.4.center/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970217" />
+    <state width="1878" height="412" key="GridCell.Tab.4.left" timestamp="1588771970217">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="368" key="GridCell.Tab.4.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588432558372" />
+    <state width="1878" height="412" key="GridCell.Tab.4.left/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970217" />
+    <state width="1878" height="412" key="GridCell.Tab.4.right" timestamp="1588771970217">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="412" key="GridCell.Tab.4.right/0.0.1920.1080@0.0.1920.1080" timestamp="1588771970217" />
     <state x="547" y="204" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1588322217215">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="547" y="204" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080@0.0.1920.1080" timestamp="1588322217215" />
+    <state x="489" y="72" key="SettingsEditor" timestamp="1588771476420">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="489" y="72" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1588771476420" />
     <state width="962" height="549" key="XDebugger.FullValuePopup" timestamp="1588249693845">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -301,21 +359,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs</url>
-          <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" initialLine="18">
-            <startOffsets>
-              <option value="744" />
-            </startOffsets>
-            <endOffsets>
-              <option value="745" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="DotNet Exception Breakpoints" />
         <breakpoint type="DotNet Exception Breakpoints">

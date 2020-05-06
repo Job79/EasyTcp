@@ -41,16 +41,18 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="o">custom class</param>
-        public static void Send(this EasyTcpClient client, object o)
-            => SendUtil.Send(client,Serialize(o));
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void Send(this EasyTcpClient client, object o, bool compression = false)
+            => SendUtil.Send(client,Serialize(o), compression);
 
         /// <summary>
         /// Send data (custom class) to all connected clients
         /// </summary>
         /// <param name="server"></param>
         /// <param name="o">custom class</param>
-        public static void SendAll(this EasyTcpServer server, object o)
-            => SendAllUtil.SendAll(server, Serialize(o));
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAll(this EasyTcpServer server, object o, bool compression = false)
+            => SendAllUtil.SendAll(server, Serialize(o),compression);
         
         /// <summary>
         /// Received data as custom class

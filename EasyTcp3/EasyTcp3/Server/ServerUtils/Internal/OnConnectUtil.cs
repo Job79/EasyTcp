@@ -23,7 +23,7 @@ namespace EasyTcp3.Server.ServerUtils.Internal
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
-                
+
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
@@ -35,7 +35,7 @@ namespace EasyTcp3.Server.ServerUtils.Internal
             {
                 server.FireOnError(ex);
             }
-            
+
             server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
         }
     }

@@ -15,28 +15,28 @@ namespace EasyTcp3
         /// Null if disconnected
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
-        
+
         /// <summary>
         /// Determines whether the next receiving data is the length of data or actual data. [Length of data (4)] ["Data"] 
         /// See OnReceive for more information about the protocol EasyTcp uses
         /// </summary>
         protected internal bool ReceivingData;
-        
+
         /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
         /// </summary>
         protected internal byte[] Buffer = new byte[2];
-        
+
         /// <summary>
         /// Fired when the client connects to a server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
-        
+
         /// <summary>
         /// Fired when a client disconnects from a server to the server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
-        
+
         /// <summary>
         /// Fired when a client receives new information,
         /// Doesn't fire when one of these functions are called:
@@ -44,21 +44,23 @@ namespace EasyTcp3
         /// SendAndReplyAsync
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
-        
+
         /// <summary>
         /// Fired when an error occurs,
         /// if not set errors will be thrown
         /// </summary>
         public event EventHandler<Exception> OnError;
-        
+
         /// <summary>
         /// Function used to fire the OnConnect event
         /// </summary>
         protected internal void FireOnConnect() => OnConnect?.Invoke(this, this);
+
         /// <summary>
         /// Function used to fire the OnDisconnect event
         /// </summary>
         protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
+
         /// <summary>
         /// Function used to fire the OnError event,
         /// or if event is null, throw an exception
@@ -69,20 +71,22 @@ namespace EasyTcp3
             if (OnError != null) OnError.Invoke(this, exception);
             else throw exception;
         }
+
         /// <summary>
         /// Function used to fire the OnDataReceive event
         /// </summary>
         /// <param name="message">received message</param>
         protected internal void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
-        
+
         /// <summary>
         /// Action that is called when new data is received
         /// </summary>
         public Action<Message> DataReceiveHandler;
+
         /// <summary>
         /// Reset DataReceiveHandler to its default behavior (Calling OnDataReceive)
         /// </summary>
-        public void ResetDataReceiveHandler()=>DataReceiveHandler = FireOnDataReceiveEvent;
+        public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
 
 
         public EasyTcpClient() => ResetDataReceiveHandler();

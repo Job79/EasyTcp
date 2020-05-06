@@ -1,6 +1,6 @@
 using System;
-using System.Net.Sockets;
 using System.Text;
+using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Server.ServerUtils
 {
@@ -10,35 +10,36 @@ namespace EasyTcp3.Server.ServerUtils
     public static class SendAllUtil
     {
         /// <summary>
+        /// Send data (byte[][]) to all connected clients
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="dataArray">data to send to all connected clients</param>
+        /// <exception cref="ArgumentException">invalid server</exception>
+        public static void SendAll(this EasyTcpServer server, params byte[][] dataArray)
+        {
+            if (server == null || !server.IsRunning) throw new Exception("Could not send data: Server not running or null");
+
+            var message = SendUtil.CreateMessage(dataArray); 
+            foreach (var client in server.GetConnectedClients()) SendUtil.SendMessage(client.BaseSocket, message); 
+        }
+        
+        /// <summary>
         /// Send data (byte[]) to all connected clients
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
-        public static void SendAll(this EasyTcpServer server, byte[] data)
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAll(this EasyTcpServer server, byte[] data, bool compression = false)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not send data: Data array is empty");
-            if (server == null || !server.IsRunning)
-                throw new Exception("Could not send data: Server not running or null");
-
-            var message = new byte[2 + data.Length];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort) data.Length),
-                0, message, 0, 2); //Write length of data to message.
-            Buffer.BlockCopy(data, 0, message, 2, data.Length); //Write data to message.
-
-            using var e = new SocketAsyncEventArgs();
-            e.SetBuffer(message);
-            
-            foreach (var client in server.GetConnectedClients()) client.BaseSocket.SendAsync(e);
+            if (compression) data = Compression.Compress(data);
+            server.SendAll(dataArray: data);
         }
-
+        
         /// <summary>
         /// Send data (ushort) to all connected clients
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, ushort data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -47,7 +48,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, short data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -56,7 +56,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, uint data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
@@ -64,7 +63,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, int data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
@@ -72,7 +70,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, ulong data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -81,7 +78,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, long data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
@@ -89,7 +85,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, double data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -98,7 +93,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
         public static void SendAll(this EasyTcpServer server, bool data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
@@ -107,8 +101,9 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        /// <exception cref="ArgumentException">data array is empty or invalid server</exception>
-        public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null)
-            => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data));
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null,
+            bool compression = false)
+            => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data), compression);
     }
 }

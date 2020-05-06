@@ -7,7 +7,7 @@ namespace EasyTcp3.Examples.Actions
     /// <summary>
     /// this class contains examples of the Action utils 
     /// </summary>
-    public class ActionClient 
+    public class ActionClient
     {
         private const ushort Port = 6_001;
 
@@ -24,13 +24,13 @@ namespace EasyTcp3.Examples.Actions
             // This is no problem because this is very rare, however keep it in mind!
             // Try for example these two: haggadot & loathsomenesses
             int actionCode = "ECHO".ToActionCode();
-            
+
             // Execute the "ECHO" action on our echo server
-            client.SendAction("ECHO","Hello me!");
-            
+            client.SendAction("ECHO", "Hello me!");
+
             // Execute the "BROADCAST" action on our echo server
-            client.SendAction("BROADCAST","Hello everyone!");
-            
+            client.SendAction("BROADCAST", "Hello everyone!");
+
             // Get the reply from our message
             var message = client.SendActionAndGetReply(actionCode, "Hello me!");
         }

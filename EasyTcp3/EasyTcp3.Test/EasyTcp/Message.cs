@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -38,7 +37,6 @@ namespace EasyTcp3.Test.EasyTcp
             {
                 //Async lambda, so thread safe increase integer
                 if (data.SequenceEqual(receivedMessage.Data)) Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -61,7 +59,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidUShort() && data.Equals(receivedMessage.ToUShort()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -84,7 +81,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidShort() && data.Equals(receivedMessage.ToShort()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -107,7 +103,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidUInt() && data.Equals(receivedMessage.ToUInt()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -130,7 +125,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidInt() && data.Equals(receivedMessage.ToInt()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -153,7 +147,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidULong() && data.Equals(receivedMessage.ToULong()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -176,7 +169,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidLong() && data.Equals(receivedMessage.ToLong()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -199,7 +191,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidDouble() && data.Equals(receivedMessage.ToDouble()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -222,7 +213,6 @@ namespace EasyTcp3.Test.EasyTcp
                 //Async lambda, so thread safe increase integer
                 if (receivedMessage.IsValidBool() && data.Equals(receivedMessage.ToBool()))
                     Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
@@ -232,7 +222,7 @@ namespace EasyTcp3.Test.EasyTcp
         }
 
         [Test]
-        public void SendString()
+        public void ReceiveString()
         {
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
@@ -244,10 +234,30 @@ namespace EasyTcp3.Test.EasyTcp
             {
                 //Async lambda, so thread safe increase integer
                 if (data.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
-                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.Data.Length}");
             };
 
             client.Send(data);
+
+            TestHelper.WaitWhileTrue(() => receiveCount == 0);
+            Assert.AreEqual(1, receiveCount);
+        }
+        
+        [Test]
+        public void ReceiveStringCompressed()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            string data = "fgr23235fdgbs23rvcfqarvgfagfrewfFD";
+            int receiveCount = 0;
+
+            client.OnDataReceive += (sender, receivedMessage) =>
+            {
+                //Async lambda, so thread safe increase integer
+                if (data.Equals(receivedMessage.Decompress().ToString())) Interlocked.Increment(ref receiveCount);
+            };
+
+            client.Send(data, compression: true);
 
             TestHelper.WaitWhileTrue(() => receiveCount == 0);
             Assert.AreEqual(1, receiveCount);

@@ -21,7 +21,7 @@ namespace EasyTcp3.Test.EasyTcp
 
             int x = 0;
             server.OnDisconnect += (o, c) => Interlocked.Increment(ref x);
-            
+
             var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             client.Dispose();

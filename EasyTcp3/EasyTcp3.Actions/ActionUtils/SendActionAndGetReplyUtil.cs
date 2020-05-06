@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using System.Threading;
+using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
@@ -10,8 +10,6 @@ namespace EasyTcp3.Actions.ActionUtils
     /// </summary>
     public static class SendActionAndGetReplyUtil
     {
-        private const int DefaultTimeout = 5_000;
-
         /// <summary>
         /// Send action with data (byte[]) to the remote host. Then return the reply.
         /// </summary>
@@ -19,28 +17,13 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="action">action code</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data</returns>
         public static Message SendActionAndGetReply(this EasyTcpClient client, int action, byte[] data,
-            TimeSpan? timeout = null)
+            TimeSpan? timeout = null, bool compression = false)
         {
-            if (client == null) throw new ArgumentException("Could not send: client is null");
-
-            Message reply = null;
-            using var signal = new ManualResetEventSlim();
-
-            client.DataReceiveHandler = message =>
-            {
-                reply = message;
-                client.ResetDataReceiveHandler();
-                // Function is no longer used when signal is disposed, therefore ignore this warning
-                // ReSharper disable once AccessToDisposedClosure
-                signal.Set();
-            };
-            client.SendAction(action, data);
-
-            signal.Wait(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
-            if (reply == null) client.ResetDataReceiveHandler();
-            return reply;
+            if (compression) data = Compression.Compress(data);
+            return client.SendAndGetReply(timeout, BitConverter.GetBytes(action), data);
         }
 
         /// <summary>
@@ -50,10 +33,11 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="action">action code as string</param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data</returns>
         public static Message SendActionAndGetReply(this EasyTcpClient client, string action, byte[] data,
-            TimeSpan? timeout = null) =>
-            client.SendActionAndGetReply(action.ToActionCode(), data, timeout);
+            TimeSpan? timeout = null, bool compression = false) =>
+            client.SendActionAndGetReply(action.ToActionCode(), data, timeout, compression);
 
         /// <summary>
         /// Send action with data (byte[]) to the remote host. Then return the reply.
@@ -239,10 +223,10 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         public static Message SendActionAndGetReply(this EasyTcpClient client, int action, string data,
-            TimeSpan? timeout = null,
-            Encoding encoding = null) =>
-            client.SendActionAndGetReply(action, (encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+            TimeSpan? timeout = null, Encoding encoding = null, bool compression = false) =>
+            client.SendActionAndGetReply(action, (encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
 
         /// <summary>
         /// Send action with data (byte[]) to the remote host. Then return the reply.
@@ -252,9 +236,10 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         public static Message SendActionAndGetReply(this EasyTcpClient client, string action, string data,
-            TimeSpan? timeout = null,
-            Encoding encoding = null) =>
-            client.SendActionAndGetReply(action.ToActionCode(), (encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+            TimeSpan? timeout = null, Encoding encoding = null, bool compression = false) =>
+            client.SendActionAndGetReply(action.ToActionCode(), (encoding ?? Encoding.UTF8).GetBytes(data), timeout,
+                compression);
     }
 }

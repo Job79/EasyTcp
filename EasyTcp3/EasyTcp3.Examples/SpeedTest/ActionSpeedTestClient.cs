@@ -12,7 +12,7 @@ namespace EasyTcp3.Examples.SpeedTest
         const int Port = 6_001;
         const int MessageCount = 100_000;
         const string Message = "Message";
-        
+
         public static void RunSpeedTest()
         {
             var client = new EasyTcpClient();
@@ -22,11 +22,11 @@ namespace EasyTcp3.Examples.SpeedTest
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            for (int x = 0; x < MessageCount; x++) client.SendActionAndGetReply("ECHO",message); 
+            for (int x = 0; x < MessageCount; x++) client.SendActionAndGetReply("ECHO", message);
 
             sw.Stop();
             Console.WriteLine($"ElapsedMilliseconds SpeedTest: {sw.ElapsedMilliseconds}");
-            Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / (double)MessageCount}");
+            Console.WriteLine($"Average SpeedTest: {sw.ElapsedMilliseconds / (double) MessageCount}");
         }
     }
 }

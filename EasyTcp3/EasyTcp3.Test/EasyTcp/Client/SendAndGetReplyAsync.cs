@@ -41,7 +41,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             Assert.IsTrue(data.SequenceEqual(m.Data));
             Assert.IsFalse(triggered);
         }
-        
+
         [Test]
         public async Task SendAndGetReplyArrayWithoutTimeout()
         {
@@ -52,7 +52,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             var m = await client.SendAndGetReplyAsync(data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
         }
-        
+
         [Test]
         public async Task SendAndGetReplyArray()
         {

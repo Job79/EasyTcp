@@ -32,17 +32,17 @@ namespace EasyTcp3.Test.EasyTcp.Client
             client.Dispose(); //Disconnect
             Assert.IsFalse(client.IsConnected());
         }
-        
+
         [Test]
         public void TestIp()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-            
+
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
-            
+
             Assert.AreEqual(IPAddress.Loopback, client.GetIp());
             Assert.AreEqual(IPAddress.Loopback, server.GetConnectedClients().First().GetIp());
         }

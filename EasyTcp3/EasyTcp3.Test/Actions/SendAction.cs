@@ -130,7 +130,7 @@ namespace EasyTcp3.Test.Actions
             string data = "Data";
             client.SendAction(0, data);
             client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
-            
+
             client.SendAction(0, data);
             client.SendAction(0, data, Encoding.UTF32); //Send with different encoding
         }

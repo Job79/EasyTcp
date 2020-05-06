@@ -176,7 +176,7 @@ namespace EasyTcp3.Test.Actions
             string data = "123";
             var m = await client.SendActionAndGetReplyAsync(0, data, _timeout);
             Assert.AreEqual(data, m.ToString());
-            
+
             var m2 = await client.SendActionAndGetReplyAsync("ECHO", data);
             Assert.AreEqual(data, m2.ToString());
         }

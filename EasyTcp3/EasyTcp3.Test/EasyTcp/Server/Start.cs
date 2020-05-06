@@ -35,7 +35,7 @@ namespace EasyTcp3.Test.EasyTcp.Server
             using var server2 = new EasyTcpServer();
             server2.Start(IPAddress.IPv6Any, port2, true);
         }
-        
+
         [Test]
         public void Start3()
         {

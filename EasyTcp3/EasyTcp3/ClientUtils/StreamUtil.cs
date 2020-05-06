@@ -20,7 +20,7 @@ namespace EasyTcp3.ClientUtils
         public static void SendStream(this EasyTcpClient client, Stream stream, int bufferSize = 1024)
         {
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
-            
+
             using var networkStream = new NetworkStream(client.BaseSocket);
             networkStream.Write(BitConverter.GetBytes(stream.Length));
 
@@ -43,14 +43,14 @@ namespace EasyTcp3.ClientUtils
         public static void ReceiveStream(this Message message, Stream stream, int bufferSize = 1024)
         {
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
-            
+
             using var networkStream = new NetworkStream(message.Client.BaseSocket);
-            
+
             //Get length of stream
             var length = new byte[8];
             networkStream.Read(length, 0, length.Length);
             var totalBytes = BitConverter.ToInt64(length);
-            
+
             var buffer = new byte[bufferSize];
             int read, totalReceivedBytes = 0;
 

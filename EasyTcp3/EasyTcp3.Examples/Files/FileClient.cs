@@ -22,18 +22,18 @@ namespace EasyTcp3.Examples.Files
                 message.ReceiveStream(fileStream);
                 Console.WriteLine($"Downloaded {fileName}, saved as {saveAs}");
             };
-            
-            if(!client.Connect(IPAddress.Any, Port)) return;
-            client.SendAction("DOWNLOAD",fileName);
+
+            if (!client.Connect(IPAddress.Any, Port)) return;
+            client.SendAction("DOWNLOAD", fileName);
         }
-        
+
         public static void Upload(string fileName, string saveAs)
         {
             var client = new EasyTcpClient();
 
-            if(!client.Connect(IPAddress.Any, Port)) return;
-            client.SendAction("UPLOAD",saveAs);
-            
+            if (!client.Connect(IPAddress.Any, Port)) return;
+            client.SendAction("UPLOAD", saveAs);
+
             using var fileStream = new FileStream(fileName, FileMode.Open);
             client.SendStream(fileStream);
             Console.WriteLine($"Uploaded {fileName}, saved as {saveAs}");

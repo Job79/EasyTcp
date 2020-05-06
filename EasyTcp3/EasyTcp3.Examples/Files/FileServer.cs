@@ -24,7 +24,7 @@ namespace EasyTcp3.Examples.Files
             m.Client.Send("Uploading file!");
             m.Client.SendStream(fileStream);
         }
-        
+
         [EasyTcpAction("UPLOAD")]
         public static void Upload(object s, Message m)
         {

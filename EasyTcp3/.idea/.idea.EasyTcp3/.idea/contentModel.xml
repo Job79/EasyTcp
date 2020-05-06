@@ -28,6 +28,7 @@
           <e p="SerializationUtil.cs" t="Include" />
           <e p="StreamUtil.cs" t="Include" />
         </e>
+        <e p="Compression.cs" t="Include" />
         <e p="EasyTcp3.csproj" t="IncludeRecursive" />
         <e p="EasyTcpClient.cs" t="Include" />
         <e p="Message.cs" t="Include" />
@@ -110,6 +111,7 @@
           <e p="Actions.cs" t="Include" />
           <e p="ActionsCore.cs" t="Include" />
           <e p="Interceptor.cs" t="Include" />
+          <e p="OnUnknownAction.cs" t="Include" />
           <e p="SendAction.cs" t="Include" />
           <e p="SendActionAndGetReply.cs" t="Include" />
           <e p="SendActionAndGetReplyAsync.cs" t="Include" />

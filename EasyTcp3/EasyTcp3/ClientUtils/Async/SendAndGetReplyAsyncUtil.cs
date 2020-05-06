@@ -17,19 +17,17 @@ namespace EasyTcp3.ClientUtils.Async
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
-        /// Send data (byte[]) to the remote host. Then wait for a reply from the server.
+        /// Send data (byte[][]) to the remote host. Then wait for a reply from the server.
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <returns>received data or null</returns> 
-        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data,
-            TimeSpan? timeout = null)
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, TimeSpan? timeout = null,
+            params byte[][] data)
         {
-            if (client == null) throw new ArgumentException("Could not send: client is null");
-
             Message reply = null;
-            using var signal = new SemaphoreSlim(0, 1); //Use SemaphoreSlim as async ManualResetEventSlim
+            using var signal = new SemaphoreSlim(0, 1); // Use SemaphoreSlim as async ManualResetEventSlim
 
             client.DataReceiveHandler = message =>
             {
@@ -45,6 +43,21 @@ namespace EasyTcp3.ClientUtils.Async
             if (reply == null) client.ResetDataReceiveHandler();
             return reply;
         }
+
+        /// <summary>
+        /// Send data (byte[]) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null,
+            bool compression = false)
+        {
+            if (compression) data = Compression.Compress(data);
+            return await client.SendAndGetReplyAsync(timeout, data);
+        }
+
 
         /// <summary>
         /// Send data (ushort) to the remote host. Then wait for a reply from the server.
@@ -141,10 +154,11 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
         /// <param name="encoding">Encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, string data,
             TimeSpan? timeout = null,
-            Encoding encoding = null)
-            => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout);
+            Encoding encoding = null, bool compression = false)
+            => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
     }
 }

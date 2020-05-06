@@ -19,7 +19,7 @@ namespace EasyTcp3.Examples.Actions
             // Our actions will get automatically loaded, assembly can be specified
             var server = new EasyTcpActionServer(); //Start server on port 6001
             server.Start(Port);
-            
+
             // OnUnKnownAction event, executed when an unknown action is received
             //server.OnUnknownAction += (sender, message) => { };
 
@@ -37,9 +37,11 @@ namespace EasyTcp3.Examples.Actions
         /// <param name="sender">EasyTcpServer as object</param>
         /// <param name="e">received message</param>
         [EasyTcpAction("ECHO")] // Make this function an action that will get triggered when the action "ECHO" is received
-        public static void Echo(object sender, Message e) // Name of the function doesn't matter, but function must be static, public, void and have these two parameters
+        public static void
+            Echo(object sender,
+                Message e) // Name of the function doesn't matter, but function must be static, public, void and have these two parameters
             => e.Client.Send(e.Data);
-        
+
         /// <summary>
         /// Broadcast received message to all connected clients
         /// </summary>
