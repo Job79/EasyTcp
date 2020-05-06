@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using EasyTcp3.Shared;
 
 namespace EasyTcp3
 {

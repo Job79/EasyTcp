@@ -248,7 +248,7 @@ namespace EasyTcp3.Test.EasyTcp
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
-            string data = "123123123123123123123123123123123123";
+            string data = "fgr23235fdgbs23rvcfqarvgfagfrewfFD";
             int receiveCount = 0;
 
             client.OnDataReceive += (sender, receivedMessage) =>
