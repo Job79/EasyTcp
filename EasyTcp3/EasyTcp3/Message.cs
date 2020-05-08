@@ -12,7 +12,7 @@ namespace EasyTcp3
         /// <summary>
         /// Received data
         /// </summary>
-        public byte[] Data { get; private set; }
+        public byte[] Data { get; protected set; }
 
         /// <summary>
         /// Receiver of this message
