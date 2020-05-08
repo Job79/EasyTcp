@@ -17,12 +17,13 @@ namespace EasyTcp3.Server.ServerUtils
         /// <exception cref="ArgumentException">invalid server</exception>
         public static void SendAll(this EasyTcpServer server, params byte[][] dataArray)
         {
-            if (server == null || !server.IsRunning) throw new Exception("Could not send data: Server not running or null");
+            if (server == null || !server.IsRunning)
+                throw new Exception("Could not send data: Server not running or null");
 
-            var message = SendUtil.CreateMessage(dataArray); 
-            foreach (var client in server.GetConnectedClients()) SendUtil.SendMessage(client.BaseSocket, message); 
+            var message = SendUtil.CreateMessage(dataArray);
+            foreach (var client in server.GetConnectedClients()) SendUtil.SendMessage(client.BaseSocket, message);
         }
-        
+
         /// <summary>
         /// Send data (byte[]) to all connected clients
         /// </summary>
@@ -34,7 +35,7 @@ namespace EasyTcp3.Server.ServerUtils
             if (compression) data = Compression.Compress(data);
             server.SendAll(dataArray: data);
         }
-        
+
         /// <summary>
         /// Send data (ushort) to all connected clients
         /// </summary>
@@ -105,5 +106,14 @@ namespace EasyTcp3.Server.ServerUtils
         public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null,
             bool compression = false)
             => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data), compression);
+
+        /// <summary>
+        /// Send data (IEasyTcpPacket) to all connected clients
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="data">data to send to all connected clients</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAll(this EasyTcpServer server, IEasyTcpPacket data, bool compression = false)
+            => server.SendAll(data.ToArray(), compression);
     }
 }

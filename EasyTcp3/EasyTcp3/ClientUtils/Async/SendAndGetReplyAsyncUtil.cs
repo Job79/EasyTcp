@@ -51,7 +51,8 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="data">data to send to server</param>
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null,
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data,
+            TimeSpan? timeout = null,
             bool compression = false)
         {
             if (compression) data = Compression.Compress(data);
@@ -157,8 +158,19 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, string data,
-            TimeSpan? timeout = null,
-            Encoding encoding = null, bool compression = false)
+            TimeSpan? timeout = null, Encoding encoding = null, bool compression = false)
             => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
+
+        /// <summary>
+        /// Send data (IEasyTcpPacket) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, IEasyTcpPacket data,
+            TimeSpan? timeout = null, bool compression = false)
+            => await client.SendAndGetReplyAsync(data.ToArray(), timeout, compression);
     }
 }

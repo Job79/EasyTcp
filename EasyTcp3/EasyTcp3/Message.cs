@@ -41,10 +41,11 @@ namespace EasyTcp3
             {
                 Data = Compression.Decompress(Data);
             }
-            catch 
+            catch
             {
                 //Ignore error, data isn't compressed or invalid
             }
+
             return this;
         }
 
@@ -156,5 +157,17 @@ namespace EasyTcp3
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <returns>data as string</returns>
         public string ToString(Encoding encoding = null) => (encoding ?? Encoding.UTF8).GetString(Data);
+
+        /// <summary>
+        /// Received data as a custom IEasyTcpPacket 
+        /// </summary>
+        /// <typeparam name="T">Packet type</typeparam>
+        /// <returns>data as custom IEasyTcpPacket</returns>
+        public T ToPacket<T>() where T : IEasyTcpPacket, new()
+        {
+            var data = new T();
+            data.FromArray(Data);
+            return data;
+        }
     }
 }

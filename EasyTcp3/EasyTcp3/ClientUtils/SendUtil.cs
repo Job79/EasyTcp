@@ -138,10 +138,19 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
-        /// <param name="compression"></param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
         public static void Send(this EasyTcpClient client, string data,
             Encoding encoding = null, bool compression = false)
             => client.Send((encoding ?? Encoding.UTF8).GetBytes(data), compression);
+        
+        /// <summary>
+        /// Send data (IEasyTcpPacket) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void Send(this EasyTcpClient client, IEasyTcpPacket data, bool compression = false)
+            => client.Send(data.ToArray(), compression);
     }
 }
