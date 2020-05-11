@@ -2,11 +2,18 @@ using EasyTcp3;
 
 namespace EasyTcp.Encryption
 {
-    public class EncryptedMessage : Message, IEasyTcpPacket
+    public static class EncryptionUtil 
     {
-        public EncryptedMessage(byte[] data, EasyTcpClient client) : base(data, client) { }
+        public static Message Encrypt(this Message message, EasyEncrypt encryption)
+        {
+            message.Data = encryption.Encrypt(message.Data);
+            return message;
+        }
 
-        public byte[] ToArray() =>base.Data;
-        public void FromArray(byte[] data) => base.Data = data;
+        public static Message Decrypt(this Message message, EasyEncrypt encryption)
+        {
+            message.Data = encryption.Decrypt(message.Data);
+            return message;
+        }
     }
 }
