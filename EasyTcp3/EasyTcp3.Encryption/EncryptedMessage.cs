@@ -4,16 +4,28 @@ namespace EasyTcp.Encryption
 {
     public static class EncryptionUtil 
     {
-        public static Message Encrypt(this Message message, EasyEncrypt encryption)
+        /// <summary>
+        /// Encrypt message with EasyEncrypt instance
+        /// </summary>
+        /// <param name="data">data to encrypt, instance get encrypted + returned</param>
+        /// <param name="encryption"></param>
+        /// <returns>Itself, encrypted data</returns>
+        public static T Encrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket 
         {
-            message.Data = encryption.Encrypt(message.Data);
-            return message;
+            data.Data = encryption.Encrypt(data.Data);
+            return data;
         }
 
-        public static Message Decrypt(this Message message, EasyEncrypt encryption)
+        /// <summary>
+        /// Encrypt message with EasyEncrypt instance 
+        /// </summary>
+        /// <param name="data">data to encrypt, instance get encrypted + returned</param>
+        /// <param name="encryption"></param>
+        /// <returns>Itself, encrypted data</returns>
+        public static T Decrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket
         {
-            message.Data = encryption.Decrypt(message.Data);
-            return message;
+            data.Data = encryption.Decrypt(data.Data);
+            return data;
         }
     }
 }

@@ -1,6 +1,11 @@
 using System;
+using System.Net;
 using System.Text;
 using EasyTcp.Encryption;
+using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.Server;
+using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
 namespace EasyTcp3.Test.Encryption
@@ -46,12 +51,28 @@ namespace EasyTcp3.Test.Encryption
             var encryption = new EasyEncrypt();
             
             var testData = "testData";
-            var message = new Message(Encoding.UTF8.GetBytes(testData));
-            var encryptedMessage = new Message(message.Data).Encrypt(encryption);
-            var decryptedMessage = new Message(encryptedMessage.Data).Decrypt(encryption);
+            var message = EasyTcpPacket.To<Message>(Encoding.UTF8.GetBytes(testData));
+            var encryptedMessage = EasyTcpPacket.To<Message>(message.Data).Encrypt(encryption);
+            var decryptedMessage = EasyTcpPacket.To<Message>(encryptedMessage.Data).Decrypt(encryption);
             
             Assert.AreEqual(message.ToString(),decryptedMessage.ToString());
             Assert.AreNotEqual(message.ToString(),encryptedMessage.ToString());
+        }
+
+        [Test]
+        public void SendEncryptedData() 
+        {
+            ushort port = TestHelper.GetPort();
+            using var server = new EasyTcpServer().Start(port);
+            server.OnDataReceive += (sender, message) => message.Client.Send(message);
+            
+            var encryption = new EasyEncrypt();
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+
+            string data = "123";
+            var m = client.SendAndGetReply(EasyTcpPacket.To<Message>(data).Encrypt(encryption).Compress());
+            Assert.AreEqual(data, m.Decompress().Decrypt(encryption).ToString());
         }
     }
 }
