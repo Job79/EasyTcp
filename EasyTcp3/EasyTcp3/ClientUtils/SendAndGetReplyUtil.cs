@@ -146,6 +146,6 @@ namespace EasyTcp3.ClientUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
             bool compression = false) =>
-            client.SendAndGetReply(data.ToArray(), timeout, compression);
+            client.SendAndGetReply(data.Data, timeout, compression);
     }
 }

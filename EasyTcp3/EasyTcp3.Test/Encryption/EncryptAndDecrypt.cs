@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using EasyTcp.Encryption;
 using NUnit.Framework;
 
@@ -37,6 +38,20 @@ namespace EasyTcp3.Test.Encryption
             var decrypted = encryption.Decrypt(encrypted);
             Assert.AreEqual(32, encryption.GetKey().Length);
             Assert.AreEqual(testData, decrypted);
+        }
+
+        [Test]
+        public void TestEncryptingAndDecryptingMessage()
+        {
+            var encryption = new EasyEncrypt();
+            
+            var testData = "testData";
+            var message = new Message(Encoding.UTF8.GetBytes(testData));
+            var encryptedMessage = new Message(message.Data).Encrypt(encryption);
+            var decryptedMessage = new Message(encryptedMessage.Data).Decrypt(encryption);
+            
+            Assert.AreEqual(message.ToString(),decryptedMessage.ToString());
+            Assert.AreNotEqual(message.ToString(),encryptedMessage.ToString());
         }
     }
 }

@@ -36,11 +36,14 @@ namespace EasyTcp3.Test.EasyTcp
 
     class ExamplePacket : IEasyTcpPacket
     {
-        public string Data { get; private set;  }
+        public string DataStr;
+        public byte[] Data
+        {
+            get => Encoding.UTF8.GetBytes(DataStr);
+            set => DataStr = Encoding.UTF32.GetString(value);
+        }
 
         public ExamplePacket(){}
-        public ExamplePacket(string data) => Data = data;
-        public byte[] ToArray() => Encoding.UTF32.GetBytes(Data);
-        public void FromArray(byte[] data) => Data = Encoding.UTF32.GetString(data);
+        public ExamplePacket(string data) => DataStr = data;
     }
 }

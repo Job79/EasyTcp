@@ -210,6 +210,6 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAllAction(this EasyTcpServer server, string action, IEasyTcpPacket data, bool compression = false)
-            => server.SendAllAction(action.ToActionCode(), data.ToArray(), compression);
+            => server.SendAllAction(action.ToActionCode(), data.Data, compression);
     }
 }

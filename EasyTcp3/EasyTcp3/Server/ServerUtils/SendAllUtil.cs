@@ -114,6 +114,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, IEasyTcpPacket data, bool compression = false)
-            => server.SendAll(data.ToArray(), compression);
+            => server.SendAll(data.Data, compression);
     }
 }

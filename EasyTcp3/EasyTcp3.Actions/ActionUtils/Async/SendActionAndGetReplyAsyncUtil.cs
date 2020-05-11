@@ -277,6 +277,6 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         /// <returns>received data or null</returns>
         public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
             IEasyTcpPacket data, TimeSpan? timeout = null, bool compression = false)
-            => await client.SendActionAndGetReplyAsync(action.ToActionCode(), data.ToArray(), timeout, compression);
+            => await client.SendActionAndGetReplyAsync(action.ToActionCode(), data.Data, timeout, compression);
     }
 }

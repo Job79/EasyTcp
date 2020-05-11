@@ -151,6 +151,6 @@ namespace EasyTcp3.ClientUtils
         /// <param name="data">data to send to server</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void Send(this EasyTcpClient client, IEasyTcpPacket data, bool compression = false)
-            => client.Send(data.ToArray(), compression);
+            => client.Send(data.Data, compression);
     }
 }

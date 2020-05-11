@@ -171,6 +171,6 @@ namespace EasyTcp3.ClientUtils.Async
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, IEasyTcpPacket data,
             TimeSpan? timeout = null, bool compression = false)
-            => await client.SendAndGetReplyAsync(data.ToArray(), timeout, compression);
+            => await client.SendAndGetReplyAsync(data.Data, timeout, compression);
     }
 }

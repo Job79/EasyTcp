@@ -7,12 +7,12 @@ namespace EasyTcp3
     /// Class that passed by the OnDataReceive event handler
     /// Contains received data, socket and simple functions to convert data
     /// </summary>
-    public class Message
+    public class Message : IEasyTcpPacket
     {
         /// <summary>
         /// Received data
         /// </summary>
-        public byte[] Data { get; protected set; }
+        public byte[] Data { get; set; }
 
         /// <summary>
         /// Receiver of this message
@@ -22,12 +22,12 @@ namespace EasyTcp3
         /// <summary></summary>
         /// <param name="data">received data</param>
         /// <param name="client">receiver</param>
-        public Message(byte[] data, EasyTcpClient client)
+        public Message(byte[] data, EasyTcpClient client = null)
         {
             Data = data;
             Client = client;
         }
-
+        
         /// <summary>
         /// Decompress data,
         /// function will first check if data is compressed by using the magic no of GZIP.
@@ -166,7 +166,7 @@ namespace EasyTcp3
         public T ToPacket<T>() where T : IEasyTcpPacket, new()
         {
             var data = new T();
-            data.FromArray(Data);
+            data.Data = Data;
             return data;
         }
     }
