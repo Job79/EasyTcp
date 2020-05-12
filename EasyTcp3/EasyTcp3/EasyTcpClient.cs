@@ -25,7 +25,7 @@ namespace EasyTcp3
         /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
         /// </summary>
-        protected internal byte[] Buffer = new byte[2];
+        protected internal byte[] Buffer;
 
         /// <summary>
         /// Fired when the client connects to a server
