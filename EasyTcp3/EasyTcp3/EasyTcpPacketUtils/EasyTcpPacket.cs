@@ -17,7 +17,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// <typeparam name="T">package type</typeparam>
         /// <returns>new package</returns>
         public static T To<T>(byte[] data, bool compression = false) where T : IEasyTcpPacket, new()
-            => compression ? new T {Data = data} : new T {Data = data}.Compress();
+            => compression ? new T {Data = data}.Compress() : new T {Data = data};
 
         /// <summary>
         /// Create package with multiple byte arrays as its data 

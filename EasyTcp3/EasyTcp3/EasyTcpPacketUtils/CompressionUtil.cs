@@ -68,7 +68,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
             if (!packet.IsCompressed()) return packet;
             try
             {
-                packet.Data = Compress(packet.Data);
+                packet.Data = Decompress(packet.Data);
             }
             catch
             {
