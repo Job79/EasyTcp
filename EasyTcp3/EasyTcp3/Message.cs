@@ -30,33 +30,6 @@ namespace EasyTcp3
         public Message() { }
 
         /// <summary>
-        /// Decompress data,
-        /// function will first check if data is compressed by using the magic no of GZIP.
-        /// If compressed data is invalid 
-        /// </summary>
-        /// <returns>this object [for inline code]</returns>
-        public Message Decompress()
-        {
-            if (!IsCompressed()) return this;
-            try
-            {
-                Data = Compression.Decompress(Data);
-            }
-            catch
-            {
-                //Ignore error, data isn't compressed or invalid
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Determines whether the receive data is compressed using the magic no of GZIP (1f 2b)
-        /// </summary>
-        /// <returns></returns>
-        public bool IsCompressed() => Data.Length > 4 && Data[0] == 31 && Data[1] == 139;
-
-        /// <summary>
         /// Determines whether the received data is a valid UShort 
         /// </summary>
         /// <returns></returns>
