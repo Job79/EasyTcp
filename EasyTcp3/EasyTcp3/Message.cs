@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3
 {
@@ -7,7 +8,7 @@ namespace EasyTcp3
     /// Class that passed by the OnDataReceive event handler
     /// Contains received data, socket and simple functions to convert data
     /// </summary>
-    public class Message : IEasyTcpPacket // TODO: Move some functions to EasyTcpPacket
+    public class Message : IEasyTcpPacket 
     {
         /// <summary>
         /// Received data
@@ -137,11 +138,6 @@ namespace EasyTcp3
         /// </summary>
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new()
-        {
-            var data = new T();
-            data.Data = Data;
-            return data;
-        }
+        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.To<T>(Data);
     }
 }

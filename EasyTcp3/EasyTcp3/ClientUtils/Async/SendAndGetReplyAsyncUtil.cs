@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils.Async
 {
@@ -55,7 +56,7 @@ namespace EasyTcp3.ClientUtils.Async
             TimeSpan? timeout = null,
             bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             return await client.SendAndGetReplyAsync(timeout, data);
         }
 

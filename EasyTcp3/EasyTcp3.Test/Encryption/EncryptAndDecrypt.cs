@@ -10,6 +10,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Encryption
 {
+    /// <summary>
+    /// Tests for EasyTcp.Encryption
+    /// </summary>
     public class EncryptAndDecrypt
     {
         [Test]
@@ -51,9 +54,9 @@ namespace EasyTcp3.Test.Encryption
             var encryption = new EasyEncrypt();
             
             var testData = "testData";
-            var message = EasyTcpPacket.From<Message>(Encoding.UTF8.GetBytes(testData));
-            var encryptedMessage = EasyTcpPacket.From<Message>(message.Data).Encrypt(encryption);
-            var decryptedMessage = EasyTcpPacket.From<Message>(encryptedMessage.Data).Decrypt(encryption);
+            var message = EasyTcpPacket.To<Message>(Encoding.UTF8.GetBytes(testData));
+            var encryptedMessage = EasyTcpPacket.To<Message>(message.Data).Encrypt(encryption);
+            var decryptedMessage = EasyTcpPacket.To<Message>(encryptedMessage.Data).Decrypt(encryption);
             
             Assert.AreEqual(message.ToString(),decryptedMessage.ToString());
             Assert.AreNotEqual(message.ToString(),encryptedMessage.ToString());
@@ -71,7 +74,7 @@ namespace EasyTcp3.Test.Encryption
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             string data = "123";
-            var m = client.SendAndGetReply(EasyTcpPacket.From<Message>(data).Encrypt(encryption).Compress());
+            var m = client.SendAndGetReply(EasyTcpPacket.To<Message>(data).Encrypt(encryption).Compress());
             Assert.AreEqual(data, m.Decompress().Decrypt(encryption).ToString());
         }
     }

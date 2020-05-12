@@ -4,15 +4,29 @@ using System.Text;
 
 namespace EasyTcp3.EasyTcpPacketUtils
 {
-    public static class EasyTcpPacket // FromDO: Add documentation
+    /// <summary>
+    /// Class with functions for creating new EasyTcpPackets
+    /// </summary>
+    public static class EasyTcpPacket
     {
-        public static T From<T>(byte[] data, bool compression = false) where T : IEasyTcpPacket, new()
-        {
-            if (compression) return new T {Data = Compression.Compress(data)};
-            else return new T {Data = data};
-        }
+        /// <summary>
+        /// Create package with a byte array as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <param name="compression">if true package will be compressed</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(byte[] data, bool compression = false) where T : IEasyTcpPacket, new()
+            => compression ? new T {Data = data} : new T {Data = data}.Compress();
 
-        public static T From<T>(params byte[][] data) where T : IEasyTcpPacket, new()
+        /// <summary>
+        /// Create package with multiple byte arrays as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        /// <exception cref="ArgumentException">could not create packet: Data array is empty</exception>
+        public static T To<T>(params byte[][] data) where T : IEasyTcpPacket, new()
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not create packet: Data array is empty");
@@ -29,64 +43,91 @@ namespace EasyTcp3.EasyTcpPacketUtils
                 offset += d.Length;
             }
 
-            return From<T>(newData);
+            return To<T>(newData);
         }
-
-        public static T From<T>(ushort data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(short data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(uint data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(int data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(ulong data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(long data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(double data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(bool data) where T : IEasyTcpPacket, new()
-            => From<T>(BitConverter.GetBytes(data));
-
-        public static T From<T>(string data, Encoding encoding = null, bool compression = false)
-            where T : IEasyTcpPacket, new()
-            => From<T>((encoding ?? Encoding.UTF8).GetBytes(data), compression);
-
+        
+        /// <summary>
+        /// Create package with an ushort as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(ushort data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
 
         /// <summary>
-        /// Determines whether the receive data is compressed using the magic no of GZIP (1f 2b)
+        /// Create package with a short as its data 
         /// </summary>
-        /// <returns></returns>
-        public static bool IsCompressed(this IEasyTcpPacket packet) => packet.Data.Length > 4 && packet.Data[0] == 31 && packet.Data[1] == 139;
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(short data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
         
-        public static T Compress<T>(this T packet) where T : IEasyTcpPacket
-        {
-            if (packet.IsCompressed()) return packet;
-            packet.Data = Compression.Compress(packet.Data);
-            return packet;
-        }
+        /// <summary>
+        /// Create package with an uint as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(uint data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
+        
+        /// <summary>
+        /// Create package with a int as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(int data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
+        
+        /// <summary>
+        /// Create package with an ulong as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(ulong data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
+        
+        /// <summary>
+        /// Create package with a long as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(long data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
+        
+        /// <summary>
+        /// Create package with a double as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(double data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
+        
+        /// <summary>
+        /// Create package with a bool as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(bool data) where T : IEasyTcpPacket, new()
+            => To<T>(BitConverter.GetBytes(data));
 
-        public static T Decompress<T>(this T packet) where T : IEasyTcpPacket
-        {
-            if (!packet.IsCompressed()) return packet;
-            try
-            {
-                packet.Data = Compression.Compress(packet.Data);
-            }
-            catch
-            {
-                //Ignore error, data isn't compressed or invalid
-            }
-            return packet;
-        }
-        
+        /// <summary>
+        /// Create package with a string as its data 
+        /// </summary>
+        /// <param name="data">data of new package</param>
+        /// <param name="encoding">encoding type (Default: UTF8)</param>
+        /// <param name="compression">if true package will be compressed</param>
+        /// <typeparam name="T">package type</typeparam>
+        /// <returns>new package</returns>
+        public static T To<T>(string data, Encoding encoding = null, bool compression = false)
+            where T : IEasyTcpPacket, new()
+            => To<T>((encoding ?? Encoding.UTF8).GetBytes(data), compression);
     }
 }

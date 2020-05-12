@@ -2,6 +2,9 @@ using EasyTcp3;
 
 namespace EasyTcp.Encryption
 {
+    /// <summary>
+    /// Functions for encrypting packages
+    /// </summary>
     public static class EncryptionUtil 
     {
         /// <summary>
@@ -9,7 +12,7 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="data">data to encrypt, instance get encrypted + returned</param>
         /// <param name="encryption"></param>
-        /// <returns>Itself, encrypted data</returns>
+        /// <returns>itself, encrypted data</returns>
         public static T Encrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket 
         {
             data.Data = encryption.Encrypt(data.Data);
@@ -21,7 +24,7 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="data">data to encrypt, instance get encrypted + returned</param>
         /// <param name="encryption"></param>
-        /// <returns>Itself, encrypted data</returns>
+        /// <returns>itself, encrypted data</returns>
         public static T Decrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket
         {
             data.Data = encryption.Decrypt(data.Data);

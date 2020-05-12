@@ -2,12 +2,11 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using EasyTcp3;
 
 namespace EasyTcp.Encryption
 {
     /// <summary>
-    /// Class that provides encryption functionality
+    /// Class that provides basic encryption functionality
     /// </summary>
     public class EasyEncrypt
     {
