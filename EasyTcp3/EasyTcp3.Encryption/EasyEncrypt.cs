@@ -58,7 +58,7 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="data"></param>
         /// <returns>IV + encrypted data</returns>
-        /// <exception cref="Exception">Can't encrypt data: data is null</exception>
+        /// <exception cref="Exception">can't encrypt data: data is null</exception>
         public byte[] Encrypt(byte[] data)
         {
             if (data == null) throw new Exception("Can't encrypt data: data is null");
@@ -91,7 +91,7 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="data"></param>
         /// <returns>IV + decrypted data</returns>
-        /// <exception cref="ArgumentException">Can't decrypt data: data is invalid</exception>
+        /// <exception cref="ArgumentException">can't decrypt data: data is invalid</exception>
         public byte[] Decrypt(byte[] data)
         {
             if (data == null||data.Length <= 4) throw new ArgumentException("Can't decrypt data: data is invalid");
@@ -112,7 +112,7 @@ namespace EasyTcp.Encryption
         /// <summary>
         /// Return the current key
         /// </summary>
-        /// <returns>Encryption key</returns>
+        /// <returns>encryption key</returns>
         public byte[] GetKey() => _algorithm.Key;
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace EasyTcp.Encryption
         /// <param name="salt"></param>
         /// <param name="keysize">keysize in bits</param>
         /// <returns>generated key</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">can't create key: {reason}</exception>
         public static byte[] CreateKey(string password, string salt, int keysize)
         {
             if (string.IsNullOrEmpty(password)) throw new ArgumentException("Can't create key: password is empty");
