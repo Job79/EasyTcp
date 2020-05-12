@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Threading;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -49,7 +50,7 @@ namespace EasyTcp3.ClientUtils
         public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null,
             bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             return client.SendAndGetReply(timeout, data);
         }
 
@@ -146,6 +147,6 @@ namespace EasyTcp3.ClientUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
             bool compression = false) =>
-            client.SendAndGetReply(data.ToArray(), timeout, compression);
+            client.SendAndGetReply(data.Data, timeout, compression);
     }
 }

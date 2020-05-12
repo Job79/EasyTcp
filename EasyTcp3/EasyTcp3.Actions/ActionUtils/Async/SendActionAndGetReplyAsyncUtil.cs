@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using EasyTcp3.ClientUtils.Async;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils.Async
 {
@@ -23,7 +24,7 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, int action, byte[] data,
             TimeSpan? timeout = null, bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             return await client.SendAndGetReplyAsync(timeout, BitConverter.GetBytes(action), data);
         }
 
@@ -277,6 +278,6 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         /// <returns>received data or null</returns>
         public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
             IEasyTcpPacket data, TimeSpan? timeout = null, bool compression = false)
-            => await client.SendActionAndGetReplyAsync(action.ToActionCode(), data.ToArray(), timeout, compression);
+            => await client.SendActionAndGetReplyAsync(action.ToActionCode(), data.Data, timeout, compression);
     }
 }

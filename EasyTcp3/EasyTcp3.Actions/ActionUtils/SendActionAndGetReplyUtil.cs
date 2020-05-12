@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
@@ -22,7 +23,7 @@ namespace EasyTcp3.Actions.ActionUtils
         public static Message SendActionAndGetReply(this EasyTcpClient client, int action, byte[] data,
             TimeSpan? timeout = null, bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             return client.SendAndGetReply(timeout, BitConverter.GetBytes(action), data);
         }
 

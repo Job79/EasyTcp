@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3
 {
@@ -7,12 +8,12 @@ namespace EasyTcp3
     /// Class that passed by the OnDataReceive event handler
     /// Contains received data, socket and simple functions to convert data
     /// </summary>
-    public class Message
+    public class Message : IEasyTcpPacket 
     {
         /// <summary>
         /// Received data
         /// </summary>
-        public byte[] Data { get; private set; }
+        public byte[] Data { get; set; }
 
         /// <summary>
         /// Receiver of this message
@@ -27,33 +28,7 @@ namespace EasyTcp3
             Data = data;
             Client = client;
         }
-
-        /// <summary>
-        /// Decompress data,
-        /// function will first check if data is compressed by using the magic no of GZIP.
-        /// If compressed data is invalid 
-        /// </summary>
-        /// <returns>this object [for inline code]</returns>
-        public Message Decompress()
-        {
-            if (!IsCompressed()) return this;
-            try
-            {
-                Data = Compression.Decompress(Data);
-            }
-            catch
-            {
-                //Ignore error, data isn't compressed or invalid
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Determines whether the receive data is compressed using the magic no of GZIP (1f 2b)
-        /// </summary>
-        /// <returns></returns>
-        public bool IsCompressed() => Data.Length > 4 && Data[0] == 31 && Data[1] == 139;
+        public Message() { }
 
         /// <summary>
         /// Determines whether the received data is a valid UShort 
@@ -163,11 +138,6 @@ namespace EasyTcp3
         /// </summary>
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new()
-        {
-            var data = new T();
-            data.FromArray(Data);
-            return data;
-        }
+        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.To<T>(Data);
     }
 }

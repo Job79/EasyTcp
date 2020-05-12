@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
@@ -18,7 +19,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAction(this EasyTcpClient client, int action, byte[] data, bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             client.Send(BitConverter.GetBytes(action), data);
         }
 

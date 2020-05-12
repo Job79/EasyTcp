@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -73,7 +74,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             SendMessage(client?.BaseSocket, CreateMessage(data));
         }
 
@@ -151,6 +152,6 @@ namespace EasyTcp3.ClientUtils
         /// <param name="data">data to send to server</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void Send(this EasyTcpClient client, IEasyTcpPacket data, bool compression = false)
-            => client.Send(data.ToArray(), compression);
+            => client.Send(data.Data, compression);
     }
 }

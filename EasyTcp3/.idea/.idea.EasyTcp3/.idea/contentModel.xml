@@ -76,6 +76,19 @@
           </e>
         </e>
       </e>
+      <e p="EasyTcp3.Encryption" t="IncludeRecursive">
+        <e p="EasyEncrypt.cs" t="Include" />
+        <e p="EasyTcp3.Encryption.csproj" t="IncludeRecursive" />
+        <e p="EncryptedMessage.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="EasyTcp3.Encryption.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
       <e p="EasyTcp3.Examples" t="IncludeRecursive">
         <e p="Actions" t="Include">
           <e p="ActionClient.cs" t="Include" />
@@ -141,6 +154,9 @@
           </e>
         </e>
         <e p="EasyTcp3.Test.csproj" t="IncludeRecursive" />
+        <e p="Encryption" t="Include">
+          <e p="EncryptAndDecrypt.cs" t="Include" />
+        </e>
         <e p="TestHelper.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">

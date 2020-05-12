@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Server.ServerUtils
 {
@@ -32,7 +33,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, byte[] data, bool compression = false)
         {
-            if (compression) data = Compression.Compress(data);
+            if (compression) data = CompressionUtil.Compress(data);
             server.SendAll(dataArray: data);
         }
 
@@ -114,6 +115,6 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="data">data to send to all connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, IEasyTcpPacket data, bool compression = false)
-            => server.SendAll(data.ToArray(), compression);
+            => server.SendAll(data.Data, compression);
     }
 }
