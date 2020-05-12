@@ -97,7 +97,9 @@ namespace EasyTcp3.Server
         protected internal void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
+#if DEBUG 
             else throw exception;
+#endif
         }
 
         /// <summary>
