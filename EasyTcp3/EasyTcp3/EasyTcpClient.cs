@@ -14,7 +14,7 @@ namespace EasyTcp3
         /// Gets disposed when calling Dispose()
         /// Null if disconnected
         /// </summary>
-        public Socket BaseSocket { get; protected internal set; }
+        public Socket BaseSocket { get; set; }
 
         /// <summary>
         /// Determines whether the next receiving data is the length of data or actual data. [Length of data (4)] ["Data"] 
@@ -87,7 +87,6 @@ namespace EasyTcp3
         /// Reset DataReceiveHandler to its default behavior (Calling OnDataReceive)
         /// </summary>
         public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
-
 
         public EasyTcpClient() => ResetDataReceiveHandler();
         public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
