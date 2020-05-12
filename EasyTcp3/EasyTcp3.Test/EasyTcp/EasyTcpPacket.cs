@@ -25,7 +25,8 @@ namespace EasyTcp3.Test.EasyTcp
             int received = 0;
             client.OnDataReceive += (sender, message) =>
             {
-                if (message.ToPacket<ExamplePacket>().Data == testData.Data) Interlocked.Increment(ref received);
+                string data = message.ToPacket<ExamplePacket>().DataStr;
+                if (data.Equals(testData.DataStr)) Interlocked.Increment(ref received);
             };
             
             server.SendAll(testData);
@@ -39,7 +40,7 @@ namespace EasyTcp3.Test.EasyTcp
         public string DataStr;
         public byte[] Data
         {
-            get => Encoding.UTF8.GetBytes(DataStr);
+            get => Encoding.UTF32.GetBytes(DataStr);
             set => DataStr = Encoding.UTF32.GetString(value);
         }
 
