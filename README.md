@@ -6,7 +6,6 @@
   <img src="https://img.shields.io/badge/build-passing-green.svg">
   <br/>
   <br/>
-  <a>A high performance tcp server and client. (Async) (IPv6 & IPv4)<br/>Simple and easy to use.<a/>
+  <a>Easy and simple library for TCP clients and servers. Focused on performance and usability.<a/>
   <br/><br/>
 </p>
-# [Documentation] (https://github.com/GHenkje/EasyTcp/wiki)
