@@ -28,9 +28,12 @@
           <e p="SerializationUtil.cs" t="Include" />
           <e p="StreamUtil.cs" t="Include" />
         </e>
-        <e p="Compression.cs" t="Include" />
         <e p="EasyTcp3.csproj" t="IncludeRecursive" />
         <e p="EasyTcpClient.cs" t="Include" />
+        <e p="EasyTcpPacketUtils" t="Include">
+          <e p="CompressionUtil.cs" t="Include" />
+          <e p="EasyTcpPacket.cs" t="Include" />
+        </e>
         <e p="IEasyTcpPacket.cs" t="Include" />
         <e p="Message.cs" t="Include" />
         <e p="Server" t="Include">
@@ -79,7 +82,7 @@
       <e p="EasyTcp3.Encryption" t="IncludeRecursive">
         <e p="EasyEncrypt.cs" t="Include" />
         <e p="EasyTcp3.Encryption.csproj" t="IncludeRecursive" />
-        <e p="EncryptedMessage.cs" t="Include" />
+        <e p="EncryptedUtil.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -100,7 +103,13 @@
           <e p="EchoServer.cs" t="Include" />
           <e p="HelloClient.cs" t="Include" />
         </e>
+        <e p="CustomPacket" t="Include">
+          <e p="EasyTcpPacketExample.cs" t="Include" />
+        </e>
         <e p="EasyTcp3.Examples.csproj" t="IncludeRecursive" />
+        <e p="Encryption" t="Include">
+          <e p="EncryptionExample.cs" t="Include" />
+        </e>
         <e p="Files" t="Include">
           <e p="FileClient.cs" t="Include" />
           <e p="FileServer.cs" t="Include" />

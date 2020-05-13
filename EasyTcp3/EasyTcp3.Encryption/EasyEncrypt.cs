@@ -8,7 +8,7 @@ namespace EasyTcp.Encryption
     /// <summary>
     /// Class that provides basic encryption functionality
     /// </summary>
-    public class EasyEncrypt
+    public class EasyEncrypt : IDisposable
     {
         /// <summary>
         /// Algorithm that is used for encrypting and decrypting data
@@ -114,7 +114,15 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <returns>encryption key</returns>
         public byte[] GetKey() => _algorithm.Key;
-
+        
+        /// <summary>
+        /// Dispose algorithm 
+        /// </summary>
+        public void Dispose()
+        {
+            _algorithm?.Dispose();
+        }
+        
         /// <summary>
         /// Generate new key
         /// </summary>

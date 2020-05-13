@@ -28,7 +28,11 @@ namespace EasyTcp3.Examples.Actions
             //
             // i = action code, use string.ToActionCode() for comparing with strings (See ActionClient)
             // message = receiving data
-            //server.Interceptor = (i, message) => { return true; };
+            server.Interceptor = (i, message) =>
+            {
+                //if(i != "ECHO".ToActionCode()) Console.WriteLine($"Received action {i}");
+                return true;
+            };
         }
 
         /// <summary>
@@ -37,9 +41,7 @@ namespace EasyTcp3.Examples.Actions
         /// <param name="sender">EasyTcpServer as object</param>
         /// <param name="e">received message</param>
         [EasyTcpAction("ECHO")] // Make this function an action that will get triggered when the action "ECHO" is received
-        public static void
-            Echo(object sender,
-                Message e) // Name of the function doesn't matter, but function must be static, public, void and have these two parameters
+        public static void Echo(object sender, Message e) // Name of the function doesn't matter, but function must be static, public, void and have these two parameters
             => e.Client.Send(e.Data);
 
         /// <summary>

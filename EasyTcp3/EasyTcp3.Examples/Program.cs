@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using EasyTcp3.Examples.Actions;
 using EasyTcp3.Examples.Basic;
+using EasyTcp3.Examples.CustomPacket;
+using EasyTcp3.Examples.Encryption;
 using EasyTcp3.Examples.Files;
 using EasyTcp3.Examples.SpeedTest;
 
@@ -16,13 +18,25 @@ namespace EasyTcp3.Examples
             HelloClient.Connect();
 
             Task.Delay(50).Wait(); //Wait 50 milliseconds to let HelloClient finish
-
+           
             Console.WriteLine("--    BasicServer/BasicClient    --");
             BasicServer.StartBasicServer();
             BasicClient.Connect();
 
             Task.Delay(50).Wait(); //Wait 50 milliseconds to let BasicClient finish
-
+            
+            Console.WriteLine("--    EasyTcpPacketExample    --");
+            EasyTcpPacketExample.Start();
+            EasyTcpPacketExample.Connect();
+            
+            Task.Delay(50).Wait(); //Wait 50 milliseconds to let EasyTcpPacketExample finish
+            
+            Console.WriteLine("--    EncryptionExample    --");
+            EncryptionExample.Start();
+            EncryptionExample.Connect();
+            
+            Task.Delay(50).Wait(); //Wait 50 milliseconds to let EncryptionExample finish
+ 
             Console.WriteLine("--    FileServer/FileClient    --");
             FileServer.StartFileServer();
             FileClient.Download("TestFile.txt", "DownloadedTestFile.txt");

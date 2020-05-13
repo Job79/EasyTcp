@@ -22,14 +22,14 @@ namespace EasyTcp3.Examples.Files
         {
             using var fileStream = new FileStream(m.ToString(), FileMode.Open);
             m.Client.Send("Uploading file!");
-            m.Client.SendStream(fileStream);
+            m.Client.SendStream(fileStream); // Send stream and use fileStream as source
         }
 
         [EasyTcpAction("UPLOAD")]
         public static void Upload(object s, Message m)
         {
             using var fileStream = new FileStream(m.ToString(), FileMode.Create);
-            m.ReceiveStream(fileStream);
+            m.ReceiveStream(fileStream); // Receive stream and write receiving stream to fileStream
         }
     }
 }

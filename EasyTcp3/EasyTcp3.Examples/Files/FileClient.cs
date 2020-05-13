@@ -19,7 +19,7 @@ namespace EasyTcp3.Examples.Files
             client.OnDataReceive += (sender, message) =>
             {
                 using var fileStream = new FileStream(saveAs, FileMode.Create);
-                message.ReceiveStream(fileStream);
+                message.ReceiveStream(fileStream); // Receive stream and write receiving stream to fileStream
                 Console.WriteLine($"Downloaded {fileName}, saved as {saveAs}");
             };
 
@@ -35,7 +35,7 @@ namespace EasyTcp3.Examples.Files
             client.SendAction("UPLOAD", saveAs);
 
             using var fileStream = new FileStream(fileName, FileMode.Open);
-            client.SendStream(fileStream);
+            client.SendStream(fileStream); // Send stream and use fileStream as source
             Console.WriteLine($"Uploaded {fileName}, saved as {saveAs}");
         }
     }

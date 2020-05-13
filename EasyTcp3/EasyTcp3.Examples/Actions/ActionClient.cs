@@ -14,9 +14,7 @@ namespace EasyTcp3.Examples.Actions
         public static void Connect()
         {
             var client = new EasyTcpClient();
-            bool connected = client.Connect("127.0.0.1", Port);
-
-            if (!connected) return;
+            if (!client.Connect("127.0.0.1", Port)) return;
 
             // All actions are send as an int, this is the action id of the "ECHO" action.
             // Integers can also be used as action codes. However this is not very readable, so when using integers enums are recommend!
