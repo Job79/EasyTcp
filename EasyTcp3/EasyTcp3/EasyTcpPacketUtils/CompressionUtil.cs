@@ -42,7 +42,13 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// Determines whether the receive data is compressed using the magic number of GZIP (1f 2b)
         /// </summary>
         /// <returns>true if compressed</returns>
-        public static bool IsCompressed(this IEasyTcpPacket packet) => packet.Data.Length > 4 && packet.Data[0] == 31 && packet.Data[1] == 139;
+        public static bool IsCompressed(byte[] data) => data.Length > 4 && data[0] == 31 && data[1] == 139;
+        
+        /// <summary>
+        /// Determines whether the receive data is compressed using the magic number of GZIP (1f 2b)
+        /// </summary>
+        /// <returns>true if compressed</returns>
+        public static bool IsCompressed(this IEasyTcpPacket packet) => IsCompressed(packet.Data);
        
         /// <summary>
         /// Compress package if not already compressed
