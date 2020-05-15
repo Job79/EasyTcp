@@ -13,6 +13,7 @@
         <PackageTags>Socket Networking Tcp TcpClient TcpServer SimpleTcp EasyTcp AsyncTcp</PackageTags>
         <PackageId>EasyTcp</PackageId>
         <Authors>Job79</Authors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
 </Project>

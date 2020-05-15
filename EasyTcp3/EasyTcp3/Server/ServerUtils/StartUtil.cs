@@ -15,7 +15,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="endPoint"></param>
-        /// <param name="dualMode">specifies if the socket is a dual-mode socket (Ipv4 & Ipv6)</param>
+        /// <param name="dualMode">specifies if the socket is a dual-mode socket (IPv4 and IPv6)</param>
         /// <param name="backlog">the maximum length of the pending connections queue</param>
         public static EasyTcpServer Start(this EasyTcpServer server, IPEndPoint endPoint, bool dualMode = false,
             int backlog = 100)
@@ -40,7 +40,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="ipAddress"></param>
         /// <param name="port"></param>
-        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 & Ipv6)</param>
+        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 and Ipv6)</param>
         /// <param name="backlog">The maximum length of the pending connections queue</param>
         public static EasyTcpServer Start(this EasyTcpServer server, IPAddress ipAddress, ushort port,
             bool dualMode = false,
@@ -53,7 +53,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="ipAddress">ipAddress as string</param>
         /// <param name="port"></param>
-        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 & Ipv6)</param>
+        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 and Ipv6)</param>
         /// <param name="backlog">The maximum length of the pending connections queue</param>
         public static EasyTcpServer Start(this EasyTcpServer server, string ipAddress, ushort port,
             bool dualMode = false,

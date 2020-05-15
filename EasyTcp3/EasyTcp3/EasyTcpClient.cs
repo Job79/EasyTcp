@@ -90,7 +90,14 @@ namespace EasyTcp3
         /// </summary>
         public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public EasyTcpClient() => ResetDataReceiveHandler();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socket"></param>
         public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
 
         /// <summary>

@@ -19,11 +19,14 @@
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/EasyTcpPacket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/Client/Information.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/ActionsCore.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/OnUnknownAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.Actions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/B5F057D8-8CC4-4D63-B96F-C2B5AE70830C/8f/8a913e4c/JsonSerializer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Test/Actions/Interceptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.Encryption.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2DBFBC25-8F2A-4D07-9DDA-AA146A0B126E/2c/4b04ad61/WaitHandle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionClient.cs" root0="FORCE_HIGHLIGHTING" />
@@ -92,14 +95,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/SpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Examples/SpeedTest/ActionSpeedTestClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Test/Actions/Actions.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpAction.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/ActionsCore.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionClient.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3.Actions/EasyTcpActionServer.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/EchoServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Basic/BasicClient.cs" />
@@ -125,7 +120,6 @@
         <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpPacketUtils/EasyTcpPacket.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Test/EasyTcp/EasyTcpPacket.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/ConnectUtil.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/ClientUtils/Internal/OnReceiveUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionClient.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Files/FileClient.cs" />
@@ -134,7 +128,6 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/EasyTcp.Encryption &amp; IEasyTcpPacket/IEasyTcpPacketExample.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/EasyTcp.Encryption &amp; IEasyTcpPacket/EasyTcpPacketExample.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/IEasyTcpPacket.cs" />
-        <option value="$PROJECT_DIR$/EasyTcp3/Message.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Encryption/EasyEncrypt.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpPacketUtils/CompressionUtil.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Encryption.cs" />
@@ -143,6 +136,16 @@
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Actions/ActionEchoServer.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Program.cs" />
         <option value="$PROJECT_DIR$/EasyTcp3.Examples/Encryption/EncryptionExample.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readmy/EasyTcp.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readmy/EasyTcp.Actions.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readmy/EasyTcp.Encryption.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.Actions.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3.Examples/Readme/EasyTcp.Encryption.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcp3.csproj" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Server/ServerUtils/StartUtil.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/EasyTcpClient.cs" />
+        <option value="$PROJECT_DIR$/EasyTcp3/Message.cs" />
       </list>
     </option>
   </component>
@@ -212,6 +215,7 @@
       <workItem from="1588771393743" duration="9526000" />
       <workItem from="1589372411612" duration="8251000" />
       <workItem from="1589387598838" duration="3893000" />
+      <workItem from="1589560874594" duration="3849000" />
     </task>
     <servers />
   </component>
@@ -273,22 +277,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="553" y="178" width="804" height="665" key="#Notifications/0.0.1920.1080@0.0.1920.1080" timestamp="1588702768805" />
-    <state width="1878" height="277" key="GridCell.Tab.0.bottom" timestamp="1589391539908">
+    <state width="1878" height="277" key="GridCell.Tab.0.bottom" timestamp="1589475149112">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1589391539908" />
-    <state width="1878" height="277" key="GridCell.Tab.0.center" timestamp="1589391539908">
+    <state width="1878" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1589475149112" />
+    <state width="1878" height="277" key="GridCell.Tab.0.center" timestamp="1589475149112">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="277" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1589391539908" />
-    <state width="1878" height="277" key="GridCell.Tab.0.left" timestamp="1589391539908">
+    <state width="1878" height="277" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1589475149112" />
+    <state width="1878" height="277" key="GridCell.Tab.0.left" timestamp="1589475149111">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="277" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1589391539908" />
-    <state width="1878" height="277" key="GridCell.Tab.0.right" timestamp="1589391539908">
+    <state width="1878" height="277" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1589475149111" />
+    <state width="1878" height="277" key="GridCell.Tab.0.right" timestamp="1589475149112">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="277" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1589391539908" />
+    <state width="1878" height="277" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1589475149112" />
     <state width="1878" height="412" key="GridCell.Tab.1.bottom" timestamp="1589388082627">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

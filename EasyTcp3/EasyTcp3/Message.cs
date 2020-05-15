@@ -28,6 +28,8 @@ namespace EasyTcp3
             Data = data;
             Client = client;
         }
+        /// <summary>
+        /// </summary>
         public Message() { }
 
         /// <summary>

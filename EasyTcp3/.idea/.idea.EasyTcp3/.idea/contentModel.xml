@@ -115,6 +115,11 @@
           <e p="FileServer.cs" t="Include" />
         </e>
         <e p="Program.cs" t="Include" />
+        <e p="Readme" t="Include">
+          <e p="EasyTcp.Actions.cs" t="Include" />
+          <e p="EasyTcp.Encryption.cs" t="Include" />
+          <e p="EasyTcp.cs" t="Include" />
+        </e>
         <e p="SpeedTest" t="Include">
           <e p="ActionSpeedTestClient.cs" t="Include" />
           <e p="SpeedTestClient.cs" t="Include" />
