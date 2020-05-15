@@ -34,7 +34,7 @@ client.Send("Hello server");
 # EasyTcp.Actions
 Package that adds support for 'actions' <br/>
 Actions are functions with a specific attribute that get triggered when a message is received. This happens based on the received data and is perfect for medium/big servers or clients.<br/>
-Check these examples out, and see the EasyTcp.Examples folder for more.
+Check out these examples, and see the EasyTcp.Examples folder for more.
 ```cs
 public static void Run()
 {
