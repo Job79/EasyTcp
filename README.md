@@ -82,3 +82,7 @@ using var client = new EasyTcpClient();
 if (!client.Connect(IPAddress.Loopback, PORT)) return;
 client.Send(EasyTcpPacket.To<Message>("Hello Server!").Encrypt(encrypter));
 ```
+
+# Contribution / Help / Questions
+Create a issue, pull request or send an email to jobse@pm.me
+
