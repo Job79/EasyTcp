@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -120,7 +119,6 @@ namespace EasyTcp3.Server
             }
 
             ConnectedClients.Clear();
-
             BaseSocket.Dispose();
             BaseSocket = null;
         }
