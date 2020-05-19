@@ -9,4 +9,8 @@
       <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="EasyEncrypt" Version="2.1.0" />
+    </ItemGroup>
+
 </Project>
