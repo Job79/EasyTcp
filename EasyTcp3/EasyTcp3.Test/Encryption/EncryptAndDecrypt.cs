@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Text;
+using EasyEncrypt2;
 using EasyTcp.Encryption;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.EasyTcpPacketUtils;

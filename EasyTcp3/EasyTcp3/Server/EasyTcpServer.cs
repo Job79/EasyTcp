@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -28,7 +29,7 @@ namespace EasyTcp3.Server
         /// List with all the connected clients,
         /// clients get added when connected and removed when disconnected
         /// </summary>
-        protected internal HashSet<EasyTcpClient> ConnectedClients = new HashSet<EasyTcpClient>();
+        protected internal List<EasyTcpClient> ConnectedClients = new List<EasyTcpClient>();
 
         /// <summary>
         /// Get the number of connected clients
@@ -81,7 +82,11 @@ namespace EasyTcp3.Server
         /// Function used to fire the OnDisconnect event
         /// </summary>
         /// <param name="client"></param>
-        protected internal void FireOnDisconnect(EasyTcpClient client) => OnDisconnect?.Invoke(this, client);
+        protected internal void FireOnDisconnect(EasyTcpClient client)
+        {
+            lock (ConnectedClients) ConnectedClients.Remove(client);
+            OnDisconnect?.Invoke(this, client);
+        }
 
         /// <summary>
         /// Function used to fire the OnDataReceive event
@@ -97,7 +102,7 @@ namespace EasyTcp3.Server
         protected internal void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
-#if DEBUG 
+#if DEBUG
             else throw exception;
 #endif
         }
@@ -109,7 +114,11 @@ namespace EasyTcp3.Server
         {
             if (BaseSocket == null) return;
             IsRunning = false;
-            foreach (var client in ConnectedClients) client.Dispose();
+            lock (ConnectedClients)
+            {
+                foreach (var client in ConnectedClients) client.Dispose();
+            }
+
             ConnectedClients.Clear();
 
             BaseSocket.Dispose();

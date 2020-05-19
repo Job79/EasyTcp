@@ -20,10 +20,10 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data</returns>
-        public static Message SendActionAndGetReply(this EasyTcpClient client, int action, byte[] data,
+        public static Message SendActionAndGetReply(this EasyTcpClient client, int action, byte[] data = null,
             TimeSpan? timeout = null, bool compression = false)
         {
-            if (compression) data = CompressionUtil.Compress(data);
+            if (compression && data != null) data = CompressionUtil.Compress(data);
             return client.SendAndGetReply(timeout, BitConverter.GetBytes(action), data);
         }
 
@@ -36,7 +36,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data</returns>
-        public static Message SendActionAndGetReply(this EasyTcpClient client, string action, byte[] data,
+        public static Message SendActionAndGetReply(this EasyTcpClient client, string action, byte[] data = null,
             TimeSpan? timeout = null, bool compression = false) =>
             client.SendActionAndGetReply(action.ToActionCode(), data, timeout, compression);
 

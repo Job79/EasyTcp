@@ -27,6 +27,8 @@ namespace EasyTcp3.ClientUtils
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
+            if (messageLength == 0)
+                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
             byte[] message = new byte[2 + messageLength];
 
             // Write length of data to message
@@ -64,7 +66,8 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
-        public static void Send(this EasyTcpClient client, params byte[][] data) => SendMessage(client?.BaseSocket, CreateMessage(data));
+        public static void Send(this EasyTcpClient client, params byte[][] data) =>
+            SendMessage(client?.BaseSocket, CreateMessage(data));
 
         /// <summary>
         /// Send data (byte[]) to the remote host
@@ -144,7 +147,7 @@ namespace EasyTcp3.ClientUtils
         public static void Send(this EasyTcpClient client, string data,
             Encoding encoding = null, bool compression = false)
             => client.Send((encoding ?? Encoding.UTF8).GetBytes(data), compression);
-        
+
         /// <summary>
         /// Send data (IEasyTcpPacket) to the remote host
         /// </summary>

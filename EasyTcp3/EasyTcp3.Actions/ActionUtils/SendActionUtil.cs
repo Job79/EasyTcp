@@ -17,9 +17,9 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="action">action id</param>
         /// <param name="data">data to send to server</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        public static void SendAction(this EasyTcpClient client, int action, byte[] data, bool compression = false)
+        public static void SendAction(this EasyTcpClient client, int action, byte[] data = null, bool compression = false)
         {
-            if (compression) data = CompressionUtil.Compress(data);
+            if (compression && data != null) data = CompressionUtil.Compress(data);
             client.Send(BitConverter.GetBytes(action), data);
         }
 
@@ -30,7 +30,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="action">action id as string</param>
         /// <param name="data">data to send to server</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        public static void SendAction(this EasyTcpClient client, string action, byte[] data,
+        public static void SendAction(this EasyTcpClient client, string action, byte[] data = null,
             bool compression = false) =>
             client.SendAction(action.ToActionCode(), data, compression);
 

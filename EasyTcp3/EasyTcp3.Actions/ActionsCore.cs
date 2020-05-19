@@ -85,20 +85,27 @@ namespace EasyTcp3.Actions
             Func<int, Message, bool> interceptor, Action<Message> onUnknownAction, object sender,
             Message message)
         {
-            var actionCode = BitConverter.ToInt32(message.Data, 0);
-            actions.TryGetValue(actionCode, out var action);
+            var actionCode = BitConverter.ToInt32(message.Data, 0); // Get action code as int
+            actions.TryGetValue(actionCode, out var action); // Get delegate
             if (action == null)
             {
                 onUnknownAction?.Invoke(message);
                 return;
             }
 
+            // Remove action code from message
+            byte[] data = null;
+            if (message.Data.Length > 4)
+            {
 #if !NETSTANDARD2_1
-            var data = message.Data[4..];
+                data = message.Data[4..];
 #else
-            var data = new byte[message.Data.Length - 4];
-            Buffer.BlockCopy(message.Data, 4, data, 0, data.Length);
+                data = new byte[message.Data.Length - 4];
+                Buffer.BlockCopy(message.Data, 4, data, 0, data.Length);
 #endif
+            }
+
+            // Execute action
             var m = new Message(data, message.Client);
             if (interceptor?.Invoke(actionCode, m) != false) action.Invoke(sender, m);
         }

@@ -24,15 +24,11 @@ namespace EasyTcp3.Test.EasyTcp
             const string message = "Hello server!";
             int receiveCount = 0;
 
-            server.OnConnect += (s, c) =>
+            server.OnDataReceive += (s, receivedMessage) =>
             {
-                c.OnDataReceive += (sender, receivedMessage) =>
-                {
-                    //Async lambda, so thread safe increase integer
-                    if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
-                    Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
-                };
-                Console.WriteLine("Client connected");
+                //Async lambda, so thread safe increase integer
+                if (message.Equals(receivedMessage.ToString())) Interlocked.Increment(ref receiveCount);
+                Console.WriteLine($"[{receiveCount}]Received message: {receivedMessage.ToString()}");
             };
 
             using var client = new EasyTcpClient();

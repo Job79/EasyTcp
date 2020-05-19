@@ -24,11 +24,11 @@ namespace EasyTcp3.Server.ServerUtils.Internal
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
 
+                client.StartListening();
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
-                    server.ConnectedClients.Add(client);
-                    client.StartListening();
+                    lock (server.ConnectedClients) server.ConnectedClients.Add(client);
                 }
             }
             catch (Exception ex)
