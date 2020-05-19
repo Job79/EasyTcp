@@ -15,7 +15,7 @@ namespace EasyTcp3.Examples
     {
         static void Main()
         {
-            TestReverseShell();
+            //TestReverseShell();
             
             Console.WriteLine("--    EchoServer/HelloClient    --");
             EchoServer.StartEchoServer();
