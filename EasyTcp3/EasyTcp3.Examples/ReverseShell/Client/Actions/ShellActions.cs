@@ -6,10 +6,20 @@ using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Examples.ReverseShell.Client.Actions
 {
+    /// <summary>
+    /// Actions that add support for a remote shell 
+    /// </summary>
     public static class ShellActions
     {
+        /// <summary>
+        /// Running process
+        /// </summary>
         private static Process _process = null;
 
+        /// <summary>
+        /// Start a new process,
+        /// old process gets disposed 
+        /// </summary>
         [EasyTcpAction("execute")]
         public static void Execute(object s, Message e)
         {
@@ -18,10 +28,17 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
             e.Client.Send("Created new process");
         }
 
+        /// <summary>
+        /// Pipe string into stdin of process 
+        /// </summary>
         [EasyTcpAction(">")]
         public static void PipeIntoProcess(object s, Message e)
             => _process?.StandardInput.WriteLine(e.Decompress().ToString().Replace(':',' '));
 
+        /// <summary>
+        /// Create a new process
+        /// </summary>
+        /// <returns>new created process</returns>
         private static Process CreateProcess(Message e)
         {
             var args = e.Decompress().ToString().Split(':');
