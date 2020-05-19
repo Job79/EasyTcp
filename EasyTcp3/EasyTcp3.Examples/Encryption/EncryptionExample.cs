@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using EasyEncrypt2;
 using EasyTcp.Encryption;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.EasyTcpPacketUtils;
@@ -13,17 +14,17 @@ namespace EasyTcp3.Examples.Encryption
     /// </summary>
     public static class EncryptionExample
     {
-        private const ushort PORT = 3215;
-        private const string SALT = "Salt12345678"; // Random salt for each session is recommend if possible
+        private const ushort Port = 3215;
+        private const string Salt = "Salt12345678"; // Random salt for each session is recommend if possible
 
         public static void Start()
         {
             // Create new encryptor instance
             // Default algorithm used is Aes
             // See EasyEncrypt class for more information
-            var encrypter = new EasyEncrypt("Key", SALT);
+            var encrypter = new EasyEncrypt("Key", Salt);
 
-            var server = new EasyTcpServer().Start(PORT);
+            var server = new EasyTcpServer().Start(Port);
             server.OnDataReceive += (sender, message) =>
             {
                 Console.WriteLine(message.Decompress() // Decompress package if compressed
@@ -35,9 +36,9 @@ namespace EasyTcp3.Examples.Encryption
         public static void Connect()
         {
             var client = new EasyTcpClient();
-            if (!client.Connect(IPAddress.Loopback, PORT)) return;
+            if (!client.Connect(IPAddress.Loopback, Port)) return;
 
-            using var encrypter = new EasyEncrypt("Key", SALT);
+            using var encrypter = new EasyEncrypt("Key", Salt);
 
             // Send encrypted message
             // .Encrypt works on all EasyTcpPackets

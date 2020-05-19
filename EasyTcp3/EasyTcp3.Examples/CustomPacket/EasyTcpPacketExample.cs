@@ -14,7 +14,7 @@ namespace EasyTcp3.Examples.CustomPacket
     /// </summary>
     public static class EasyTcpPacketExample
     {
-        private const ushort PORT = 3214;
+        private const ushort Port = 3214;
         
         public static void Start()
         {
@@ -29,7 +29,7 @@ namespace EasyTcp3.Examples.CustomPacket
         public static void Connect()
         {
             var client = new EasyTcpClient();
-            if(!client.Connect(IPAddress.Loopback, PORT)) return; 
+            if(!client.Connect(IPAddress.Loopback, Port)) return; 
             
             var list = new PacketList<Message>
             {
