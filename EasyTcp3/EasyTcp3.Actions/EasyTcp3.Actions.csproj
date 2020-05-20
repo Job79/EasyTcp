@@ -4,10 +4,17 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <PackageId>EasyTcp.Actions</PackageId>
         <Title>EasyTcp.Actions</Title>
+        <Authors>Job79</Authors>
+        <Copyright>Job79</Copyright>
+        <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
+        <PackageTags>Socket Networking Tcp TcpClient TcpServer SimpleTcp EasyTcp AsyncTcp</PackageTags>
+        <Description>This package adds support to EasyTcp for triggering specific functions based on received data. See github for examples.</Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+        <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj"/>
     </ItemGroup>
-
 </Project>
