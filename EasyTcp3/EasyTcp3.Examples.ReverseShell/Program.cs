@@ -1,7 +1,7 @@
 ﻿using EasyTcp3.Examples.ReverseShell.Client;
 using EasyTcp3.Examples.ReverseShell.Server;
 
-namespace EasyTcp.Examples.ReverseShell
+namespace EasyTcp3.Examples.ReverseShell
 {
     /// <summary>
     /// Example application with easyTcp.Actions (ReverseShell)
