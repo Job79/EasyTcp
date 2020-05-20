@@ -1,6 +1,6 @@
 using System.IO;
+using EasyTcp3.Actions;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Files
@@ -14,30 +14,22 @@ namespace EasyTcp3.Examples.Files
 
         public static void StartFileServer()
         {
-            var server = new EasyTcpServer();
-            server.Start(Port);
-            server.OnDataReceive += OnDataReceive;
+            new EasyTcpActionServer().Start(Port);
         }
 
-        private static void OnDataReceive(object sender, Message e)
+        [EasyTcpAction("DOWNLOAD")]
+        public static void Download(object s, Message m)
         {
-            string message = e.ToString();
-            
-            if (message.StartsWith("Download ")) // Client wants to download a file
-            {
-                string file = message.Remove(0,9); // Remove "Download "
-                
-                using var fileStream = new FileStream(file, FileMode.Open);
-                e.Client.Send("Uploading file!");
-                e.Client.SendStream(fileStream);
-            }
-            else if (message.StartsWith("Upload ")) // Client wants to upload a file
-            {
-                string file = message.Remove(0,7); // Remove "Upload "
-                
-                using var fileStream = new FileStream(file, FileMode.Create);
-                e.ReceiveStream(fileStream);
-            }
+            using var fileStream = new FileStream(m.ToString(), FileMode.Open);
+            m.Client.Send("Uploading file!");
+            m.Client.SendStream(fileStream); // Send stream and use fileStream as source
+        }
+
+        [EasyTcpAction("UPLOAD")]
+        public static void Upload(object s, Message m)
+        {
+            using var fileStream = new FileStream(m.ToString(), FileMode.Create);
+            m.ReceiveStream(fileStream); // Receive stream and write receiving stream to fileStream
         }
     }
 }

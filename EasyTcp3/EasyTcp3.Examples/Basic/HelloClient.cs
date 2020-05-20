@@ -16,13 +16,13 @@ namespace EasyTcp3.Examples.Basic
         public static void Connect()
         {
             var client = new EasyTcpClient();
-            
+
             //Print received data
             client.OnDataReceive += (sender, message) =>
                 Console.WriteLine($"HelloClient: Received \"{message.ToString()}\" from the server");
-            
+
             //Connect to server, return if failed
-            if(!client.Connect(IPAddress.Any, Port)) return;
+            if (!client.Connect(IPAddress.Any, Port)) return;
             client.Send("Hello");
         }
     }

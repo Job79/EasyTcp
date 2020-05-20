@@ -38,7 +38,7 @@ namespace EasyTcp3.Examples.Basic
             */
             client.OnError += (sender, exception) =>
                 Console.WriteLine($"Server: Error occured, message: {exception.Message}");
-            
+
             /* Connect to server on ip 127.0.0.1 and port 5_000 (Our BasicServer.cs)
              * See ConnectUtil.cs and ConnectAsyncUtil.cs for the connect functions
              */
@@ -46,6 +46,9 @@ namespace EasyTcp3.Examples.Basic
 
             if (connected) client.Send("Hello everyone!");
             else Console.WriteLine("Client: Could not connect to server");
-        } 
+
+            // Send a message and get the reply
+            Message reply = client.SendAndGetReply("Hello server!");
+        }
     }
 }

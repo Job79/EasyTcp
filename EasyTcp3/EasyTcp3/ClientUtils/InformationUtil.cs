@@ -27,7 +27,7 @@ namespace EasyTcp3.ClientUtils
 
             return true;
         }
-        
+
         /// <summary>
         /// Get the ip of a client
         /// </summary>

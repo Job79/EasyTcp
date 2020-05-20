@@ -19,8 +19,11 @@ namespace EasyTcp3.ClientUtils.Internal
         /// </summary>
         /// <param name="client"></param>
         internal static void StartListening(this EasyTcpClient client)
-            => client.BaseSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, OnReceive,
-                client);
+        {
+            client.ReceivingData = false;
+            client.BaseSocket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None,
+                OnReceive, client);
+        }
 
         /// <summary>
         /// Function that gets triggered when data is received
@@ -51,7 +54,9 @@ namespace EasyTcp3.ClientUtils.Internal
             }
             catch (Exception ex)
             {
+                client.BaseSocket.EndReceive(ar);
                 client.FireOnError(ex);
+                client.StartListening();
             }
         }
 
@@ -64,7 +69,7 @@ namespace EasyTcp3.ClientUtils.Internal
         {
             ushort dataLength = 2;
 
-            if (client.ReceivingData) client.FireOnDataReceive(new Message(client.Buffer, client));
+            if (client.ReceivingData) client.DataReceiveHandler(new Message(client.Buffer, client));
             else dataLength = BitConverter.ToUInt16(client.Buffer, 0);
 
             client.ReceivingData ^= true;

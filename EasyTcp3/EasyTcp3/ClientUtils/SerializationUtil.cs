@@ -1,4 +1,4 @@
-#if NETCOREAPP3_1
+#if !NETSTANDARD2_1
 using System.Text.Json;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
@@ -23,7 +23,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="data">custom class</param>
         /// <returns>custom class as byte[]</returns>
-        private static byte[] Serialize(object data)
+        public static byte[] Serialize(object data)
             => JsonSerializer.SerializeToUtf8Bytes(data);
         
         /// <summary>
@@ -32,7 +32,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="data"></param>
         /// <typeparam name="T">custom class type</typeparam>
         /// <returns>byte[] as custom class</returns>
-        private static T Deserialize<T>(byte[] data)
+        public static T Deserialize<T>(byte[] data)
             => JsonSerializer.Deserialize<T>(data);
         
         
@@ -41,16 +41,18 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="o">custom class</param>
-        public static void Send(this EasyTcpClient client, object o)
-            => SendUtil.Send(client,Serialize(o));
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void Send(this EasyTcpClient client, object o, bool compression = false)
+            => SendUtil.Send(client,Serialize(o), compression);
 
         /// <summary>
         /// Send data (custom class) to all connected clients
         /// </summary>
         /// <param name="server"></param>
         /// <param name="o">custom class</param>
-        public static void SendAll(this EasyTcpServer server, object o)
-            => SendAllUtil.SendAll(server, Serialize(o));
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAll(this EasyTcpServer server, object o, bool compression = false)
+            => SendAllUtil.SendAll(server, Serialize(o),compression);
         
         /// <summary>
         /// Received data as custom class

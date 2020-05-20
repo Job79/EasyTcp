@@ -13,9 +13,10 @@ namespace EasyTcp3.Test
         /// ! This must be done thread safe
         /// </summary>
         private static int _portCounter = 1200;
+
         public static ushort GetPort() => (ushort) Math.Min(Interlocked.Increment(ref _portCounter), ushort.MaxValue);
 
-        public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
+        public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(1);
 
         /// <summary>
         /// Wait until default timeout expires, or continue if passed function returns true

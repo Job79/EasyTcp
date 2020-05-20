@@ -6,13 +6,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+        <ProjectReference Include="..\EasyTcp3.Actions\EasyTcp3.Actions.csproj" />
+        <ProjectReference Include="..\EasyTcp3.Encryption\EasyTcp3.Encryption.csproj" />
+        <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="TestFile.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Update="TestFile.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

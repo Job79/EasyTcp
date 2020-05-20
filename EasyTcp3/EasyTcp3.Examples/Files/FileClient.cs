@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.Files
@@ -18,23 +19,23 @@ namespace EasyTcp3.Examples.Files
             client.OnDataReceive += (sender, message) =>
             {
                 using var fileStream = new FileStream(saveAs, FileMode.Create);
-                message.ReceiveStream(fileStream);
+                message.ReceiveStream(fileStream); // Receive stream and write receiving stream to fileStream
                 Console.WriteLine($"Downloaded {fileName}, saved as {saveAs}");
             };
-            
-            if(!client.Connect(IPAddress.Any, Port)) return;
-            client.Send($"Download {fileName}");
+
+            if (!client.Connect(IPAddress.Any, Port)) return;
+            client.SendAction("DOWNLOAD", fileName);
         }
-        
+
         public static void Upload(string fileName, string saveAs)
         {
             var client = new EasyTcpClient();
 
-            if(!client.Connect(IPAddress.Any, Port)) return;
-            client.Send($"Upload {saveAs}");
-            
+            if (!client.Connect(IPAddress.Any, Port)) return;
+            client.SendAction("UPLOAD", saveAs);
+
             using var fileStream = new FileStream(fileName, FileMode.Open);
-            client.SendStream(fileStream);
+            client.SendStream(fileStream); // Send stream and use fileStream as source
             Console.WriteLine($"Uploaded {fileName}, saved as {saveAs}");
         }
     }
