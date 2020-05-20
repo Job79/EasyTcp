@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp3.Actions", "EasyTcp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp3.Encryption", "EasyTcp3.Encryption\EasyTcp3.Encryption.csproj", "{B9BC2FEE-8307-4D15-BF7F-A13E9F3CE065}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTcp.Examples.ReverseShell", "EasyTcp.Examples.ReverseShell\EasyTcp.Examples.ReverseShell.csproj", "{1B8A5E6F-A8EB-43BC-A147-C8E69B50BCF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{B9BC2FEE-8307-4D15-BF7F-A13E9F3CE065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9BC2FEE-8307-4D15-BF7F-A13E9F3CE065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9BC2FEE-8307-4D15-BF7F-A13E9F3CE065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B8A5E6F-A8EB-43BC-A147-C8E69B50BCF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B8A5E6F-A8EB-43BC-A147-C8E69B50BCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B8A5E6F-A8EB-43BC-A147-C8E69B50BCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B8A5E6F-A8EB-43BC-A147-C8E69B50BCF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

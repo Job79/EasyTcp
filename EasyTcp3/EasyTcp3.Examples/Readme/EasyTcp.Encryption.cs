@@ -9,7 +9,7 @@ using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Readme
 {
-    public class EasyTcp_Encryption
+    public class EasyTcpEncryption
     {
         public static void Run()
         {

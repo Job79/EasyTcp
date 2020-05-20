@@ -5,8 +5,6 @@ using EasyTcp3.Examples.Basic;
 using EasyTcp3.Examples.CustomPacket;
 using EasyTcp3.Examples.Encryption;
 using EasyTcp3.Examples.Files;
-using EasyTcp3.Examples.ReverseShell.Client;
-using EasyTcp3.Examples.ReverseShell.Server;
 using EasyTcp3.Examples.SpeedTest;
 
 namespace EasyTcp3.Examples
@@ -15,8 +13,6 @@ namespace EasyTcp3.Examples
     {
         static void Main()
         {
-            //TestReverseShell();
-            
             Console.WriteLine("--    EchoServer/HelloClient    --");
             EchoServer.StartEchoServer();
             HelloClient.Connect();
@@ -56,16 +52,6 @@ namespace EasyTcp3.Examples
             ActionSpeedTestClient.RunSpeedTest();
 
             Task.Delay(-1).Wait();
-        }
-
-        private static void TestReverseShell()
-        {
-            string ip = "127.0.0.1";
-            ushort port = 52525;
-            var client = new ReverseShellClient();
-            var server = new ReverseShellServer();
-            var x = client.Start(ip, port);
-            server.Start(port);
         }
     }
 }

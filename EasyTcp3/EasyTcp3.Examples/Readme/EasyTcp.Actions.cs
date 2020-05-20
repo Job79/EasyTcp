@@ -8,7 +8,7 @@ using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Readme
 {
-    public static class EasyTcp_Actions
+    public static class EasyTcpActions
     {
         const ushort PORT = 100;
 
@@ -16,8 +16,8 @@ namespace EasyTcp3.Examples.Readme
         {
             using var client = new EasyTcpClient();
             if(!client.Connect(IPAddress.Loopback, PORT)) return; 
-            client.SendAction("ECHO","Hello server");
-            client.SendAction("BROADCAST","Hello everyone"); 
+            client.SendAction("echo","Hello server");
+            client.SendAction("broadcast","Hello everyone"); 
         }
         
         public static void Run()
@@ -27,13 +27,13 @@ namespace EasyTcp3.Examples.Readme
             server.OnDisconnect += (sender, client) => Console.WriteLine($"Client disconnected [ip: {client.GetIp()}]");
         }
 
-        [EasyTcpAction("ECHO")]
+        [EasyTcpAction("echo")]
         public static void EchoAction(object sender, Message message)
         {
             message.Client.Send(message);
         }
 
-        [EasyTcpAction("BROADCAST")]
+        [EasyTcpAction("broadcast")]
         public static void BroadCastAction(object sender, Message message)
         {
             var server = (EasyTcpServer) sender;
