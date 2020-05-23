@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using EasyTcp3.Protocol;
 
 namespace EasyTcp3
 {
@@ -17,10 +18,10 @@ namespace EasyTcp3
         public Socket BaseSocket { get; set; }
 
         /// <summary>
-        /// Determines whether the next receiving data is the length of data or actual data. [Length of data (4)] ["Data"] 
-        /// See OnReceive for more information about the protocol EasyTcp uses
+        /// Protocol for this client,
+        /// determines actions when receiving/sending data etc..
         /// </summary>
-        protected internal bool ReceivingData;
+        public readonly IEasyTcpProtocol Protocol;
 
         /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
@@ -69,7 +70,7 @@ namespace EasyTcp3
         protected internal void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
-#if DEBUG 
+#if DEBUG
             else throw exception;
 #endif
         }
@@ -93,12 +94,19 @@ namespace EasyTcp3
         /// <summary>
         /// 
         /// </summary>
-        public EasyTcpClient() => ResetDataReceiveHandler();
+        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        public EasyTcpClient(IEasyTcpProtocol protocol = null)
+        {
+            Protocol = protocol;
+            ResetDataReceiveHandler();
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="socket"></param>
-        public EasyTcpClient(Socket socket) : this() => BaseSocket = socket;
+        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        public EasyTcpClient(Socket socket, IEasyTcpProtocol protocol = null) : this(protocol) => BaseSocket = socket;
 
         /// <summary>
         /// Dispose current instance of the baseSocket if not null
