@@ -24,7 +24,7 @@ namespace EasyTcp3.Server.ServerUtils.Internal
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
 
-                client.StartListening();
+                client.Protocol.OnConnectServer(client);
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
