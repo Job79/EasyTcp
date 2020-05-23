@@ -40,7 +40,6 @@ namespace EasyTcp3.ClientUtils
                 {
                     client.Protocol.OnConnect(client);
                     client.FireOnConnect();
-                    client.StartInternalDataReceiver();
                     return true;
                 }
             }

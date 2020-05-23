@@ -28,6 +28,11 @@ namespace EasyTcp3.ClientUtils.Internal
             try
             {
                 int receivedBytes = client.BaseSocket.EndReceive(ar);
+                if (receivedBytes == 0)
+                {
+                    HandleDisconnect(client);
+                    return;
+                } 
                 client.Protocol.DataReceive(client.Buffer, receivedBytes, client);
                 client.StartListening();
             }
@@ -35,11 +40,13 @@ namespace EasyTcp3.ClientUtils.Internal
             {
                 client.HandleDisconnect();
             }
+            catch (ObjectDisposedException)
+            {
+                client.HandleDisconnect();
+            }
             catch (Exception ex)
             {
-                client.BaseSocket.EndReceive(ar);
                 client.FireOnError(ex);
-                client.StartListening();
             }
         }
 

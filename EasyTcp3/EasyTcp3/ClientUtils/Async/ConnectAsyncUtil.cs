@@ -34,7 +34,6 @@ namespace EasyTcp3.ClientUtils.Async
                 {
                     client.Protocol.OnConnect(client);
                     client.FireOnConnect();
-                    client.StartListening();
                     return true;
                 }
             }
