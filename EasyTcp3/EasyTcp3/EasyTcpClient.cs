@@ -97,7 +97,7 @@ namespace EasyTcp3
         /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
         public EasyTcpClient(IEasyTcpProtocol protocol = null)
         {
-            Protocol = protocol;
+            Protocol = protocol ?? new DefaultProtocol();
             ResetDataReceiveHandler();
         }
 
