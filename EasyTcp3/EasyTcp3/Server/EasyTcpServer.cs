@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using EasyTcp3.Protocol;
 
 namespace EasyTcp3.Server
 {
@@ -17,6 +18,12 @@ namespace EasyTcp3.Server
         /// Null if disconnected
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
+
+        /// <summary>
+        /// Protocol for this client,
+        /// determines actions when receiving/sending data etc..
+        /// </summary>
+        public readonly IEasyTcpProtocol Protocol;
 
         /// <summary>
         /// Determines whether the server is running,
@@ -105,6 +112,13 @@ namespace EasyTcp3.Server
             else throw exception;
 #endif
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        public EasyTcpServer(IEasyTcpProtocol protocol = null)
+            => this.Protocol = protocol ?? new DefaultProtocol();
 
         /// <summary>
         /// Dispose current instance of the baseSocket if not null
