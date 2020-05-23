@@ -33,8 +33,8 @@ namespace EasyTcp3.ClientUtils.Internal
                 {
                     HandleDisconnect(client);
                     return;
-                } 
-                
+                }
+
                 int receivedBytes = client.BaseSocket.EndReceive(ar);
                 if (receivedBytes == 0)
                 {
@@ -47,6 +47,10 @@ namespace EasyTcp3.ClientUtils.Internal
                 else client.StartListening();
             }
             catch (SocketException)
+            {
+                client.HandleDisconnect();
+            }
+            catch (IOException)
             {
                 client.HandleDisconnect();
             }
