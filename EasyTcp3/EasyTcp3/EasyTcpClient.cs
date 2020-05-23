@@ -109,8 +109,8 @@ namespace EasyTcp3
         public EasyTcpClient(Socket socket, IEasyTcpProtocol protocol = null) : this(protocol) => BaseSocket = socket;
 
         /// <summary>
-        /// Dispose current instance of the baseSocket if not null
-        /// Client will disconnect when function is called
+        /// Dispose current instance of the baseSocket if not null,
+        /// client will disconnect when function is called
         /// </summary>
         public void Dispose()
         {
