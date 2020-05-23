@@ -1,11 +1,23 @@
 using System;
 using System.Linq;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocol
 {
     public class DefaultProtocol : IEasyTcpProtocol
     {
+        const int DEFAULT_BUFFERSIZE = 1024;
+        
+        /// <summary>
+        /// Size of (next) buffer, max size of receiving data
+        /// </summary>
+        public int BufferSize { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bufferSize"></param>
+        public DefaultProtocol(int bufferSize = DEFAULT_BUFFERSIZE) => BufferSize = bufferSize;
+        
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         ///
@@ -35,23 +47,6 @@ namespace EasyTcp3.Protocol
             }
 
             return message;
-        }
-
-        public int BufferSize { get; set; }
-        
-        public byte[][] DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool OnClientConnect(EasyTcpClient client, EasyTcpServer server)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReceiveData(byte[] data, EasyTcpClient client)
-        {
-            throw new NotImplementedException();
         }
     }
 }

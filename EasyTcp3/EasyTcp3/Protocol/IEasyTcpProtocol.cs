@@ -1,4 +1,4 @@
-using EasyTcp3.Server;
+using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Protocol
 {
@@ -29,14 +29,20 @@ namespace EasyTcp3.Protocol
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         /// <returns>arrays or array with received data, for each element 1 event is triggered.</returns>
-        public byte[][] DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
+        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client) => client.FireOnDataReceiveEvent(new Message(data, client));
 
         /// <summary>
-        /// Message that is triggered when a new client connects
+        /// Method that is triggered when client connects
+        /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="server"></param>
-        /// <returns></returns>
-        public bool OnClientConnect(EasyTcpClient client, EasyTcpServer server);
+        public void OnConnect(EasyTcpClient client) => client.StartInternalDataReceiver();
+
+        /// <summary>
+        /// Method that is triggered when client connects to server
+        /// Default behavior is starting listening for incoming data
+        /// </summary>
+        /// <param name="client"></param>
+        public void OnConnectServer(EasyTcpClient client) => client.StartInternalDataReceiver();
     }
 }
