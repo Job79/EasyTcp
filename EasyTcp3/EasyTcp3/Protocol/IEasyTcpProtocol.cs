@@ -20,7 +20,7 @@ namespace EasyTcp3.Protocol
         /// Variable is used after receiving data,
         /// size of buffer (and size of next receiving data)
         /// </summary>
-        public int BufferSize { get; set; }
+        public int BufferSize { get; }
 
         /// <summary>
         /// Function that is triggered when new data is received.
