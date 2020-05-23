@@ -15,6 +15,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="EasyTcp" Version="3.0.0" />
+      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
     </ItemGroup>
 </Project>

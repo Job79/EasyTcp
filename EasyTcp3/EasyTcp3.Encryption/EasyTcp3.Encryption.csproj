@@ -20,4 +20,8 @@
         <PackageReference Include="EasyTcp" Version="3.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+    </ItemGroup>
+
 </Project>
