@@ -29,7 +29,7 @@ namespace EasyTcp3.Protocol
         /// <param name="data">received data, has the size of the client buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        /// <returns>arrays or array with received data, for each element 1 event is triggered.</returns>
+        /// <returns>arrays or array with received data, for each element 1 event is triggered</returns>
         public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte[] receivedData = new byte[receivedBytes];

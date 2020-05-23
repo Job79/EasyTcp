@@ -10,13 +10,13 @@ namespace EasyTcp3.Protocol
         /// <summary>
         /// Size of (next) buffer, max size of receiving data
         /// </summary>
-        public int BufferSize { get; private set; }
+        public int BufferSize { get; }
         
         /// <summary>
         /// 
         /// </summary>
         /// <param name="bufferSize"></param>
-        public DefaultProtocol(int bufferSize = DEFAULT_BUFFERSIZE) => BufferSize = bufferSize;
+        public DefaultProtocol(int bufferSize = DEFAULT_BUFFERSIZE) => this.BufferSize = bufferSize;
         
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
