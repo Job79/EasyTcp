@@ -13,7 +13,7 @@
 Packege with the basic functions of EasyTcp.<br/>
 Contains the EasyTcpServer and EasyTcpClient. These classes are a simple wrapper around the Socket class. <br>
 Adding event handlers and functions to make sending and processing received data simple. <br/>
-Check out these examples, and see the EasyTcp.Examples folder for more.
+Check out these examples, and see the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for more.
 ```cs
 using var server = new EasyTcpServer().Start(PORT);
 server.OnConnect += (sender, client) => Console.WriteLine($"Client connected [ip: {client.GetIp()}]");
@@ -34,7 +34,7 @@ client.Send("Hello server");
 # EasyTcp.Actions
 Package that adds support for 'actions' <br/>
 Actions are functions with a specific attribute that get triggered when a message is received. This happens based on the received data and is perfect for medium/big servers or clients.<br/>
-Check out these examples, and see the EasyTcp.Examples folder for more.
+Check out these examples, and see the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for more.
 ```cs
 public static void Run()
 {
