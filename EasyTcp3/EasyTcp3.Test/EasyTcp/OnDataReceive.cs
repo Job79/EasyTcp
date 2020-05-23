@@ -34,10 +34,9 @@ namespace EasyTcp3.Test.EasyTcp
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             client.Send(message);
-            client.Send(message);
 
-            TestHelper.WaitWhileTrue(() => receiveCount < 2);
-            Assert.AreEqual(2, receiveCount);
+            TestHelper.WaitWhileTrue(() => receiveCount < 1);
+            Assert.AreEqual(1, receiveCount);
         }
 
         [Test]
@@ -62,10 +61,9 @@ namespace EasyTcp3.Test.EasyTcp
             };
 
             server.SendAll(message);
-            server.SendAll(message);
 
-            TestHelper.WaitWhileTrue(() => receiveCount < 2);
-            Assert.AreEqual(2, receiveCount);
+            TestHelper.WaitWhileTrue(() => receiveCount < 1);
+            Assert.AreEqual(1, receiveCount);
         }
     }
 }
