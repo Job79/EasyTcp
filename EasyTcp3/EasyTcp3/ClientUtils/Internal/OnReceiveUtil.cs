@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace EasyTcp3.ClientUtils.Internal
@@ -27,22 +29,24 @@ namespace EasyTcp3.ClientUtils.Internal
 
             try
             {
-                int receivedBytes = client.BaseSocket.EndReceive(ar);
-                if (receivedBytes == 0)
+                if (!client.BaseSocket.Connected)
                 {
                     HandleDisconnect(client);
                     return;
                 } 
                 
+                int receivedBytes = client.BaseSocket.EndReceive(ar);
+                if (receivedBytes == 0)
+                {
+                    HandleDisconnect(client);
+                    return;
+                }
+
                 client.Protocol.DataReceive(client.Buffer, receivedBytes, client);
-                if(client.BaseSocket == null) HandleDisconnect(client); // Check if client is disposed by DataReceive
+                if (client.BaseSocket == null) HandleDisconnect(client); // Check if client is disposed by DataReceive
                 else client.StartListening();
             }
             catch (SocketException)
-            {
-                client.HandleDisconnect();
-            }
-            catch (ObjectDisposedException)
             {
                 client.HandleDisconnect();
             }
