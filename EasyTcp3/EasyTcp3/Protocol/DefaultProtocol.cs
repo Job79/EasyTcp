@@ -10,7 +10,7 @@ namespace EasyTcp3.Protocol
         /// <summary>
         /// Size of (next) buffer, max size of receiving data
         /// </summary>
-        public int BufferSize { get; set; }
+        public int BufferSize { get; private set; }
         
         /// <summary>
         /// 

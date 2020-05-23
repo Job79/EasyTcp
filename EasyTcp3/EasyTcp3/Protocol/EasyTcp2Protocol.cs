@@ -15,7 +15,7 @@ namespace EasyTcp3.Protocol
         /// Size of (next) buffer
         /// 2 when receiving data length, [data length] when receiving data
         /// </summary>
-        public int BufferSize { get; set; }
+        public int BufferSize { get; private set; }
         
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays

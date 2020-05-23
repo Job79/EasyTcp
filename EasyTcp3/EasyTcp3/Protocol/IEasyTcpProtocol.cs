@@ -1,3 +1,4 @@
+using System;
 using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Protocol
@@ -29,7 +30,12 @@ namespace EasyTcp3.Protocol
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         /// <returns>arrays or array with received data, for each element 1 event is triggered.</returns>
-        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client) => client.FireOnDataReceiveEvent(new Message(data, client));
+        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        {
+            byte[] receivedData = new byte[receivedBytes];
+            Buffer.BlockCopy(data,0,receivedData,0,receivedBytes);
+            client.DataReceiveHandler(new Message(receivedData, client));
+        }
 
         /// <summary>
         /// Method that is triggered when client connects
