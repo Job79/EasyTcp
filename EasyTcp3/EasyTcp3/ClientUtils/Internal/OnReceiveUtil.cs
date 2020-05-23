@@ -33,8 +33,10 @@ namespace EasyTcp3.ClientUtils.Internal
                     HandleDisconnect(client);
                     return;
                 } 
+                
                 client.Protocol.DataReceive(client.Buffer, receivedBytes, client);
-                client.StartListening();
+                if(client.BaseSocket == null) HandleDisconnect(client); // Check if client is disposed by DataReceive
+                else client.StartListening();
             }
             catch (SocketException)
             {
