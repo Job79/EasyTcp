@@ -10,13 +10,15 @@ namespace EasyTcp3.Protocol
         /// See DataReceive for more information about the protocol.
         /// </summary>
         private bool _receivingData = true;
-        
+
         /// <summary>
         /// Size of (next) buffer
         /// 2 when receiving data length, [data length] when receiving data
         /// </summary>
         public int BufferSize { get; private set; }
-        
+
+        public EasyTcp2Protocol() => BufferSize = 2;
+
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         ///
@@ -32,7 +34,8 @@ namespace EasyTcp3.Protocol
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength == 0)
+                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
             byte[] message = new byte[2 + messageLength];
 
             // Write length of data to message
@@ -47,9 +50,9 @@ namespace EasyTcp3.Protocol
                 offset += d.Length;
             }
 
-            return message; 
+            return message;
         }
-        
+
         /// <summary>
         /// Handle received data, trigger event and set new buffersize determined by ReceivingData 
         /// </summary>
@@ -60,10 +63,10 @@ namespace EasyTcp3.Protocol
         {
             ushort dataLength = 2;
 
-            if (_receivingData) client.DataReceiveHandler(new Message(client.Buffer, client));
-            else dataLength = BitConverter.ToUInt16(client.Buffer, 0);
+            if (_receivingData) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
+            else client.DataReceiveHandler(new Message(client.Buffer, client));
             _receivingData ^= true;
-            
+
             if (dataLength == 0) client.Dispose();
             else BufferSize = dataLength;
         }
