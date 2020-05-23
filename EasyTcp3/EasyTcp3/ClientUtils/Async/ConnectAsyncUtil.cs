@@ -32,6 +32,7 @@ namespace EasyTcp3.ClientUtils.Async
 
                 if (client.BaseSocket.Connected)
                 {
+                    client.Protocol.OnConnect(client);
                     client.FireOnConnect();
                     client.StartListening();
                     return true;

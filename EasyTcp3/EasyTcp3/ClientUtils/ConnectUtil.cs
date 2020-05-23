@@ -38,6 +38,7 @@ namespace EasyTcp3.ClientUtils
 
                 if (client.BaseSocket.Connected)
                 {
+                    client.Protocol.OnConnect(client);
                     client.FireOnConnect();
                     client.StartInternalDataReceiver();
                     return true;
