@@ -79,7 +79,7 @@ namespace EasyTcp3
         /// Function used to fire the OnDataReceive event
         /// </summary>
         /// <param name="message">received message</param>
-        protected internal void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
+        public void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
 
         /// <summary>
         /// Action that is called when new data is received
