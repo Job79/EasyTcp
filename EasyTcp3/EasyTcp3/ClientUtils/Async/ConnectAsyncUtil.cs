@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.ClientUtils.Async
 {
