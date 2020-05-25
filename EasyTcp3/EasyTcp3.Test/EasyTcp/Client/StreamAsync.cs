@@ -15,7 +15,6 @@ namespace EasyTcp3.Test.EasyTcp.Client
     /// </summary>
     public class StreamAsync
     {
-        //TODO This test crashes sometimes, is it the test or the code in EasyTcp?
         [Test]
         public async Task Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
         {
