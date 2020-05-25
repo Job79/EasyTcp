@@ -53,23 +53,23 @@ namespace EasyTcp3.Test.Encryption
         public void TestEncryptingAndDecryptingMessage()
         {
             var encryption = new EasyEncrypt();
-            
+
             var testData = "testData";
             var message = EasyTcpPacket.To<Message>(Encoding.UTF8.GetBytes(testData));
             var encryptedMessage = EasyTcpPacket.To<Message>(message.Data).Encrypt(encryption);
             var decryptedMessage = EasyTcpPacket.To<Message>(encryptedMessage.Data).Decrypt(encryption);
-            
-            Assert.AreEqual(message.ToString(),decryptedMessage.ToString());
-            Assert.AreNotEqual(message.ToString(),encryptedMessage.ToString());
+
+            Assert.AreEqual(message.ToString(), decryptedMessage.ToString());
+            Assert.AreNotEqual(message.ToString(), encryptedMessage.ToString());
         }
 
         [Test]
-        public void SendEncryptedData() 
+        public void SendEncryptedData()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
-            
+
             var encryption = new EasyEncrypt();
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));

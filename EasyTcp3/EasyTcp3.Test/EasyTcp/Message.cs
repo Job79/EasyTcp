@@ -242,7 +242,7 @@ namespace EasyTcp3.Test.EasyTcp
             TestHelper.WaitWhileTrue(() => receiveCount == 0);
             Assert.AreEqual(1, receiveCount);
         }
-        
+
         [Test]
         public void ReceiveStringCompressed()
         {
