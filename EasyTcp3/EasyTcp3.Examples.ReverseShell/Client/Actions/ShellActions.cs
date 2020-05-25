@@ -14,7 +14,7 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
         /// <summary>
         /// Running process
         /// </summary>
-        private static Process _process = null;
+        private static Process _process;
 
         /// <summary>
         /// Start a new process,

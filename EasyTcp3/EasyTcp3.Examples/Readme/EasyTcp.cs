@@ -10,9 +10,9 @@ namespace EasyTcp3.Examples.Readme
     {
         public static void Run()
         {
-            const ushort PORT = 100;
+            const ushort port = 100;
             
-            using var server = new EasyTcpServer().Start(PORT);
+            using var server = new EasyTcpServer().Start(port);
             server.OnConnect += (sender, client) => Console.WriteLine($"Client connected [ip: {client.GetIp()}]");
             server.OnDisconnect += (sender, client) => Console.WriteLine($"Client disconnected [ip: {client.GetIp()}]");
             server.OnDataReceive += (sender, message) => Console.WriteLine($"Received: {message.ToString()}");
@@ -22,7 +22,7 @@ namespace EasyTcp3.Examples.Readme
             client.OnDisconnect += (sender, client) => Console.WriteLine("Client disconnected!");
             client.OnDataReceive += (sender, message) => Console.WriteLine($"Received: {message.ToString()}");
             
-            if(!client.Connect(IPAddress.Loopback, PORT)) return; 
+            if(!client.Connect(IPAddress.Loopback, port)) return; 
             client.Send("Hello server");
         } 
     }
