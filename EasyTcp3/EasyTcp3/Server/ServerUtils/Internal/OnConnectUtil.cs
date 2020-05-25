@@ -1,5 +1,5 @@
 using System;
-using EasyTcp3.ClientUtils.Internal;
+using EasyTcp3.Protocol;
 
 namespace EasyTcp3.Server.ServerUtils.Internal
 {
@@ -19,7 +19,7 @@ namespace EasyTcp3.Server.ServerUtils.Internal
 
             try
             {
-                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar));
+                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar), (IEasyTcpProtocol) server.Protocol.Clone());
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
