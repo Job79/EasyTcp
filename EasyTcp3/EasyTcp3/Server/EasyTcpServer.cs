@@ -116,9 +116,9 @@ namespace EasyTcp3.Server
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        /// <param name="protocol">determines actions when sending/receiving data etc.. PrefixLenghtProtocol is used when null</param>
         public EasyTcpServer(IEasyTcpProtocol protocol = null)
-            => this.Protocol = protocol ?? new DefaultProtocol();
+            => this.Protocol = protocol ?? new PrefixLengthProtocol();
 
         /// <summary>
         /// Dispose current instance of the baseSocket if not null

@@ -92,12 +92,11 @@ namespace EasyTcp3
         public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        /// <param name="protocol">determines actions when sending/receiving data etc.. PrefixLengthProtocol is used when null</param>
         public EasyTcpClient(IEasyTcpProtocol protocol = null)
         {
-            Protocol = protocol ?? new DefaultProtocol();
+            Protocol = protocol ?? new PrefixLengthProtocol();
             ResetDataReceiveHandler();
         }
 
