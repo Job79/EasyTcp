@@ -33,6 +33,11 @@ namespace EasyTcp3.Protocol
         /// List with received bytes 
         /// </summary>
         private readonly List<byte> _receivedBytes = new List<byte>();
+        
+        /// <summary>
+        /// BufferSize, always 1 byte 
+        /// </summary>
+        public int BufferSize => 1;
 
         /// <summary>
         /// </summary>
@@ -92,11 +97,6 @@ namespace EasyTcp3.Protocol
 
             return message;
         }
-
-        /// <summary>
-        /// BufferSize, always 1 byte 
-        /// </summary>
-        public int BufferSize => 1;
 
         /// <summary>
         /// Function that is triggered when new data is received.
