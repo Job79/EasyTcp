@@ -1,5 +1,6 @@
 # EasyTcp.Examples
-This project contains examples usage of EasyTcp & EasyTcp.Actions & EasyTcp.Encryption <br/>
+This project contains example usage of EasyTcp & EasyTcp.Actions & EasyTcp.Encryption <br/>
+All examples are well commented to explain what is happening. <br/>
 Feel free to open an issue when something is unclear or needs to be better documented.
 
 ## Actions
