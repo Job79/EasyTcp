@@ -28,7 +28,7 @@ namespace EasyTcp3.Examples.Basic
             };
 
             /* Using the OnDisconnect event.
-             * Gets triggered when a client is disconnects (After the client is disconnected!)          
+             * Gets triggered when a client disconnects (After the client is disconnected!)          
              */
             server.OnDisconnect += (sender, client)
                 => Console.WriteLine("Server: Client disconnected");
