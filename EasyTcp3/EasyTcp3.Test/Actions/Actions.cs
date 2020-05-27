@@ -3,14 +3,14 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Test.Actions
 {
-    public static class Actions
+    public class Actions
     {
         [EasyTcpAction(0)]
-        public static void Echo(object s, Message e)
-            => e.Client.Send(e.Data);
+        public void Echo(Message e)
+            => e.Client.Send(e);
 
         [EasyTcpAction("ECHO")]
         public static void Echo2(object s, Message e)
-            => e.Client.Send(e.Data);
+            => e.Client.Send(e);
     }
 }
