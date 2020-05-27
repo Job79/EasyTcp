@@ -1,4 +1,5 @@
 using System;
+using EasyTcp3.Actions.ActionUtils;
 
 namespace EasyTcp3.Actions
 {
@@ -6,8 +7,7 @@ namespace EasyTcp3.Actions
     /// Attribute type for EasyTcpActions, only methods with this attribute will get loaded as actions
     /// See the examples for usage
     /// </summary>
-    [AttributeUsage(AttributeTargets
-        .Method)] // This attribute is only valid for methods ((static) Functions to be specific)
+    [AttributeUsage(AttributeTargets.Method)] // This attribute is only valid for methods ((static) Functions to be specific)
     public class EasyTcpAction : Attribute
     {
         /// <summary>

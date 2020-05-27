@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using EasyTcp3.Actions.ActionsCore;
 using EasyTcp3.Server;
+using Action = EasyTcp3.Actions.ActionsCore.Action;
 
 namespace EasyTcp3.Actions
 {
@@ -15,8 +17,8 @@ namespace EasyTcp3.Actions
         /// <summary>
         /// Dictionary with all actions of this server [action code, action delegate]
         /// </summary>
-        protected readonly Dictionary<int, ActionsCore.EasyTcpActionDelegate> Actions =
-            new Dictionary<int, ActionsCore.EasyTcpActionDelegate>();
+        protected readonly Dictionary<int, Action> Actions =
+            new Dictionary<int, Action>();
 
         /// <summary>
         /// Function that gets called before action is executed. If function returns false discard action. Ignored when null
@@ -43,7 +45,7 @@ namespace EasyTcp3.Actions
         /// Filter is ignored when null</param>
         public void AddActions(Assembly assembly, string nameSpace = null)
         {
-            foreach (var action in ActionsCore.GetActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace))
+            foreach (var action in ActionManager.GetActionsWithAttribute(assembly ?? Assembly.GetCallingAssembly(), nameSpace))
                 Actions.Add(action.Key, action.Value);
         }
 
