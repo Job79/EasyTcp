@@ -20,7 +20,7 @@ namespace EasyTcp3.Protocols
         /// <summary>
         /// Size of (next) buffer, max size of receiving data.
         /// </summary>
-        public int BufferSize { get; }
+        public int BufferSize { get; protected set; }
         
         /// <summary>
         /// </summary>
@@ -36,7 +36,7 @@ namespace EasyTcp3.Protocols
         /// <param name="data">data to send to server</param>
         /// <returns>byte array with merged data</returns>
         /// <exception cref="ArgumentException">could not create message: Data array is empty</exception> 
-        public byte[] CreateMessage(params byte[][] data)
+        public virtual byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not create message: Data array is empty");
@@ -65,7 +65,7 @@ namespace EasyTcp3.Protocols
         /// <param name="data">received data, has the size of the client buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public virtual void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte[] receivedData = new byte[receivedBytes];
             Buffer.BlockCopy(data,0,receivedData,0,receivedBytes); 
@@ -76,6 +76,6 @@ namespace EasyTcp3.Protocols
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public object Clone() => new NoneProtocol(BufferSize);
+        public virtual object Clone() => new NoneProtocol(BufferSize);
     }
 }
