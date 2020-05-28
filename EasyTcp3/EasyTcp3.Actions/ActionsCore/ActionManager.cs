@@ -36,7 +36,6 @@ namespace EasyTcp3.Actions.ActionsCore
 
                 if (!actions.Any()) throw new Exception("Could not find any EasyTcpActions");
                 return actions;
-                // TODO, does classInstances gets disposed? Does it still work when disposed?
             }
             catch (ArgumentException ex)
             {
