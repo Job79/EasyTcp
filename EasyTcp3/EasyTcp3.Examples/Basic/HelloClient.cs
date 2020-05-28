@@ -6,8 +6,6 @@ namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
     /// This class contains a client that sends "Hello" to the echo server and prints the received data ("Hello")
-    ///
-    /// This is done with 5 lines of code
     /// </summary>
     public static class HelloClient
     {
@@ -19,7 +17,7 @@ namespace EasyTcp3.Examples.Basic
 
             //Print received data
             client.OnDataReceive += (sender, message) =>
-                Console.WriteLine($"HelloClient: Received \"{message.ToString()}\" from the server");
+                Console.WriteLine($"HelloClient: Received \"{message}\" from the server");
 
             //Connect to server, return if failed
             if (!client.Connect(IPAddress.Any, Port)) return;

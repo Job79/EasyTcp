@@ -5,7 +5,7 @@ namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
     /// This class contains an examples of a basic client
-    /// This example explains all the events
+    /// This example explains all the events and some simple functions
     /// </summary>
     public static class BasicClient
     {
