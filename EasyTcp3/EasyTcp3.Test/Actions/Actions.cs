@@ -4,6 +4,9 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Test.Actions
 {
+    /// <summary>
+    /// Actions used by multiple action tests
+    /// </summary>
     public class Actions
     {
         [EasyTcpAction(0)]
@@ -11,8 +14,7 @@ namespace EasyTcp3.Test.Actions
         {
             e.Client.Send(e);
         }
-
-
+        
         [EasyTcpAction("ECHO")]
         public static async Task Echo2(object s, Message e)
             => e.Client.Send(e);
