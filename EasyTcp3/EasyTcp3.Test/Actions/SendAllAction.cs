@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Tests for the SendAll functions
+    /// Tests for the SendAllAction functions
     /// </summary>
     public class SendAllAction
     {

@@ -6,7 +6,7 @@ namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
     /// This class contains an examples of a basic broadcasting server (it sends a received package to all connected clients)
-    /// This example explains all the events
+    /// This example explains all the events and some basic functions
     /// </summary>
     public static class BasicServer
     {
@@ -49,9 +49,8 @@ namespace EasyTcp3.Examples.Basic
         private static void OnDataReceive(object sender, Message message)
         {
             //Print received data, see Message.cs for more functions
-            Console.WriteLine($"Server: Received data, received: {message.ToString()}");
+            Console.WriteLine($"Server: Received data, received: {message}");
             Console.WriteLine("Server: Broadcasting received data");
-
 
             //Cast sender to the server, then broadcast message to all connected clients
             ((EasyTcpServer) sender).SendAll(message.Data);

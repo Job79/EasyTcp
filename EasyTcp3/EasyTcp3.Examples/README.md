@@ -19,7 +19,7 @@ This is usefull when needing something more efficient then standard serializatio
 Contains all examples for EasyTcp.Encryption
 
 ## Files
-Contains examples of a basic file client/server. Demostrates the usage of the `SendStream` and `ReceiveStream` functions.
+Contains examples of a basic file client/server. Demonstrates the usage of the `SendStream` and `ReceiveStream` functions.
 
 ## Protocols
 Contains examples of how to use different protocols with EasyTcp. <br/>

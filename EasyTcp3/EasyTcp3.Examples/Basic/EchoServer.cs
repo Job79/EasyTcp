@@ -6,9 +6,7 @@ namespace EasyTcp3.Examples.Basic
 {
     /// <summary>
     /// This class contains a basic echo server,
-    /// everything it receives it sends back to the client
-    ///
-    /// This is done with 2 lines of code
+    /// everything it receives is send back to the client
     /// </summary>
     public static class EchoServer
     {
@@ -19,7 +17,7 @@ namespace EasyTcp3.Examples.Basic
             var server = new EasyTcpServer().Start(Port); //Start server on port 5001
 
             // Send received data back
-            server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
+            server.OnDataReceive += (sender, message) => message.Client.Send(message);
         }
     }
 }

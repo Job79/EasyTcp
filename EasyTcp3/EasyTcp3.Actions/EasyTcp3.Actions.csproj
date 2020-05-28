@@ -12,6 +12,7 @@
         <Description>This package adds support to EasyTcp for triggering specific functions based on received data. See github for examples.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageVersion>2.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -10,6 +10,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Actions
 {
+    /// <summary>
+    /// Test for the interceptor
+    /// </summary>
     public class Interceptor
     {
         [Test]
