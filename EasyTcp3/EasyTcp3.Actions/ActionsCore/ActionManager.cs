@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace EasyTcp3.Actions.ActionsCore
 {
@@ -54,7 +55,7 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <param name="onUnknownAction">action that gets triggered when an unknown action is received</param>
         /// <param name="sender">EasyTcpClient or EasyTcpServer as object</param>
         /// <param name="message">received data [action id : int] [data]</param>
-        internal static void ExecuteAction(this Dictionary<int, Action> actions,
+        internal static async Task ExecuteAction(this Dictionary<int, Action> actions,
             Func<int, Message, bool> interceptor, Action<Message> onUnknownAction, object sender,
             Message message)
         {
@@ -80,7 +81,7 @@ namespace EasyTcp3.Actions.ActionsCore
 
             // Execute action
             var m = new Message(data, message.Client);
-            if (interceptor?.Invoke(actionCode, m) != false) action.Execute(sender, m);
+            if (interceptor?.Invoke(actionCode, m) != false) await action.Execute(sender, m);
         }
     }
 }

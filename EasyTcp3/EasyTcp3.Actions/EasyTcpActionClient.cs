@@ -58,8 +58,8 @@ namespace EasyTcp3.Actions
         public EasyTcpActionClient(Assembly assembly = null, string nameSpace = null)
         {
             AddActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace);
-            OnDataReceive += (sender, message) =>
-                Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message);
+            OnDataReceive += async (sender, message) =>
+                await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message);
         }
     }
 }

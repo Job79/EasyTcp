@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace EasyTcp3.Actions.ActionsCore
 {
@@ -15,6 +16,12 @@ namespace EasyTcp3.Actions.ActionsCore
         private delegate void EasyTcpActionDelegate1(Message message);
 
         private delegate void EasyTcpActionDelegate2();
+
+        private delegate Task EasyTcpActionDelegate3(object sender, Message message);
+
+        private delegate Task EasyTcpActionDelegate4(Message message);
+
+        private delegate Task EasyTcpActionDelegate5();
 
         /// <summary>
         /// Instance of any EasyTcpActionDelegate
@@ -40,14 +47,21 @@ namespace EasyTcp3.Actions.ActionsCore
         /// </summary>
         /// <param name="sender">instance of EasyTcpClient or EasyTcpServer</param>
         /// <param name="message">received message</param>
-        public void Execute(object sender = null, Message message = null)
+        public async Task Execute(object sender = null, Message message = null)
         {
             var type = EasyTcpAction.GetType();
             if (type == typeof(EasyTcpActionDelegate))
                 ((EasyTcpActionDelegate) EasyTcpAction)(sender, message);
             else if (type == typeof(EasyTcpActionDelegate1))
                 ((EasyTcpActionDelegate1) EasyTcpAction)(message);
-            else ((EasyTcpActionDelegate2) EasyTcpAction)();
+            else if (type == typeof(EasyTcpActionDelegate2))
+                ((EasyTcpActionDelegate2) EasyTcpAction)();
+            else if (type == typeof(EasyTcpActionDelegate3))
+                await ((EasyTcpActionDelegate3) EasyTcpAction)(sender, message);
+            else if (type == typeof(EasyTcpActionDelegate4))
+                await ((EasyTcpActionDelegate4) EasyTcpAction)(message);
+            else if (type == typeof(EasyTcpActionDelegate5))
+                await ((EasyTcpActionDelegate5) EasyTcpAction)();
         }
 
         /// <summary>
@@ -81,12 +95,23 @@ namespace EasyTcp3.Actions.ActionsCore
         {
             var p = m.GetParameters();
 
-            if (p.Length == 2 && m.ReturnType == typeof(void) && p[0].ParameterType == typeof(object) &&
-                p[1].ParameterType == typeof(Message))
-                return typeof(EasyTcpActionDelegate);
-            else if (p.Length == 1 && m.ReturnType == typeof(void) && p[0].ParameterType == typeof(Message)) return typeof(EasyTcpActionDelegate1);
-            else if (p.Length == 0 && m.ReturnType == typeof(void)) return typeof(EasyTcpActionDelegate2);
-            else return null;
+            if (m.ReturnType == typeof(void))
+            {
+                if (p.Length == 2 && p[0].ParameterType == typeof(object) && p[1].ParameterType == typeof(Message))
+                    return typeof(EasyTcpActionDelegate);
+                if (p.Length == 1 && p[0].ParameterType == typeof(Message))
+                    return typeof(EasyTcpActionDelegate1);
+                if (p.Length == 0 && m.ReturnType == typeof(void)) return typeof(EasyTcpActionDelegate2);
+            }
+            else if (m.ReturnType == typeof(Task))
+            {
+                if (p.Length == 2 && p[0].ParameterType == typeof(object) && p[1].ParameterType == typeof(Message))
+                    return typeof(EasyTcpActionDelegate3);
+                if (p.Length == 1 && p[0].ParameterType == typeof(Message))
+                    return typeof(EasyTcpActionDelegate4);
+                if (p.Length == 0) return typeof(EasyTcpActionDelegate5);
+            }
+            return null;
         }
 
         /// <summary>
