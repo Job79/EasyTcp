@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// This protocol receives data byte-by-byte and triggers DataReceived when it encounters a specific delimiter (sequence of bytes)
@@ -22,17 +22,17 @@ namespace EasyTcp3.Protocol
         /// <summary>
         /// Determines whether the Delimiter gets automatically added to the end of messages when calling Send
         /// </summary>
-        private readonly bool _autoAddDelimiter;
+        protected readonly bool _autoAddDelimiter;
 
         /// <summary>
         /// Determines whether the Delimiter gets automatically removed from receiving data 
         /// </summary>
-        private readonly bool _autoRemoveDelimiter;
+        protected readonly bool _autoRemoveDelimiter;
 
         /// <summary>
         /// List with received bytes 
         /// </summary>
-        private readonly List<byte> _receivedBytes = new List<byte>();
+        protected readonly List<byte> _receivedBytes = new List<byte>();
         
         /// <summary>
         /// BufferSize, always 1 byte 
@@ -73,7 +73,7 @@ namespace EasyTcp3.Protocol
         /// <param name="data">data to send to server</param>
         /// <returns>byte array with merged data + delimiter: [data] + [delimiter if AutoDelimiter is true]</returns>
         /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
-        public byte[] CreateMessage(params byte[][] data)
+        public virtual byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not create message: Data array is empty");
@@ -104,7 +104,7 @@ namespace EasyTcp3.Protocol
         /// <param name="data">received data, has the size of the client buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public virtual void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte receivedByte = data[0]; // Size of buffer is always 1
             _receivedBytes.Add(receivedByte);
@@ -128,6 +128,6 @@ namespace EasyTcp3.Protocol
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public object Clone() => new DelimiterProtocol(Delimiter, _autoAddDelimiter, _autoRemoveDelimiter);
+        public virtual object Clone() => new DelimiterProtocol(Delimiter, _autoAddDelimiter, _autoRemoveDelimiter);
     }
 }

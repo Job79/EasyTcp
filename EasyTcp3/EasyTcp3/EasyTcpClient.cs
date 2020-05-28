@@ -1,6 +1,6 @@
 using System;
 using System.Net.Sockets;
-using EasyTcp3.Protocol;
+using EasyTcp3.Protocols;
 
 namespace EasyTcp3
 {
@@ -21,12 +21,12 @@ namespace EasyTcp3
         /// Protocol for this client,
         /// determines actions when receiving/sending data etc..
         /// </summary>
-        public readonly IEasyTcpProtocol Protocol;
+        public IEasyTcpProtocol Protocol { get; set; }
 
         /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
         /// </summary>
-        protected internal byte[] Buffer;
+        public byte[] Buffer;
 
         /// <summary>
         /// Fired when the client connects to a server

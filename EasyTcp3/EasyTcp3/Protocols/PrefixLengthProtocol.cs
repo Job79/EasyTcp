@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// This protocol prefixes data with a ushort. This ushort contains the length of the next receiving data.
@@ -13,13 +13,13 @@ namespace EasyTcp3.Protocol
         /// <summary>
         /// Determines whether the next receiving data is the length of data or actual data. [4 : ushort as byte[2]] ["data"] 
         /// </summary>
-        private bool _receivingLength = true;
+        protected bool ReceivingLength = true;
 
         /// <summary>
         /// Size of (next) buffer
         /// 2 when receiving data length, {data length} when receiving data
         /// </summary>
-        public int BufferSize { get; private set; }
+        public int BufferSize { get; protected set; }
 
         /// <summary>
         /// </summary>
@@ -33,7 +33,7 @@ namespace EasyTcp3.Protocol
         /// <param name="data">data to send to server</param>
         /// <returns>byte array with merged data + length: [data length : ushort as byte[2]][data]</returns>
         /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
-        public byte[] CreateMessage(params byte[][] data)
+        public virtual byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not create message: Data array is empty");
@@ -65,13 +65,13 @@ namespace EasyTcp3.Protocol
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
-        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public virtual void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             ushort dataLength = 2;
 
-            if (_receivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
+            if (ReceivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
             else client.DataReceiveHandler(new Message(client.Buffer, client));
-            _receivingLength = !_receivingLength;
+            ReceivingLength = !ReceivingLength;
 
             if (dataLength == 0) client.Dispose();
             else BufferSize = dataLength;
@@ -81,6 +81,6 @@ namespace EasyTcp3.Protocol
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public object Clone() => new PrefixLengthProtocol();
+        public virtual object Clone() => new PrefixLengthProtocol();
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using EasyTcp3.ClientUtils;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// Interface for a custom protocol,
@@ -38,6 +38,7 @@ namespace EasyTcp3.Protocol
 
         /// <summary>
         /// Method that is triggered when client connects.
+        /// ! Triggered before OnConnect event
         /// Default behavior is starting listening for incoming data.
         /// This method should call <code>client.StartInternalDataReceiver();</code>
         /// </summary>
@@ -46,6 +47,8 @@ namespace EasyTcp3.Protocol
 
         /// <summary>
         /// Method that is triggered when client connects to server
+        /// ! Triggered before OnConnect event
+        /// ! Blocks accepting new sockets
         /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
