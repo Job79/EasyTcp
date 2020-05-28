@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// This protocol prefixes data with a ushort. This ushort contains the length of the next receiving data.

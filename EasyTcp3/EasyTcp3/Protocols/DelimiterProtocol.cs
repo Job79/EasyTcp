@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// This protocol receives data byte-by-byte and triggers DataReceived when it encounters a specific delimiter (sequence of bytes)

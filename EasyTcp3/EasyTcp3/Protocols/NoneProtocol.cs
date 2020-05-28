@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// This is an implementation of NoneProtocol. Could also be named ReceiveWhatIsAvailableAndFitsInTheBufferProtocol. 

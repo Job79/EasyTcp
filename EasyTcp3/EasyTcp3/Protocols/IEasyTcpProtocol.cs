@@ -1,7 +1,7 @@
 using System;
 using EasyTcp3.ClientUtils;
 
-namespace EasyTcp3.Protocol
+namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// Interface for a custom protocol,

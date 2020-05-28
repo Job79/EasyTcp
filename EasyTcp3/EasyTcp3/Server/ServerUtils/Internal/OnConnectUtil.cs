@@ -1,5 +1,5 @@
 using System;
-using EasyTcp3.Protocol;
+using EasyTcp3.Protocols;
 
 namespace EasyTcp3.Server.ServerUtils.Internal
 {
