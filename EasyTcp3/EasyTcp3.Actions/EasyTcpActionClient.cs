@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using EasyTcp3.Actions.ActionsCore;
+using EasyTcp3.Actions.ActionUtils;
 using Action = EasyTcp3.Actions.ActionsCore.Action;
 
 namespace EasyTcp3.Actions
@@ -44,7 +46,8 @@ namespace EasyTcp3.Actions
         /// Filter is ignored when null</param>
         public void AddActions(Assembly assembly, string nameSpace = null)
         {
-            foreach (var action in ActionManager.GetActionsWithAttribute(assembly ?? Assembly.GetCallingAssembly(), nameSpace))
+            foreach (var action in ActionManager.GetActionsWithAttribute(assembly ?? Assembly.GetCallingAssembly(),
+                nameSpace))
                 Actions.Add(action.Key, action.Value);
         }
 
@@ -61,5 +64,23 @@ namespace EasyTcp3.Actions
             OnDataReceive += async (sender, message) =>
                 await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message);
         }
+
+        /// <summary>
+        /// Execute a specific action
+        /// </summary>
+        /// <param name="actionCode"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task ExecuteAction(int actionCode, Message message = null)
+            => await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, actionCode, this, message);
+
+        /// <summary>
+        /// Execute a specific action
+        /// </summary>
+        /// <param name="actionCode"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task ExecuteAction(string actionCode, Message message = null)
+            => await ExecuteAction(actionCode.ToActionCode(), message);
     }
 }
