@@ -80,10 +80,12 @@ namespace EasyTcp3.Actions.ActionsCore
         private static Type GetDelegateType(MethodInfo m)
         {
             var p = m.GetParameters();
-            if (p.Length == 2 && p[0].ParameterType == typeof(object) && p[1].ParameterType == typeof(Message))
+
+            if (p.Length == 2 && m.ReturnType == typeof(void) && p[0].ParameterType == typeof(object) &&
+                p[1].ParameterType == typeof(Message))
                 return typeof(EasyTcpActionDelegate);
-            else if (p.Length == 1 && p[0].ParameterType == typeof(Message)) return typeof(EasyTcpActionDelegate1);
-            else if (p.Length == 0) return typeof(EasyTcpActionDelegate2);
+            else if (p.Length == 1 && m.ReturnType == typeof(void) && p[0].ParameterType == typeof(Message)) return typeof(EasyTcpActionDelegate1);
+            else if (p.Length == 0 && m.ReturnType == typeof(void)) return typeof(EasyTcpActionDelegate2);
             else return null;
         }
 
