@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using EasyTcp3.Actions.ActionsCore;
 using EasyTcp3.Actions.ActionUtils;
+using EasyTcp3.Protocols;
 using EasyTcp3.Server;
 using Action = EasyTcp3.Actions.ActionsCore.Action;
 
@@ -55,11 +56,13 @@ namespace EasyTcp3.Actions
         /// <summary>
         /// Create new EasyTcpActionServer and load actions from an assembly
         /// </summary>
+        /// <param name="protocol"></param>
         /// <param name="assembly">assembly with EasyTcpActions, calling assembly when null</param>
         /// <param name="nameSpace">filter for namespace with EasyTcpActions.
         /// All actions in this namespace will be added, other will be ignored.
         /// Filter is ignored when null</param>
-        public EasyTcpActionServer(Assembly assembly = null, string nameSpace = null)
+        public EasyTcpActionServer(IEasyTcpProtocol protocol = null, Assembly assembly = null, string nameSpace = null)
+            : base(protocol)
         {
             AddActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace);
             OnDataReceive += async (sender, message) =>
