@@ -22,17 +22,17 @@ namespace EasyTcp3.Protocols
         /// <summary>
         /// Determines whether the Delimiter gets automatically added to the end of messages when calling Send
         /// </summary>
-        protected readonly bool _autoAddDelimiter;
+        protected readonly bool AutoAddDelimiter;
 
         /// <summary>
         /// Determines whether the Delimiter gets automatically removed from receiving data 
         /// </summary>
-        protected readonly bool _autoRemoveDelimiter;
+        protected readonly bool AutoRemoveDelimiter;
 
         /// <summary>
         /// List with received bytes 
         /// </summary>
-        protected readonly List<byte> _receivedBytes = new List<byte>();
+        protected readonly List<byte> ReceivedBytes = new List<byte>();
         
         /// <summary>
         /// BufferSize, always 1 byte 
@@ -49,8 +49,8 @@ namespace EasyTcp3.Protocols
         {
             if (delimiter.Length == 0) throw new ArgumentException("Delimiter is invalid");
             Delimiter = delimiter;
-            _autoAddDelimiter = autoAddDelimiter;
-            _autoRemoveDelimiter = autoRemoveDelimiter;
+            AutoAddDelimiter = autoAddDelimiter;
+            AutoRemoveDelimiter = autoRemoveDelimiter;
         }
 
         /// <summary>
@@ -83,8 +83,8 @@ namespace EasyTcp3.Protocols
             if (messageLength == 0)
                 throw new ArgumentException("Could not create message: Data array only contains empty arrays");
 
-            byte[] message = new byte[_autoAddDelimiter ? messageLength + Delimiter.Length : messageLength];
-            if (_autoAddDelimiter) Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
+            byte[] message = new byte[AutoAddDelimiter ? messageLength + Delimiter.Length : messageLength];
+            if (AutoAddDelimiter) Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
 
             // Add data to message
             int offset = 0;
@@ -107,27 +107,27 @@ namespace EasyTcp3.Protocols
         public virtual void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte receivedByte = data[0]; // Size of buffer is always 1
-            _receivedBytes.Add(receivedByte);
+            ReceivedBytes.Add(receivedByte);
 
             // Check delimiter
-            if (_receivedBytes.Count < Delimiter.Length) return;
+            if (ReceivedBytes.Count < Delimiter.Length) return;
 
-            int receivedBytesLength = _receivedBytes.Count - Delimiter.Length;
+            int receivedBytesLength = ReceivedBytes.Count - Delimiter.Length;
             for (int i = 0; i < Delimiter.Length; i++)
-                if (Delimiter[i] != _receivedBytes[receivedBytesLength + i])
+                if (Delimiter[i] != ReceivedBytes[receivedBytesLength + i])
                     return;
 
-            byte[] receivedData = _autoRemoveDelimiter
-                ? _receivedBytes.Take(receivedBytesLength).ToArray() // Remove delimiter from message
-                : _receivedBytes.ToArray();
+            byte[] receivedData = AutoRemoveDelimiter
+                ? ReceivedBytes.Take(receivedBytesLength).ToArray() // Remove delimiter from message
+                : ReceivedBytes.ToArray();
             client.DataReceiveHandler(new Message(receivedData, client));
-            _receivedBytes.Clear();
+            ReceivedBytes.Clear();
         }
 
         /// <summary>
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public virtual object Clone() => new DelimiterProtocol(Delimiter, _autoAddDelimiter, _autoRemoveDelimiter);
+        public virtual object Clone() => new DelimiterProtocol(Delimiter, AutoAddDelimiter, AutoRemoveDelimiter);
     }
 }
