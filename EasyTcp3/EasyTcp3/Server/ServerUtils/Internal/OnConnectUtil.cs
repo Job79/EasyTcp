@@ -19,11 +19,13 @@ namespace EasyTcp3.Server.ServerUtils.Internal
 
             try
             {
-                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar), (IEasyTcpProtocol) server.Protocol.Clone());
+                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar),
+                    (IEasyTcpProtocol) server.Protocol.Clone());
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
-
+                server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
+                
                 client.Protocol.OnConnectServer(client);
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
@@ -31,12 +33,14 @@ namespace EasyTcp3.Server.ServerUtils.Internal
                     lock (server.ConnectedClients) server.ConnectedClients.Add(client);
                 }
             }
+            catch (ObjectDisposedException)
+            {
+                // Client disconnected very fast ignore error
+            }
             catch (Exception ex)
             {
                 server.FireOnError(ex);
             }
-
-            server.BaseSocket.BeginAccept(OnClientConnect, server); //Accept next client
         }
     }
 }

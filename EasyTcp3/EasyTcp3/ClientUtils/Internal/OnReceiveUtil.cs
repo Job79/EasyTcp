@@ -46,7 +46,7 @@ namespace EasyTcp3.ClientUtils.Internal
             catch (Exception ex)
             {
                 if (ex is SocketException || ex is IOException|| ex is ObjectDisposedException) client.HandleDisconnect();
-                else client.FireOnError(ex);
+                else if(client?.BaseSocket != null) client.FireOnError(ex);
             }
         }
 
