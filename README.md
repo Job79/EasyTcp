@@ -2,7 +2,7 @@
   <b>EasyTcp</b>
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
-  <img src="https://img.shields.io/badge/version-3.0.0.0-green.svg">
+  <img src="https://img.shields.io/badge/version-3.1.0.0-green.svg">
   <img src="https://img.shields.io/badge/build-passing-green.svg">
   <br/>
   Easy and simple library for TCP clients and servers. Focused on performance and usability.
