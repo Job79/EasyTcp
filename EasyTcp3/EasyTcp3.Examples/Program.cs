@@ -51,7 +51,9 @@ namespace EasyTcp3.Examples
             ActionEchoServer.StartEchoServer();
             ActionSpeedTestClient.RunSpeedTest();
 
-            Task.Delay(-1).Wait();
+            Console.WriteLine("Press enter to start MultiThreaded speedtest");
+            Console.ReadLine();
+            MultiThreadedSpeedTest.Run();
         }
     }
 }
