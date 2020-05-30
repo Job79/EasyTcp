@@ -1,4 +1,3 @@
-using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 
@@ -17,7 +16,7 @@ namespace EasyTcp3.Examples.Actions
             if (!client.Connect("127.0.0.1", Port)) return;
 
             // All actions are send as an int, this is the action id of the "ECHO" action.
-            // Integers can also be used as action codes. However this is not very readable, so when using integers enums are recommend!
+            // Integers can also be used as action codes. However this is not very readable.
             // Because everything is send as an int collisions are possible. (The algorithm used is named djb2a [http://www.cse.yorku.ca/~oz/hash.html])
             // This is no problem because this is very rare, however keep it in mind!
             // Try for example these two: haggadot & loathsomenesses

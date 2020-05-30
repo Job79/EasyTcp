@@ -13,10 +13,15 @@
         <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
         <RepositoryType>Socket Networking Tcp TcpClient TcpServer SimpleTcp EasyTcp AsyncTcp</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageVersion>1.1.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="EasyEncrypt" Version="2.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
     </ItemGroup>
 
     <ItemGroup>

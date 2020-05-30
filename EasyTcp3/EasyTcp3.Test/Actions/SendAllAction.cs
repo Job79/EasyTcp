@@ -9,10 +9,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Tests for the SendAll functions
-    ///
-    /// This test does not have using statements,
-    /// when added the test fails. TODO
+    /// Tests for the SendAllAction functions
     /// </summary>
     public class SendAllAction
     {
@@ -20,10 +17,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllArray()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             byte[] data = new byte[100];
@@ -35,10 +32,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionUShort()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             ushort data = 123;
@@ -50,10 +47,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionShort()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             short data = 123;
@@ -65,10 +62,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionUInt()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             uint data = 123;
@@ -80,10 +77,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionInt()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             int data = 123;
@@ -95,10 +92,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionULong()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             ulong data = 123;
@@ -110,10 +107,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionLong()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             long data = 123;
@@ -125,10 +122,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionDouble()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             double data = 123.0;
@@ -140,10 +137,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionBool()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             server.SendAllAction(0, true);
@@ -154,10 +151,10 @@ namespace EasyTcp3.Test.Actions
         public void SendAllActionString()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
+            using var server = new EasyTcpServer();
             server.Start(port);
 
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             string data = "Data";

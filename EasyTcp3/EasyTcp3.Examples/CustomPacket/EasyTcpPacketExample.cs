@@ -41,7 +41,7 @@ namespace EasyTcp3.Examples.CustomPacket
             
             // Message also implements IEasyTcpPacket
             // So we can use all functions on message as example
-            // This is how we create a new message with as content a string
+            // This is how we create a new message with a string as content` 
             // The EasyTcpPacket.To can be used on all packets, but not all packets support being created from a string
             // Our list for example wouldn't work when created from a string 
             var message = EasyTcpPacket.To<Message>("S_T_R_I_N_G");

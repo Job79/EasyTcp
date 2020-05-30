@@ -8,33 +8,33 @@ using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Readme
 {
-    public static class EasyTcpActions
+    public class EasyTcpActions
     {
-        const ushort PORT = 100;
+        const ushort Port = 100;
 
-        public static void Connect()
+        public void Connect()
         {
             using var client = new EasyTcpClient();
-            if(!client.Connect(IPAddress.Loopback, PORT)) return; 
+            if(!client.Connect(IPAddress.Loopback, Port)) return; 
             client.SendAction("echo","Hello server");
             client.SendAction("broadcast","Hello everyone"); 
         }
         
-        public static void Run()
+        public void Run()
         {
-            using var server = new EasyTcpActionServer().Start(PORT);
+            using var server = new EasyTcpActionServer().Start(Port);
             server.OnConnect += (sender, client) => Console.WriteLine($"Client connected [ip: {client.GetIp()}]");
             server.OnDisconnect += (sender, client) => Console.WriteLine($"Client disconnected [ip: {client.GetIp()}]");
         }
 
         [EasyTcpAction("echo")]
-        public static void EchoAction(object sender, Message message)
+        public void EchoAction(Message message)
         {
             message.Client.Send(message);
         }
 
         [EasyTcpAction("broadcast")]
-        public static void BroadCastAction(object sender, Message message)
+        public void BroadCastAction(object sender, Message message)
         {
             var server = (EasyTcpServer) sender;
             server.SendAll(message);

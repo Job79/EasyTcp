@@ -1,16 +1,11 @@
 using System;
+using System.IO;
 using System.Net.Sockets;
 
 namespace EasyTcp3.ClientUtils.Internal
 {
     /// <summary>
     /// Internal functions to receive messages from a remote host
-    /// 
-    /// EasyTcp Protocol: 
-    /// 1. Begin receiving data (async event)
-    /// 2. Receive length of the data, allocate buffer of given length (length is an ushort, 2 bytes)
-    /// 3. Receive data with the specified length
-    /// 4. Go back to step 1
     /// </summary>
     internal static class OnReceiveUtil
     {
@@ -19,11 +14,8 @@ namespace EasyTcp3.ClientUtils.Internal
         /// </summary>
         /// <param name="client"></param>
         internal static void StartListening(this EasyTcpClient client)
-        {
-            client.ReceivingData = false;
-            client.BaseSocket.BeginReceive(client.Buffer = new byte[2], 0, client.Buffer.Length, SocketFlags.None,
-                OnReceive, client);
-        }
+            => client.BaseSocket.BeginReceive(client.Buffer = new byte[client.Protocol.BufferSize], 0,
+                client.Buffer.Length, SocketFlags.None, OnReceive, client);
 
         /// <summary>
         /// Function that gets triggered when data is received
@@ -36,44 +28,26 @@ namespace EasyTcp3.ClientUtils.Internal
 
             try
             {
-                ushort dataLength;
-                if ((dataLength = HandleData(client)) == 0)
+                if (!client.BaseSocket.Connected)
                 {
-                    client.HandleDisconnect();
+                    HandleDisconnect(client);
                     return;
                 }
 
-                client.BaseSocket
-                    .EndReceive(ar); // Return value isn't used because our protocol uses all available bytes
-                client.BaseSocket.BeginReceive(client.Buffer = new byte[dataLength], 0, dataLength, SocketFlags.None,
-                    OnReceive, client);
-            }
-            catch (SocketException)
-            {
-                client.HandleDisconnect();
+                int receivedBytes = client.BaseSocket.EndReceive(ar);
+                if (receivedBytes != 0)
+                {
+                    client.Protocol.DataReceive(client.Buffer, receivedBytes, client);
+                    if (client.BaseSocket == null) HandleDisconnect(client); // Check if client is disposed by DataReceive
+                    else client.StartListening();                    
+                }
+                else HandleDisconnect(client);
             }
             catch (Exception ex)
             {
-                client.BaseSocket.EndReceive(ar);
-                client.FireOnError(ex);
-                client.StartListening();
+                if (ex is SocketException || ex is IOException|| ex is ObjectDisposedException) client.HandleDisconnect();
+                else if(client?.BaseSocket != null) client.FireOnError(ex);
             }
-        }
-
-        /// <summary>
-        /// Handle received data and then return length of next incoming data
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns>length of next incoming data</returns>
-        private static ushort HandleData(EasyTcpClient client)
-        {
-            ushort dataLength = 2;
-
-            if (client.ReceivingData) client.DataReceiveHandler(new Message(client.Buffer, client));
-            else dataLength = BitConverter.ToUInt16(client.Buffer, 0);
-
-            client.ReceivingData ^= true;
-            return dataLength;
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace EasyTcp3.Examples.Readme
             using var encrypter = new EasyEncrypt("Password","SALT1415312");
             using var server = new EasyTcpServer().Start(PORT);
             server.OnDataReceive += (sender, message) =>
-                Console.WriteLine($"Received: {message.Decrypt(encrypter).ToString()}");
+                Console.WriteLine($"Received: {message.Decrypt(encrypter)}");
 
             using var client = new EasyTcpClient();
             if (!client.Connect(IPAddress.Loopback, PORT)) return;

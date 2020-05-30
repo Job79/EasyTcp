@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Actions
 {
+    /// <summary>
+    /// Test for OnUnknownAction
+    /// </summary>
     public class OnUnknownAction
     {
         [Test]

@@ -133,7 +133,13 @@ namespace EasyTcp3
         /// </summary>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <returns>data as string</returns>
-        public string ToString(Encoding encoding = null) => (encoding ?? Encoding.UTF8).GetString(Data);
+        public string ToString(Encoding encoding) => (encoding ?? Encoding.UTF8).GetString(Data);
+
+        /// <summary>
+        /// Receive data as string decoded with UTF8
+        /// </summary>
+        /// <returns>data as string</returns>
+        public override string ToString() => ToString(Encoding.UTF8);
 
         /// <summary>
         /// Received data as a custom IEasyTcpPacket 

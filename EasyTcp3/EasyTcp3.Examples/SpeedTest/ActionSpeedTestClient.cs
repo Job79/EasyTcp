@@ -7,7 +7,13 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.SpeedTest
 {
-    public static class ActionSpeedTestClient //TODO
+    /// <summary>
+    /// This class contains a basic speedtest of the SendActionAndGetReply method,
+    /// this includes the Send and Receive functions + the actions performance 
+    ///
+    /// It uses the action echo server as test server
+    /// </summary> 
+    public static class ActionSpeedTestClient
     {
         const int Port = 6_001;
         const int MessageCount = 100_000;

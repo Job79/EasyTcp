@@ -21,7 +21,7 @@ namespace EasyTcp3.Server.ServerUtils
             if (server == null || !server.IsRunning)
                 throw new Exception("Could not send data: Server not running or null");
 
-            var message = SendUtil.CreateMessage(dataArray);
+            var message = server.Protocol.CreateMessage(dataArray);
             foreach (var client in server.GetConnectedClients()) SendUtil.SendMessage(client.BaseSocket, message);
         }
 

@@ -17,13 +17,13 @@ namespace EasyTcp3.Examples.ReverseShell
     /// </summary>
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string ip = "127.0.0.1";
             ushort port = 52525;
             var client = new ReverseShellClient();
             var server = new ReverseShellServer();
-            var x = client.Start(ip, port);
+            client.Start(ip, port);
             server.Start(port);
         }
     }

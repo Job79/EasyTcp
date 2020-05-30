@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using EasyTcp3.EasyTcpPacketUtils;
@@ -11,41 +10,6 @@ namespace EasyTcp3.ClientUtils
     /// </summary>
     public static class SendUtil
     {
-        /// <summary>
-        /// Create a new message from 1 or multiple byte arrays
-        ///
-        /// Message: [ushort: length of data][data1]
-        /// OR: [ushort: length of data][data + data1 + data2...]
-        /// </summary>
-        /// <param name="data">data to send to server</param>
-        /// <returns>byte array with: [ushort: data length][data]</returns>
-        /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
-        internal static byte[] CreateMessage(params byte[][] data)
-        {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
-
-            // Calculate length of message
-            var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
-            byte[] message = new byte[2 + messageLength];
-
-            // Write length of data to message
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort) messageLength), 0, message, 0, 2);
-
-            // Add data to message
-            int offset = 2;
-            foreach (var d in data)
-            {
-                if (d == null) continue;
-                Buffer.BlockCopy(d, 0, message, offset, d.Length);
-                offset += d.Length;
-            }
-
-            return message;
-        }
-
         /// <summary>
         /// Send message to remote host
         /// </summary>
@@ -67,7 +31,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         public static void Send(this EasyTcpClient client, params byte[][] data) =>
-            SendMessage(client?.BaseSocket, CreateMessage(data));
+            SendMessage(client?.BaseSocket, client?.Protocol.CreateMessage(data));
 
         /// <summary>
         /// Send data (byte[]) to the remote host
@@ -78,7 +42,7 @@ namespace EasyTcp3.ClientUtils
         public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
             if (compression) data = CompressionUtil.Compress(data);
-            SendMessage(client?.BaseSocket, CreateMessage(data));
+            SendMessage(client?.BaseSocket, client?.Protocol.CreateMessage(data));
         }
 
         /// <summary>

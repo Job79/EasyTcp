@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using EasyTcp3.Actions;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Server;
@@ -6,22 +8,22 @@ using EasyTcp3.Server.ServerUtils;
 namespace EasyTcp3.Examples.Actions
 {
     /// <summary>
-    /// This class contains a basic echo server made with EasyTcp3.Actions, (there is no example for the EasyTcpAction client, because it works the same)
+    /// This class contains a basic echo server made with EasyTcp3.Actions, (EasyTcpActionClient works the same!)
     /// if the action received is "ECHO" it will send the message back (like our basic echo server)
     /// if the action received is "BROADCAST" it will send the message to all connected clients
     /// </summary>
-    public static class ActionEchoServer
+    public class ActionEchoServer
     {
         private const ushort Port = 6_001;
 
         public static void StartEchoServer()
         {
-            // Our actions will get automatically loaded, assembly can be specified
-            var server = new EasyTcpActionServer(); //Start server on port 6001
+            // Our actions will get automatically loaded, assembly and namespace can be specified
+            var server = new EasyTcpActionServer(); // Start server on port 6001
             server.Start(Port);
 
             // OnUnKnownAction event, executed when an unknown action is received
-            //server.OnUnknownAction += (sender, message) => { };
+            server.OnUnknownAction += (sender, message) => Console.WriteLine("Unknown action received");
 
             // Interceptor, function that gets executed before an action is executed.
             // Action gets aborted when returning false.
@@ -35,25 +37,43 @@ namespace EasyTcp3.Examples.Actions
             };
         }
 
+        /*
+         * Action methods,
+         * These method are automatically triggered when receiving an action
+         * See EasyTcp.Actions/ActionCore/Action for all supported delegate types
+         */
+        
         /// <summary>
         /// Echo message back to the client
         /// </summary>
-        /// <param name="sender">EasyTcpServer as object</param>
         /// <param name="e">received message</param>
         [EasyTcpAction("ECHO")] // Make this function an action that will get triggered when the action "ECHO" is received
-        public static void Echo(object sender, Message e) // Name of the function doesn't matter, but function must be static, public, void and have these two parameters
+        public void Echo(Message e)
             => e.Client.Send(e.Data);
 
         /// <summary>
         /// Broadcast received message to all connected clients
         /// </summary>
-        /// <param name="sender">EasyTcpServer as object</param>
+        /// <param name="sender">EasyTcpServer or EasyTcpClient as object</param>
         /// <param name="e">received message</param>
         [EasyTcpAction("BROADCAST")]
-        public static void Broadcast(object sender, Message e)
+        public void Broadcast(object sender, Message e)
         {
             var server = sender as EasyTcpServer;
             server.SendAll(e.Data);
         }
+
+        /// <summary>
+        /// Async actions are also supported
+        /// </summary>
+        [EasyTcpAction("ECHO2")]
+        public async Task Ping(Message e)
+            => e.Client.Send(e);
+
+        /// <summary>
+        /// Actions without parameters
+        /// </summary>
+        [EasyTcpAction("SAY_HELLO")]
+        public void DoAction() => Console.WriteLine("Hello");
     }
 }
