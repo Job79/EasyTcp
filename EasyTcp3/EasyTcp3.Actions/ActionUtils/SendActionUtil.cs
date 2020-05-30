@@ -17,7 +17,8 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="action">action id</param>
         /// <param name="data">data to send to server</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        public static void SendAction(this EasyTcpClient client, int action, byte[] data = null, bool compression = false)
+        public static void SendAction(this EasyTcpClient client, int action, byte[] data = null,
+            bool compression = false)
         {
             if (compression && data != null) data = CompressionUtil.Compress(data);
             client.Send(BitConverter.GetBytes(action), data);
@@ -201,5 +202,25 @@ namespace EasyTcp3.Actions.ActionUtils
         public static void SendAction(this EasyTcpClient client, string action, string data, Encoding encoding = null,
             bool compression = false)
             => client.SendAction(action.ToActionCode(), (encoding ?? Encoding.UTF8).GetBytes(data), compression);
+
+        /// <summary>
+        /// Send action with data (IEasyTcpPacket) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action id</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAction(this EasyTcpClient client, int action, IEasyTcpPacket data, bool compression = false)
+            => client.SendAction(action, data.Data, compression);
+
+        /// <summary>
+        /// Send action with data (IEasyTcpPacket) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action id as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAction(this EasyTcpClient client, string action, IEasyTcpPacket data, bool compression = false)
+            => client.SendAction(action.ToActionCode(), data.Data, compression);
     }
 }
