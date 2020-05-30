@@ -7,6 +7,7 @@ namespace EasyTcp3.Examples.Protocols
     /// <summary>
     /// This class contains examples of how to use different protocols with EasyTcp
     /// ! With protocols is not meant UDP etc...
+    /// ! Currently EasyTcp does only support different types of framing as 'protocol'
     /// This class is not intended to execute
     ///
     /// See EasyTcp3/Protocols/IEasyTcpProtocol when implementing a new protocol
