@@ -37,11 +37,13 @@ namespace EasyTcp3.Actions.ActionsCore
                 if (!actions.Any()) throw new Exception("Could not find any EasyTcpActions");
                 return actions;
             }
+            catch (MissingMethodException ex)
+            {
+               throw new Exception("Could not load actions: class with EasyTcpAction doesn't have have a parameterless constructor", ex);
+            }
             catch (ArgumentException ex)
             {
-                throw new Exception(
-                    "Could not load actions: multiple methods found with the same actionCode or method does not match EasyTcpActionDelegate",
-                    ex);
+                throw new Exception("Could not load actions: multiple methods found with the same actionCode or method does not match EasyTcpActionDelegate", ex);
             }
         }
 
