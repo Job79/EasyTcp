@@ -28,6 +28,7 @@ namespace EasyTcp3
             set
             {
                 if (BaseSocket != null) throw new Exception("Can not change protocol when client is connected");
+                _protocol = value;
             }
         }
 
