@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using EasyTcp3.ClientUtils;
 using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Server.ServerUtils
@@ -22,7 +21,7 @@ namespace EasyTcp3.Server.ServerUtils
                 throw new Exception("Could not send data: Server not running or null");
 
             var message = server.Protocol.CreateMessage(dataArray);
-            foreach (var client in server.GetConnectedClients()) SendUtil.SendMessage(client.BaseSocket, message);
+            foreach (var client in server.GetConnectedClients()) client.Protocol.SendMessage(client, message);
         }
 
         /// <summary>

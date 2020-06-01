@@ -27,12 +27,11 @@ namespace EasyTcp3.ClientUtils.Async
 
             try
             {
-                client.BaseSocket = socket ?? new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                client.BaseSocket = socket ?? client.Protocol.GetSocket(ipAddress.AddressFamily);
                 await client.BaseSocket.ConnectAsync(ipAddress, port);
 
-                if (client.BaseSocket.Connected)
+                if (client.BaseSocket.Connected && client.Protocol.OnConnect(client))
                 {
-                    client.Protocol.OnConnect(client);
                     client.FireOnConnect();
                     return true;
                 }

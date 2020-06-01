@@ -1,39 +1,38 @@
 using System;
 using System.Linq;
 
-namespace EasyTcp3.Protocols
+namespace EasyTcp3.Protocols.Tcp
 {
     /// <summary>
-    /// This protocol prefixes data with a ushort. This ushort contains the length of the next receiving data.
+    /// This protocol prefixes data with an ushort. This ushort contains the length of the next receiving data.
     /// Example: [4 : ushort as byte[2]]["data"], [11 : ushort as byte[2]]["exampleData"]
-    /// This prevents data from merging when sending in a row. The maximum data size is ushort.MAX 
+    /// This prevents data from merging when sending in a row. The maximum data size for 1 message is ushort.MAX 
     /// </summary>
-    public class PrefixLengthProtocol : IEasyTcpProtocol
+    public class PrefixLengthProtocol : DefaultTcpProtocol 
     {
         /// <summary>
-        /// Determines whether the next receiving data is the length of data or actual data. [4 : ushort as byte[2]] ["data"] 
+        /// Determines whether the next receiving data is the length header or the actual data
         /// </summary>
         protected bool ReceivingLength = true;
 
         /// <summary>
         /// Size of (next) buffer
-        /// 2 when receiving data length, {data length} when receiving data
+        /// 2 when receiving header, else length of receiving data
         /// </summary>
-        public int BufferSize { get; protected set; }
+        public sealed override int BufferSize { get; protected set; }
 
-        /// <summary>
-        /// </summary>
+        /// <summary></summary>
         public PrefixLengthProtocol() => BufferSize = 2;
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         ///
-        /// [length of data[][] : ushort as byte[2]][data[] + data1[] + data2[]...]
+        /// Example data: [length of data][data[] + data1[] + data2[]...]
         /// </summary>
-        /// <param name="data">data to send to server</param>
-        /// <returns>byte array with merged data + length: [data length : ushort as byte[2]][data]</returns>
+        /// <param name="data">data of message</param>
+        /// <returns>data to send to remote host</returns>
         /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
-        public virtual byte[] CreateMessage(params byte[][] data)
+        public override byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
                 throw new ArgumentException("Could not create message: Data array is empty");
@@ -60,12 +59,12 @@ namespace EasyTcp3.Protocols
         }
 
         /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by ReceivingData 
+        /// Handle received data, trigger event and set new bufferSize determined by the header 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
-        public virtual void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             ushort dataLength = 2;
 
@@ -81,6 +80,6 @@ namespace EasyTcp3.Protocols
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public virtual object Clone() => new PrefixLengthProtocol();
+        public override object Clone() => new PrefixLengthProtocol();
     }
 }

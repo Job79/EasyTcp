@@ -1,4 +1,5 @@
 using EasyTcp3.Protocols;
+using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 

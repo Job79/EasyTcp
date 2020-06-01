@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -31,14 +30,13 @@ namespace EasyTcp3.ClientUtils
 
             try
             {
-                client.BaseSocket = socket ?? new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                var result = client.BaseSocket.BeginConnect(ipAddress, port, null, null);
+                client.BaseSocket = socket ?? client.Protocol.GetSocket(ipAddress.AddressFamily);
+                var result = client.BaseSocket.BeginConnect(ipAddress, port, null, client);
                 result.AsyncWaitHandle.WaitOne(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
                 client.BaseSocket.EndConnect(result);
 
-                if (client.BaseSocket.Connected)
+                if (client.BaseSocket.Connected && client.Protocol.OnConnect(client))
                 {
-                    client.Protocol.OnConnect(client);
                     client.FireOnConnect();
                     return true;
                 }
@@ -68,17 +66,5 @@ namespace EasyTcp3.ClientUtils
                 throw new ArgumentException("Could not connect: ipAddress is not a valid IPv4/IPv6 address");
             return client.Connect(address, port, timeout, socket);
         }
-
-        /// <summary>
-        /// Start listening for incoming data with the internal data receiver.
-        /// This gets automatically called by the server and the Connect functions, but not when class is constructed with a socket.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <exception cref="Exception">client is already listening for incoming data</exception>
-        public static void StartInternalDataReceiver(this EasyTcpClient client)
-        {
-            if(client.Buffer != null) throw new Exception("Client is already listening for incoming data");
-            client.StartListening();
-        } 
     }
 }

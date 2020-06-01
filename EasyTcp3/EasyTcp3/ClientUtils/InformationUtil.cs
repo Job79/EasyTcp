@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Sockets;
-using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.ClientUtils
 {
@@ -21,7 +20,8 @@ namespace EasyTcp3.ClientUtils
             if (!client.BaseSocket.Connected || !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) &&
                 client.BaseSocket.Available.Equals(0))
             {
-                client.HandleDisconnect();
+                client.FireOnDisconnect();
+                client.Dispose();
                 return false;
             }
 
