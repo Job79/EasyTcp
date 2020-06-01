@@ -28,7 +28,7 @@
       <None Update="key.pem">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="test.pfx">
+      <None Update="certificate.pfx">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

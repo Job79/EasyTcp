@@ -13,7 +13,7 @@ namespace EasyTcp3.Test.Encryption.Ssl
         public void TestSending()
         {
             ushort port = TestHelper.GetPort();
-            var certificate = new X509Certificate2("test.pfx", "password");
+            var certificate = new X509Certificate2("certificate.pfx", "password");
             using var protocol = new PrefixLengthSslProtocol(certificate);
             using var server = new EasyTcpServer(protocol).Start(port);
             server.OnDataReceive += (sender, message)

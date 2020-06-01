@@ -24,7 +24,17 @@ namespace EasyTcp3.Server
         /// Protocol for this client,
         /// determines actions when receiving/sending data etc..
         /// </summary>
-        public readonly IEasyTcpProtocol Protocol;
+        public IEasyTcpProtocol Protocol
+        {
+            get => _protocol;
+            set
+            {
+               if(IsRunning || BaseSocket != null) throw new Exception("Can not change protocol when server is running.");
+               _protocol = value;
+            }
+        }
+
+        private IEasyTcpProtocol _protocol;
 
         /// <summary>
         /// Determines whether the server is running,

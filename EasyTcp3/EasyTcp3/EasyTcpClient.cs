@@ -22,7 +22,16 @@ namespace EasyTcp3
         /// Protocol for this client,
         /// determines actions when receiving/sending data etc..
         /// </summary>
-        public IEasyTcpProtocol Protocol { get; set; }
+        public IEasyTcpProtocol Protocol
+        {
+            get => _protocol;
+            set
+            {
+                if (BaseSocket != null) throw new Exception("Can not change protocol when client is connected");
+            }
+        }
+
+        private IEasyTcpProtocol _protocol;
 
         /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
