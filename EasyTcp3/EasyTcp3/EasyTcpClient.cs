@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using EasyTcp3.Protocols;
+using EasyTcp3.Protocols.Tcp;
 
 namespace EasyTcp3
 {
@@ -55,19 +56,19 @@ namespace EasyTcp3
         /// <summary>
         /// Function used to fire the OnConnect event
         /// </summary>
-        protected internal void FireOnConnect() => OnConnect?.Invoke(this, this);
+        public void FireOnConnect() => OnConnect?.Invoke(this, this);
 
         /// <summary>
         /// Function used to fire the OnDisconnect event
         /// </summary>
-        protected internal void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
+        public void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
 
         /// <summary>
         /// Function used to fire the OnError event,
         /// or if event is null, throw an exception
         /// </summary>
         /// <param name="exception"></param>
-        protected internal void FireOnError(Exception exception)
+        public void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
 #if DEBUG
@@ -79,7 +80,7 @@ namespace EasyTcp3
         /// Function used to fire the OnDataReceive event
         /// </summary>
         /// <param name="message">received message</param>
-        protected internal void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
+        public void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
 
         /// <summary>
         /// Action that is called when new data is received
@@ -113,6 +114,7 @@ namespace EasyTcp3
         /// </summary>
         public void Dispose()
         {
+            Protocol?.Dispose();
             BaseSocket?.Dispose();
             BaseSocket = null;
         }

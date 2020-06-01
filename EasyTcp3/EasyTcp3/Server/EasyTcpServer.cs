@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using EasyTcp3.Protocols;
+using EasyTcp3.Protocols.Tcp;
 
 namespace EasyTcp3.Server
 {
@@ -34,8 +35,9 @@ namespace EasyTcp3.Server
         /// <summary>
         /// List with all the connected clients,
         /// clients get added when connected and removed when disconnected
+        /// Do not access this list directly when not needed
         /// </summary>
-        protected internal List<EasyTcpClient> ConnectedClients = new List<EasyTcpClient>();
+        public List<EasyTcpClient> ConnectedClients = new List<EasyTcpClient>();
 
         /// <summary>
         /// Get the number of connected clients
@@ -82,13 +84,13 @@ namespace EasyTcp3.Server
         /// Function used to fire the OnConnect event
         /// </summary>
         /// <param name="client"></param>
-        protected internal void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
+        public void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
 
         /// <summary>
         /// Function used to fire the OnDisconnect event
         /// </summary>
         /// <param name="client"></param>
-        protected internal void FireOnDisconnect(EasyTcpClient client)
+        public void FireOnDisconnect(EasyTcpClient client)
         {
             lock (ConnectedClients) ConnectedClients.Remove(client);
             OnDisconnect?.Invoke(this, client);
@@ -98,14 +100,14 @@ namespace EasyTcp3.Server
         /// Function used to fire the OnDataReceive event
         /// </summary>
         /// <param name="message"></param>
-        protected internal void FireOnDataReceive(Message message) => OnDataReceive?.Invoke(this, message);
+        public void FireOnDataReceive(Message message) => OnDataReceive?.Invoke(this, message);
 
         /// <summary>
         /// Function used to fire the OnError event,
         /// or if event is null, throw an exception
         /// </summary>
         /// <param name="exception"></param>
-        protected internal void FireOnError(Exception exception)
+        public void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
 #if DEBUG
@@ -113,9 +115,7 @@ namespace EasyTcp3.Server
 #endif
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <param name="protocol">determines actions when sending/receiving data etc.. PrefixLenghtProtocol is used when null</param>
         public EasyTcpServer(IEasyTcpProtocol protocol = null)
             => this.Protocol = protocol ?? new PrefixLengthProtocol();
@@ -133,6 +133,7 @@ namespace EasyTcp3.Server
             }
 
             ConnectedClients.Clear();
+            Protocol?.Dispose();
             BaseSocket.Dispose();
             BaseSocket = null;
         }

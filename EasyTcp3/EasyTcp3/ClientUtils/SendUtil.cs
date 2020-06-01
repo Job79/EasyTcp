@@ -1,5 +1,4 @@
 using System;
-using System.Net.Sockets;
 using System.Text;
 using EasyTcp3.EasyTcpPacketUtils;
 
@@ -10,20 +9,7 @@ namespace EasyTcp3.ClientUtils
     /// </summary>
     public static class SendUtil
     {
-        /// <summary>
-        /// Send message to remote host
-        /// </summary>
-        /// <param name="baseSocket"></param>
-        /// <param name="message">[ushort: data length][data + data1 + data2...]</param>
-        internal static void SendMessage(Socket baseSocket, byte[] message)
-        {
-            if (baseSocket == null || !baseSocket.Connected)
-                throw new Exception("Could not send data: Client not connected or null");
-
-            using var e = new SocketAsyncEventArgs();
-            e.SetBuffer(message);
-            baseSocket.SendAsync(e);
-        }
+        
 
         /// <summary>
         /// Send data (byte[][]) to the remote host
@@ -31,7 +17,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to server</param>
         public static void Send(this EasyTcpClient client, params byte[][] data) =>
-            SendMessage(client?.BaseSocket, client?.Protocol.CreateMessage(data));
+            client.Protocol.SendMessage(client, client?.Protocol.CreateMessage(data));
 
         /// <summary>
         /// Send data (byte[]) to the remote host
@@ -42,7 +28,7 @@ namespace EasyTcp3.ClientUtils
         public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
             if (compression) data = CompressionUtil.Compress(data);
-            SendMessage(client?.BaseSocket, client?.Protocol.CreateMessage(data));
+            client.Protocol.SendMessage(client, client?.Protocol.CreateMessage(data));
         }
 
         /// <summary>
