@@ -129,7 +129,7 @@ namespace EasyTcp3.Protocols.Tcp
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
-                    lock (server.ConnectedClients) server.ConnectedClients.Add(client);
+                    lock (server.UnsafeConnectedClients) server.UnsafeConnectedClients.Add(client);
                 }
             }
             catch (Exception ex)

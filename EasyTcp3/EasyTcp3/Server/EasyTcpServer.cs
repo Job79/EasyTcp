@@ -47,25 +47,25 @@ namespace EasyTcp3.Server
         /// clients get added when connected and removed when disconnected
         /// Do not access this list directly when not needed
         /// </summary>
-        public List<EasyTcpClient> ConnectedClients = new List<EasyTcpClient>();
+        public List<EasyTcpClient> UnsafeConnectedClients = new List<EasyTcpClient>();
 
         /// <summary>
         /// Get the number of connected clients
         /// </summary>
-        public int ConnectedClientsCount => ConnectedClients.Count;
+        public int ConnectedClientsCount => UnsafeConnectedClients.Count;
 
         /// <summary>
         /// IEnumerable of all connected clients
-        /// Creates copy of ConnectedClients because this variable is used by async functions
+        /// Creates copy of UnsafeConnectedClients because this variable is used by async functions
         /// </summary>
-        /// <returns>Copy of ConnectedClients</returns>
-        public IEnumerable<EasyTcpClient> GetConnectedClients() => ConnectedClients.ToList();
+        /// <returns>Copy of UnsafeConnectedClients</returns>
+        public IEnumerable<EasyTcpClient> GetConnectedClients() => UnsafeConnectedClients.ToList();
 
         /// <summary>
         /// List of all connected sockets
-        /// Creates copy of ConnectedClients because this variable is used by async functions
+        /// Creates copy of UnsafeConnectedClients because this variable is used by async functions
         /// </summary>
-        /// <returns>Copy of the sockets in ConnectedClients</returns>
+        /// <returns>Copy of the sockets in UnsafeConnectedClients</returns>
         public IEnumerable<Socket> GetConnectedSockets() => GetConnectedClients().Select(c => c.BaseSocket);
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace EasyTcp3.Server
         /// <param name="client"></param>
         public void FireOnDisconnect(EasyTcpClient client)
         {
-            lock (ConnectedClients) ConnectedClients.Remove(client);
+            lock (UnsafeConnectedClients) UnsafeConnectedClients.Remove(client);
             OnDisconnect?.Invoke(this, client);
         }
 
@@ -137,12 +137,12 @@ namespace EasyTcp3.Server
         {
             if (BaseSocket == null) return;
             IsRunning = false;
-            lock (ConnectedClients)
+            lock (UnsafeConnectedClients)
             {
-                foreach (var client in ConnectedClients) client.Dispose();
+                foreach (var client in UnsafeConnectedClients) client.Dispose();
             }
 
-            ConnectedClients.Clear();
+            UnsafeConnectedClients.Clear();
             Protocol?.Dispose();
             BaseSocket.Dispose();
             BaseSocket = null;
