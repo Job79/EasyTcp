@@ -18,12 +18,12 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         /// <summary>
         /// encrypter instance, used to encrypt and decrypt data 
         /// </summary>
-        protected readonly EasyEncrypt _encrypter;
+        protected readonly EasyEncrypt Encrypter;
 
         /// <summary></summary>
         /// <param name="encrypter"></param>
         public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter)
-            => _encrypter = encrypter;
+            => Encrypter = encrypter;
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
@@ -54,7 +54,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp
             }
 
             // Encrypt and create message
-            var encryptedData = _encrypter.Encrypt(mergedData);
+            var encryptedData = Encrypter.Encrypt(mergedData);
             var message = new byte[2 + encryptedData.Length];
             Buffer.BlockCopy(BitConverter.GetBytes((ushort) encryptedData.Length), 0, message, 0, 2);
             Buffer.BlockCopy(encryptedData, 0, message, 2, encryptedData.Length);
@@ -76,7 +76,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp
             {
                 try
                 {
-                    client.DataReceiveHandler(new Message(client.Buffer, client).Decrypt(_encrypter));
+                    client.DataReceiveHandler(new Message(client.Buffer, client).Decrypt(Encrypter));
                 }
                 catch
                 {
@@ -100,6 +100,6 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         /// Return new instance of this protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public override object Clone() => new EncryptedPrefixLengthProtocol(_encrypter);
+        public override object Clone() => new EncryptedPrefixLengthProtocol(Encrypter);
     }
 }

@@ -12,7 +12,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
     /// <summary>
     /// Implementation of tcp protocol with ssl
     /// </summary>
-    public abstract class DefaultSslTcpProtocol : IEasyTcpProtocol, IDisposable
+    public abstract class DefaultSslTcpProtocol : IEasyTcpProtocol
     {
         /// <summary>
         /// Instance of SslStream
@@ -236,7 +236,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
                 server.FireOnConnect(client);
                 if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
                 {
-                    lock (server.ConnectedClients) server.ConnectedClients.Add(client);
+                    lock (server.UnsafeConnectedClients) server.UnsafeConnectedClients.Add(client);
                 }
             }
             catch (Exception ex)
