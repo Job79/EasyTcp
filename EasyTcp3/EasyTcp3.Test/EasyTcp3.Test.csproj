@@ -21,4 +21,16 @@
         <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="cert.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="key.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="test.pfx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
