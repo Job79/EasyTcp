@@ -1,5 +1,5 @@
-using EasyTcp3;
 using EasyEncrypt2;
+using EasyTcp3;
 
 namespace EasyTcp.Encryption
 {

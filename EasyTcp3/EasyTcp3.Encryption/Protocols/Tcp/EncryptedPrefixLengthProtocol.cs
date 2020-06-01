@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using EasyEncrypt2;
 using EasyTcp3;
-using EasyTcp3.Protocols;
+using EasyTcp3.Protocols.Tcp;
 
-namespace EasyTcp.Encryption.Protocols
+namespace EasyTcp.Encryption.Protocols.Tcp
 {
     /// <summary>
     /// This protocol extends PrefixLengthProtocol
@@ -16,12 +16,11 @@ namespace EasyTcp.Encryption.Protocols
     public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol
     {
         /// <summary>
-        /// encrypter instance, used 
+        /// encrypter instance, used to encrypt and decrypt data 
         /// </summary>
-        private readonly EasyEncrypt _encrypter;
+        protected readonly EasyEncrypt _encrypter;
 
-        /// <summary>
-        /// </summary>
+        /// <summary></summary>
         /// <param name="encrypter"></param>
         public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter)
             => _encrypter = encrypter;
