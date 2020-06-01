@@ -9,6 +9,7 @@ using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Protocols;
+using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.SpeedTest
