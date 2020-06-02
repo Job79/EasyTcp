@@ -11,6 +11,7 @@ namespace EasyTcp3.Examples.CustomPacket
 {
     /// <summary>
     /// Example usage of EasyTcpPacket
+    /// EasyTcpPacket is an alternative for serialisation. (It can be much faster and have a smaller package size)
     /// </summary>
     public static class EasyTcpPacketExample
     {
