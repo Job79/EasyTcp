@@ -9,8 +9,6 @@ namespace EasyTcp3.ClientUtils
     /// </summary>
     public static class SendUtil
     {
-        
-
         /// <summary>
         /// Send data (byte[][]) to the remote host
         /// </summary>
@@ -106,5 +104,14 @@ namespace EasyTcp3.ClientUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void Send(this EasyTcpClient client, IEasyTcpPacket data, bool compression = false)
             => client.Send(data.Data, compression);
+
+        /// <summary>
+        /// Send data (object) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void Send(this EasyTcpClient client, object data, bool compression = false)
+            => client.Send(client?.Serialize(data), compression);
     }
 }

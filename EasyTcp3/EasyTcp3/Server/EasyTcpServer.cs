@@ -29,12 +29,25 @@ namespace EasyTcp3.Server
             get => _protocol;
             set
             {
-               if(IsRunning || BaseSocket != null) throw new Exception("Can not change protocol when server is running.");
-               _protocol = value;
+                if (IsRunning || BaseSocket != null)
+                    throw new Exception("Can not change protocol when server is running.");
+                _protocol = value;
             }
         }
 
         private IEasyTcpProtocol _protocol;
+
+        /// <summary>
+        /// Function used to Serialize an object
+        /// </summary>
+        public Func<object, byte[]> Serialize = o =>
+            throw new Exception("Assign a function to serialize first before using serialisation");
+
+        /// <summary>
+        /// Function used to Deserialize a byte[] to an object 
+        /// </summary>
+        public Func<byte[], Type, object> Deserialize = (b, t) =>
+            throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>
         /// Determines whether the server is running,

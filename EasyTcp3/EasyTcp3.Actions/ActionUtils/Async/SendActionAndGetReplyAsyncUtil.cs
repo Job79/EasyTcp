@@ -290,8 +290,33 @@ namespace EasyTcp3.Actions.ActionUtils.Async
         /// <param name="compression">compress data using GZIP if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
-            IEasyTcpPacket data,
-            TimeSpan? timeout = null, bool compression = false)
+            IEasyTcpPacket data, TimeSpan? timeout = null, bool compression = false)
             => await client.SendActionAndGetReplyAsync(action.ToActionCode(), data.Data, timeout, compression);
+        
+        /// <summary>
+        /// Send action with data (object) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, int action, object data,
+            TimeSpan? timeout = null, bool compression = false)
+            => await client.SendActionAndGetReplyAsync(action, client?.Serialize(data), timeout, compression);
+
+        /// <summary>
+        /// Send action with data (object) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendActionAndGetReplyAsync(this EasyTcpClient client, string action,
+            object data, TimeSpan? timeout = null, bool compression = false)
+            => await client.SendActionAndGetReplyAsync(action.ToActionCode(), client?.Serialize(data), timeout, compression);
     }
 }

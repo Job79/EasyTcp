@@ -266,5 +266,29 @@ namespace EasyTcp3.Actions.ActionUtils
         public static Message SendActionAndGetReply(this EasyTcpClient client, string action, IEasyTcpPacket data,
             TimeSpan? timeout = null, bool compression = false) =>
             client.SendActionAndGetReply(action.ToActionCode(), data.Data, timeout, compression);
+        
+        /// <summary>
+        /// Send action with data (object) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static Message SendActionAndGetReply(this EasyTcpClient client, int action, object data,
+            TimeSpan? timeout = null, bool compression = false) =>
+            client.SendActionAndGetReply(action, client?.Serialize(data), timeout, compression);
+
+        /// <summary>
+        /// Send action with data (object) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action code as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static Message SendActionAndGetReply(this EasyTcpClient client, string action, object data,
+            TimeSpan? timeout = null, bool compression = false) =>
+            client.SendActionAndGetReply(action.ToActionCode(), client?.Serialize(data), timeout, compression);
     }
 }

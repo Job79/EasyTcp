@@ -8,7 +8,7 @@ namespace EasyTcp3
     /// Class that passed by the OnDataReceive event handler
     /// Contains received data, socket and simple functions to convert data
     /// </summary>
-    public class Message : IEasyTcpPacket 
+    public class Message : IEasyTcpPacket
     {
         /// <summary>
         /// Received data
@@ -28,9 +28,12 @@ namespace EasyTcp3
             Data = data;
             Client = client;
         }
+
         /// <summary>
         /// </summary>
-        public Message() { }
+        public Message()
+        {
+        }
 
         /// <summary>
         /// Determines whether the received data is a valid UShort 
@@ -147,5 +150,21 @@ namespace EasyTcp3
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
         public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.To<T>(Data);
+
+        /// <summary>
+        /// Deserialize object from byte[] 
+        /// </summary>
+        /// <returns></returns>
+        public T Deserialize<T>()
+        {
+            try
+            {
+                return (T) Client.Deserialize(Data, typeof(T));
+            }
+            catch
+            {
+                return default;
+            }
+        }
     }
 }

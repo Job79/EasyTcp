@@ -148,5 +148,16 @@ namespace EasyTcp3.ClientUtils
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
             bool compression = false) =>
             client.SendAndGetReply(data.Data, timeout, compression);
+        
+        /// <summary>
+        /// Send data (object) to the remote host. Then return the reply.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static Message SendAndGetReply(this EasyTcpClient client, object data, TimeSpan? timeout = null,
+            bool compression = false) =>
+            client.SendAndGetReply(client?.Serialize(data), timeout, compression);
     }
 }

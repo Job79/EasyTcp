@@ -222,5 +222,25 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAction(this EasyTcpClient client, string action, IEasyTcpPacket data, bool compression = false)
             => client.SendAction(action.ToActionCode(), data.Data, compression);
+        
+        /// <summary>
+        /// Send action with data (object) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action id</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAction(this EasyTcpClient client, int action, object data, bool compression = false)
+            => client.SendAction(action, client?.Serialize(data), compression);
+
+        /// <summary>
+        /// Send action with data (object) to the remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="action">action id as string</param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        public static void SendAction(this EasyTcpClient client, string action, object data, bool compression = false)
+            => client.SendAction(action.ToActionCode(), client?.Serialize(data), compression);
     }
 }
