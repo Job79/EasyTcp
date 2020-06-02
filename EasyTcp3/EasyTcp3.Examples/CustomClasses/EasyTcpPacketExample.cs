@@ -7,7 +7,7 @@ using EasyTcp3.EasyTcpPacketUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
-namespace EasyTcp3.Examples.CustomPacket
+namespace EasyTcp3.Examples.CustomClasses
 {
     /// <summary>
     /// Example usage of EasyTcpPacket
