@@ -226,7 +226,11 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             try
             {
                 var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar),
-                    (IEasyTcpProtocol) server.Protocol.Clone());
+                    (IEasyTcpProtocol) server.Protocol.Clone())
+                {
+                   Serialize = server.Serialize,
+                   Deserialize = server.Deserialize
+                };
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);

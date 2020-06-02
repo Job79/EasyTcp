@@ -35,6 +35,18 @@ namespace EasyTcp3
         private IEasyTcpProtocol _protocol;
 
         /// <summary>
+        /// Function used to Serialize an object
+        /// </summary>
+        public Func<object, byte[]> Serialize = o =>
+            throw new Exception("Assign a function to serialize first before using serialisation");
+
+        /// <summary>
+        /// Function used to Deserialize a byte[] to an object 
+        /// </summary>
+        public Func<byte[], object> Deserialize = o =>
+            throw new Exception("Assign a function to deserialize first before using serialisation");
+
+        /// <summary>
         /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
         /// </summary>
         public byte[] Buffer;

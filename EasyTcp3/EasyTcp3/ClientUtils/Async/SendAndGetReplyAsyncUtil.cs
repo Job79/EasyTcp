@@ -173,5 +173,17 @@ namespace EasyTcp3.ClientUtils.Async
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, IEasyTcpPacket data,
             TimeSpan? timeout = null, bool compression = false)
             => await client.SendAndGetReplyAsync(data.Data, timeout, compression);
+        
+        /// <summary>
+        /// Send data (object) to the remote host. Then wait for a reply from the server.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="data">data to send to server</param>
+        /// <param name="timeout">maximum time to wait for a reply, if time expired: return null</param>
+        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <returns>received data or null</returns>
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, object data,
+            TimeSpan? timeout = null, bool compression = false)
+            => await client.SendAndGetReplyAsync(client?.Serialize(data), timeout, compression);
     }
 }
