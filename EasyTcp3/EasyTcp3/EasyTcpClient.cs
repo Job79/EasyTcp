@@ -43,7 +43,7 @@ namespace EasyTcp3
         /// <summary>
         /// Function used to Deserialize a byte[] to an object 
         /// </summary>
-        public Func<byte[], object> Deserialize = o =>
+        public Func<Type, byte[], object> Deserialize = (t, o) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>

@@ -159,7 +159,7 @@ namespace EasyTcp3
         {
             try
             {
-                return (T) Client.Deserialize(Data);
+                return (T) Client.Deserialize(typeof(T),Data);
             }
             catch
             {
