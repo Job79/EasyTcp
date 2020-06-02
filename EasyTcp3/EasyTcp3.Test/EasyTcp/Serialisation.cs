@@ -21,13 +21,12 @@ namespace EasyTcp3.Test.EasyTcp
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
-            server.Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
 
             using var client = new EasyTcpClient
             {
                 Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o),
-                Deserialize = (t, o) => JsonSerializer.Deserialize(o, t)
+                Deserialize = (b, t) => JsonSerializer.Deserialize(b, t)
             };
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
 
@@ -41,13 +40,12 @@ namespace EasyTcp3.Test.EasyTcp
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
-            server.Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
 
             using var client = new EasyTcpClient
             {
                 Serialize = o => Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(o)),
-                Deserialize = (t, o) => JsonConvert.DeserializeObject(Encoding.UTF8.GetString(o), t)
+                Deserialize = (b, t) => JsonConvert.DeserializeObject(Encoding.UTF8.GetString(b), t)
             };
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
 
@@ -61,27 +59,26 @@ namespace EasyTcp3.Test.EasyTcp
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
-            server.Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
 
             using var client = new EasyTcpClient
             {
                 Serialize = o =>
                 {
-                    if(o == null) return null;
+                    if (o == null) return null;
                     BinaryFormatter bf = new BinaryFormatter();
                     using MemoryStream ms = new MemoryStream();
                     bf.Serialize(ms, o);
                     return ms.ToArray();
                 },
-                Deserialize = (t, o) =>
+                Deserialize = (b, t) =>
                 {
                     using MemoryStream memStream = new MemoryStream();
                     BinaryFormatter binForm = new BinaryFormatter();
-                    memStream.Write(o, 0, o.Length);
+                    memStream.Write(b, 0, b.Length);
                     memStream.Seek(0, SeekOrigin.Begin);
                     return binForm.Deserialize(memStream);
-                } 
+                }
             };
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
 
