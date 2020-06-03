@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 namespace EasyTcp3.ClientUtils.Async
 {
     /// <summary>
-    /// Functions to async send or receive a stream to/from a remote host
+    /// Class with all the SendStreamAsync and ReceiveStreamAsync functions
     /// </summary>
     public static class StreamAsyncUtil
     {
         /// <summary>
-        /// Send a stream to the remote host.
-        /// Because the host can only receive a stream in the OnReceive event, first send a normal message (See fileserver/fileclient in examples)
+        /// Send stream to the remote host
+        /// Host can only receive a stream when not listening for incoming messages
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="stream">stream to send to the host</param>
+        /// <param name="stream">input stream</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not readable</exception>
         public static async Task SendStreamAsync(this EasyTcpClient client, Stream stream, int bufferSize = 1024)
@@ -33,12 +33,11 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Receive a stream from a remote host,
-        /// This can only be used in an OnReceive event while the BeginReceive isn't active.
-        /// (Do not use this function on an message from SendAndGetReply!)
+        /// Receive stream from remote host
+        /// Use this method only when not listening for incoming messages (In the OnReceive event)
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="stream">stream to write receiving stream to</param>
+        /// <param name="stream">output stream for receiving data</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
         public static async Task ReceiveStreamAsync(this Message message, Stream stream, int bufferSize = 1024)
