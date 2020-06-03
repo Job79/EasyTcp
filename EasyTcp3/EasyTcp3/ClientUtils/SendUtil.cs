@@ -26,7 +26,7 @@ namespace EasyTcp3.ClientUtils
         public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
             if (compression) data = CompressionUtil.Compress(data);
-            client.Protocol.SendMessage(client, client?.Protocol.CreateMessage(data));
+            client.Protocol.SendMessage(client, client.Protocol.CreateMessage(data));
         }
 
         /// <summary>
