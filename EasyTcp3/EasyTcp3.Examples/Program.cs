@@ -25,12 +25,6 @@ namespace EasyTcp3.Examples
 
             Task.Delay(50).Wait(); // Wait 50 milliseconds to let BasicClient finish
 
-            Console.WriteLine("--    EasyTcpPacketExample    --");
-            EasyTcpPacketExample.Start();
-            EasyTcpPacketExample.Connect();
-
-            Task.Delay(50).Wait(); // Wait 50 milliseconds to let EasyTcpPacketExample finish
-
             Console.WriteLine("--    EncryptionExample    --");
             EncryptionExample.Start();
             EncryptionExample.Connect();

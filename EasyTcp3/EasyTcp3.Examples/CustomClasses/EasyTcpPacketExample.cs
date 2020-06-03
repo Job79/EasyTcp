@@ -10,10 +10,11 @@ using EasyTcp3.Server.ServerUtils;
 namespace EasyTcp3.Examples.CustomClasses
 {
     /// <summary>
+    /// TODO
     /// Example usage of EasyTcpPacket
     /// EasyTcpPacket is an alternative for serialisation. (It can be much faster and have a smaller package size)
     /// </summary>
-    public static class EasyTcpPacketExample
+    /*public static class EasyTcpPacketExample
     {
         private const ushort Port = 3214;
         
@@ -57,7 +58,7 @@ namespace EasyTcp3.Examples.CustomClasses
      * All implementations of IEasyTcpPacket must have a `public byte[] Data{ get; set; };`
      *
      * This implementation does not support compression and encryption because it will become invalid and throw an exception 
-     */
+     *
     class PacketList<T> : List<T>, IEasyTcpPacket where T : IEasyTcpPacket, new()
     {
         private byte[] _data;
@@ -89,5 +90,5 @@ namespace EasyTcp3.Examples.CustomClasses
                 Add( EasyTcpPacket.To<T>(_data[(position+=4)..(position+=length)]));
             }
         }
-    }
+    }*/
 }

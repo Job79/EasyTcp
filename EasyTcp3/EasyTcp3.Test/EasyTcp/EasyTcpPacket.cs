@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;

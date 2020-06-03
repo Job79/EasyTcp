@@ -149,7 +149,7 @@ namespace EasyTcp3
         /// </summary>
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.To<T>(Data);
+        public T ToPacket<T>() where T : IEasyTcpPacket, new() => IEasyTcpPacket.From<T>(Data);
 
         /// <summary>
         /// Deserialize object from byte[] 

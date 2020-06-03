@@ -43,8 +43,8 @@ namespace EasyTcp3.Examples.Encryption
 
             // Send encrypted message
             // .Encrypt works on all EasyTcpPackets
-            client.Send(EasyTcpPacket.To<Message>("TestMessage").Encrypt(encrypter)
-                .Compress()); // Compression also works on all EasyTcpPackets
+            //client.Send(EasyTcpPacket.To<Message>("TestMessage").Encrypt(encrypter)
+            //    .Compress()); // Compression also works on all EasyTcpPackets TODO
         }
     }
 }
