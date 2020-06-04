@@ -5,25 +5,26 @@ using EasyTcp3.Server;
 namespace EasyTcp3.Protocols
 {
     /// <summary>
-    /// Interface for custom protocols,
-    /// Protocol classes should also implement ICloneable and IDisposable.
-    /// ICloneable is used by the server to give every client a unique copy of the protocol.
-    /// IDisposable is used to clean up protocol if client disconnects.
-    /// See implemented protocols for examples.
+    /// Interface for EasyTcp protocols,
+    /// A protocol determines all behavior of an EasyTcpClient
+    /// Protocol classes should also implement ICloneable and IDisposable
+    /// ICloneable is used by the server to give every client an unique copy of protocol
+    /// See implemented protocols for examples
     ///
-    /// Feel free to open a pull request for any implemented protocol.
+    /// Feel free to open a pull request for any implemented protocol
     /// </summary>
     public interface IEasyTcpProtocol : ICloneable, IDisposable
     {
         /// <summary>
-        /// Get default socket for this protocol
+        /// Default socket for protocol
         /// </summary>
-        /// <returns>New instance of socket compatible with this protocol</returns>
+        /// <param name="addressFamily"></param>
+        /// <returns>new instance of socket compatible with protocol</returns>
         public Socket GetSocket(AddressFamily addressFamily);
 
         /// <summary>
         /// Start accepting new clients
-        /// Bind is already called.
+        /// Bind is already called
         /// </summary>
         /// <param name="server"></param>
         public void StartAcceptingClients(EasyTcpServer server);
@@ -36,7 +37,7 @@ namespace EasyTcp3.Protocols
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        /// returned data will be send to remote host.
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
@@ -55,7 +56,7 @@ namespace EasyTcp3.Protocols
         
         /// <summary>
         /// Method that is triggered when client connects
-        /// Default behavior is starting listening for incoming data.
+        /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
         public bool OnConnect(EasyTcpClient client)
@@ -66,7 +67,7 @@ namespace EasyTcp3.Protocols
 
         /// <summary>
         /// Method that is triggered when client connects to server
-        /// Default behavior is starting listening for incoming data.
+        /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
         public bool OnConnectServer(EasyTcpClient client)

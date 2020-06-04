@@ -8,21 +8,18 @@ using EasyTcp3.Protocols.Tcp;
 namespace EasyTcp3.Server
 {
     /// <summary>
-    /// Class that holds all the information and some functions of an EasyTcpServer
+    /// Class that holds all information imported functions of EasyTcpServer
     /// See ServerUtils for more functions
     /// </summary>
     public class EasyTcpServer : IDisposable
     {
         /// <summary>
-        /// BaseSocket of server,
-        /// Gets disposed when calling Dispose()
-        /// Null if disconnected
+        /// BaseSocket of server
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
 
         /// <summary>
-        /// Protocol for this client,
-        /// determines actions when receiving/sending data etc..
+        /// Protocol for server, protocol determines all behavior of this server
         /// </summary>
         public IEasyTcpProtocol Protocol
         {
@@ -38,20 +35,20 @@ namespace EasyTcp3.Server
         private IEasyTcpProtocol _protocol;
 
         /// <summary>
-        /// Function used to Serialize an object
+        /// Function used by send functions to Serialize objects
         /// </summary>
         public Func<object, byte[]> Serialize = o =>
             throw new Exception("Assign a function to serialize first before using serialisation");
 
         /// <summary>
-        /// Function used to Deserialize a byte[] to an object 
+        /// Function used by receive to Deserialize byte[] to object 
         /// </summary>
         public Func<byte[], Type, object> Deserialize = (b, t) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>
-        /// Determines whether the server is running,
-        /// set to true when server is started, set to false when server is disposed
+        /// Determines whether the server is still running,
+        /// set to true when server is started, set to false before server is disposed
         /// </summary>
         public bool IsRunning { get; protected internal set; }
 

@@ -11,20 +11,20 @@ namespace EasyTcp3.Protocols.Tcp
     public abstract class DefaultTcpProtocol : IEasyTcpProtocol
     {
         /// <summary>
-        /// Return new tcp socket
+        /// Default socket for protocol
         /// </summary>
         /// <param name="addressFamily"></param>
-        /// <returns>new instance of tcp socket</returns>
+        /// <returns>new instance of socket compatible with protocol</returns>
         public virtual Socket GetSocket(AddressFamily addressFamily) =>
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
         
         /// <summary>
-        /// Call Listen() and start accepting new clients
+        /// Start accepting new clients
         /// </summary>
         /// <param name="server"></param>
         public virtual void StartAcceptingClients(EasyTcpServer server)
         {
-            server.BaseSocket.Listen(5000);
+            server.BaseSocket.Listen(50000);
             server.BaseSocket.BeginAccept(OnConnectCallback, server);
         }
 
@@ -38,18 +38,17 @@ namespace EasyTcp3.Protocols.Tcp
         
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        /// returned data will be send to remote host.
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
         public abstract byte[] CreateMessage(params byte[][] data);
         
         /// <summary>
-        /// Send message to remote host 
+        /// Send message to remote host
         /// </summary>
         /// <param name="client"></param>
         /// <param name="message"></param>
-        /// <exception cref="Exception">could not send data: Client not connected or null</exception>
         public virtual void SendMessage(EasyTcpClient client, byte[] message)
         {
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
@@ -62,13 +61,13 @@ namespace EasyTcp3.Protocols.Tcp
         
         /// <summary>
         /// Create new instance of current protocol,
-        /// used by server when accepting a new client.
+        /// used by server when accepting a new client
         /// </summary>
         /// <returns></returns>
         public abstract object Clone();
         
         /// <summary>
-        /// Dispose current instance, does nothing 
+        /// Dispose current instance, ignored by DefaultTcpProtocol 
         /// </summary>
         public virtual void Dispose()
         {
@@ -79,16 +78,15 @@ namespace EasyTcp3.Protocols.Tcp
          */
         
         /// <summary>
-        /// Size of (next) buffer used by internal receive event 
+        /// Size of (next) buffer used by receive event 
         /// </summary>
         public abstract int BufferSize { get; protected set; }
 
         /// <summary>
-        /// Function that handles received data
-        /// This function should call <code>client.DataReceiveHandler({Received message});</code> to trigger the OnDataReceive event
+        /// Handle received data, function should call <code>EasyTcpClient.DataReceiveHandler({Received message});</code> 
         /// </summary>
-        /// <param name="data">received data, has the size of the clients buffer</param>
-        /// <param name="receivedBytes">amount of received bytes, can be smaller than data</param>
+        /// <param name="data">received data, has size of clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         public abstract void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
 
@@ -107,8 +105,8 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Callback method that accepts new tcp connections (server)
-        /// Fired when a new client connects
+        /// Callback method that accepts new tcp connections
+        /// Fired when new client connects
         /// </summary>
         /// <param name="ar"></param>
         protected virtual void OnConnectCallback(IAsyncResult ar)
@@ -131,10 +129,9 @@ namespace EasyTcp3.Protocols.Tcp
 
                 if (!client.Protocol.OnConnectServer(client)) return;
                 server.FireOnConnect(client);
-                if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
-                {
-                    lock (server.UnsafeConnectedClients) server.UnsafeConnectedClients.Add(client);
-                }
+                if (client.BaseSocket != null) // Check if user aborted OnConnect with Client.Dispose()
+                    lock (server.UnsafeConnectedClients)
+                        server.UnsafeConnectedClients.Add(client);
             }
             catch (Exception ex)
             {
@@ -143,7 +140,7 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Method that handles receiving data (client & server)
+        /// Callback method that handles receiving data
         /// Fired when new data is received
         /// </summary>
         /// <param name="ar"></param>
