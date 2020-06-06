@@ -6,21 +6,19 @@ using EasyTcp3.Protocols.Tcp;
 namespace EasyTcp3
 {
     /// <summary>
-    /// Class that holds all the information and some functions of an EasyTcpClient
-    /// See ClientUtils for more functions
+    /// EasyTcp client,
+    /// Provides a simple high performance tcp client
     /// </summary>
     public class EasyTcpClient : IDisposable
     {
         /// <summary>
         /// BaseSocket of client,
-        /// Gets disposed when calling Dispose()
-        /// Null if disconnected
+        /// null if client is not connected to remote host
         /// </summary>
         public Socket BaseSocket { get; set; }
 
         /// <summary>
-        /// Protocol for this client,
-        /// determines actions when receiving/sending data etc..
+        /// Protocol for client, protocol determines all behavior of this client
         /// </summary>
         public IEasyTcpProtocol Protocol
         {
@@ -35,59 +33,55 @@ namespace EasyTcp3
         private IEasyTcpProtocol _protocol;
 
         /// <summary>
-        /// Function used to Serialize an object
+        /// Function used by send functions to Serialize objects
         /// </summary>
         public Func<object, byte[]> Serialize = o =>
             throw new Exception("Assign a function to serialize first before using serialisation");
 
         /// <summary>
-        /// Function used to Deserialize a byte[] to an object 
+        /// Function used by receive to Deserialize byte[] to object 
         /// </summary>
         public Func<byte[], Type, object> Deserialize = (b, t) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>
-        /// Buffer used for receiving incoming data. See Internal/OnConnectUtil.cs for usage
+        /// Buffer with received data
         /// </summary>
         public byte[] Buffer;
 
         /// <summary>
-        /// Fired when the client connects to a server
+        /// Event that is fired when client connected to remote host 
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
 
         /// <summary>
-        /// Fired when a client disconnects from a server to the server
+        /// Event that is fired when client disconnects from remote host
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
 
         /// <summary>
-        /// Fired when a client receives new information,
-        /// Doesn't fire when one of these functions are called:
-        /// SendAndGetReply
-        /// SendAndReplyAsync
+        /// Event that is fired when client receives data from remote host
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
 
         /// <summary>
-        /// Fired when an error occurs,
-        /// if not set errors will be thrown
+        /// Event that is fired when error occurs
         /// </summary>
         public event EventHandler<Exception> OnError;
 
         /// <summary>
-        /// Function used to fire the OnConnect event
+        /// Fire the OnConnect event
         /// </summary>
         public void FireOnConnect() => OnConnect?.Invoke(this, this);
 
         /// <summary>
-        /// Function used to fire the OnDisconnect event
+        /// Fire the OnDisconnect event
         /// </summary>
         public void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
 
         /// <summary>
-        /// Function used to fire the OnError event,
-        /// or if event is null, throw an exception
+        /// Fire the OnError event,
+        /// throw error if event is not used and library is compiled with debug mode
         /// </summary>
         /// <param name="exception"></param>
         public void FireOnError(Exception exception)
@@ -99,40 +93,36 @@ namespace EasyTcp3
         }
 
         /// <summary>
-        /// Function used to fire the OnDataReceive event
+        /// Fire the OnDataReceive event
         /// </summary>
         /// <param name="message">received message</param>
         public void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
 
         /// <summary>
-        /// Action that is called when new data is received
+        /// Execute custom action when receiving data 
         /// </summary>
         public Action<Message> DataReceiveHandler;
 
         /// <summary>
-        /// Reset DataReceiveHandler to its default behavior (Calling OnDataReceive)
+        /// Set DataReceiveHandler back to default behavior (calling OnDataReceive)
         /// </summary>
         public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="protocol">determines actions when sending/receiving data etc.. PrefixLengthProtocol is used when null</param>
+        /// <summary></summary>
+        /// <param name="protocol"></param>
         public EasyTcpClient(IEasyTcpProtocol protocol = null)
         {
             Protocol = protocol ?? new PrefixLengthProtocol();
             ResetDataReceiveHandler();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <param name="socket"></param>
-        /// <param name="protocol">determines actions when sending/receiving data etc.. DefaultProtocol is used when null</param>
+        /// <param name="protocol"></param>
         public EasyTcpClient(Socket socket, IEasyTcpProtocol protocol = null) : this(protocol) => BaseSocket = socket;
 
         /// <summary>
-        /// Dispose current instance of the baseSocket if not null,
-        /// client will disconnect when function is called
+        /// Dispose current instance of the baseSocket if not null
         /// </summary>
         public void Dispose()
         {
