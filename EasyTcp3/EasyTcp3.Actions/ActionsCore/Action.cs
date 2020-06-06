@@ -24,15 +24,15 @@ namespace EasyTcp3.Actions.ActionsCore
         private delegate Task EasyTcpActionDelegate5();
 
         /// <summary>
-        /// Instance of any EasyTcpActionDelegate
+        /// Instance of EasyTcpActionDelegate*
         /// </summary>
         private Delegate EasyTcpAction;
 
         /// <summary>
         /// Create new action
         /// </summary>
-        /// <param name="method">method that matches any EasyTcpActionDelegate</param>
-        /// <param name="classInstances">dictionary with instances of already initialized classes</param>
+        /// <param name="method">method that matches an EasyTcpActionDelegate</param>
+        /// <param name="classInstances">list with initialized classes</param>
         public Action(MethodInfo method, Dictionary<Type, object> classInstances)
         {
             var classInstance = GetClassInstance(method, classInstances);
@@ -41,9 +41,31 @@ namespace EasyTcp3.Actions.ActionsCore
             if (classInstance == null) EasyTcpAction = Delegate.CreateDelegate(methodType, method);
             EasyTcpAction = Delegate.CreateDelegate(methodType, classInstance, method);
         }
-
+        
         /// <summary>
-        /// Executes action
+        /// Get instance of declaring class
+        /// get instance from classInstances when possible,
+        /// else create a new instance
+        /// </summary>
+        /// <param name="method">method that matches a EasyTcpActionDelegate</param>
+        /// <param name="classInstances">list with initialized classes</param>
+        /// <returns>null if method is static, else instance of declaring class</returns>
+        private static object GetClassInstance(MethodInfo method, Dictionary<Type, object> classInstances)
+        {
+            if (method.IsStatic) return null;
+
+            var classType = method.DeclaringType;
+            if (!classInstances.TryGetValue(classType ?? throw new InvalidOperationException("Declaring class is null"), out object instance))
+            {
+                instance = Activator.CreateInstance(classType);
+                classInstances.Add(classType, instance);
+            }
+
+            return instance;
+        }
+        
+        /// <summary>
+        /// Execute action
         /// </summary>
         /// <param name="sender">instance of EasyTcpClient or EasyTcpServer</param>
         /// <param name="message">received message</param>
@@ -65,32 +87,10 @@ namespace EasyTcp3.Actions.ActionsCore
         }
 
         /// <summary>
-        /// Get instance of declaring class
-        /// gets instance from classInstances when possible,
-        /// else add new instance to classInstances
-        /// </summary>
-        /// <param name="method">method that matches any EasyTcpActionDelegate</param>
-        /// <param name="classInstances">list with initialized classes</param>
-        /// <returns>null if method is static, else instance of declaring class</returns>
-        private static object GetClassInstance(MethodInfo method, Dictionary<Type, object> classInstances)
-        {
-            if (method.IsStatic) return null;
-
-            var classType = method.DeclaringType;
-            if (!classInstances.TryGetValue(classType, out object instance))
-            {
-                instance = Activator.CreateInstance(classType);
-                classInstances.Add(classType, instance);
-            }
-
-            return instance;
-        }
-
-        /// <summary>
         /// Get EasyTcpActionDelegate type from methodInfo 
         /// </summary>
         /// <param name="m"></param>
-        /// <returns>type of any EasyTcpActionDelegate or null when none</returns>
+        /// <returns>type of EasyTcpActionDelegate or null when none</returns>
         private static Type GetDelegateType(MethodInfo m)
         {
             var p = m.GetParameters();
@@ -115,7 +115,7 @@ namespace EasyTcp3.Actions.ActionsCore
         }
 
         /// <summary>
-        /// Determines whether a method is a valid action
+        /// Determines whether method is a valid EasyTcpAction
         /// </summary>
         /// <param name="m"></param>
         /// <returns>true if method is a valid action</returns>
