@@ -17,7 +17,7 @@ namespace EasyTcp3.ClientUtils.Async
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
-        /// Send data (byte[][]) to remote host. Then wait and return the reply.
+        /// Send data (byte[][]) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -45,7 +45,7 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Send data (byte[]) to remote host. Then wait and return the reply.
+        /// Send data (byte[]) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -60,7 +60,7 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Send data (ushort) to remote host. Then wait and return the reply.
+        /// Send data (ushort) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -71,7 +71,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (short) to remote host. Then wait and return the reply.
+        /// Send data (short) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -82,7 +82,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (uint) to remote host. Then wait and return the reply.
+        /// Send data (uint) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -93,7 +93,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (int) to remote host. Then wait and return the reply.
+        /// Send data (int) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -104,7 +104,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (ulong) to remote host. Then wait and return the reply.
+        /// Send data (ulong) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -115,7 +115,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (long) to remote host. Then wait and return the reply.
+        /// Send data (long) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -125,7 +125,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (double) to remote host. Then wait and return the reply.
+        /// Send data (double) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -135,7 +135,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (bool) to remote host. Then wait and return the reply.
+        /// Send data (bool) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -145,7 +145,7 @@ namespace EasyTcp3.ClientUtils.Async
             await client.SendAndGetReplyAsync(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (string) to remote host. Then wait and return the reply.
+        /// Send data (string) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -158,7 +158,7 @@ namespace EasyTcp3.ClientUtils.Async
             => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply.
+        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -170,7 +170,7 @@ namespace EasyTcp3.ClientUtils.Async
             => await client.SendAndGetReplyAsync(data.Data, timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply.
+        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>

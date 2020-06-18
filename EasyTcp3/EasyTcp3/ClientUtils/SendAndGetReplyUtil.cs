@@ -16,7 +16,7 @@ namespace EasyTcp3.ClientUtils
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
-        /// Send data (byte[][]) to remote host. Then wait and return the reply.
+        /// Send data (byte[][]) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -43,7 +43,7 @@ namespace EasyTcp3.ClientUtils
         }
 
         /// <summary>
-        /// Send data (byte[]) to remote host. Then wait and return the reply.
+        /// Send data (byte[]) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -58,7 +58,7 @@ namespace EasyTcp3.ClientUtils
         }
 
         /// <summary>
-        /// Send data (ushort) to remote host. Then wait and return the reply.
+        /// Send data (ushort) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -68,7 +68,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (short) to remote host. Then wait and return the reply.
+        /// Send data (short) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -78,7 +78,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (uint) to remote host. Then wait and return the reply.
+        /// Send data (uint) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -88,7 +88,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (int) to remote host. Then wait and return the reply.
+        /// Send data (int) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -98,7 +98,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (ulong) to remote host. Then wait and return the reply.
+        /// Send data (ulong) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -108,7 +108,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (long) to remote host. Then wait and return the reply.
+        /// Send data (long) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -118,7 +118,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (double) to remote host. Then wait and return the reply.
+        /// Send data (double) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -128,7 +128,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (bool) to remote host. Then wait and return the reply.
+        /// Send data (bool) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
@@ -138,38 +138,38 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
 
         /// <summary>
-        /// Send data (string) to remote host. Then wait and return the reply.
+        /// Send data (string) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        /// <returns>received data or null</returns>
+        /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, string data, TimeSpan? timeout = null,
             Encoding encoding = null, bool compression = false) =>
             client.SendAndGetReply((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply.
+        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        /// <returns>received data or null</returns>
+        /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
             bool compression = false) =>
             client.SendAndGetReply(data.Data, timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply.
+        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
-        /// <returns>received data or null</returns>
+        /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, object data, TimeSpan? timeout = null,
             bool compression = false) =>
             client.SendAndGetReply(client?.Serialize(data), timeout, compression);

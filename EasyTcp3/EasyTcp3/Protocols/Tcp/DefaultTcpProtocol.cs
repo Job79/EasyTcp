@@ -147,18 +147,12 @@ namespace EasyTcp3.Protocols.Tcp
         protected virtual void OnReceiveCallback(IAsyncResult ar)
         {
             var client = ar.AsyncState as EasyTcpClient;
-            if (client?.BaseSocket == null) return;
+            if (client == null) return;
 
             try
             {
-                if (!client.BaseSocket.Connected)
-                {
-                    HandleDisconnect(client);
-                    return;
-                }
-
-                int receivedBytes = client.BaseSocket.EndReceive(ar);
-                if (receivedBytes != 0)
+                int receivedBytes = client.BaseSocket.EndReceive(ar, out SocketError socketErr);
+                if (receivedBytes != 0 || socketErr != SocketError.Success)
                 {
                     DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
