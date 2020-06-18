@@ -8,7 +8,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
     /// <summary>
     /// PrefixLength protocol implementation with ssl
     /// </summary>
-    public class PrefixLengthSslProtocol : DefaultSslTcpProtocol
+    public class PrefixLengthSslProtocol : DefaultSslProtocol
     {
         /// <summary>
         /// Determines whether the next receiving data is the length header or the actual data

@@ -8,7 +8,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
     /// <summary>
     /// None protocol implementation with ssl
     /// </summary>
-    public class NoneSslProtocol : DefaultSslTcpProtocol
+    public class NoneSslProtocol : DefaultSslProtocol
     {
         /// <summary>
         /// Default size of the buffer when not specified
