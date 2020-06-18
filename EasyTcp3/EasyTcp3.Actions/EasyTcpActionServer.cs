@@ -12,55 +12,49 @@ namespace EasyTcp3.Actions
 {
     /// <summary>
     /// EasyTcpServer that supports 'actions'
-    /// public static methods with the parameters (object, Message) and the EasyTcpAction attribute get automatically loaded as actions when class is constructed,
-    /// more actions can be loaded with the AddActions method.
+    /// Actions are methods with the EasyTcpAction attribute.
+    /// Methods will get triggered when data is received based on a prefix(actionCode) in the received data.
     /// </summary>
     public class EasyTcpActionServer : EasyTcpServer
     {
         /// <summary>
-        /// Dictionary with all actions of this server [action code, action delegate]
+        /// Dictionary with all loaded actions of server [action code, action method]
         /// </summary>
         protected readonly Dictionary<int, Action> Actions =
             new Dictionary<int, Action>();
 
         /// <summary>
-        /// Function that gets called before action is executed. If function returns false discard action. Ignored when null
+        /// Function that gets called before action is executed. If function returns false discard action.
         /// </summary>
-        public Func<int, Message, bool> Interceptor;
+        public Func<ActionMessage, bool> Interceptor;
 
         /// <summary>
-        /// Action that gets triggered when an unknown action is received
+        /// Triggered when unknown action is received
         /// </summary>
-        public event EventHandler<Message> OnUnknownAction;
+        public event EventHandler<ActionMessage> OnUnknownAction;
 
         /// <summary>
         /// Function used to fire the OnUnknownAction event
         /// </summary>
-        /// <param name="e">received message [int: action id][data]</param>
-        protected void FireOnUnknownAction(Message e) => OnUnknownAction?.Invoke(this, e);
+        protected void FireOnUnknownAction(ActionMessage e) => OnUnknownAction?.Invoke(this, e);
 
         /// <summary>
-        /// Load new actions from an assembly
+        /// Load new actions from assembly
         /// </summary>
         /// <param name="assembly">assembly with EasyTcpActions</param>
-        /// <param name="nameSpace">filter for namespace with EasyTcpActions.
-        /// All actions in this namespace will be added, other will be ignored.
-        /// Filter is ignored when null</param>
+        /// <param name="nameSpace">only get actions from specific namespace</param>
         public void AddActions(Assembly assembly, string nameSpace = null)
         {
             foreach (var action in ActionManager.GetActionsWithAttribute(assembly ?? Assembly.GetCallingAssembly(),
-                nameSpace))
-                Actions.Add(action.Key, action.Value);
+                nameSpace)) Actions.Add(action.Key, action.Value);
         }
 
         /// <summary>
-        /// Create new EasyTcpActionServer and load actions from an assembly
+        /// Create new EasyTcpActionServer and load actions from assembly
         /// </summary>
         /// <param name="protocol"></param>
-        /// <param name="assembly">assembly with EasyTcpActions, calling assembly when null</param>
-        /// <param name="nameSpace">filter for namespace with EasyTcpActions.
-        /// All actions in this namespace will be added, other will be ignored.
-        /// Filter is ignored when null</param>
+        /// <param name="assembly">assembly with EasyTcpActions, calling assembly if null</param>
+        /// <param name="nameSpace">only get actions from specific namespace</param
         public EasyTcpActionServer(IEasyTcpProtocol protocol = null, Assembly assembly = null, string nameSpace = null)
             : base(protocol)
         {
@@ -70,7 +64,7 @@ namespace EasyTcp3.Actions
         }
 
         /// <summary>
-        /// Execute a specific action
+        /// Execute specific action
         /// </summary>
         /// <param name="actionCode"></param>
         /// <param name="message"></param>
@@ -79,12 +73,20 @@ namespace EasyTcp3.Actions
             => await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, actionCode, this, message);
 
         /// <summary>
-        /// Execute a specific action
+        /// Execute specific action
         /// </summary>
         /// <param name="actionCode"></param>
         /// <param name="message"></param>
         /// <returns></returns>
         public async Task ExecuteAction(string actionCode, Message message = null)
             => await ExecuteAction(actionCode.ToActionCode(), message);
+        
+        /// <summary>
+        /// Execute specific action
+        /// </summary>
+        /// <param name="actionMessage"></param>
+        /// <returns></returns>
+        public async Task ExecuteAction(ActionMessage actionMessage)
+            => await ExecuteAction(actionMessage.ActionCode, actionMessage);
     }
 }

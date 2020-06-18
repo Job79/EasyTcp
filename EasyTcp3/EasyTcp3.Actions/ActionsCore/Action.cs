@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasyTcp3.Actions.ActionsCore
 {
+    /// <summary>
+    /// Class representing an EasyTcpAction method 
+    /// </summary>
     public class Action
     {
         /// <summary>
@@ -93,10 +96,9 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <returns>type of EasyTcpActionDelegate or null when none</returns>
         private static Type GetDelegateType(MethodInfo m)
         {
-            var p = m.GetParameters();
-
             if (m.ReturnType == typeof(void))
             {
+                var p = m.GetParameters();
                 if (p.Length == 2 && p[0].ParameterType == typeof(object) && p[1].ParameterType == typeof(Message))
                     return typeof(EasyTcpActionDelegate);
                 if (p.Length == 1 && p[0].ParameterType == typeof(Message))
@@ -105,6 +107,7 @@ namespace EasyTcp3.Actions.ActionsCore
             }
             else if (m.ReturnType == typeof(Task))
             {
+                var p = m.GetParameters();
                 if (p.Length == 2 && p[0].ParameterType == typeof(object) && p[1].ParameterType == typeof(Message))
                     return typeof(EasyTcpActionDelegate3);
                 if (p.Length == 1 && p[0].ParameterType == typeof(Message))
