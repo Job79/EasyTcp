@@ -18,8 +18,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void Setup()
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
         }
 
         [Test]
@@ -29,7 +28,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             client.Connect(IPAddress.Any, _port);
 
             Assert.IsTrue(client.IsConnected(true));
-            client.Dispose(); //Disconnect
+            client.Dispose(); // Disconnect
             Assert.IsFalse(client.IsConnected());
         }
 
@@ -37,8 +36,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void TestIp()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start(port);
+            using var server = new EasyTcpServer().Start(port);
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));

@@ -9,9 +9,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.EasyTcp
 {
-    /*
-     * Tests for EasyTcpPacket functions
-     */
+    /// <summary>
+    /// Tests for EasyTcpPacket functions 
+    /// </summary>
     public class EasyTcpPacket
     {
         [Test]

@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.EasyTcp.Server
 {
     /// <summary>
-    /// Tests for the Start functions
+    /// Tests for all the Start functions
     /// </summary>
     public class Start
     {
@@ -14,47 +14,40 @@ namespace EasyTcp3.Test.EasyTcp.Server
         public void Start1()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start(new IPEndPoint(IPAddress.Any, port));
+            using var server = new EasyTcpServer().Start(new IPEndPoint(IPAddress.Any, port));;
 
             //Start with dualMode socket
             ushort port2 = TestHelper.GetPort();
-            using var server2 = new EasyTcpServer();
-            server2.Start(new IPEndPoint(IPAddress.IPv6Any, port2), true);
+            using var server2 = new EasyTcpServer().Start(new IPEndPoint(IPAddress.IPv6Any, port2), true);
         }
 
         [Test]
         public void Start2()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start(IPAddress.Any, port);
+            using var server = new EasyTcpServer().Start(IPAddress.Any, port);
 
             //Start with dualMode socket
             ushort port2 = TestHelper.GetPort();
-            using var server2 = new EasyTcpServer();
-            server2.Start(IPAddress.IPv6Any, port2, true);
+            using var server2 = new EasyTcpServer().Start(IPAddress.IPv6Any, port2, true);
         }
 
         [Test]
         public void Start3()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start("127.0.0.1", port);
+            using var server = new EasyTcpServer().Start("127.0.0.1", port);
 
             //Start with dualMode socket
             ushort port2 = TestHelper.GetPort();
-            using var server2 = new EasyTcpServer();
-            server2.Start("::1", port2, true);
+            using var server2 = new EasyTcpServer().Start("::1", port2, true);
         }
 
         [Test]
         public void Start4()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start(port);
+            using var server = new EasyTcpServer().Start(port);
         }
     }
 }

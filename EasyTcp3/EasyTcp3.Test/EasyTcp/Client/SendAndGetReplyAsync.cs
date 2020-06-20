@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.EasyTcp.Client
 {
     /// <summary>
-    /// Tests for the SendAndGetReplyAsync functions
+    /// Tests for all the SendAndGetReplyAsync functions
     /// </summary>
     public class SendAndGetReplyAsync
     {
@@ -22,8 +22,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void Setup()
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
         }
 

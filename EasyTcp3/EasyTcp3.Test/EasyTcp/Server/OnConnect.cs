@@ -17,13 +17,12 @@ namespace EasyTcp3.Test.EasyTcp.Server
         public void OnConnect1()
         {
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer();
-            server.Start(port);
+            using var server = new EasyTcpServer().Start(port);
 
             int connectCount = 0;
             server.OnConnect += (sender, c) =>
             {
-                Interlocked.Increment(ref connectCount); //Async lambda, so thread safe increase integer
+                Interlocked.Increment(ref connectCount);
                 Console.WriteLine($"Client {connectCount} connected");
             };
 

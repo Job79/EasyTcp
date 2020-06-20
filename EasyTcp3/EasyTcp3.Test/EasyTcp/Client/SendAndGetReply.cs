@@ -20,8 +20,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void Setup() // Simple echo server
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
         }
 
