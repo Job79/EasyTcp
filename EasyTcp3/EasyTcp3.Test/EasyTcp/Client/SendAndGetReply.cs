@@ -40,6 +40,24 @@ namespace EasyTcp3.Test.EasyTcp.Client
         }
 
         [Test]
+        public void SendAndGetReplyInsideOnDataReceive()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            bool triggered = false;
+            client.OnDataReceive += (sender, message) =>
+            {
+                var reply = message.Client.SendAndGetReply("ECHO"); 
+                triggered = reply.ToString() == "ECHO";
+            };
+
+            client.Send("test");
+            TestHelper.WaitWhileFalse(()=>triggered);
+            Assert.IsTrue(triggered);
+        }
+
+        [Test]
         public void SendAndGetReplyArrayWithoutTimeout()
         {
             using var client = new EasyTcpClient();

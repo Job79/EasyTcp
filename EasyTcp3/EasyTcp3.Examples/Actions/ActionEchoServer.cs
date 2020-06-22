@@ -30,7 +30,7 @@ namespace EasyTcp3.Examples.Actions
             //
             // i = action code, use string.ToActionCode() for comparing with strings (See ActionClient)
             // message = receiving data
-            server.Interceptor = (i, message) =>
+            server.Interceptor = (action) =>
             {
                 //if(i != "ECHO".ToActionCode()) Console.WriteLine($"Received action {i}");
                 return true;

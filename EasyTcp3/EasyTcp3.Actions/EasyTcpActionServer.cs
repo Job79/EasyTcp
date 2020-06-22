@@ -54,7 +54,7 @@ namespace EasyTcp3.Actions
         /// </summary>
         /// <param name="protocol"></param>
         /// <param name="assembly">assembly with EasyTcpActions, calling assembly if null</param>
-        /// <param name="nameSpace">only get actions from specific namespace</param
+        /// <param name="nameSpace">only get actions from specific namespace</param>
         public EasyTcpActionServer(IEasyTcpProtocol protocol = null, Assembly assembly = null, string nameSpace = null)
             : base(protocol)
         {

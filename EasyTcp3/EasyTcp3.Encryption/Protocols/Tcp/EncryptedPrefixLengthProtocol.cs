@@ -1,7 +1,11 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using EasyEncrypt2;
 using EasyTcp3;
+using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
 namespace EasyTcp.Encryption.Protocols.Tcp
@@ -13,7 +17,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp
     /// All data is encrypted before sending to remote host
     /// All received data is decrypted before triggering OnDataReceive
     /// </summary>
-    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol
+    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol, IEasyTcpProtocol
     {
         /// <summary>
         /// Encrypter instance, used to encrypt and decrypt data 
@@ -22,8 +26,18 @@ namespace EasyTcp.Encryption.Protocols.Tcp
 
         /// <summary></summary>
         /// <param name="encrypter"></param>
-        public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter) : base()
+        public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter)
             => Encrypter = encrypter;
+
+        /// <summary>
+        /// Get receiving/sending stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client)
+        {
+            Debug.WriteLine("EasyTcp: Stream encryption in currently not supported, continuing with not-encrypted stream");
+            return new NetworkStream(client.BaseSocket); 
+        }
 
         /// <summary>
         /// Create a new encrypted message from 1 or multiple byte arrays
@@ -73,21 +87,20 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         /// <param name="client"></param>
         public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            ushort dataLength = 2;
-
-            if (!ReceivingLength)
+            if (!(ReceivingLength = !ReceivingLength))
             {
+                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                if (BufferSize == 0) client.Dispose();
+            }
+            else
+            {
+                BufferSize = 2;
                 try
                 {
                     client.DataReceiveHandler(new Message(client.Buffer, client).Decrypt(Encrypter));
                 }
                 catch { OnDecryptionError(client); }
             }
-            else  dataLength = BitConverter.ToUInt16(client.Buffer, 0);
-            
-            ReceivingLength = !ReceivingLength;
-            if (dataLength == 0) client.Dispose();
-            else BufferSize = dataLength;
         }
 
         /*

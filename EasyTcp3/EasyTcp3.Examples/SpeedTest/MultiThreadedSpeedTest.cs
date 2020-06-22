@@ -24,15 +24,16 @@ namespace EasyTcp3.Examples.SpeedTest
 
         public static void Run()
         {
-            var protocol = new PrefixLengthProtocol();
-            using var server = new EasyTcpActionServer(protocol).Start(port);
+            var serverProtocol = new PrefixLengthProtocol();
+            var clientProtocol = new PrefixLengthProtocol();
+            using var server = new EasyTcpActionServer(serverProtocol).Start(port);
             byte[] messageData = Encoding.UTF8.GetBytes(messageDataString);
 
             Stopwatch st = Stopwatch.StartNew();
             var clientList = new ConcurrentBag<EasyTcpClient>();
             Parallel.For(0, clientsCount, new ParallelOptions() {MaxDegreeOfParallelism = threadAmount}, i =>
             {
-                var client = new EasyTcpClient((IEasyTcpProtocol) protocol.Clone());
+                var client = new EasyTcpClient((IEasyTcpProtocol) clientProtocol.Clone());
                 if (client.Connect(IPAddress.Any, port)) clientList.Add(client);
             });
             Console.WriteLine($"Connecting with {clientList.Count} clients");

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocols.Tcp
@@ -32,10 +33,14 @@ namespace EasyTcp3.Protocols.Tcp
         /// Start listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public virtual void StartDataReceiver(EasyTcpClient client)
-            => client.BaseSocket.BeginReceive(client.Buffer = new byte[BufferSize], 0,
+        public virtual void EnsureDataReceiverIsRunning(EasyTcpClient client)
+        {
+            if(IsListening) return;
+            client.BaseSocket.BeginReceive(client.Buffer = new byte[BufferSize], 0,
                 client.Buffer.Length, SocketFlags.None, OnReceiveCallback, client);
-        
+            IsListening = true;
+        }
+
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         /// returned data will be send to remote host
@@ -93,7 +98,12 @@ namespace EasyTcp3.Protocols.Tcp
         /*
          * Internal methods
          */
-        
+
+        /// <summary>
+        /// Determines whether the DataReceiver is started
+        /// </summary>
+        protected bool IsListening;
+
         /// <summary>
         /// Fire OnDisconnectEvent and dispose client 
         /// </summary>
@@ -148,6 +158,7 @@ namespace EasyTcp3.Protocols.Tcp
         {
             var client = ar.AsyncState as EasyTcpClient;
             if (client == null) return;
+            IsListening = false;
 
             try
             {
@@ -157,7 +168,7 @@ namespace EasyTcp3.Protocols.Tcp
                     DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
-                    else StartDataReceiver(client);
+                    else EnsureDataReceiverIsRunning(client);
                 }
                 else HandleDisconnect(client);
             }

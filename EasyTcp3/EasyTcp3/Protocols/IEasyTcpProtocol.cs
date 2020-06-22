@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Sockets;
 using EasyTcp3.Server;
 
@@ -33,7 +34,7 @@ namespace EasyTcp3.Protocols
         /// Start listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public void StartDataReceiver(EasyTcpClient client);
+        public void EnsureDataReceiverIsRunning(EasyTcpClient client);
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
@@ -49,10 +50,16 @@ namespace EasyTcp3.Protocols
         /// <param name="client"></param>
         /// <param name="message"></param>
         public void SendMessage(EasyTcpClient client, byte[] message);
-
+        
         /*
          * Optional 
          */
+
+        /// <summary>
+        /// Get receiving/sending stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client) => new NetworkStream(client.BaseSocket);
         
         /// <summary>
         /// Method that is triggered when client connects
@@ -61,7 +68,7 @@ namespace EasyTcp3.Protocols
         /// <param name="client"></param>
         public bool OnConnect(EasyTcpClient client)
         {
-            StartDataReceiver(client);
+            EnsureDataReceiverIsRunning(client);
             return true;
         }
 
@@ -72,7 +79,7 @@ namespace EasyTcp3.Protocols
         /// <param name="client"></param>
         public bool OnConnectServer(EasyTcpClient client)
         {
-            StartDataReceiver(client);
+            EnsureDataReceiverIsRunning(client);
             return true;
         }
     }

@@ -68,14 +68,16 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="client"></param>
         public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            ushort dataLength = 2;
-
-            if (ReceivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
-            else client.DataReceiveHandler(new Message(client.Buffer, client));
-            ReceivingLength = !ReceivingLength;
-
-            if (dataLength == 0) client.Dispose();
-            else BufferSize = dataLength;
+            if (!(ReceivingLength = !ReceivingLength))
+            {
+                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                if (BufferSize == 0) client.Dispose();
+            }
+            else
+            {
+                BufferSize = 2;
+                client.DataReceiveHandler(new Message(client.Buffer, client));
+            }
         }
     }
 }

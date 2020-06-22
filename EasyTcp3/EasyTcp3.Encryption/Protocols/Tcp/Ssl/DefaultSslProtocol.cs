@@ -68,6 +68,12 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         /// <returns>new instance of socket compatible with protocol</returns>
         public virtual Socket GetSocket(AddressFamily addressFamily) =>
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
+        
+        /// <summary>
+        /// Get receiving/sending stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client) => NetworkStream; 
 
         /// <summary>
         /// Start accepting new clients
@@ -83,9 +89,13 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         /// Start listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public virtual void StartDataReceiver(EasyTcpClient client)
-            => ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(client.Buffer = new byte[BufferSize], 0,
+        public virtual void EnsureDataReceiverIsRunning(EasyTcpClient client)
+        {
+            if (IsListening) return;
+            ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(client.Buffer = new byte[BufferSize], 0,
                 client.Buffer.Length, OnReceiveCallback, client);
+            IsListening = true;
+        }
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
@@ -138,7 +148,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
                 NetworkStream = new NetworkStream(client.BaseSocket);
                 SslStream = new SslStream(NetworkStream, false, ValidateServerCertificate);
                 SslStream.AuthenticateAsClient(ServerName);
-                StartDataReceiver(client);
+                EnsureDataReceiverIsRunning(client);
                 return true;
             }
             catch
@@ -159,7 +169,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             SslStream.BeginAuthenticateAsServer(Certificate, ar =>
             {
                 SslStream.EndAuthenticateAsServer(ar);
-                StartDataReceiver(client);
+                EnsureDataReceiverIsRunning(client);
             }, null);
             return true;
         }
@@ -185,6 +195,11 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
          * Internal methods
          */
 
+        /// <summary>
+        /// Determines whether the DataReceiver is started
+        /// </summary>
+        protected bool IsListening;
+        
         /// <summary>
         /// Determines whether a certificate is valid
         /// this function is a callback used by OnConnect
@@ -252,6 +267,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         {
             var client = ar.AsyncState as EasyTcpClient;
             if (client == null) return;
+            IsListening = false;
 
             try
             {
@@ -261,7 +277,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
                     DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
-                    else StartDataReceiver(client);
+                    else EnsureDataReceiverIsRunning(client);
                 }
                 else HandleDisconnect(client);
             }
