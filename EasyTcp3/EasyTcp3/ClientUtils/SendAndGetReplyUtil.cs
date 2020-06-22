@@ -35,6 +35,7 @@ namespace EasyTcp3.ClientUtils
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Set();
             };
+            client.Protocol.EnsureDataReceiverIsRunning(client);
             client.Send(data);
 
             signal.Wait(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));

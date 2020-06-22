@@ -26,22 +26,9 @@ namespace EasyTcp3.ClientUtils.Async
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, TimeSpan? timeout = null,
             params byte[][] data)
         {
-            Message reply = null;
-            using var signal = new SemaphoreSlim(0, 1); // Use SemaphoreSlim as async ManualResetEventSlim
-
-            client.DataReceiveHandler = message =>
-            {
-                reply = message;
-                client.ResetDataReceiveHandler();
-                // Function is no longer used when signal is disposed, therefore ignore this warning
-                // ReSharper disable once AccessToDisposedClosure
-                signal.Release();
-            };
+            var receive = client.ReceiveAsync(timeout); 
             client.Send(data);
-
-            await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
-            if (reply == null) client.ResetDataReceiveHandler();
-            return reply;
+            return await receive;
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
-            await using var networkStream = new NetworkStream(client.BaseSocket);
+            await using var networkStream = client.Protocol.GetStream(client); 
             await networkStream.WriteAsync(BitConverter.GetBytes(stream.Length));
 
             var buffer = new byte[bufferSize];
@@ -44,7 +44,7 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
-            await using var networkStream = new NetworkStream(message.Client.BaseSocket);
+            await using var networkStream = message.Client.Protocol.GetStream(message.Client); 
 
             //Get length of stream
             var length = new byte[8];
