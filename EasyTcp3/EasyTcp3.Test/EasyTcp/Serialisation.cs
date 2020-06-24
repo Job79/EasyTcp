@@ -64,15 +64,15 @@ namespace EasyTcp3.Test.EasyTcp
                 Serialize = o =>
                 {
                     if (o == null) return null;
-                    BinaryFormatter bf = new BinaryFormatter();
-                    using MemoryStream ms = new MemoryStream();
+                    var bf = new BinaryFormatter();
+                    using var ms = new MemoryStream();
                     bf.Serialize(ms, o);
                     return ms.ToArray();
                 },
                 Deserialize = (b, t) =>
                 {
-                    using MemoryStream memStream = new MemoryStream();
-                    BinaryFormatter binForm = new BinaryFormatter();
+                    using var memStream = new MemoryStream();
+                    var binForm = new BinaryFormatter();
                     memStream.Write(b, 0, b.Length);
                     memStream.Seek(0, SeekOrigin.Begin);
                     return binForm.Deserialize(memStream);
