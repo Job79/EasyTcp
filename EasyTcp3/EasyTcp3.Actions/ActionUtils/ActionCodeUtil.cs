@@ -26,5 +26,14 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <returns></returns>
         public static bool IsEqualToAction(this int actionCode, string str)
             => actionCode == str.ToActionCode();
+
+        /// <summary>
+        /// Determines whether specified string is equal to actionMessage.ActionCode
+        /// </summary>
+        /// <param name="actionMessage">action message</param>
+        /// <param name="str">action string</param>
+        /// <returns></returns>
+        public static bool IsAction(this ActionMessage actionMessage, string str)
+            => actionMessage.ActionCode.IsEqualToAction(str);
     }
 }
