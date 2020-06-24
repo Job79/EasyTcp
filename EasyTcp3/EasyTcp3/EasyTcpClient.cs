@@ -87,9 +87,7 @@ namespace EasyTcp3
         public void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
-#if DEBUG
             else throw exception;
-#endif
         }
 
         /// <summary>
