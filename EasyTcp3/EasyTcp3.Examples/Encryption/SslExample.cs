@@ -23,9 +23,9 @@ namespace EasyTcp3.Examples.Encryption
              * This is set to true because our test certificate is invalid
              */
             using var client = new EasyTcpClient().UseSsl("localhost",true); 
-            client.Connect("127.0.0.1", Port);
-
-            client.Send("Data"); // All data is now encrypted before sending
+            if(!client.Connect("127.0.0.1", Port)) return;
+            else client.Send("Data"); // All data is now encrypted before sending
+            
         }
 
         public static void Run()

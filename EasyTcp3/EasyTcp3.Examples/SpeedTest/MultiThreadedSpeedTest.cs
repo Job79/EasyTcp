@@ -50,6 +50,7 @@ namespace EasyTcp3.Examples.SpeedTest
             Console.WriteLine($"Sending {messages} messages");
             Console.WriteLine($"Total: {st.ElapsedMilliseconds}ms");
             Console.WriteLine($"Average milliseconds per message: {st.ElapsedMilliseconds / (double) messages}");
+            Console.WriteLine($"Throughput: {(long)((double) messages / st.Elapsed.Seconds )} message/second");
 
             foreach (var client in clientList) client.Dispose();
             Console.ReadLine();
