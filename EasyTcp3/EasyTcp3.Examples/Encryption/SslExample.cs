@@ -44,7 +44,7 @@ namespace EasyTcp3.Examples.Encryption
 
             server.OnDataReceive += (sender, message) =>
             {
-                Console.WriteLine(message.ToString()); // Message is automatically decrypted
+                Console.WriteLine(message); // Message is automatically decrypted
             };
         } 
     }
