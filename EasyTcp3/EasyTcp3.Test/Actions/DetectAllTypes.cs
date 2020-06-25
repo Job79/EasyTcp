@@ -17,15 +17,15 @@ namespace EasyTcp3.Test.Actions
             for (int i = 1; i <= 7; i++)
             {
                 client.ExecuteAction(i);
-                Assert.AreEqual(i, TestActions.counter);
+                Assert.AreEqual(i, TestActions.Counter);
             }
 
             var server = new EasyTcpActionServer(nameSpace: "EasyTcp3.Test.Actions.Types");
-            TestActions.counter = 0;
+            TestActions.Counter = 0;
             for (int i = 1; i <= 7; i++)
             {
-                client.ExecuteAction(i);
-                Assert.AreEqual(i, TestActions.counter);
+                server.ExecuteAction(i);
+                Assert.AreEqual(i, TestActions.Counter);
             }
         }
     }
@@ -35,34 +35,34 @@ namespace EasyTcp3.Test.Actions.Types
 {
     public class TestActions
     {
-        public static int counter;
+        public static int Counter;
 
         [EasyTcpAction(1)]
         public void One(object sender, Message message)
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(2)]
         public void Two(Message message)
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(3)]
         public void Three()
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(4)]
         public static void StaticFour()
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(5)]
         public async Task Five(object sender, Message message)
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(6)]
         public async Task Six(Message message)
-            => counter++;
+            => Counter++;
 
         [EasyTcpAction(7)]
         public async Task Seven()
-            => counter++;
+            => Counter++;
     }
 }

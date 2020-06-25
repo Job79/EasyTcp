@@ -7,6 +7,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Encryption.Ssl
 {
+    /// <summary>
+    /// Tests for NoneSslProtocol
+    /// </summary>
     public class None
     {
         [Test]

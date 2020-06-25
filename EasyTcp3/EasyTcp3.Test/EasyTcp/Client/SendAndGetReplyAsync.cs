@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.EasyTcp.Client
 {
     /// <summary>
-    /// Tests for the SendAndGetReplyAsync functions
+    /// Tests for all the SendAndGetReplyAsync functions
     /// </summary>
     public class SendAndGetReplyAsync
     {
@@ -22,8 +22,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void Setup()
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
         }
 
@@ -40,6 +39,24 @@ namespace EasyTcp3.Test.EasyTcp.Client
             var m = await client.SendAndGetReplyAsync(data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
             Assert.IsFalse(triggered);
+        }
+        
+        [Test]
+        public void SendAndGetReplyInsideOnDataReceive()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            bool triggered = false;
+            client.OnDataReceive += async (sender, message) =>
+            {
+                var reply = await message.Client.SendAndGetReplyAsync("ECHO"); 
+                triggered = reply.ToString() == "ECHO";
+            };
+
+            client.Send("test");
+            TestHelper.WaitWhileFalse(()=>triggered);
+            Assert.IsTrue(triggered);
         }
 
         [Test]

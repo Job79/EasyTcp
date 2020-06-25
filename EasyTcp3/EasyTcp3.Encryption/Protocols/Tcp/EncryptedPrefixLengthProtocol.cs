@@ -1,22 +1,26 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using EasyEncrypt2;
 using EasyTcp3;
+using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
 namespace EasyTcp.Encryption.Protocols.Tcp
 {
     /// <summary>
-    /// This protocol extends PrefixLengthProtocol
-    /// It works the same, but encrypts all data before sending it and decrypts before triggering events
-    /// Example:
-    /// [(SIZE DEPENDS ON ALGORITHM) : ushort as byte[2]] Encrypted(["data"]),
-    /// [SIZE DEPENDS ON ALGORITHM : ushort as byte[2]] Encrypted(["exampleData"])
+    /// Protocol that determines the length of a message based on a small header
+    /// Header is an ushort as byte[] with length of incoming message
+    ///
+    /// All data is encrypted before sending to remote host
+    /// All received data is decrypted before triggering OnDataReceive
     /// </summary>
-    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol
+    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol, IEasyTcpProtocol
     {
         /// <summary>
-        /// encrypter instance, used to encrypt and decrypt data 
+        /// Encrypter instance, used to encrypt and decrypt data 
         /// </summary>
         protected readonly EasyEncrypt Encrypter;
 
@@ -26,13 +30,21 @@ namespace EasyTcp.Encryption.Protocols.Tcp
             => Encrypter = encrypter;
 
         /// <summary>
-        /// Create a new message from 1 or multiple byte arrays
-        ///
-        /// [length of data[][] : ushort as byte[2]] Encrypted([data[] + data1[] + data2[]...])
+        /// Get receiving/sending stream
         /// </summary>
-        /// <param name="data">data to send to server</param>
-        /// <returns>encrypted byte array with merged data + length: [data length : ushort as byte[2]] Encrypted([data])</returns>
-        /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client)
+        {
+            Debug.WriteLine("EasyTcp: Stream encryption in currently not supported, continuing with not-encrypted stream");
+            return new NetworkStream(client.BaseSocket); 
+        }
+
+        /// <summary>
+        /// Create a new encrypted message from 1 or multiple byte arrays
+        /// returned data will be send to remote host
+        /// </summary>
+        /// <param name="data">data of message</param>
+        /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
@@ -62,44 +74,52 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         }
 
         /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by ReceivingData 
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone() => new EncryptedPrefixLengthProtocol(Encrypter);
+        
+        /// <summary>
+        /// Handle received data, trigger event and set new bufferSize determined by the header 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
         public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            ushort dataLength = 2;
-
-            if (ReceivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
+            if (!(ReceivingLength = !ReceivingLength))
+            {
+                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                if (BufferSize == 0) client.Dispose();
+            }
             else
             {
+                BufferSize = 2;
                 try
                 {
                     client.DataReceiveHandler(new Message(client.Buffer, client).Decrypt(Encrypter));
                 }
-                catch
-                {
-                   OnDecryptionError(client); 
-                }
+                catch { OnDecryptionError(client); }
             }
-
-            ReceivingLength = !ReceivingLength;
-
-            if (dataLength == 0) client.Dispose();
-            else BufferSize = dataLength;
+        }
+        
+        /// <summary>
+        /// Dispose instance of Encrypter
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
+            Encrypter?.Dispose();
         }
 
+        /*
+         * Internal
+         */
+        
         /// <summary>
-        /// Dispose client
+        /// Handle decryption error 
         /// </summary>
         /// <param name="client"></param>
         protected virtual void OnDecryptionError(EasyTcpClient client) => client.Dispose();
-
-        /// <summary>
-        /// Return new instance of this protocol 
-        /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone() => new EncryptedPrefixLengthProtocol(Encrypter);
     }
 }

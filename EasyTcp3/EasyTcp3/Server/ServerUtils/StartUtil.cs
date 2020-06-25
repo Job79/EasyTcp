@@ -5,17 +5,17 @@ using System.Net.Sockets;
 namespace EasyTcp3.Server.ServerUtils
 {
     /// <summary>
-    /// Functions to start a server
+    /// Class with Start functions
     /// </summary>
     public static class StartUtil
     {
         /// <summary>
-        /// Start listening for new connections
+        /// Start accepting new connections
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="endPoint"></param>
-        /// <param name="dualMode">specifies if the socket is a dual-mode socket (IPv4 and IPv6)</param>
-        /// <param name="socket">socket for EasyTcpServer, new one is create when null</param>
+        /// <param name="endPoint">server endpoint</param>
+        /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
+        /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static EasyTcpServer Start(this EasyTcpServer server, IPEndPoint endPoint, bool dualMode = false,
             Socket socket = null)
         {
@@ -33,13 +33,13 @@ namespace EasyTcp3.Server.ServerUtils
         }
 
         /// <summary>
-        /// Start listening for new connections
+        /// Start accepting new connections
         /// </summary>
         /// <param name="server"></param>
         /// <param name="ipAddress"></param>
         /// <param name="port"></param>
-        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 and Ipv6)</param>
-        /// <param name="socket">socket for EasyTcpServer, new one is create when null</param>
+        /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
+        /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static EasyTcpServer Start(this EasyTcpServer server, IPAddress ipAddress, ushort port,
             bool dualMode = false, Socket socket = null)
             => Start(server, new IPEndPoint(ipAddress, Math.Max(port, (ushort) 1)), dualMode, socket);
@@ -50,8 +50,8 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="ipAddress">ipAddress as string</param>
         /// <param name="port"></param>
-        /// <param name="dualMode">Specifies if the socket is a dual-mode socket (Ipv4 and Ipv6)</param>
-        /// <param name="socket">socket for EasyTcpServer, new one is create when null</param>
+        /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
+        /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static EasyTcpServer Start(this EasyTcpServer server, string ipAddress, ushort port,
             bool dualMode = false, Socket socket = null)
         {
@@ -65,7 +65,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="port"></param>
-        /// <param name="socket">socket for EasyTcpServer, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static EasyTcpServer Start(this EasyTcpServer server, ushort port, Socket socket = null)
             => Start(server, new IPEndPoint(IPAddress.Any, Math.Max(port, (ushort) 1)), false, socket);
     }

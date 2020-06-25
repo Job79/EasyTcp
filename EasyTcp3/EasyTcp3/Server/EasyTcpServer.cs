@@ -8,21 +8,18 @@ using EasyTcp3.Protocols.Tcp;
 namespace EasyTcp3.Server
 {
     /// <summary>
-    /// Class that holds all the information and some functions of an EasyTcpServer
-    /// See ServerUtils for more functions
+    /// EasyTcp server,
+    /// Provides a simple high performance tcp server
     /// </summary>
     public class EasyTcpServer : IDisposable
     {
         /// <summary>
-        /// BaseSocket of server,
-        /// Gets disposed when calling Dispose()
-        /// Null if disconnected
+        /// BaseSocket of server
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
 
         /// <summary>
-        /// Protocol for this client,
-        /// determines actions when receiving/sending data etc..
+        /// Protocol for server, protocol determines all behavior of this server
         /// </summary>
         public IEasyTcpProtocol Protocol
         {
@@ -38,79 +35,74 @@ namespace EasyTcp3.Server
         private IEasyTcpProtocol _protocol;
 
         /// <summary>
-        /// Function used to Serialize an object
+        /// Function used by send functions to Serialize objects
         /// </summary>
         public Func<object, byte[]> Serialize = o =>
             throw new Exception("Assign a function to serialize first before using serialisation");
 
         /// <summary>
-        /// Function used to Deserialize a byte[] to an object 
+        /// Function used by receive to Deserialize byte[] to object 
         /// </summary>
         public Func<byte[], Type, object> Deserialize = (b, t) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>
         /// Determines whether the server is running,
-        /// set to true when server is started, set to false when server is disposed
+        /// set to true when server is started, set to false before server is disposed
         /// </summary>
         public bool IsRunning { get; protected internal set; }
 
         /// <summary>
-        /// List with all the connected clients,
-        /// clients get added when connected and removed when disconnected
-        /// Do not access this list directly when not needed
+        /// Unsafe list with connected clients
         /// </summary>
         public List<EasyTcpClient> UnsafeConnectedClients = new List<EasyTcpClient>();
 
         /// <summary>
-        /// Get the number of connected clients
+        /// Number of connected clients
         /// </summary>
         public int ConnectedClientsCount => UnsafeConnectedClients.Count;
 
         /// <summary>
-        /// IEnumerable of all connected clients
-        /// Creates copy of UnsafeConnectedClients because this variable is used by async functions
+        /// List with connected clients
+        /// </summary>
+        /// <returns>copy of UnsafeConnectedClients</returns>
+        public List<EasyTcpClient> GetConnectedClients() => UnsafeConnectedClients.ToList();
+
+        /// <summary>
+        /// List with connected sockets 
         /// </summary>
         /// <returns>Copy of UnsafeConnectedClients</returns>
-        public IEnumerable<EasyTcpClient> GetConnectedClients() => UnsafeConnectedClients.ToList();
+        public List<Socket> GetConnectedSockets() => GetConnectedClients().Select(c => c.BaseSocket).ToList();
 
         /// <summary>
-        /// List of all connected sockets
-        /// Creates copy of UnsafeConnectedClients because this variable is used by async functions
-        /// </summary>
-        /// <returns>Copy of the sockets in UnsafeConnectedClients</returns>
-        public IEnumerable<Socket> GetConnectedSockets() => GetConnectedClients().Select(c => c.BaseSocket);
-
-        /// <summary>
-        /// Fired when a client connects to the server
-        /// Dispose client in this event to dismiss the connection
+        /// Event that is fired when a new client connects to the server
+        /// Dispose client to dismiss connection
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
 
         /// <summary>
-        /// Fired when a client disconnects from the server (After the client is disconnected!)
+        /// Event that is fired when a client disconnects from server
         /// </summary>
         public event EventHandler<EasyTcpClient> OnDisconnect;
 
         /// <summary>
-        /// Fired when a client sends data to this server
+        /// Event that is fired when server receives data
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
 
         /// <summary>
-        /// Fired when an error occurs,
-        /// if not set errors will be thrown
+        /// Event that is fired when error occurs
         /// </summary>
         public event EventHandler<Exception> OnError;
 
         /// <summary>
-        /// Function used to fire the OnConnect event
+        /// Fire the OnConnect event 
         /// </summary>
         /// <param name="client"></param>
         public void FireOnConnect(EasyTcpClient client) => OnConnect?.Invoke(this, client);
 
         /// <summary>
-        /// Function used to fire the OnDisconnect event
+        /// Fire the OnDisconnect event
         /// </summary>
         /// <param name="client"></param>
         public void FireOnDisconnect(EasyTcpClient client)
@@ -120,31 +112,29 @@ namespace EasyTcp3.Server
         }
 
         /// <summary>
-        /// Function used to fire the OnDataReceive event
+        /// Fire the OnDataReceive event
         /// </summary>
         /// <param name="message"></param>
         public void FireOnDataReceive(Message message) => OnDataReceive?.Invoke(this, message);
 
         /// <summary>
-        /// Function used to fire the OnError event,
-        /// or if event is null, throw an exception
+        /// Fire the OnError event,
+        /// throw error if event is not used and library is compiled with debug mode
         /// </summary>
         /// <param name="exception"></param>
         public void FireOnError(Exception exception)
         {
             if (OnError != null) OnError.Invoke(this, exception);
-#if DEBUG
             else throw exception;
-#endif
         }
 
         /// <summary></summary>
-        /// <param name="protocol">determines actions when sending/receiving data etc.. PrefixLenghtProtocol is used when null</param>
+        /// <param name="protocol"></param>
         public EasyTcpServer(IEasyTcpProtocol protocol = null)
             => this.Protocol = protocol ?? new PrefixLengthProtocol();
 
         /// <summary>
-        /// Dispose current instance of the baseSocket if not null
+        /// Dispose current instance of baseSocket if not null
         /// </summary>
         public void Dispose()
         {

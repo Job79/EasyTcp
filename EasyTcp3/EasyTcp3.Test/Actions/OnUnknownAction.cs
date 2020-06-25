@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Test for OnUnknownAction
+    /// Tests that determine whether OnUnknownAction is working correctly
     /// </summary>
     public class OnUnknownAction
     {
@@ -21,7 +21,10 @@ namespace EasyTcp3.Test.Actions
             server.Start(port);
 
             int triggeredCounter = 0;
-            server.OnUnknownAction += (sender, c) => Interlocked.Increment(ref triggeredCounter);
+            server.OnUnknownAction += (sender, c) =>
+            {
+                if(c.ActionCode.IsEqualToAction("INVALIDACTION") && c.ToString() == "data") Interlocked.Increment(ref triggeredCounter);
+            };
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
@@ -40,7 +43,6 @@ namespace EasyTcp3.Test.Actions
 
             int triggeredCounter = 0;
             server.OnUnknownAction += (sender, c) => Interlocked.Increment(ref triggeredCounter);
-
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));

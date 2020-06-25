@@ -11,14 +11,15 @@ using EasyTcp3.Server.ServerUtils;
 namespace EasyTcp3.Examples.ReverseShell.Server
 {
     /// <summary>
-    /// Example reverse shell with EasyTcp3 & EasyTcp.Actions
+    /// Example reverse shell with EasyTcp & EasyTcp.Actions
     /// </summary>
     public class ReverseShellServer
     {
         public void Start(ushort port)
         {
-            EasyTcpClient selectedClient = null; // Current selected client, commands get send to this client
+            EasyTcpClient selectedClient = null; 
             using var server = new EasyTcpServer().Start(port);
+            
             server.OnError += (s, exception) => Console.WriteLine($"Server error: {exception.Message}");
             server.OnDataReceive += (s, message) =>
             {
@@ -40,12 +41,11 @@ namespace EasyTcp3.Examples.ReverseShell.Server
         /// <summary>
         /// Execute user command
         /// </summary>
-        /// <param name="command">name of action (On client)</param>
+        /// <param name="command">name of action</param>
         /// <param name="args">command arguments</param>
-        /// <param name="server">current server</param>
-        /// <param name="selectedClient">current selected client</param>
-        private void ExecuteCommand(string command, string[] args, EasyTcpServer server,
-            ref EasyTcpClient selectedClient)
+        /// <param name="server"></param>
+        /// <param name="selectedClient"></param>
+        private void ExecuteCommand(string command, string[] args, EasyTcpServer server, ref EasyTcpClient selectedClient)
         {
             if (command == "s" || command == "select")
                 selectedClient = SelectClient(new List<EasyTcpClient>(server.GetConnectedClients()));
@@ -55,7 +55,7 @@ namespace EasyTcp3.Examples.ReverseShell.Server
         }
 
         /// <summary>
-        /// Let user pick 1 client and return selected client
+        /// Let user select 1 client and return selected client
         /// </summary>
         /// <param name="clients">list of clients</param>
         /// <returns>selected client or null</returns>

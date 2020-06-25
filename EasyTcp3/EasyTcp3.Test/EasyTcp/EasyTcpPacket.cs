@@ -2,15 +2,16 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.EasyTcpPacketUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
 namespace EasyTcp3.Test.EasyTcp
 {
-    /*
-     * Tests for EasyTcpPacket functions
-     */
+    /// <summary>
+    /// Tests for EasyTcpPacket functions 
+    /// </summary>
     public class EasyTcpPacket
     {
         [Test]

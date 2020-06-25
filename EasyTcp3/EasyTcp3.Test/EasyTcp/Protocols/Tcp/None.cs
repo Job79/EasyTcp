@@ -1,12 +1,14 @@
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.EasyTcp.Protocols
+namespace EasyTcp3.Test.EasyTcp.Protocols.Tcp
 {
+    /// <summary>
+    /// Tests for NoneProtocol
+    /// </summary>
     public class None
     {
         [Test]

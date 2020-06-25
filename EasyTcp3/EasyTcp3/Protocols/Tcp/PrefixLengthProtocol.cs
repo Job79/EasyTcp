@@ -4,9 +4,8 @@ using System.Linq;
 namespace EasyTcp3.Protocols.Tcp
 {
     /// <summary>
-    /// This protocol prefixes data with an ushort. This ushort contains the length of the next receiving data.
-    /// Example: [4 : ushort as byte[2]]["data"], [11 : ushort as byte[2]]["exampleData"]
-    /// This prevents data from merging when sending in a row. The maximum data size for 1 message is ushort.MAX 
+    /// Protocol that determines the length of a message based on a small header
+    /// Header is an ushort as byte[] with length of incoming message
     /// </summary>
     public class PrefixLengthProtocol : DefaultTcpProtocol 
     {
@@ -16,8 +15,7 @@ namespace EasyTcp3.Protocols.Tcp
         protected bool ReceivingLength = true;
 
         /// <summary>
-        /// Size of (next) buffer
-        /// 2 when receiving header, else length of receiving data
+        /// Size of (next) buffer used by receive event 
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
 
@@ -26,12 +24,10 @@ namespace EasyTcp3.Protocols.Tcp
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        ///
-        /// Example data: [length of data][data[] + data1[] + data2[]...]
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
-        /// <exception cref="ArgumentException">could not create message: Data array is empty</exception>
         public override byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
@@ -59,6 +55,12 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone() => new PrefixLengthProtocol();
+        
+        /// <summary>
         /// Handle received data, trigger event and set new bufferSize determined by the header 
         /// </summary>
         /// <param name="data"></param>
@@ -66,20 +68,16 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="client"></param>
         public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            ushort dataLength = 2;
-
-            if (ReceivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
-            else client.DataReceiveHandler(new Message(client.Buffer, client));
-            ReceivingLength = !ReceivingLength;
-
-            if (dataLength == 0) client.Dispose();
-            else BufferSize = dataLength;
+            if (!(ReceivingLength = !ReceivingLength))
+            {
+                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                if (BufferSize == 0) client.Dispose();
+            }
+            else
+            {
+                BufferSize = 2;
+                client.DataReceiveHandler(new Message(client.Buffer, client));
+            }
         }
-
-        /// <summary>
-        /// Return new instance of this protocol 
-        /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone() => new PrefixLengthProtocol();
     }
 }

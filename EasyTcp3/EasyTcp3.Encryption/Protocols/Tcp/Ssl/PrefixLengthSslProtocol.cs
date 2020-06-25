@@ -6,9 +6,10 @@ using EasyTcp3;
 namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
-    /// PrefixLength protocol implementation with ssl
+    /// Protocol that determines the length of a message based on a small header
+    /// Header is an ushort as byte[] with length of incoming message
     /// </summary>
-    public class PrefixLengthSslProtocol : DefaultSslTcpProtocol
+    public class PrefixLengthSslProtocol : DefaultSslProtocol
     {
         /// <summary>
         /// Determines whether the next receiving data is the length header or the actual data
@@ -16,20 +17,19 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         protected bool ReceivingLength = true;
 
         /// <summary>
-        /// Size of (next) buffer
-        /// 2 when receiving header, else length of receiving data
+        /// Size of (next) buffer used by receive event 
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
         
         /// <summary>
-        /// Constructor if used by a server
+        /// Constructor for servers
         /// </summary>
         /// <param name="certificate">server certificate</param>
         public PrefixLengthSslProtocol(X509Certificate certificate) : base(certificate)
             => BufferSize = 2;
 
         /// <summary>
-        /// Constructor if used by a client
+        /// Constructor for clients
         /// </summary>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
@@ -38,12 +38,10 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        ///
-        /// Example data: [length of data][data[] + data1[] + data2[]...]
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
-        /// <exception cref="ArgumentException">could not create message: Data array is empty</exception> 
         public override byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
@@ -71,25 +69,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by the received data 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="receivedBytes">ignored</param>
-        /// <param name="client"></param>
-        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
-        {
-            ushort dataLength = 2;
-
-            if (ReceivingLength) dataLength = BitConverter.ToUInt16(client.Buffer, 0);
-            else client.DataReceiveHandler(new Message(client.Buffer, client));
-            ReceivingLength = !ReceivingLength;
-
-            if (dataLength == 0) client.Dispose();
-            else BufferSize = dataLength;
-        }
-
-        /// <summary>
-        /// Return new instance of this protocol 
+        /// Return new instance of protocol 
         /// </summary>
         /// <returns>new object</returns>
         public override object Clone()
@@ -97,5 +77,25 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             if (Certificate != null) return new PrefixLengthSslProtocol(Certificate);
             else return new PrefixLengthSslProtocol(ServerName, AcceptInvalidCertificates);
         } 
+        
+        /// <summary>
+        /// Handle received data, trigger event and set new bufferSize determined by the header 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="receivedBytes">ignored</param>
+        /// <param name="client"></param>
+        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        {
+            if (!(ReceivingLength = !ReceivingLength))
+            {
+                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                if (BufferSize == 0) client.Dispose();
+            }
+            else
+            {
+                BufferSize = 2;
+                client.DataReceiveHandler(new Message(client.Buffer, client));
+            }
+        }
     }
 }

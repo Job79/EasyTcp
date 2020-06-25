@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.EasyTcp.Client
 {
     /// <summary>
-    /// Tests for the Send functions
+    /// Tests for all the Send functions
     /// </summary>
     public class Send
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Net;
+using System.Threading;
 using EasyEncrypt2;
+using EasyTcp.Encryption;
 using EasyTcp.Encryption.Protocols;
 using EasyTcp.Encryption.Protocols.Tcp;
 using EasyTcp3.ClientUtils;
@@ -17,18 +19,38 @@ namespace EasyTcp3.Test.Encryption
         {
             ushort port = TestHelper.GetPort();
             using var encrypter = new EasyEncrypt();
-            var protocol = new EncryptedPrefixLengthProtocol(encrypter);
 
-            using var server = new EasyTcpServer(protocol).Start(port);
+            using var server = new EasyTcpServer().UseEncryption(encrypter).Start(port);
             server.OnDataReceive += (sender, message) =>
             {
                 Console.WriteLine(message);
                 message.Client.Send(message);
             };
-            using var client = new EasyTcpClient(protocol);
+            using var client = new EasyTcpClient().UseEncryption(encrypter);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());
+        }
+        
+        [Test]
+        public void TestEncryptionFail()
+        {
+            ushort port = TestHelper.GetPort();
+            using var encrypter = new EasyEncrypt();
+
+            using var server = new EasyTcpServer().Start(port);
+            int isEncrypted = 0;
+            server.OnDataReceive += (sender, message) =>
+            {
+                if (message.ToString() != "Test") Interlocked.Increment(ref isEncrypted);
+                Console.WriteLine(message);
+                message.Client.Send(message);
+            };
+            using var client = new EasyTcpClient().UseEncryption(encrypter);
+            
+            Assert.IsTrue(client.Connect(IPAddress.Any, port));
+            Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());
+            Assert.AreEqual(1,isEncrypted);
         }
     }
 }

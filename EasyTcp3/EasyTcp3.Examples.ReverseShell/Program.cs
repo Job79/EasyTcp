@@ -14,6 +14,7 @@ namespace EasyTcp3.Examples.ReverseShell
     /// ping                              Send ping to client, client will respond with "pong!"
     /// echo [input]                      Send input to client, client will echo data back to server
     /// print [input]                     Write input into stdout of current running instance of client
+    /// exit                              Disconnect client from server
     /// </summary>
     class Program
     {
@@ -21,10 +22,8 @@ namespace EasyTcp3.Examples.ReverseShell
         {
             string ip = "127.0.0.1";
             ushort port = 52525;
-            var client = new ReverseShellClient();
-            var server = new ReverseShellServer();
-            client.Start(ip, port);
-            server.Start(port);
+            new ReverseShellClient().Start(ip, port);
+            new ReverseShellServer().Start(port);
         }
     }
 }

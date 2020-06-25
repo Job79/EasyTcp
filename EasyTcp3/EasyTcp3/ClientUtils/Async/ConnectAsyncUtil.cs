@@ -6,29 +6,27 @@ using System.Threading.Tasks;
 namespace EasyTcp3.ClientUtils.Async
 {
     /// <summary>
-    /// Functions to async connect to a remote host
+    /// Class with all ConnectAsync functions
     /// </summary>
     public static class ConnectAsyncUtil
     {
         /// <summary>
-        /// Establishes a connection to a remote host
+        /// Establishes connection with remote host
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="ipAddress">ipAddress of remote host</param>
-        /// <param name="port">port of remote host</param>
+        /// <param name="endPoint">endPoint of remote host</param>
         /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
         /// <returns>determines whether the client connected successfully</returns>
-        public static async Task<bool> ConnectAsync(this EasyTcpClient client, IPAddress ipAddress, ushort port, Socket socket = null)
+        public static async Task<bool> ConnectAsync(this EasyTcpClient client, EndPoint endPoint, Socket socket = null)
         {
             if (client == null) throw new ArgumentException("Could not connect: client is null");
-            if (ipAddress == null) throw new ArgumentException("Could not connect: ipAddress is null");
-            if (port == 0) throw new ArgumentException("Could not connect: Invalid port");
+            if (endPoint == null) throw new ArgumentException("Could not connect: endpoint is null");
             if (client.BaseSocket != null) throw new ArgumentException("Could not connect: client is still connected");
 
             try
             {
-                client.BaseSocket = socket ?? client.Protocol.GetSocket(ipAddress.AddressFamily);
-                await client.BaseSocket.ConnectAsync(ipAddress, port);
+                client.BaseSocket = socket ?? client.Protocol.GetSocket(endPoint.AddressFamily);
+                await client.BaseSocket.ConnectAsync(endPoint);
 
                 if (client.BaseSocket.Connected && client.Protocol.OnConnect(client))
                 {
@@ -46,7 +44,19 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Establishes a connection to a remote host
+        /// Establishes connection with remote host
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="ipAddress">ipAddress of remote host</param>
+        /// <param name="port">port of remote host</param>
+        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <returns>determines whether the client connected successfully</returns>
+        public static async Task<bool> ConnectAsync(this EasyTcpClient client, IPAddress ipAddress, ushort port,
+            Socket socket = null)
+            => await client.ConnectAsync(new IPEndPoint(ipAddress, port), socket);
+
+        /// <summary>
+        /// Establishes connection with remote host
         /// </summary>
         /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of remote host as string</param>
@@ -54,7 +64,8 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
         /// <returns>determines whether the client connected successfully</returns>
         /// <exception cref="ArgumentException">ipAddress is not a valid IPv4/IPv6 address</exception>
-        public static async Task<bool> ConnectAsync(this EasyTcpClient client, string ipAddress, ushort port, Socket socket = null)
+        public static async Task<bool> ConnectAsync(this EasyTcpClient client, string ipAddress, ushort port,
+            Socket socket = null)
         {
             if (!IPAddress.TryParse(ipAddress, out IPAddress address))
                 throw new ArgumentException(

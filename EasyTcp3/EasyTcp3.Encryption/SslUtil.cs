@@ -5,10 +5,13 @@ using EasyTcp3.Server;
 
 namespace EasyTcp.Encryption
 {
+    /// <summary>
+    /// Class with functions for enabling ssl
+    /// </summary>
     public static class SslUtil
     {
         /// <summary>
-        /// Shortcut for using ssl with a client
+        /// Shortcut for enabling ssl
         /// </summary>
         /// <param name="client"></param>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
@@ -20,7 +23,7 @@ namespace EasyTcp.Encryption
         }
 
         /// <summary>
-        /// Shortcut for using ssl with a server 
+        /// Shortcut for enabling ssl 
         /// </summary>
         /// <param name="server"></param>
         /// <param name="certificate">server certificate</param>

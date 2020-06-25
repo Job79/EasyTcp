@@ -6,6 +6,9 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.EasyTcp.Server
 {
+    /// <summary>
+    /// Tests for the server ConnectedClients list
+    /// </summary>
     public class ConnectedClients
     {
         [Test]

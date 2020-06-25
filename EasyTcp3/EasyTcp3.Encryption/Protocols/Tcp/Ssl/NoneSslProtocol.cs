@@ -6,22 +6,23 @@ using EasyTcp3;
 namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
-    /// None protocol implementation with ssl
+    /// Protocol that doesn't implements any framing
+    /// Useful when communicating with an already existing server/client
     /// </summary>
-    public class NoneSslProtocol : DefaultSslTcpProtocol
+    public class NoneSslProtocol : DefaultSslProtocol
     {
         /// <summary>
-        /// Default size of the buffer when not specified
+        /// Default size of buffer when not specified in constructor
         /// </summary>
         private const int DefaultBufferSize = 1024;
         
         /// <summary>
-        /// Size of (next) buffer, max size of receiving data
+        /// Size of (next) buffer used by receive event 
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
 
         /// <summary>
-        /// Constructor if used by a server
+        /// Constructor for servers
         /// </summary>
         /// <param name="certificate">server certificate</param>
         /// <param name="bufferSize"></param>
@@ -29,7 +30,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             => BufferSize = bufferSize;
 
         /// <summary>
-        /// Constructor if used by a client
+        /// Constructor for clients
         /// </summary>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="bufferSize"></param>
@@ -39,12 +40,10 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        ///
-        /// Example data: [data[] + data1[] + data2[]...]
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
-        /// <exception cref="ArgumentException">could not create message: Data array is empty</exception> 
         public override byte[] CreateMessage(params byte[][] data)
         {
             if (data == null || data.Length == 0)
@@ -69,9 +68,19 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         }
         
         /// <summary>
-        /// Function that is triggered when new data is received.
+        /// Return new instance of protocol 
         /// </summary>
-        /// <param name="data">received data, has the size of the client buffer</param>
+        /// <returns>new object</returns>
+        public override object Clone()
+        {
+            if (Certificate != null) return new NoneSslProtocol(Certificate, BufferSize);
+            else return new NoneSslProtocol(ServerName, BufferSize, AcceptInvalidCertificates);
+        } 
+        
+        /// <summary>
+        /// Handle received data
+        /// </summary>
+        /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
@@ -80,15 +89,5 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             Buffer.BlockCopy(data,0,receivedData,0,receivedBytes); 
             client.DataReceiveHandler(new Message(receivedData, client));
         }
-        
-        /// <summary>
-        /// Return new instance of this protocol 
-        /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone()
-        {
-            if (Certificate != null) return new NoneSslProtocol(Certificate, BufferSize);
-            else return new NoneSslProtocol(ServerName, BufferSize, AcceptInvalidCertificates);
-        } 
     }
 }
