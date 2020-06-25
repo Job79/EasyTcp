@@ -1,60 +1,94 @@
-using EasyTcp3.Protocols;
+using System.Security.Cryptography.X509Certificates;
+using EasyEncrypt2;
+using EasyTcp.Encryption.Protocols.Tcp;
+using EasyTcp.Encryption.Protocols.Tcp.Ssl;
 using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Protocols
 {
-    /// <summary>
-    /// This class contains examples of how to use different protocols with EasyTcp
-    /// ! With protocols is not meant UDP etc...
-    /// ! Currently EasyTcp does only support different types of framing as 'protocol'
-    /// This class is not intended to execute
-    ///
-    /// See EasyTcp3/Protocols/IEasyTcpProtocol when implementing a new protocol
-    /// Code is well documented, but feel free to open an issue when still unclear
-    /// </summary>
+    /* This class contains examples of how to use different protocols with EasyTcp
+     * A protocol defines all the behavior of an EasyTcpClient and EasyTcpServer
+     * Currently EasyTcp has only protocols with different types of framing and encryption
+     * See this example for all different types of protocols included in EasyTcp & EasyTcp.Encryption
+     *
+     * See code of EasyTcp when implementing a new protocol (Protocols/IEasyTcpProtocol & Protocols/Tcp/DefaultTcpProtocol) 
+     */
     public class ProtocolsExample
     {
         private const ushort Port = 5_102;
         
         public void Start()
         {
-            /*
-             * The default protocol,
+            /* Prefix length protocol, (Default when not specified)
              * prefixes all data with its length. Length is a ushort as byte[2]
-             * Example data: [4 : ushort as byte[2]] ["data"]
+             *
+             * Example message:
+             *     data: "data"
+             *     length: 4 bytes
+             * 
+             *     message: (ushort as byte[2]) 4 + "data"
              */
-            var defaultProtocol = new PrefixLengthProtocol();
+            using var defaultProtocol = new PrefixLengthProtocol();
             
-            /*
-             * Delimiter protocol,
-             * adds a sequence of bytes to the end of every message.
-             * Determines the end of a message based on the delimiter.
-             * Example data (Delimiter: "\n"): ["Data\r\n"]
+            /* Delimiter protocol, 
+             * determines the end of a message based on a sequence of bytes 
+             *
+             * Example message:
+             *     data: "data"
+             *     delimiter: "\r\n"
+             * 
+             *     message: "data" + "\r\n"
              */
-            bool autoAddDelimiter = true; // Determines whether to automatically add the delimiter to the end of a message while sending
+            bool autoAddDelimiter = true; // Determines whether to automatically add the delimiter to the end of a message before sending
             bool autoRemoveDelimiter = true; // Determines whether to automatically remove the delimiter when triggering the OnDataReceive event
-            var delimiterProtocol = new DelimiterProtocol("\r\n", autoAddDelimiter, autoRemoveDelimiter);
+            using var delimiterProtocol = new DelimiterProtocol("\r\n", autoAddDelimiter, autoRemoveDelimiter);
 
-            /*
-             * NoneProtocol,
-             * This 'protocol' doesn't add any data to the message.
-             * It has a maximum data size (Because the receiving end does not know the message size)
-             * BufferSize gets allocated every time receiving a message, even when message is smaller (so do not set this extremely high when not needed)
-             * ! When data is bigger then the max size it is split into 2 messages
-             * ! Data gets merged when sending very fast in a row
-             * ! This protocol has some issues with sendStream. Bytes are captured in buffer when possible.
-             * This protocol is handy when communicating with an already existing server
+            /* None protocol,
+             * doesn't determine the end of a message
+             * Reads all available bytes into 1 byte[]
+             *
+             * Example message:
+             *     data: "data"
+             *     message: "data"
              */
-            int bufferSize = 1024; // Max data size 
+            int bufferSize = 1024; // Max data(chunk) size 
             var nonProtocol = new NoneProtocol(bufferSize);
             
             // Create client that uses a specific protocol
-            var client = new EasyTcpClient(nonProtocol);
+            using var client = new EasyTcpClient(nonProtocol);
             
             // Create a server that uses a specific protocol
-            var server = new EasyTcpServer(nonProtocol).Start(Port);
+            using var server = new EasyTcpServer(nonProtocol).Start(Port);
+            
+            /*             EasyTcp.Encryption
+             * 
+             * Every protocol above is available with ssl
+             * PrefixLengthSslProtocol, DelimiterSslProtocol & NoneSslProtocol
+             * All ssl protocols have some extra parameters
+             */
+            
+            // Client ssl protocol
+            using var defaultClientSslProtocol = new PrefixLengthSslProtocol("localhost", acceptInvalidCertificates: false);
+            
+            // Server ssl protocol
+            using var certificate = new X509Certificate2("certificate.pfx", "password");
+            using var defaultServerSslProtocol = new PrefixLengthSslProtocol(certificate);
+            
+            /* The helper method client/server.UseSsl() as seen in Encryption.SslExample uses PrefixLengthSslProtocol
+             * Use constructor with custom ssl protocol for DelimiterSslProtocol & NoneSslProtocol
+             *
+             * 
+             * EncryptedPrefixLengthProtocol,
+             * this protocol encrypts all data with EasyEncrypt
+             * See Encryption/CustomAlgorithmProtocol for more info
+             * There is no Delimiter/None protocol for encryption with EasyEncrypt
+             */
+            
+            var encrypter = new EasyEncrypt();
+            using var encryptedPrefixLengthProtocol = new EncryptedPrefixLengthProtocol(encrypter);
+            
         }
     }
 }

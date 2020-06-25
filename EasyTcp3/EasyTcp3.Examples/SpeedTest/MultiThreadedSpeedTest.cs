@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
@@ -17,7 +16,7 @@ namespace EasyTcp3.Examples.SpeedTest
     public static class MultiThreadedSpeedTest
     {
         const int ClientsCount = 10_000; // Max: ushort / 2 because of ip restrictions
-        const int Messages = 2_000_000;
+        const int Messages = 2_000_00;
         private static readonly string MessageDataString = new string('H', 100);
         const int Port = 50013;
         private const int ThreadAmount = 8;
