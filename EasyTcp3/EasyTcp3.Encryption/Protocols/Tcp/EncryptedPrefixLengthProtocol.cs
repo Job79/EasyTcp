@@ -102,6 +102,15 @@ namespace EasyTcp.Encryption.Protocols.Tcp
                 catch { OnDecryptionError(client); }
             }
         }
+        
+        /// <summary>
+        /// Dispose instance of Encrypter
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
+            Encrypter?.Dispose();
+        }
 
         /*
          * Internal

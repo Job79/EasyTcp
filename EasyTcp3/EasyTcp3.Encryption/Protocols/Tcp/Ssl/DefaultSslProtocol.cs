@@ -285,7 +285,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             {
                 if (ex is SocketException || ex is IOException || ex is ObjectDisposedException)
                     HandleDisconnect(client);
-                else if (client?.BaseSocket != null) client.FireOnError(ex);
+                else if (client.BaseSocket != null) client.FireOnError(ex);
             }
         }
     }
