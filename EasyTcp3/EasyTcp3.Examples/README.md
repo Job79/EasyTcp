@@ -1,7 +1,7 @@
 # Install EasyTcp
-> dotnet add package EasyTcp
-> dotnet add package EasyTcp.Actions
-> dotnet add package EasyTcp.Encryption
+> dotnet add package EasyTcp <br/>
+> dotnet add package EasyTcp.Actions<br/>
+> dotnet add package EasyTcp.Encryption<br/>
 
 # EasyTcp.Examples
 This project contains examples for EasyTcp & EasyTcp.Actions & EasyTcp.Encryption <br/>
