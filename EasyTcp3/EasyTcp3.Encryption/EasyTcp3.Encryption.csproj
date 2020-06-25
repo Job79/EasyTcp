@@ -13,7 +13,7 @@
         <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
         <RepositoryType>Socket Networking Tcp TcpClient TcpServer Ssl SimpleTcp EasyTcp AsyncTcp</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageVersion>1.1.0</PackageVersion>
+        <PackageVersion>2.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
