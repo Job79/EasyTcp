@@ -48,6 +48,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             bool triggered = false;
             client.OnDataReceive += (sender, message) =>
             {
+                message.Client.Protocol.EnsureDataReceiverIsRunning(message.Client);
                 var reply = message.Client.SendAndGetReply("ECHO"); 
                 triggered = reply.ToString() == "ECHO";
             };

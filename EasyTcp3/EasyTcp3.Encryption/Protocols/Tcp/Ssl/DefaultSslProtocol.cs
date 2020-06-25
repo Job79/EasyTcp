@@ -92,9 +92,9 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
         public virtual void EnsureDataReceiverIsRunning(EasyTcpClient client)
         {
             if (IsListening) return;
+            IsListening = true;
             ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(client.Buffer = new byte[BufferSize], 0,
                 client.Buffer.Length, OnReceiveCallback, client);
-            IsListening = true;
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocols.Tcp
@@ -36,9 +35,9 @@ namespace EasyTcp3.Protocols.Tcp
         public virtual void EnsureDataReceiverIsRunning(EasyTcpClient client)
         {
             if(IsListening) return;
+            IsListening = true;
             client.BaseSocket.BeginReceive(client.Buffer = new byte[BufferSize], 0,
                 client.Buffer.Length, SocketFlags.None, OnReceiveCallback, client);
-            IsListening = true;
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <summary>
         /// Determines whether the DataReceiver is started
         /// </summary>
-        protected bool IsListening;
+        protected bool IsListening = false;
 
         /// <summary>
         /// Fire OnDisconnectEvent and dispose client 

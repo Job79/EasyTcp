@@ -33,7 +33,6 @@ namespace EasyTcp3.ClientUtils.Async
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Release();
             };
-            client.Protocol.EnsureDataReceiverIsRunning(client);
 
             await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
             if (reply == null) client.ResetDataReceiveHandler();
