@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
@@ -31,6 +32,11 @@ namespace EasyTcp3
         }
 
         private IEasyTcpProtocol _protocol;
+        
+        /// <summary>
+        /// List with session variables
+        /// </summary>
+        public Dictionary<string, object> Session = new Dictionary<string, object>();
 
         /// <summary>
         /// Function used by send functions to Serialize objects
