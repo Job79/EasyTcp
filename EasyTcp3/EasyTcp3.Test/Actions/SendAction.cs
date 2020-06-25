@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace EasyTcp3.Test.Actions
 {
     /// <summary>
-    /// Tests for the SendAction functions
+    /// Tests for all the SendAction functions
     /// </summary>
     public class SendAction
     {
@@ -19,8 +19,7 @@ namespace EasyTcp3.Test.Actions
         public void Setup()
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
         }
 
         [Test]

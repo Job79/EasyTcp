@@ -6,16 +6,16 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.Examples.Files
 {
-    /// <summary>
-    /// Example of a client that uploads/downloads files to/from a server
-    /// </summary>
+    /* Example client that sends/receives a stream(file) over the network
+     * EasyTcp only supports sending streams with a known length
+     */
     public static class FileClient
     {
         private const ushort Port = 5_002;
 
         public static void Download(string fileName, string saveAs)
         {
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
             client.OnDataReceive += (sender, message) =>
             {
                 using var fileStream = new FileStream(saveAs, FileMode.Create);
@@ -29,7 +29,7 @@ namespace EasyTcp3.Examples.Files
 
         public static void Upload(string fileName, string saveAs)
         {
-            var client = new EasyTcpClient();
+            using var client = new EasyTcpClient();
 
             if (!client.Connect(IPAddress.Any, Port)) return;
             client.SendAction("UPLOAD", saveAs);

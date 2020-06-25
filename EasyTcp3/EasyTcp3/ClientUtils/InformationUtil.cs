@@ -1,16 +1,15 @@
 using System.Net;
 using System.Net.Sockets;
-using EasyTcp3.ClientUtils.Internal;
 
 namespace EasyTcp3.ClientUtils
 {
     /// <summary>
-    /// Functions to receive information from an EasyTcpClient
+    /// Class with all basic functions for retrieving information
     /// </summary>
     public static class InformationUtil
     {
         /// <summary>
-        /// Determines if a client is still connected to an endpoint
+        /// Determines if client is still connected to endpoint
         /// </summary>
         /// <param name="client"></param>
         /// <param name="poll">uses poll if set to true, can be more accurate but decreases performance</param>
@@ -21,7 +20,8 @@ namespace EasyTcp3.ClientUtils
             if (!client.BaseSocket.Connected || !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) &&
                 client.BaseSocket.Available.Equals(0))
             {
-                client.HandleDisconnect();
+                client.FireOnDisconnect();
+                client.Dispose();
                 return false;
             }
 
@@ -29,11 +29,18 @@ namespace EasyTcp3.ClientUtils
         }
 
         /// <summary>
-        /// Get the ip of a client
+        /// Get endpoint of client
+        /// </summary>
+        /// <param name="client"></param>s
+        /// <returns>endpoint of client</returns>
+        public static IPEndPoint GetEndPoint(this EasyTcpClient client) => (IPEndPoint) client.BaseSocket.RemoteEndPoint;
+        
+        /// <summary>
+        /// Get ip of client
         /// </summary>
         /// <param name="client"></param>s
         /// <returns>ip of client</returns>
         public static IPAddress GetIp(this EasyTcpClient client) =>
-            ((IPEndPoint) client.BaseSocket.RemoteEndPoint).Address;
+            client.GetEndPoint().Address;
     }
 }

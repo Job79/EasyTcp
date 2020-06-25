@@ -16,8 +16,7 @@ namespace EasyTcp3.Test.EasyTcp.Server
         public void SendAllArray()
         {
             ushort port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(port);
+            var server = new EasyTcpServer().Start(port);
 
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));

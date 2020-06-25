@@ -20,8 +20,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
         public void Setup() // Simple echo server
         {
             _port = TestHelper.GetPort();
-            var server = new EasyTcpServer();
-            server.Start(_port);
+            var server = new EasyTcpServer().Start(_port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message.Data);
         }
 
@@ -38,6 +37,25 @@ namespace EasyTcp3.Test.EasyTcp.Client
             var m = client.SendAndGetReply(data);
             Assert.IsTrue(data.SequenceEqual(m.Data));
             Assert.IsFalse(triggered);
+        }
+
+        [Test]
+        public void SendAndGetReplyInsideOnDataReceive()
+        {
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect(IPAddress.Any, _port));
+
+            bool triggered = false;
+            client.OnDataReceive += (sender, message) =>
+            {
+                message.Client.Protocol.EnsureDataReceiverIsRunning(message.Client);
+                var reply = message.Client.SendAndGetReply("ECHO"); 
+                triggered = reply.ToString() == "ECHO";
+            };
+
+            client.Send("test");
+            TestHelper.WaitWhileFalse(()=>triggered);
+            Assert.IsTrue(triggered);
         }
 
         [Test]

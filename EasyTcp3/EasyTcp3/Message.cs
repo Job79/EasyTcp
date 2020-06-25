@@ -5,10 +5,10 @@ using EasyTcp3.EasyTcpPacketUtils;
 namespace EasyTcp3
 {
     /// <summary>
-    /// Class that passed by the OnDataReceive event handler
-    /// Contains received data, socket and simple functions to convert data
+    /// Parameter of the OnDataReceive events
+    /// Represents received data
     /// </summary>
-    public class Message : IEasyTcpPacket 
+    public class Message : IEasyTcpPacket
     {
         /// <summary>
         /// Received data
@@ -16,136 +16,153 @@ namespace EasyTcp3
         public byte[] Data { get; set; }
 
         /// <summary>
-        /// Receiver of this message
+        /// Server: Sender of message
+        /// Client: Receiver of message
         /// </summary>
         public readonly EasyTcpClient Client;
 
         /// <summary></summary>
+        public Message() { }
+
+        /// <summary></summary>
         /// <param name="data">received data</param>
-        /// <param name="client">receiver</param>
+        /// <param name="client"></param>
         public Message(byte[] data, EasyTcpClient client = null)
         {
             Data = data;
             Client = client;
         }
-        /// <summary>
-        /// </summary>
-        public Message() { }
 
         /// <summary>
-        /// Determines whether the received data is a valid UShort 
+        /// Determines whether received data is a valid UShort 
         /// </summary>
         /// <returns></returns>
         public bool IsValidUShort() => Data.Length == 2;
 
         /// <summary>
-        /// Determines whether the received data is a valid Short 
+        /// Determines whether received data is a valid Short 
         /// </summary>
         /// <returns></returns>
         public bool IsValidShort() => Data.Length == 2;
 
         /// <summary>
-        /// Determines whether the received data is a valid UInt 
+        /// Determines whether received data is a valid UInt 
         /// </summary>
         /// <returns></returns>
         public bool IsValidUInt() => Data.Length == 4;
 
         /// <summary>
-        /// Determines whether the received data is a valid Int 
+        /// Determines whether received data is a valid Int 
         /// </summary>
         /// <returns></returns>
         public bool IsValidInt() => Data.Length == 4;
 
         /// <summary>
-        /// Determines whether the received data is a valid ULong 
+        /// Determines whether received data is a valid ULong 
         /// </summary>
         /// <returns></returns>
         public bool IsValidULong() => Data.Length == 8;
 
         /// <summary>
-        /// Determines whether the received data is a valid Long 
+        /// Determines whether received data is a valid Long 
         /// </summary>
         /// <returns></returns>
         public bool IsValidLong() => Data.Length == 8;
 
         /// <summary>
-        /// Determines whether the received data is a valid Double 
+        /// Determines whether received data is a valid Double 
         /// </summary>
         /// <returns></returns>
         public bool IsValidDouble() => Data.Length == 8;
 
         /// <summary>
-        /// Determines whether the received data is a valid Bool 
+        /// Determines whether received data is a valid Bool 
         /// </summary>
         /// <returns></returns>
         public bool IsValidBool() => Data.Length == 1;
 
         /// <summary>
-        /// Received data as UShort
+        /// Convert data to UShort
         /// </summary>
         /// <returns>data as UShort</returns>
         public ushort ToUShort() => BitConverter.ToUInt16(Data);
 
         /// <summary>
-        /// Received data as Short
+        /// Convert data to Short
         /// </summary>
         /// <returns>data as Short</returns>
         public short ToShort() => BitConverter.ToInt16(Data);
 
         /// <summary>
-        /// Received data as UInt
+        /// Convert data to UInt
         /// </summary>
         /// <returns>data as UInt</returns>
         public uint ToUInt() => BitConverter.ToUInt32(Data);
 
         /// <summary>
-        /// Received data as Int
+        /// Convert data to Int
         /// </summary>
         /// <returns>data as Int</returns>
         public int ToInt() => BitConverter.ToInt16(Data);
 
         /// <summary>
-        /// Received data as ULong
+        /// Convert data to ULong
         /// </summary>
         /// <returns>data as ULong</returns>
         public ulong ToULong() => BitConverter.ToUInt64(Data);
 
         /// <summary>
-        /// Received data as Long
+        /// Convert data to Long
         /// </summary>
         /// <returns>data as Long</returns>
         public long ToLong() => BitConverter.ToInt64(Data);
 
         /// <summary>
-        /// Received data as Double
+        /// Convert data to Double
         /// </summary>
         /// <returns>data as Double</returns>
         public double ToDouble() => BitConverter.ToDouble(Data);
 
         /// <summary>
-        /// Received data as Bool
+        /// Convert data to Bool
         /// </summary>
         /// <returns>data as Bool</returns>
         public bool ToBool() => BitConverter.ToBoolean(Data);
 
         /// <summary>
-        /// Received data as String
+        /// Convert data to String
         /// </summary>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <returns>data as string</returns>
         public string ToString(Encoding encoding) => (encoding ?? Encoding.UTF8).GetString(Data);
 
         /// <summary>
-        /// Receive data as string decoded with UTF8
+        /// Convert data to string with UTF8
         /// </summary>
         /// <returns>data as string</returns>
         public override string ToString() => ToString(Encoding.UTF8);
 
         /// <summary>
-        /// Received data as a custom IEasyTcpPacket 
+        /// Convert data to custom IEasyTcpPacket 
         /// </summary>
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.To<T>(Data);
+        public T ToPacket<T>() where T : IEasyTcpPacket, new() => IEasyTcpPacket.From<T>(Data);
+
+        /// <summary>
+        /// Deserialize object from byte[] 
+        /// </summary>
+        /// <returns></returns>
+        public T Deserialize<T>()
+        {
+            try
+            {
+                return (T) Client.Deserialize(Data, typeof(T));
+            }
+            catch
+            {
+                return default;
+            }
+        }
     }
 }

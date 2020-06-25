@@ -11,15 +11,19 @@ namespace EasyTcp3.Examples.ReverseShell.Client.Actions
     public class TestActions
     {
         [EasyTcpAction("print")]
-        public void Print(object s, Message e)
+        public void Print(Message e)
             => Console.WriteLine(e.Decompress().ToString());
 
         [EasyTcpAction("echo")]
-        public void Echo(object s, Message e)
+        public void Echo(Message e)
             => e.Client.Send(e);
 
         [EasyTcpAction("ping")]
-        public void Ping(object s, Message e)
+        public void Ping(Message e)
             => e.Client.Send("pong!");
+        
+        [EasyTcpAction("exit")]
+        public void Exit(Message e )
+            => e.Client.Dispose();
     }
 }

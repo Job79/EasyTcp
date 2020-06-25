@@ -4,13 +4,13 @@ using System.Threading;
 namespace EasyTcp3.Test
 {
     /// <summary>
-    /// Class with basic functions to help with the tests
+    /// Class with basic functions to help with the unit tests
     /// </summary>
     public static class TestHelper
     {
         /// <summary>
         /// Give every test an unique port,
-        /// ! This must be done thread safe
+        /// ! not thread safe
         /// </summary>
         private static int _portCounter = 1200;
 

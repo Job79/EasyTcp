@@ -7,13 +7,13 @@
         <PackageId>EasyTcp.Encryption</PackageId>
         <Title>EasyTcp.Encryption</Title>
         <Authors>Job79</Authors>
-        <Description>This package adds encryption support to EasyTcp and EasyTcp.Actions</Description>
+        <Description>This package adds encryption and ssl support to EasyTcp and EasyTcp.Actions</Description>
         <Copyright>EasyTcp3.Encryption</Copyright>
         <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
-        <RepositoryType>Socket Networking Tcp TcpClient TcpServer SimpleTcp EasyTcp AsyncTcp</RepositoryType>
+        <RepositoryType>Socket Networking Tcp TcpClient TcpServer Ssl SimpleTcp EasyTcp AsyncTcp</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageVersion>1.1.0</PackageVersion>
+        <PackageVersion>2.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

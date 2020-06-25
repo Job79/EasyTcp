@@ -4,7 +4,7 @@ using System.IO.Compression;
 namespace EasyTcp3.EasyTcpPacketUtils
 {
     /// <summary>
-    /// Functions to compress and decompress packages
+    /// Class that contains functions for compressing packages
     /// </summary>
     public static class CompressionUtil
     {
@@ -39,13 +39,13 @@ namespace EasyTcp3.EasyTcpPacketUtils
         }
         
         /// <summary>
-        /// Determines whether the receive data is compressed using the magic number of GZIP (1f 2b)
+        /// Determines whether the receive data is compressed with GZIP
         /// </summary>
         /// <returns>true if compressed</returns>
         public static bool IsCompressed(byte[] data) => data.Length > 4 && data[0] == 31 && data[1] == 139;
         
         /// <summary>
-        /// Determines whether the receive data is compressed using the magic number of GZIP (1f 2b)
+        /// Determines whether the receive data is compressed with GZIP
         /// </summary>
         /// <returns>true if compressed</returns>
         public static bool IsCompressed(this IEasyTcpPacket packet) => IsCompressed(packet.Data);
@@ -55,7 +55,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// </summary>
         /// <param name="packet">packet to compress</param>
         /// <typeparam name="T">packet type</typeparam>
-        /// <returns>itself, compressed packet</returns>
+        /// <returns>instance of packet parameter</returns>
         public static T Compress<T>(this T packet) where T : IEasyTcpPacket
         {
             if (packet.IsCompressed()) return packet;
@@ -64,11 +64,11 @@ namespace EasyTcp3.EasyTcpPacketUtils
         }
 
         /// <summary>
-        /// Decompress package if compressed 
+        /// Decompress package if data is compressed
         /// </summary>
         /// <param name="packet">decompressed package</param>
         /// <typeparam name="T">packet type</typeparam>
-        /// <returns>itself, decompressed package</returns>
+        /// <returns>instance of packet parameter</returns>
         public static T Decompress<T>(this T packet) where T : IEasyTcpPacket
         {
             if (!packet.IsCompressed()) return packet;
@@ -78,7 +78,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
             }
             catch
             {
-                //Ignore error, data isn't compressed or invalid
+                //Ignore error, data is invalid
             }
             return packet;
         } 

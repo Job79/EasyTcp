@@ -4,26 +4,26 @@ using EasyTcp3.Actions.ActionUtils;
 namespace EasyTcp3.Actions
 {
     /// <summary>
-    /// Attribute type for EasyTcpActions, only methods with this attribute will get loaded as actions
-    /// See the examples for usage
+    /// Attribute for EasyTcpActions, methods with this attribute will get loaded as actions
+    /// See examples for usage
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)] // This attribute is only valid for methods ((static) Functions to be specific)
+    [AttributeUsage(AttributeTargets.Method)]
     public class EasyTcpAction : Attribute
     {
         /// <summary>
-        /// Code of this action,
+        /// Code of this action, used to determine action method when receiving data
         /// error will be thrown if not unique
         /// </summary>
-        public int ActionCode { get; set; }
+        public int ActionCode { get; }
 
         /// <summary>
-        /// Create action with a specific action code
+        /// Create action with specific action code
         /// </summary>
         /// <param name="actionCode">action code</param>
         public EasyTcpAction(int actionCode) => ActionCode = actionCode;
 
         /// <summary>
-        /// Create action with a converted string as action code
+        /// Create action with string converted to action code
         /// </summary>
         /// <param name="actionCode">action code as string</param>
         public EasyTcpAction(string actionCode) => ActionCode = actionCode.ToActionCode();

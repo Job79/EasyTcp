@@ -1,57 +1,86 @@
 using System;
-using EasyTcp3.ClientUtils;
+using System.IO;
+using System.Net.Sockets;
+using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocols
 {
     /// <summary>
-    /// Interface for a custom protocol,
-    /// determines behavior when connecting, receiving and sending data.
-    /// Protocol classes should also implement <code>object Clone();</code>. This should return a new Protocol object. (Used by the server for new connected clients)
-    /// See implemented protocols for examples.
+    /// Interface for EasyTcp protocols,
+    /// A protocol determines all behavior of an EasyTcpClient
+    /// Protocol classes should also implement ICloneable and IDisposable
+    /// ICloneable is used by the server to give every client an unique copy of protocol
+    /// See implemented protocols for examples
     ///
-    /// Feel free to open a pull request for any implemented protocol.
+    /// Feel free to open a pull request for any implemented protocol
     /// </summary>
-    public interface IEasyTcpProtocol : ICloneable
+    public interface IEasyTcpProtocol : ICloneable, IDisposable
     {
         /// <summary>
-        /// Variable is used after receiving data,
-        /// size of new buffer (and thus size of next receiving data)
+        /// Default socket for protocol
         /// </summary>
-        public int BufferSize { get; }
+        /// <param name="addressFamily"></param>
+        /// <returns>new instance of socket compatible with protocol</returns>
+        public Socket GetSocket(AddressFamily addressFamily);
 
         /// <summary>
-        /// Method that creates a message from a byte[] or byte[][]
-        /// returned data will be send to remote host.
+        /// Start accepting new clients
+        /// Bind is already called
+        /// </summary>
+        /// <param name="server"></param>
+        public void StartAcceptingClients(EasyTcpServer server);
+
+        /// <summary>
+        /// Start listening for incoming data
+        /// </summary>
+        /// <param name="client"></param>
+        public void EnsureDataReceiverIsRunning(EasyTcpClient client);
+
+        /// <summary>
+        /// Create a new message from 1 or multiple byte arrays
+        /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
         public byte[] CreateMessage(params byte[][] data);
 
         /// <summary>
-        /// Function that handles received data.
-        /// This function should call <code>client.DataReceiveHandler({Received message});</code> to trigger the OnDataReceive event
-        /// </summary>
-        /// <param name="data">received data, has the size of the clients buffer</param>
-        /// <param name="receivedBytes">amount of received bytes</param>
-        /// <param name="client"></param>
-        public void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
-
-        /// <summary>
-        /// Method that is triggered when client connects.
-        /// ! Triggered before OnConnect event
-        /// Default behavior is starting listening for incoming data.
-        /// This method should call <code>client.StartInternalDataReceiver();</code>
+        /// Send message to remote host
         /// </summary>
         /// <param name="client"></param>
-        public void OnConnect(EasyTcpClient client) => client.StartInternalDataReceiver();
+        /// <param name="message"></param>
+        public void SendMessage(EasyTcpClient client, byte[] message);
+        
+        /*
+         * Optional 
+         */
 
         /// <summary>
-        /// Method that is triggered when client connects to server
-        /// ! Triggered before OnConnect event
-        /// ! Blocks accepting new sockets
+        /// Get receiving/sending stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client) => new NetworkStream(client.BaseSocket);
+        
+        /// <summary>
+        /// Method that is triggered when client connects
         /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public void OnConnectServer(EasyTcpClient client) => client.StartInternalDataReceiver();
+        public bool OnConnect(EasyTcpClient client)
+        {
+            EnsureDataReceiverIsRunning(client);
+            return true;
+        }
+
+        /// <summary>
+        /// Method that is triggered when client connects to server
+        /// Default behavior is starting listening for incoming data
+        /// </summary>
+        /// <param name="client"></param>
+        public bool OnConnectServer(EasyTcpClient client)
+        {
+            EnsureDataReceiverIsRunning(client);
+            return true;
+        }
     }
 }
