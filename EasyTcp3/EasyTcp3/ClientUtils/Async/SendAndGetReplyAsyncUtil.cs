@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EasyTcp3.EasyTcpPacketUtils;
 
@@ -26,7 +25,7 @@ namespace EasyTcp3.ClientUtils.Async
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, TimeSpan? timeout = null,
             params byte[][] data)
         {
-            var receive = client.ReceiveAsync(timeout); 
+            var receive = client.ReceiveAsync(timeout??TimeSpan.FromMilliseconds(DefaultTimeout)); 
             client.Send(data);
             return await receive;
         }

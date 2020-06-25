@@ -101,7 +101,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <summary>
         /// Determines whether the DataReceiver is started
         /// </summary>
-        protected bool IsListening = false;
+        protected bool IsListening;
 
         /// <summary>
         /// Fire OnDisconnectEvent and dispose client 
