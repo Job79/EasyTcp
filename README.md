@@ -83,7 +83,7 @@ client.Send("Hello ssl server!"); // All data is automatically encrypted
 using var encrypter = new EasyEncrypt("Password", "Salt531351235");
 using var server = new EasyTcpServer().UseEncryption(encrypter).Start(PORT);
 
-server.OnDataReceive += (sender, message) => Console.WriteLine(message.ToString()); // Message is automatically decrypted
+server.OnDataReceive += (sender, message) => Console.WriteLine(message); // Message is automatically decrypted
 ```
 ```cs
 using var encrypter = new EasyEncrypt("Password", "Salt531351235");
