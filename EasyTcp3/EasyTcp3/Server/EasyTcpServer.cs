@@ -66,13 +66,13 @@ namespace EasyTcp3.Server
         /// List with connected clients
         /// </summary>
         /// <returns>copy of UnsafeConnectedClients</returns>
-        public IEnumerable<EasyTcpClient> GetConnectedClients() => UnsafeConnectedClients.ToList();
+        public List<EasyTcpClient> GetConnectedClients() => UnsafeConnectedClients.ToList();
 
         /// <summary>
         /// List with connected sockets 
         /// </summary>
         /// <returns>Copy of UnsafeConnectedClients</returns>
-        public IEnumerable<Socket> GetConnectedSockets() => GetConnectedClients().Select(c => c.BaseSocket);
+        public List<Socket> GetConnectedSockets() => GetConnectedClients().Select(c => c.BaseSocket).ToList();
 
         /// <summary>
         /// Event that is fired when a new client connects to the server
