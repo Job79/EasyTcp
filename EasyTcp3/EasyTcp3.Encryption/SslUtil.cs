@@ -16,7 +16,7 @@ namespace EasyTcp.Encryption
         /// <param name="client"></param>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
-        public static EasyTcpClient UseSsl(this EasyTcpClient client, string serverName, bool acceptInvalidCertificates = false)
+        public static T UseSsl<T>(this T client, string serverName, bool acceptInvalidCertificates = false) where T : EasyTcpClient
         {
             client.Protocol = new PrefixLengthSslProtocol(serverName, acceptInvalidCertificates);
             return client;
@@ -27,7 +27,7 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="server"></param>
         /// <param name="certificate">server certificate</param>
-        public static EasyTcpServer UseSsl(this EasyTcpServer server, X509Certificate certificate)
+        public static T UseSsl<T>(this T server, X509Certificate certificate) where T : EasyTcpServer
         {
             server.Protocol = new PrefixLengthSslProtocol(certificate);
             return server;
