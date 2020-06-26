@@ -115,8 +115,11 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
 
-            SslStream.BeginWrite(message, 0, message.Length, (ar) =>
-                SslStream.EndWrite(ar), client);
+            SslStream.BeginWrite(message, 0, message.Length, ar =>
+            {
+                var stream = ar.AsyncState as SslStream;
+                stream?.EndWrite(ar);
+            }, SslStream);
         }
 
         /// <summary>
