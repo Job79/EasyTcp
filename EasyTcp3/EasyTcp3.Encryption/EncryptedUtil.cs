@@ -40,18 +40,18 @@ namespace EasyTcp.Encryption
         /// </summary>
         /// <param name="client"></param>
         /// <param name="encrypt"></param>
-        public static EasyTcpClient UseEncryption(this EasyTcpClient client, EasyEncrypt encrypt)
+        public static T UseClientEncryption<T>(this T client, EasyEncrypt encrypt) where T : EasyTcpClient
         {
             client.Protocol = new EncryptedPrefixLengthProtocol(encrypt);
             return client;
         }
-
+        
         /// <summary>
         /// Shortcut for enabling encryption 
         /// </summary>
         /// <param name="server"></param>
         /// <param name="encrypt"></param>
-        public static EasyTcpServer UseEncryption(this EasyTcpServer server, EasyEncrypt encrypt)
+        public static T UseServerEncryption<T>(this T server, EasyEncrypt encrypt) where T : EasyTcpServer
         {
             server.Protocol = new EncryptedPrefixLengthProtocol(encrypt);
             return server;

@@ -73,7 +73,7 @@ namespace EasyTcp3.Actions
         /// <param name="message"></param>
         /// <returns></returns>
         public async Task ExecuteAction(int actionCode, Message message = null)
-            => await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, actionCode, this, message);
+            => await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, this,  new ActionMessage(message, actionCode));
 
         /// <summary>
         /// Execute specific action

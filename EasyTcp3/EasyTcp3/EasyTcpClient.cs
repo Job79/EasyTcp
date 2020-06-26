@@ -32,11 +32,18 @@ namespace EasyTcp3
         }
 
         private IEasyTcpProtocol _protocol;
+
         
         /// <summary>
         /// List with session variables
         /// </summary>
-        public Dictionary<string, object> Session = new Dictionary<string, object>();
+        public Dictionary<string, object> Session
+        {
+            get => (_session ??= new Dictionary<string, object>());
+            set => _session = value;
+        }
+        
+        private Dictionary<string, object> _session;
 
         /// <summary>
         /// Function used by send functions to Serialize objects
