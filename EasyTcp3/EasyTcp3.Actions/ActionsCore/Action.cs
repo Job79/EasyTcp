@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using EasyTcp3.Actions.ActionUtils;
 
 namespace EasyTcp3.Actions.ActionsCore
 {
@@ -27,6 +28,11 @@ namespace EasyTcp3.Actions.ActionsCore
         private delegate Task EasyTcpActionDelegate5();
 
         /// <summary>
+        /// List with EasyTcpAction filters
+        /// </summary>
+        public List<IEasyTcpActionFilter> Filters;
+
+        /// <summary>
         /// Instance of EasyTcpActionDelegate*
         /// </summary>
         private Delegate EasyTcpAction;
@@ -43,6 +49,9 @@ namespace EasyTcp3.Actions.ActionsCore
 
             if (classInstance == null) EasyTcpAction = Delegate.CreateDelegate(methodType, method);
             EasyTcpAction = Delegate.CreateDelegate(methodType, classInstance, method);
+
+            var filters = method.GetCustomAttributes().OfType<IEasyTcpActionFilter>().ToList();
+            if (filters.Any()) Filters = filters;
         }
         
         /// <summary>
@@ -65,6 +74,21 @@ namespace EasyTcp3.Actions.ActionsCore
             }
 
             return instance;
+        }
+
+        /// <summary>
+        /// Determines whether client has access to a action based on filter attributes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public bool ClientHasAccess(object sender, ActionMessage message)
+        {
+            if (Filters == null) return true;
+            foreach (var filter in Filters)
+                if (!filter.HasAccess(sender, message))
+                    return false;
+            return true;
         }
         
         /// <summary>

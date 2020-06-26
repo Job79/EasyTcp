@@ -55,7 +55,8 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <param name="sender">EasyTcpClient or EasyTcpServer as object</param>
         /// <param name="message">received data [action id : int] [data]</param>
         internal static async Task ExecuteAction(this Dictionary<int, Action> actions,
-            Func<ActionMessage, bool> interceptor, Action<ActionMessage> onUnknownAction, object sender, Message message)
+            Func<ActionMessage, bool> interceptor, Action<ActionMessage> onUnknownAction, object sender,
+            Message message)
         {
             var actionCode = BitConverter.ToInt32(message.Data, 0); // Get action code
 
@@ -67,8 +68,8 @@ namespace EasyTcp3.Actions.ActionsCore
                 Buffer.BlockCopy(message.Data, 4, data, 0, data.Length);
             }
 
-            await ExecuteAction(actions, interceptor, onUnknownAction, actionCode, sender,
-                new Message(data, message.Client));
+            await ExecuteAction(actions, interceptor, onUnknownAction, sender,
+                new ActionMessage(data, actionCode, message.Client));
         }
 
         /// <summary>
@@ -77,15 +78,17 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <param name="actions">dictionary with all available actions</param>
         /// <param name="interceptor">function that gets called before action is executed. action is aborted when function returns false</param>
         /// <param name="onUnknownAction">function that gets called when action is unknown</param>
-        /// <param name="actionCode">action id</param>
         /// <param name="sender">EasyTcpClient or EasyTcpServer as object</param>
         /// <param name="message">received data</param>
         internal static async Task ExecuteAction(this Dictionary<int, Action> actions,
-            Func<ActionMessage, bool> interceptor, Action<ActionMessage> onUnknownAction, int actionCode, object sender,
-            Message message)
+            Func<ActionMessage, bool> interceptor, Action<ActionMessage> onUnknownAction, object sender,
+            ActionMessage message)
         {
-            if (!actions.TryGetValue(actionCode, out var action)) onUnknownAction?.Invoke(new ActionMessage(message, actionCode));
-            else if (interceptor?.Invoke(new ActionMessage(message, actionCode)) != false) await action.Execute(sender, message);
+            if (interceptor?.Invoke(message) != false)
+            {
+                if (!actions.TryGetValue(message.ActionCode, out var action)) onUnknownAction?.Invoke(message); 
+                else if(action.ClientHasAccess(sender, message)) await action.Execute(sender, message);
+            }
         }
     }
 }

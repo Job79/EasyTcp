@@ -10,7 +10,12 @@ namespace EasyTcp3.Actions
         /// <summary></summary>
         /// <param name="message">received message</param>
         /// <param name="actionCode">action code of received message</param>
-        public ActionMessage(Message message, int actionCode) : base(message.Data, message.Client)
-            => ActionCode = actionCode;
+        public ActionMessage(Message message, int actionCode) : base(message?.Data, message?.Client) => ActionCode = actionCode;
+        
+        /// <summary></summary>
+        /// <param name="data">received data</param>
+        /// <param name="actionCode">action code of received message</param> 
+        /// <param name="client"></param>
+        public ActionMessage(byte[] data, int actionCode, EasyTcpClient client = null) : base(data, client) => ActionCode = actionCode;
     }
 }
