@@ -16,8 +16,8 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="endPoint">server endpoint</param>
         /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
-        public static EasyTcpServer Start(this EasyTcpServer server, IPEndPoint endPoint, bool dualMode = false,
-            Socket socket = null)
+        public static T Start<T>(this T server, IPEndPoint endPoint, bool dualMode = false,
+            Socket socket = null) where T : EasyTcpServer
         {
             if (server.IsRunning) throw new Exception("Could not start server: server is already running");
             if (endPoint == null) throw new ArgumentException("Could not start server: endPoint is null");
@@ -40,8 +40,8 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="port"></param>
         /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
-        public static EasyTcpServer Start(this EasyTcpServer server, IPAddress ipAddress, ushort port,
-            bool dualMode = false, Socket socket = null)
+        public static T Start<T>(this T server, IPAddress ipAddress, ushort port,
+            bool dualMode = false, Socket socket = null) where T : EasyTcpServer
             => Start(server, new IPEndPoint(ipAddress, Math.Max(port, (ushort) 1)), dualMode, socket);
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="port"></param>
         /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
-        public static EasyTcpServer Start(this EasyTcpServer server, string ipAddress, ushort port,
-            bool dualMode = false, Socket socket = null)
+        public static T Start<T>(this T server, string ipAddress, ushort port,
+            bool dualMode = false, Socket socket = null) where T : EasyTcpServer
         {
             if (!IPAddress.TryParse(ipAddress, out IPAddress address))
                 throw new ArgumentException("Could not start server: ipAddress is not a valid IPv4/IPv6 address");
@@ -66,7 +66,7 @@ namespace EasyTcp3.Server.ServerUtils
         /// <param name="server"></param>
         /// <param name="port"></param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
-        public static EasyTcpServer Start(this EasyTcpServer server, ushort port, Socket socket = null)
+        public static T Start<T>(this T server, ushort port, Socket socket = null) where T : EasyTcpServer
             => Start(server, new IPEndPoint(IPAddress.Any, Math.Max(port, (ushort) 1)), false, socket);
     }
 }
