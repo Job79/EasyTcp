@@ -11,12 +11,12 @@ namespace EasyTcp3.Test.Actions
     public class DetectAllTypes
     {
         [Test]
-        public void TestDetectAllTypes()
+        public async Task TestDetectAllTypes()
         {
             var client = new EasyTcpActionClient(nameSpace: "EasyTcp3.Test.Actions.Types");
             for (int i = 1; i <= 7; i++)
             {
-                client.ExecuteAction(i);
+                await client.ExecuteAction(i);
                 Assert.AreEqual(i, TestActions.Counter);
             }
 
@@ -24,7 +24,7 @@ namespace EasyTcp3.Test.Actions
             TestActions.Counter = 0;
             for (int i = 1; i <= 7; i++)
             {
-                server.ExecuteAction(i);
+                await server.ExecuteAction(i);
                 Assert.AreEqual(i, TestActions.Counter);
             }
         }

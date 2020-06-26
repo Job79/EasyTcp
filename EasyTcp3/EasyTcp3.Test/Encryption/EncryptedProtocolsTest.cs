@@ -20,13 +20,13 @@ namespace EasyTcp3.Test.Encryption
             ushort port = TestHelper.GetPort();
             using var encrypter = new EasyEncrypt();
 
-            using var server = new EasyTcpServer().UseEncryption(encrypter).Start(port);
+            using var server = new EasyTcpServer().UseServerEncryption(encrypter).Start(port);
             server.OnDataReceive += (sender, message) =>
             {
                 Console.WriteLine(message);
                 message.Client.Send(message);
             };
-            using var client = new EasyTcpClient().UseEncryption(encrypter);
+            using var client = new EasyTcpClient().UseClientEncryption(encrypter);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());
@@ -46,7 +46,7 @@ namespace EasyTcp3.Test.Encryption
                 Console.WriteLine(message);
                 message.Client.Send(message);
             };
-            using var client = new EasyTcpClient().UseEncryption(encrypter);
+            using var client = new EasyTcpClient().UseClientEncryption(encrypter);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());
