@@ -79,7 +79,7 @@ namespace EasyTcp3.Examples.Actions
         /// <param name="e">received message</param>
         [EasyTcpAction("ECHO")] // Make this function an action that gets triggered when the action "ECHO" is received
         public void Echo(Message e)
-            => e.Client.Send(e.Data);
+            => e.Client.Send(e);
 
         /// <summary>
         /// Broadcast received message to all connected clients

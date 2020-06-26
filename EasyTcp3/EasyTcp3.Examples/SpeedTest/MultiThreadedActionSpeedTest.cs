@@ -5,15 +5,16 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EasyTcp3.Actions;
+using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
-using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.SpeedTest
 {
-    public static class MultiThreadedSpeedTest
+    public class MultiThreadedActionSpeedTest
     {
         const int ClientsCount = 20_000; // Max: ushort / 2 because of ip restrictions
         const int MessageCount = 1_000_000;
@@ -25,8 +26,7 @@ namespace EasyTcp3.Examples.SpeedTest
 
         public static void Run()
         {
-            using var server = new EasyTcpServer(ServerProtocol).Start(Port);
-            server.OnDataReceive += (o, message) => message.Client.Send(message);
+            using var server = new EasyTcpActionServer(ServerProtocol).Start(Port);
             
             byte[] messageData = Encoding.UTF8.GetBytes(MessageDataString);
             var clientList = new ConcurrentQueue<EasyTcpClient>();
@@ -53,7 +53,7 @@ namespace EasyTcp3.Examples.SpeedTest
             Parallel.For(0, MessageCount, new ParallelOptions {MaxDegreeOfParallelism = ThreadAmount}, i =>
             {
                 clientList.TryDequeue(out EasyTcpClient client);
-                client.Send(messageData);
+                client.SendAction("ECHO", messageData);
                 clientList.Enqueue(client);
             });
 
