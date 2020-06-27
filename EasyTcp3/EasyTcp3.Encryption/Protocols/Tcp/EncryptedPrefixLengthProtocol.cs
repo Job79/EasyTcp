@@ -77,7 +77,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         /// Return new instance of protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public override object Clone() => new EncryptedPrefixLengthProtocol(Encrypter);
+        public override object Clone() => new EncryptedPrefixLengthProtocol(new EasyEncrypt(key: Encrypter.GetKey()));
         
         /// <summary>
         /// Handle received data, trigger event and set new bufferSize determined by the header 
