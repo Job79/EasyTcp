@@ -62,7 +62,8 @@ namespace EasyTcp3.Protocols.Tcp
             {
                 var socket = ar.AsyncState as Socket;
                 socket?.EndSend(ar);
-            }, client.BaseSocket) ;
+                client.FireOnDataSend(new Message(message, client));
+            }, client.BaseSocket);
         }
         
         /// <summary>
@@ -134,6 +135,7 @@ namespace EasyTcp3.Protocols.Tcp
                     Deserialize = server.Deserialize
                 };
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
                 server.BaseSocket.BeginAccept(OnConnectCallback, server);

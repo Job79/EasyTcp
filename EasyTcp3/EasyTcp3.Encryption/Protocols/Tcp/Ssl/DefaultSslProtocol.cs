@@ -119,6 +119,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             {
                 var stream = ar.AsyncState as SslStream;
                 stream?.EndWrite(ar);
+                client.FireOnDataSend(new Message(message, client));
             }, SslStream);
         }
 
@@ -245,6 +246,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
                     Deserialize = server.Deserialize
                 };
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
                 server.BaseSocket.BeginAccept(OnConnectCallback, server);
