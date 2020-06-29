@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Threading;
 using EasyEncrypt2;
-using EasyTcp.Encryption.Protocols;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Encryption;
 using EasyTcp3.Server;
