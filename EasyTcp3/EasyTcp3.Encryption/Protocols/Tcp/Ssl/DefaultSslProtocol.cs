@@ -3,11 +3,10 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
-using EasyTcp3;
 using EasyTcp3.Protocols;
 using EasyTcp3.Server;
 
-namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
+namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
     /// Implementation of tcp protocol with ssl

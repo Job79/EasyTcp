@@ -1,9 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
-using EasyTcp.Encryption.Protocols.Tcp.Ssl;
-using EasyTcp3;
+using EasyTcp3.Encryption.Protocols.Tcp.Ssl;
 using EasyTcp3.Server;
 
-namespace EasyTcp.Encryption
+namespace EasyTcp3.Encryption
 {
     /// <summary>
     /// Class with functions for enabling ssl

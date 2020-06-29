@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using EasyTcp3;
 
-namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
+namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
     /// Protocol that determines the end of a message based on a sequence of bytes at the end of received data
