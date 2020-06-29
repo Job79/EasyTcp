@@ -2,26 +2,22 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <RootNamespace>EasyTcp.Encryption</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageId>EasyTcp.Encryption</PackageId>
+        <PackageVersion>2.2.0</PackageVersion>
         <Title>EasyTcp.Encryption</Title>
-        <Authors>Job79</Authors>
-        <Description>This package adds encryption and ssl support to EasyTcp and EasyTcp.Actions</Description>
-        <Copyright>EasyTcp3.Encryption</Copyright>
+        <Description>This package adds ssl and encryption support to EasyTcp and EasyTcp.Actions</Description>
+        <Copyright>Job79</Copyright>
         <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
-        <RepositoryType>Socket Networking Tcp TcpClient TcpServer Ssl SimpleTcp EasyTcp AsyncTcp</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageVersion>2.1.1</PackageVersion>
+        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
+        <Authors>Job79</Authors>
+        <PackageId>EasyTcp.Encryption</PackageId>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Ssl Encryption</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EasyEncrypt" Version="2.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\EasyTcp3\EasyTcp3.csproj" />
+        <PackageReference Include="EasyEncrypt" Version="2.2.0.1" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Title>EasyTcp.Logging</Title>
+        <Description>This package adds logging support to EasyTcp, EasyTcp.Actions and EasyTcp.Encryption</Description>
+        <Copyright>Job79</Copyright>
+        <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
+        <Authors>Job79</Authors>
+        <PackageId>EasyTcp.Logging</PackageId>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Logging</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
