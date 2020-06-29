@@ -1,9 +1,8 @@
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using EasyTcp.Encryption;
-using EasyTcp.Encryption.Protocols.Tcp.Ssl;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.Encryption;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;

@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using EasyEncrypt2;
-using EasyTcp3;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
-namespace EasyTcp.Encryption.Protocols.Tcp
+namespace EasyTcp3.Encryption.Protocols.Tcp
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header

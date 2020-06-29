@@ -1,7 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using EasyEncrypt2;
-using EasyTcp.Encryption.Protocols.Tcp;
-using EasyTcp.Encryption.Protocols.Tcp.Ssl;
+using EasyTcp3.Encryption.Protocols.Tcp;
+using EasyTcp3.Encryption.Protocols.Tcp.Ssl;
 using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;

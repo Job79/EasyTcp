@@ -1,10 +1,9 @@
 using EasyEncrypt2;
-using EasyTcp.Encryption.Protocols.Tcp;
-using EasyTcp3;
 using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.Encryption.Protocols.Tcp;
 using EasyTcp3.Server;
 
-namespace EasyTcp.Encryption
+namespace EasyTcp3.Encryption
 {
     /// <summary>
     /// Class with functions for encrypting packages
