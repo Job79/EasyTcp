@@ -58,11 +58,11 @@ namespace EasyTcp3.Protocols.Tcp
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
 
+            client.FireOnDataSend(new Message(message, client));
             client.BaseSocket.BeginSend(message, 0, message.Length, SocketFlags.None, ar =>
             {
                 var socket = ar.AsyncState as Socket;
                 socket?.EndSend(ar);
-                client.FireOnDataSend(new Message(message, client));
             }, client.BaseSocket);
         }
         
