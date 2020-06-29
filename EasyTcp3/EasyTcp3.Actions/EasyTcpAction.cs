@@ -8,7 +8,7 @@ namespace EasyTcp3.Actions
     /// See examples for usage
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class EasyTcpAction : Attribute
+    public sealed class EasyTcpAction : Attribute
     {
         /// <summary>
         /// Code of this action, used to determine action method when receiving data

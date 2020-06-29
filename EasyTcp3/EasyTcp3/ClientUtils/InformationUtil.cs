@@ -33,7 +33,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>s
         /// <returns>endpoint of client</returns>
-        public static IPEndPoint GetEndPoint(this EasyTcpClient client) => (IPEndPoint) client.BaseSocket.RemoteEndPoint;
+        public static IPEndPoint GetEndPoint(this EasyTcpClient client) => (IPEndPoint) client?.BaseSocket?.RemoteEndPoint;
         
         /// <summary>
         /// Get ip of client
@@ -41,6 +41,6 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>s
         /// <returns>ip of client</returns>
         public static IPAddress GetIp(this EasyTcpClient client) =>
-            client.GetEndPoint().Address;
+            client?.GetEndPoint()?.Address;
     }
 }

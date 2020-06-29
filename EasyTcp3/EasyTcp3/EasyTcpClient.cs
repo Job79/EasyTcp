@@ -76,6 +76,11 @@ namespace EasyTcp3
         /// Event that is fired when client receives data from remote host
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
+        
+        /// <summary>
+        /// Event that is fired when client sends any data to remote host
+        /// </summary>
+        public event EventHandler<Message> OnDataSend;
 
         /// <summary>
         /// Event that is fired when error occurs
@@ -91,6 +96,12 @@ namespace EasyTcp3
         /// Fire the OnDisconnect event
         /// </summary>
         public void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
+        
+        /// <summary>
+        /// Fire the OnDataSend event
+        /// </summary>
+        /// <param name="message"></param>
+        public void FireOnDataSend(Message message) => OnDataSend?.Invoke(this, message);
 
         /// <summary>
         /// Fire the OnError event,

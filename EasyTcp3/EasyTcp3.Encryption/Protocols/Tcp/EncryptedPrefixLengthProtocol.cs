@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using EasyEncrypt2;
-using EasyTcp3;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
-namespace EasyTcp.Encryption.Protocols.Tcp
+namespace EasyTcp3.Encryption.Protocols.Tcp
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header
@@ -77,7 +76,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp
         /// Return new instance of protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public override object Clone() => new EncryptedPrefixLengthProtocol(Encrypter);
+        public override object Clone() => new EncryptedPrefixLengthProtocol(new EasyEncrypt(key: Encrypter.GetKey()));
         
         /// <summary>
         /// Handle received data, trigger event and set new bufferSize determined by the header 

@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using EasyTcp3;
 
-namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
+namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
     /// Protocol that doesn't implements any framing

@@ -58,9 +58,12 @@ namespace EasyTcp3.Protocols.Tcp
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
 
-            using var e = new SocketAsyncEventArgs();
-            e.SetBuffer(message);
-            client.BaseSocket.SendAsync(e);
+            client.FireOnDataSend(new Message(message, client));
+            client.BaseSocket.BeginSend(message, 0, message.Length, SocketFlags.None, ar =>
+            {
+                var socket = ar.AsyncState as Socket;
+                socket?.EndSend(ar);
+            }, client.BaseSocket);
         }
         
         /// <summary>
@@ -132,6 +135,7 @@ namespace EasyTcp3.Protocols.Tcp
                     Deserialize = server.Deserialize
                 };
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
                 server.BaseSocket.BeginAccept(OnConnectCallback, server);

@@ -1,5 +1,4 @@
-﻿using System;
-using EasyTcp3.Examples.SpeedTest;
+﻿using EasyTcp3.Examples.SpeedTest;
 
 namespace EasyTcp3.Examples
 {
@@ -7,9 +6,8 @@ namespace EasyTcp3.Examples
     {
         static void Main()
         {
-            Console.WriteLine("Press enter to start MultiThreaded speedtest");
-            Console.ReadLine();
-            MultiThreadedSpeedTest.Run();
+            // Run test methods here
+            MultiThreadedActionSpeedTest.Run();
         }
     }
 }

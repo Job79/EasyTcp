@@ -91,6 +91,11 @@ namespace EasyTcp3.Server
         public event EventHandler<Message> OnDataReceive;
 
         /// <summary>
+        /// Event that is fired when server sends data to a client
+        /// </summary>
+        public event EventHandler<Message> OnDataSend;
+        
+        /// <summary>
         /// Event that is fired when error occurs
         /// </summary>
         public event EventHandler<Exception> OnError;
@@ -116,6 +121,12 @@ namespace EasyTcp3.Server
         /// </summary>
         /// <param name="message"></param>
         public void FireOnDataReceive(Message message) => OnDataReceive?.Invoke(this, message);
+        
+        /// <summary>
+        /// Fire the OnDataSend event
+        /// </summary>
+        /// <param name="message"></param>
+        public void FireOnDataSend(Message message) => OnDataSend?.Invoke(this, message);
 
         /// <summary>
         /// Fire the OnError event,

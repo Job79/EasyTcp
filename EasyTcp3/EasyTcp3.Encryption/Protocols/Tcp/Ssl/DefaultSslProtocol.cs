@@ -3,11 +3,10 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
-using EasyTcp3;
 using EasyTcp3.Protocols;
 using EasyTcp3.Server;
 
-namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
+namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
     /// Implementation of tcp protocol with ssl
@@ -115,8 +114,12 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
 
-            SslStream.BeginWrite(message, 0, message.Length, (ar) =>
-                SslStream.EndWrite(ar), client);
+            client.FireOnDataSend(new Message(message, client));
+            SslStream.BeginWrite(message, 0, message.Length, ar =>
+            {
+                var stream = ar.AsyncState as SslStream;
+                stream?.EndWrite(ar);
+            }, SslStream);
         }
 
         /// <summary>
@@ -242,6 +245,7 @@ namespace EasyTcp.Encryption.Protocols.Tcp.Ssl
                     Deserialize = server.Deserialize
                 };
                 client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
                 server.BaseSocket.BeginAccept(OnConnectCallback, server);
