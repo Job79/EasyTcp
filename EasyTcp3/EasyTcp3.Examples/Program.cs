@@ -1,4 +1,5 @@
-﻿using EasyTcp3.Examples.SpeedTest;
+﻿
+using EasyTcp3.Examples.SpeedTest;
 
 namespace EasyTcp3.Examples
 {

@@ -1,5 +1,9 @@
 namespace EasyTcp3.Actions
 {
+    /// <summary>
+    /// Parameter of the Interceptor/filter functions 
+    /// Represents received action 
+    /// </summary>
     public class ActionMessage : Message
     {
         /// <summary>

@@ -1,14 +1,12 @@
 using System.IO;
 using System.Threading.Tasks;
 using EasyTcp3.Actions;
-using EasyTcp3.ClientUtils;
 using EasyTcp3.ClientUtils.Async;
 using EasyTcp3.Server.ServerUtils;
 
-namespace EasyTcp3.Examples.Files
+namespace EasyTcp3.Examples.Streams
 {
     /* Example server that sends/receives a stream(file) over the network
-     * EasyTcp only supports sending streams with a known length
      */
     public class FileServer
     {

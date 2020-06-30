@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2.2.0</PackageVersion>
+        <PackageVersion>2.2.1</PackageVersion>
         <Title>EasyTcp.Encryption</Title>
         <Description>This package adds ssl and encryption support to EasyTcp and EasyTcp.Actions</Description>
         <Copyright>Job79</Copyright>

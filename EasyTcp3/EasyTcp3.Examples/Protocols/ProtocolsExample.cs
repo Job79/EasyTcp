@@ -23,6 +23,7 @@ namespace EasyTcp3.Examples.Protocols
         {
             /* Prefix length protocol, (Default when not specified)
              * prefixes all data with its length. Length is a ushort as byte[2]
+             * Max data size is 65.535 bytes. See LargeArray or streams examples for large data
              *
              * Example message:
              *     data: "data"
@@ -48,6 +49,7 @@ namespace EasyTcp3.Examples.Protocols
             /* None protocol,
              * doesn't determine the end of a message
              * Reads all available bytes into 1 byte[]
+             * Doesn't work with ReceiveStream/ReceiveLargeArray
              *
              * Example message:
              *     data: "data"
