@@ -15,12 +15,13 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream">input stream</param>
-        /// <param name="sendLengthPrefix"></param>
+        /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not readable</exception>
         public static async Task SendStreamAsync(this EasyTcpClient client, Stream stream, bool sendLengthPrefix = true,
             int bufferSize = 1024)
         {
+            if(client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
             await using var networkStream = client.Protocol.GetStream(client);
@@ -39,12 +40,13 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="message"></param>
         /// <param name="stream">output stream for receiving data</param>
-        /// <param name="count"></param>
+        /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
         public static async Task ReceiveStreamAsync(this Message message, Stream stream, long count = 0,
             int bufferSize = 1024)
         {
+            if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
             await using var networkStream = message.Client.Protocol.GetStream(message.Client);
@@ -62,7 +64,7 @@ namespace EasyTcp3.ClientUtils.Async
             int read;
 
             while (totalReceivedBytes < count &&
-                   (read = await networkStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                   (read = await networkStream.ReadAsync(buffer, 0, (int)Math.Min(bufferSize, count - totalReceivedBytes))) > 0)
             {
                 await stream.WriteAsync(buffer, 0, read);
                 totalReceivedBytes += read;

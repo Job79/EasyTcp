@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils.Async
 {
@@ -16,9 +15,11 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="client"></param>
         /// <param name="array"></param>
-        /// <param name="sendLengthPrefix"></param>
+        /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
         public static async Task SendLargeArrayAsync(this EasyTcpClient client, byte[] array, bool sendLengthPrefix = true)
         {
+            if(client?.BaseSocket == null) throw new Exception("Client is not connected");
+            
             await using var networkStream = client.Protocol.GetStream(client); 
             if(sendLengthPrefix) await networkStream.WriteAsync(BitConverter.GetBytes(array.Length));
             await networkStream.WriteAsync(array);
@@ -29,11 +30,13 @@ namespace EasyTcp3.ClientUtils.Async
         /// Use this method only when not listening for incoming messages (In the OnReceive event)
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="count"></param>
+        /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
         public static async Task<byte[]> ReceiveLargeArrayAsync(this Message message, int count = 0, int bufferSize = 1024)
         {
+            if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
+            
             await using var networkStream = message.Client.Protocol.GetStream(message.Client);
 
             // Get length from stream

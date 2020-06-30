@@ -14,9 +14,11 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="array"></param>
-        /// <param name="sendLengthPrefix"></param>
+        /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
         public static void SendLargeArray(this EasyTcpClient client, byte[] array, bool sendLengthPrefix = true)
         {
+            if(client?.BaseSocket == null) throw new Exception("Client is not connected");
+            
             using var networkStream = client.Protocol.GetStream(client);
             if(sendLengthPrefix) networkStream.Write(BitConverter.GetBytes(array.Length));
             networkStream.Write(array);
@@ -27,16 +29,18 @@ namespace EasyTcp3.ClientUtils
         /// Use this method only when not listening for incoming messages (In the OnReceive event)
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="count"></param>
+        /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
         public static byte[] ReceiveLargeArray(this Message message, int count = 0, int bufferSize = 1024)
         {
+            if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
+            
             using var networkStream = message.Client.Protocol.GetStream(message.Client);
 
+            // Get length from stream
             if (count == 0)
             {
-                // Get length from stream
                 var length = new byte[4];
                 networkStream.Read(length, 0, length.Length);
                 count = BitConverter.ToInt32(length, 0);
