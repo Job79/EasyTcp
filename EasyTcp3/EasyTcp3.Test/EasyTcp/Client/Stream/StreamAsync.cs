@@ -1,53 +1,55 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.ClientUtils.Async;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.EasyTcp.Client
+namespace EasyTcp3.Test.EasyTcp.Client.Stream
 {
     /// <summary>
-    /// Tests for the Stream functions
+    /// Tests for the StreamAsync functions
     /// </summary>
-    public class Stream
+    public class StreamAsync
     {
         [Test]
-        public void Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
+        public async Task Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-
+            
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
-
-            string testData = "123", data = null;
+            
+            string testData = "123", data = "";
 
             server.OnDataReceive += (sender, message) => //Receive stream from client
             {
                 using var stream = new MemoryStream();
-                message.ReceiveStream(stream);
+                message.ReceiveStreamAsync(stream).Wait();
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
 
             //Send stream to server
-            using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
+            await using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
             client.Send("Stream");
-            client.SendStream(dataStream);
+            await client.SendStreamAsync(dataStream);
 
-            TestHelper.WaitWhileTrue(() => data == null);
+            TestHelper.WaitWhileTrue(() => data == "");
             Assert.AreEqual(testData, data);
         }
 
         [Test]
-        public void Stream2() //Client -> Server -(Stream)> Client     (Client requests stream from server)
+        public void Stream2()//Client -> Server -(Stream)> Client     (Client requests stream from server)
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer();
             server.Start(port);
-
+            
             string testData = "123", data = null;
 
             using var client = new EasyTcpClient();
@@ -57,19 +59,20 @@ namespace EasyTcp3.Test.EasyTcp.Client
             {
                 using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
                 message.Client.Send("Stream");
-                message.Client.SendStream(dataStream);
+                message.Client.SendStreamAsync(dataStream).Wait();
             };
-
-            client.OnDataReceive += (sender, message) => //Receive stream from server
+            
+            client.OnDataReceive += async (sender, message) => //Receive stream from server
             {
-                using var stream = new MemoryStream();
-                message.ReceiveStream(stream);
+                await using var stream = new MemoryStream();
+                await message.ReceiveStreamAsync(stream);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
-            client.Send("GetStream"); //Request stream
+            client.Send("GetStream");//Request stream
 
             TestHelper.WaitWhileTrue(() => data == null);
             Assert.AreEqual(testData, data);
         }
     }
 }
+
