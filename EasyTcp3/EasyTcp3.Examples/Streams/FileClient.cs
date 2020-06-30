@@ -4,10 +4,9 @@ using System.Net;
 using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
 
-namespace EasyTcp3.Examples.Files
+namespace EasyTcp3.Examples.Streams
 {
     /* Example client that sends/receives a stream(file) over the network
-     * EasyTcp only supports sending streams with a known length
      */
     public static class FileClient
     {

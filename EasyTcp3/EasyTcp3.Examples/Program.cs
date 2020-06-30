@@ -1,4 +1,6 @@
-﻿using EasyTcp3.Examples.SpeedTest;
+﻿using EasyTcp3.Examples.LargeArray;
+using EasyTcp3.Examples.SpeedTest;
+using EasyTcp3.Examples.Streams;
 
 namespace EasyTcp3.Examples
 {
@@ -6,8 +8,10 @@ namespace EasyTcp3.Examples
     {
         static void Main()
         {
+            StreamExample.Run();
+            StreamExample.Connect();
             // Run test methods here
-            MultiThreadedActionSpeedTest.Run();
+            //MultiThreadedActionSpeedTest.Run();
         }
     }
 }
