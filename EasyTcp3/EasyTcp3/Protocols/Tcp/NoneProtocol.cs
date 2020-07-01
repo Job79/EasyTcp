@@ -65,11 +65,11 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte[] receivedData = new byte[receivedBytes];
             Buffer.BlockCopy(data,0,receivedData,0,receivedBytes); 
-            client.DataReceiveHandler(new Message(receivedData, client)).Wait();
+            await client.DataReceiveHandler(new Message(receivedData, client));
         }
     }
 }

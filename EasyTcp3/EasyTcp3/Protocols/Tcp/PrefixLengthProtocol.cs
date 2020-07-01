@@ -67,7 +67,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
-        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             if (!(ReceivingLength = !ReceivingLength))
             {
@@ -77,7 +77,7 @@ namespace EasyTcp3.Protocols.Tcp
             else
             {
                 BufferSize = 2;
-                client.DataReceiveHandler(new Message(client.Buffer, client)).Wait();
+                await client.DataReceiveHandler(new Message(client.Buffer, client));
             }
         }
     }

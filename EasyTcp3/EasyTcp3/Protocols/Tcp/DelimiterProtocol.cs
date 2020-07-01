@@ -104,7 +104,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte receivedByte = data[0]; // Size of buffer is always 1
             ReceivedBytes.Add(receivedByte);
@@ -120,7 +120,7 @@ namespace EasyTcp3.Protocols.Tcp
             byte[] receivedData = AutoRemoveDelimiter
                 ? ReceivedBytes.Take(receivedBytesLength).ToArray() // Remove delimiter from message
                 : ReceivedBytes.ToArray();
-            client.DataReceiveHandler(new Message(receivedData, client)).Wait();
+            await client.DataReceiveHandler(new Message(receivedData, client));
             ReceivedBytes.Clear();
         }
     }
