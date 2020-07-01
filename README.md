@@ -9,7 +9,22 @@
   <br/><br/><br/>
 </p>
 
-# EasyTcp
+# Features
+- Simple and Easy to use
+- High performance (250.000 round trips/second)*
+- Very lightweight (use only what you need)
+- Async support
+- Actions wich make creating API's realy simple (See EasyTcp.Actions)
+- Support for sending raw streams/very large arrays
+- Serialistaion and compression
+- Different kinds of framing
+- MIT license
+- Unit tested (~250 unit tests)
+
+\* Tested on local machine(linux) with an ryzen 7 with client and server running under the same process. See EasyTcp.Examples/SpeedTest/MultithreadedSpeedTest.cs
+
+# Packages
+## EasyTcp
 EasyTcp3 is a package that makes creating tcp servers and clients simple. <br/>
 It is very fast, simple, supports framing, serialisation, disconnect detection, event handlers and more. <br/>
 See the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for documentation.
@@ -30,7 +45,7 @@ if(!client.Connect("127.0.0.1", PORT)) return;
 client.Send("Hello server");
 ```
 
-# EasyTcp.Actions
+## EasyTcp.Actions
 EasyTcp.Actions adds support to EasyTcp for triggering functions based on received data. <br/>
 It does this without giving up (noticeable) performance, and makes creating big servers/clients easy. <br/>
 See the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for documentation.
@@ -64,7 +79,7 @@ client.SendAction("ECHO","Hello me"); // Trigger the ECHO action server side
 client.SendAction("BROADCAST","Hello everyone"); // Trigger the BROADCAST action server side
 ```
 
-# EasyTcp.Encryption
+## EasyTcp.Encryption
 EasyTcp.Encryption adds ssl adn encryption support to EasyTcp. <br/>
 See the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for documentation.
 ```cs
@@ -91,6 +106,18 @@ using var client = new EasyTcpClient().UseEncryption(encrypter);
 if(!client.Connect("127.0.0.1", PORT)) return;
 client.Send("Hello encrypted server!"); // All data is automatically encrypted
 ```
+
+## EasyTcp.Logging
+EasyTcp.Logging adds support for logging of incoming/outgoing messages/connections and errors.
+```cs
+using var server = new EasyTcpServer().UseServerLogging(Console.WriteLine).Start(Port);
+
+using var client = new EasyTcpClient().UseClientLogging(Console.WriteLine);
+if(!client.Connect("127.0.0.1", Port)) return;
+client.Send("Hello server!");
+Console.ReadLine();      
+```
+
 # Contribution / Help / Questions / Feedback
 Create a issue, pull request or send an email to jobse@pm.me
 
