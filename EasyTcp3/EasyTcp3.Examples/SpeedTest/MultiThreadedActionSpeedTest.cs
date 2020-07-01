@@ -17,7 +17,7 @@ namespace EasyTcp3.Examples.SpeedTest
     public class MultiThreadedActionSpeedTest
     {
         const int ClientsCount = 20_000; // Max: ushort / 2 because of ip restrictions
-        const int MessageCount = 1_000_000;
+        const int MessageCount = 5_000_000;
         private static readonly string MessageDataString = new string('H', 100);
         const int Port = 50013;
         private const int ThreadAmount = 8;
