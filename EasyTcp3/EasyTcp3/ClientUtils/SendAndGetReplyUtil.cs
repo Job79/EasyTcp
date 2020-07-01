@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils
@@ -34,6 +35,7 @@ namespace EasyTcp3.ClientUtils
                 // Function is no longer used when signal is disposed, therefore ignore this warning
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Set();
+                return Task.CompletedTask;
             };
             client.Send(data);
 

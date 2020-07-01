@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocols.Tcp
@@ -95,7 +96,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public abstract void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
+        public abstract Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
 
         /*
          * Internal methods
@@ -134,7 +135,7 @@ namespace EasyTcp3.Protocols.Tcp
                     Serialize = server.Serialize,
                     Deserialize = server.Deserialize
                 };
-                client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataReceiveAsync += async (_, message) => await server.FireOnDataReceive(message);
                 client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
@@ -157,7 +158,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// Fired when new data is received
         /// </summary>
         /// <param name="ar"></param>
-        protected virtual void OnReceiveCallback(IAsyncResult ar)
+        protected virtual async void OnReceiveCallback(IAsyncResult ar)
         {
             var client = ar.AsyncState as EasyTcpClient;
             if (client == null) return;
@@ -168,7 +169,7 @@ namespace EasyTcp3.Protocols.Tcp
                 int receivedBytes = client.BaseSocket.EndReceive(ar, out SocketError socketErr);
                 if (receivedBytes != 0 || socketErr != SocketError.Success)
                 {
-                    DataReceive(client.Buffer, receivedBytes, client);
+                    await DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else EnsureDataReceiverIsRunning(client);

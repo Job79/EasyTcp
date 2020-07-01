@@ -32,6 +32,7 @@ namespace EasyTcp3.ClientUtils.Async
                 // Function is no longer used when signal is disposed, therefore ignore this warning
                 // ReSharper disable once AccessToDisposedClosure
                 signal.Release();
+                return Task.CompletedTask;
             };
 
             await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));

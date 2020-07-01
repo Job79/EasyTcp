@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using EasyTcp3.Protocols;
 using EasyTcp3.Server;
 
@@ -192,7 +193,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public abstract void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
+        public abstract Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
 
         /*
          * Internal methods
@@ -244,7 +245,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                     Serialize = server.Serialize,
                     Deserialize = server.Deserialize
                 };
-                client.OnDataReceive += (_, message) => server.FireOnDataReceive(message);
+                client.OnDataReceiveAsync += async (_, message) => await server.FireOnDataReceive(message);
                 client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
@@ -267,7 +268,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// Fired when new data is received
         /// </summary>
         /// <param name="ar"></param>
-        protected virtual void OnReceiveCallback(IAsyncResult ar)
+        protected virtual async void OnReceiveCallback(IAsyncResult ar)
         {
             var client = ar.AsyncState as EasyTcpClient;
             if (client == null) return;
@@ -278,7 +279,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 int receivedBytes = SslStream.EndRead(ar);
                 if (receivedBytes != 0)
                 {
-                    DataReceive(client.Buffer, receivedBytes, client);
+                    await DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else EnsureDataReceiverIsRunning(client);

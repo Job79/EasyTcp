@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
@@ -73,9 +74,19 @@ namespace EasyTcp3
         public event EventHandler<EasyTcpClient> OnDisconnect;
 
         /// <summary>
-        /// Event that is fired when client receives data from remote host
+        /// Async event that is fired when client receives data from remote host
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
+        
+        /// <summary>
+        /// Event that is fired when client receives data from remote host
+        /// </summary>
+        public event OnDataReceiveAsyncDelegate OnDataReceiveAsync;
+        
+        /// <summary>
+        /// Delegate type for OnDataReceiveAsync
+        /// </summary>
+        public delegate Task OnDataReceiveAsyncDelegate(object sender, Message message);
         
         /// <summary>
         /// Event that is fired when client sends any data to remote host
@@ -118,12 +129,16 @@ namespace EasyTcp3
         /// Fire the OnDataReceive event
         /// </summary>
         /// <param name="message">received message</param>
-        public void FireOnDataReceiveEvent(Message message) => OnDataReceive?.Invoke(this, message);
+        public async Task FireOnDataReceiveEvent(Message message)
+        {
+            if (OnDataReceiveAsync != null) await OnDataReceiveAsync.Invoke(this, message);
+            OnDataReceive?.Invoke(this, message);
+        } 
 
         /// <summary>
         /// Execute custom action when receiving data 
         /// </summary>
-        public Action<Message> DataReceiveHandler;
+        public Func<Message, Task> DataReceiveHandler;
 
         /// <summary>
         /// Set DataReceiveHandler back to default behavior (calling OnDataReceive)

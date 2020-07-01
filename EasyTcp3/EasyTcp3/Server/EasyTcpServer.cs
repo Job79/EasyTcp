@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
@@ -89,6 +90,16 @@ namespace EasyTcp3.Server
         /// Event that is fired when server receives data
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
+        
+        /// <summary>
+        /// Event that is fired when client receives data from remote host
+        /// </summary>
+        public event OnDataReceiveAsyncDelegate OnDataReceiveAsync;
+        
+        /// <summary>
+        /// Delegate type for OnDataReceiveAsync
+        /// </summary>
+        public delegate Task OnDataReceiveAsyncDelegate(object sender, Message message);
 
         /// <summary>
         /// Event that is fired when server sends data to a client
@@ -120,8 +131,12 @@ namespace EasyTcp3.Server
         /// Fire the OnDataReceive event
         /// </summary>
         /// <param name="message"></param>
-        public void FireOnDataReceive(Message message) => OnDataReceive?.Invoke(this, message);
-        
+        public async Task FireOnDataReceive(Message message)
+        {
+            if (OnDataReceiveAsync != null) await OnDataReceiveAsync.Invoke(this, message);
+            OnDataReceive?.Invoke(this, message);
+        }
+
         /// <summary>
         /// Fire the OnDataSend event
         /// </summary>
