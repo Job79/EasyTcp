@@ -83,11 +83,11 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             byte[] receivedData = new byte[receivedBytes];
             Buffer.BlockCopy(data,0,receivedData,0,receivedBytes); 
-            await client.DataReceiveHandler(new Message(receivedData, client));
+            client.DataReceiveHandler(new Message(receivedData, client)).Wait();
         }
     }
 }

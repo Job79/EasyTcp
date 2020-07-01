@@ -84,7 +84,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
-        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override  void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             if (!(ReceivingLength = !ReceivingLength))
             {
@@ -94,7 +94,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             else
             {
                 BufferSize = 2;
-                await client.DataReceiveHandler(new Message(client.Buffer, client));
+                client.DataReceiveHandler(new Message(client.Buffer, client)).Wait();
             }
         }
     }

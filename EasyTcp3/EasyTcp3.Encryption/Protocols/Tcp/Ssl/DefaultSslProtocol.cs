@@ -193,7 +193,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="data">received data, has size of clients buffer</param>
         /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
-        public abstract Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
+        public abstract void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
 
         /*
          * Internal methods
@@ -245,7 +245,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                     Serialize = server.Serialize,
                     Deserialize = server.Deserialize
                 };
-                client.OnDataReceiveAsync += async (_, message) => await server.FireOnDataReceive(message);
+                client.OnDataReceive += (_, message) => server.FireOnDataReceive(message).Wait();
                 client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
@@ -279,7 +279,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 int receivedBytes = SslStream.EndRead(ar);
                 if (receivedBytes != 0)
                 {
-                    await DataReceive(client.Buffer, receivedBytes, client);
+                    DataReceive(client.Buffer, receivedBytes, client);
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else EnsureDataReceiverIsRunning(client);
