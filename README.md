@@ -18,6 +18,7 @@
 - Support for sending raw streams/very large arrays
 - Serialistaion and compression
 - Different kinds of framing
+- MIT license
 - Unit tested (~250 unit tests)
 
 \* Tested on local machine(linux) with an ryzen 7 with client and server running under the same process. See EasyTcp.Examples/SpeedTest/MultithreadedSpeedTest.cs
