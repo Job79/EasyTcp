@@ -34,7 +34,7 @@ namespace EasyTcp3.Examples.LargeArray
             client.SendLargeArray(new byte[1000000]);
 
             // Send large array without length prefix
-            client.SendLargeArray(new byte[10000], false);
+            client.SendLargeArray(new byte[10000], sendLengthPrefix: false);
             Console.ReadLine();
         }
 
@@ -50,7 +50,7 @@ namespace EasyTcp3.Examples.LargeArray
             Console.WriteLine($"Received {largeArray.Length} bytes");
 
             // Receive array with known length 
-            var largeArray2 = await message.ReceiveLargeArrayAsync(10000);
+            var largeArray2 = await message.ReceiveLargeArrayAsync(count: 10000);
             Console.WriteLine($"Received {largeArray2.Length} bytes");
         }
     }
