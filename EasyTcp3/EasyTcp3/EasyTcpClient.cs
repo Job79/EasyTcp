@@ -107,12 +107,13 @@ namespace EasyTcp3
         /// Fire the OnDisconnect event
         /// </summary>
         public void FireOnDisconnect() => OnDisconnect?.Invoke(this, this);
-        
+
         /// <summary>
         /// Fire the OnDataSend event
         /// </summary>
-        /// <param name="message"></param>
-        public void FireOnDataSend(Message message) => OnDataSend?.Invoke(this, message);
+        /// <param name="data"></param>
+        /// <param name="client"></param>
+        public void FireOnDataSend(byte[] data, EasyTcpClient client) => OnDataSend?.Invoke(this, new Message(data, client));
 
         /// <summary>
         /// Fire the OnError event,
