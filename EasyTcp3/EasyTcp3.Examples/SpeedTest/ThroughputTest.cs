@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Protocols.Tcp;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
@@ -22,8 +21,7 @@ namespace EasyTcp3.Examples.SpeedTest
 
         public static void Run()
         {
-            using var server = new EasyTcpServer().Start(Port);
-            server.OnDataReceive += (o, message) => message.Client.Send(message);
+           
 
             byte[] messageData = Encoding.UTF8.GetBytes(MessageDataString);
             var clientList = new ConcurrentQueue<EasyTcpClient>();
@@ -49,7 +47,8 @@ namespace EasyTcp3.Examples.SpeedTest
             {
                 Console.Clear();
                 Console.WriteLine($"Total: {st.ElapsedMilliseconds}ms, {counter} messages");
-                Console.WriteLine($"Average milliseconds per message: {st.ElapsedMilliseconds / (double) counter}");
+                Console.WriteLine($"Average response time server in milliseconds: {st.ElapsedMilliseconds / (double) counter * ClientsCount}");
+                Console.WriteLine($"Average milliseconds spend per message: {st.ElapsedMilliseconds / (double) counter}");
                 Console.WriteLine($"Messages/Second: {counter / st.Elapsed.TotalSeconds}"); 
                 Task.Delay(50).Wait();
             }

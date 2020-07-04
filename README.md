@@ -11,7 +11,7 @@
 
 # Features
 - Simple and Easy to use
-- High performance (250.000 round trips/second)*
+- High performance (~430.000 round trips/second)*
 - Very lightweight (use only what you need)
 - Async support
 - Actions wich make creating API's realy simple (See EasyTcp.Actions)
@@ -21,7 +21,7 @@
 - MIT license
 - Unit tested (~250 unit tests)
 
-\* Tested on local machine(linux, ryzen 7) with client and server running under the same process. See EasyTcp.Examples/SpeedTest/MultithreadedSpeedTest.cs
+\* Tested on local machine(linux, ryzen 7) with clients and server running under the same process. See EasyTcp.Examples/SpeedTest/ThroughputTest.cs
 
 # Packages
 ## EasyTcp
