@@ -18,6 +18,11 @@ namespace EasyTcp3.Server
         /// BaseSocket of server
         /// </summary>
         public Socket BaseSocket { get; protected internal set; }
+        
+        /// <summary>
+        /// AsyncEventArgs used to accept new sockets
+        /// </summary>
+        public SocketAsyncEventArgs AcceptArgs;
 
         /// <summary>
         /// Protocol for server, protocol determines all behavior of this server
@@ -172,6 +177,7 @@ namespace EasyTcp3.Server
             }
 
             UnsafeConnectedClients.Clear();
+            AcceptArgs?.Dispose();
             Protocol?.Dispose();
             BaseSocket.Dispose();
             BaseSocket = null;

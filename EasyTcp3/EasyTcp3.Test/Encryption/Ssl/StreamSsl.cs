@@ -24,9 +24,9 @@ namespace EasyTcp3.Test.Encryption.Ssl
 
             string testData = "123", data = null;
 
-            server.OnDataReceive += (sender, message) => //Receive stream from client
+            server.OnDataReceiveAsync += async (sender, message) => //Receive stream from client
             {
-                using var stream = new MemoryStream();
+                await using var stream = new MemoryStream();
                 message.ReceiveStream(stream);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
