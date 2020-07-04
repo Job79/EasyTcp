@@ -2,7 +2,7 @@
   <strong>EasyTcp</strong>
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
- <img src="https://img.shields.io/badge/version-3.5.0-green.svg">
+  <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
   <img src="https://img.shields.io/badge/build-passing-green.svg">
   <br/>
   Easy and simple library for TCP clients and servers. Focused on performance and usability.
@@ -14,7 +14,7 @@
 - High performance (~430.000 round trips/second)*
 - Very lightweight (use only what you need)
 - Async support
-- Actions wich make creating API's realy simple (See EasyTcp.Actions)
+- Actions wich makes creating API's realy simple (See EasyTcp.Actions)
 - Support for sending raw streams/very large arrays
 - Serialistaion and compression
 - Different kinds of framing
