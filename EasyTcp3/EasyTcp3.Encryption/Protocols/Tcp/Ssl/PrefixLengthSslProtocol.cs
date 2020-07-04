@@ -88,13 +88,13 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         {
             if (!(ReceivingLength = !ReceivingLength))
             {
-                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                BufferSize = BitConverter.ToUInt16(data, 0);
                 if (BufferSize == 0) client.Dispose();
             }
             else
             {
                 BufferSize = 2;
-                await client.DataReceiveHandler(new Message(client.Buffer, client));
+                await client.DataReceiveHandler(new Message(data, client));
             }
         }
     }

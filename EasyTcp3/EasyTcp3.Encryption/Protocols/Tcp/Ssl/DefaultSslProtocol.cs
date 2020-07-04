@@ -14,6 +14,8 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
     /// </summary>
     public abstract class DefaultSslProtocol : IEasyTcpProtocol
     {
+        public byte[] ReceiveBuffer;
+        
         /// <summary>
         /// Instance of SslStream,
         /// null for base protocol of server
@@ -81,8 +83,15 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="server"></param>
         public virtual void StartAcceptingClients(EasyTcpServer server)
         {
-            server.BaseSocket.Listen(5000);
-            server.BaseSocket.BeginAccept(OnConnectCallback, server);
+            if (server.AcceptArgs == null)
+            {
+                server.BaseSocket.Listen(50000);
+                server.AcceptArgs = new SocketAsyncEventArgs {UserToken = server};
+                server.AcceptArgs.Completed += (_, ar) => OnConnectCallback(ar);
+            }
+
+            server.AcceptArgs.AcceptSocket = null;
+            if (!server.BaseSocket.AcceptAsync(server.AcceptArgs)) OnConnectCallback(server.AcceptArgs);
         }
 
         /// <summary>
@@ -93,8 +102,10 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         {
             if (IsListening) return;
             IsListening = true;
-            ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(client.Buffer = new byte[BufferSize], 0,
-                client.Buffer.Length, OnReceiveCallback, client);
+
+            var protocol = (DefaultSslProtocol)client.Protocol;
+            ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(protocol.ReceiveBuffer = new byte[BufferSize], 0,
+                protocol.ReceiveBuffer.Length, OnReceiveCallback, client);
         }
 
         /// <summary>
@@ -232,14 +243,14 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// Fired when new client connects
         /// </summary>
         /// <param name="ar"></param>
-        protected virtual void OnConnectCallback(IAsyncResult ar)
+        protected virtual void OnConnectCallback(SocketAsyncEventArgs ar)
         {
-            var server = ar.AsyncState as EasyTcpServer;
+            var server = ar.UserToken as EasyTcpServer;
             if (server?.BaseSocket == null || !server.IsRunning) return;
 
             try
             {
-                var client = new EasyTcpClient(server.BaseSocket.EndAccept(ar),
+                var client = new EasyTcpClient(ar.AcceptSocket,
                     (IEasyTcpProtocol) server.Protocol.Clone())
                 {
                     Serialize = server.Serialize,
@@ -249,12 +260,13 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 client.OnDataSend += (_, message) => server.FireOnDataSend(message);
                 client.OnDisconnect += (_, c) => server.FireOnDisconnect(c);
                 client.OnError += (_, exception) => server.FireOnError(exception);
-                server.BaseSocket.BeginAccept(OnConnectCallback, server);
+
+                StartAcceptingClients(server);
 
                 if (!client.Protocol.OnConnectServer(client)) return;
                 server.FireOnConnect(client);
-                if (client.BaseSocket != null) //Check if user aborted OnConnect with Client.Dispose()
-                    lock (server.UnsafeConnectedClients) 
+                if (client.BaseSocket != null) // Check if user aborted OnConnect with Client.Dispose()
+                    lock (server.UnsafeConnectedClients)
                         server.UnsafeConnectedClients.Add(client);
             }
             catch (Exception ex)
@@ -279,7 +291,9 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 int receivedBytes = SslStream.EndRead(ar);
                 if (receivedBytes != 0)
                 {
-                    await DataReceive(client.Buffer, receivedBytes, client);
+                    var protocol = (DefaultSslProtocol)client.Protocol;
+                    await DataReceive(protocol.ReceiveBuffer, receivedBytes, client);
+                    
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else EnsureDataReceiverIsRunning(client);

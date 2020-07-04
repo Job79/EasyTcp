@@ -34,7 +34,6 @@ namespace EasyTcp3
 
         private IEasyTcpProtocol _protocol;
 
-        
         /// <summary>
         /// List with session variables
         /// </summary>
@@ -57,11 +56,6 @@ namespace EasyTcp3
         /// </summary>
         public Func<byte[], Type, object> Deserialize = (b, t) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
-
-        /// <summary>
-        /// Buffer with received data
-        /// </summary>
-        public byte[] Buffer;
 
         /// <summary>
         /// Event that is fired when client connected to remote host 
