@@ -68,6 +68,34 @@ namespace EasyTcp3.Protocols.Tcp
         }
         
         /// <summary>
+        /// Get receiving/sending stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client) => new NetworkStream(client.BaseSocket);
+        
+        /// <summary>
+        /// Method that is triggered when client connects
+        /// Default behavior is starting listening for incoming data
+        /// </summary>
+        /// <param name="client"></param>
+        public bool OnConnect(EasyTcpClient client)
+        {
+            EnsureDataReceiverIsRunning(client);
+            return true;
+        }
+
+        /// <summary>
+        /// Method that is triggered when client connects to server
+        /// Default behavior is starting listening for incoming data
+        /// </summary>
+        /// <param name="client"></param>
+        public bool OnConnectServer(EasyTcpClient client)
+        {
+            EnsureDataReceiverIsRunning(client);
+            return true;
+        }
+        
+        /// <summary>
         /// Create new instance of current protocol,
         /// used by server when accepting a new client
         /// </summary>

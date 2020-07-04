@@ -20,16 +20,17 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not readable</exception>
-        public static async Task SendStreamAsync(this EasyTcpClient client, Stream stream, bool compression = false, bool sendLengthPrefix = true,
+        public static async Task SendStreamAsync(this EasyTcpClient client, Stream stream, bool compression = false,
+            bool sendLengthPrefix = true,
             int bufferSize = 1024)
         {
-            if(client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
-            await using var networkStream = client.Protocol.GetStream(client);
-            await using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
-            
-            if (sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(stream.Length));
+            using var networkStream = client.Protocol.GetStream(client);
+            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+
+            if (sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(stream.Length), 0, 8);
 
             var buffer = new byte[bufferSize];
             int read;
@@ -48,21 +49,22 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
-        public static async Task ReceiveStreamAsync(this Message message, Stream stream, bool compression = false, long count = 0,
+        public static async Task ReceiveStreamAsync(this Message message, Stream stream, bool compression = false,
+            long count = 0,
             int bufferSize = 1024)
         {
-            if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
-            await using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            await using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            using var networkStream = message.Client.Protocol.GetStream(message.Client);
+            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
 
             //Get length of stream
             if (count == 0)
             {
                 var length = new byte[8];
                 await dataStream.ReadAsync(length, 0, length.Length);
-                count = BitConverter.ToInt64(length);
+                count = BitConverter.ToInt64(length, 0);
             }
 
             var buffer = new byte[bufferSize];
@@ -70,7 +72,8 @@ namespace EasyTcp3.ClientUtils.Async
             int read;
 
             while (totalReceivedBytes < count &&
-                   (read = await dataStream.ReadAsync(buffer, 0, (int)Math.Min(bufferSize, count - totalReceivedBytes))) > 0)
+                   (read = await dataStream.ReadAsync(buffer, 0,
+                       (int) Math.Min(bufferSize, count - totalReceivedBytes))) > 0)
             {
                 await stream.WriteAsync(buffer, 0, read);
                 totalReceivedBytes += read;

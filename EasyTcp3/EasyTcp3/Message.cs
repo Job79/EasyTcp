@@ -85,49 +85,49 @@ namespace EasyTcp3
         /// Convert data to UShort
         /// </summary>
         /// <returns>data as UShort</returns>
-        public ushort ToUShort() => BitConverter.ToUInt16(Data);
+        public ushort ToUShort() => BitConverter.ToUInt16(Data, 0);
 
         /// <summary>
         /// Convert data to Short
         /// </summary>
         /// <returns>data as Short</returns>
-        public short ToShort() => BitConverter.ToInt16(Data);
+        public short ToShort() => BitConverter.ToInt16(Data, 0);
 
         /// <summary>
         /// Convert data to UInt
         /// </summary>
         /// <returns>data as UInt</returns>
-        public uint ToUInt() => BitConverter.ToUInt32(Data);
+        public uint ToUInt() => BitConverter.ToUInt32(Data, 0);
 
         /// <summary>
         /// Convert data to Int
         /// </summary>
         /// <returns>data as Int</returns>
-        public int ToInt() => BitConverter.ToInt16(Data);
+        public int ToInt() => BitConverter.ToInt16(Data, 0);
 
         /// <summary>
         /// Convert data to ULong
         /// </summary>
         /// <returns>data as ULong</returns>
-        public ulong ToULong() => BitConverter.ToUInt64(Data);
+        public ulong ToULong() => BitConverter.ToUInt64(Data, 0);
 
         /// <summary>
         /// Convert data to Long
         /// </summary>
         /// <returns>data as Long</returns>
-        public long ToLong() => BitConverter.ToInt64(Data);
+        public long ToLong() => BitConverter.ToInt64(Data, 0);
 
         /// <summary>
         /// Convert data to Double
         /// </summary>
         /// <returns>data as Double</returns>
-        public double ToDouble() => BitConverter.ToDouble(Data);
+        public double ToDouble() => BitConverter.ToDouble(Data, 0);
 
         /// <summary>
         /// Convert data to Bool
         /// </summary>
         /// <returns>data as Bool</returns>
-        public bool ToBool() => BitConverter.ToBoolean(Data);
+        public bool ToBool() => BitConverter.ToBoolean(Data, 0);
 
         /// <summary>
         /// Convert data to String
@@ -147,7 +147,7 @@ namespace EasyTcp3
         /// </summary>
         /// <typeparam name="T">Packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new() => IEasyTcpPacket.From<T>(Data);
+        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.From<T>(Data);
 
         /// <summary>
         /// Deserialize object from byte[] 

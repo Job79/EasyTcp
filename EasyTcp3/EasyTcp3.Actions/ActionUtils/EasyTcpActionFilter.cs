@@ -1,9 +1,11 @@
+using System;
+
 namespace EasyTcp3.Actions.ActionUtils
 {
     /// <summary>
     /// Filter attribute for EasyTcpActions 
     /// </summary>
-    public interface IEasyTcpActionFilter
+    public abstract class EasyTcpActionFilter : Attribute
     {
         /// <summary>
         /// Determines whether client has access to an action
@@ -12,6 +14,6 @@ namespace EasyTcp3.Actions.ActionUtils
         /// <param name="sender">EasyTcpActionServer/EasyTcpActionClient as sender</param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool HasAccess(object sender, ActionMessage message);
+        public abstract bool HasAccess(object sender, ActionMessage message);
     }
 }

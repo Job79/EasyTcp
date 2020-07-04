@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageVersion>1.1.0</PackageVersion>
         <Title>EasyTcp.Logging</Title>
@@ -14,6 +14,7 @@
         <PackageId>EasyTcp.Logging</PackageId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Logging</PackageTags>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

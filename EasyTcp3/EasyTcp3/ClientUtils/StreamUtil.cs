@@ -28,7 +28,7 @@ namespace EasyTcp3.ClientUtils
             using var networkStream = client.Protocol.GetStream(client);
             using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
             
-            if (sendLengthPrefix) dataStream.Write(BitConverter.GetBytes(stream.Length));
+            if (sendLengthPrefix) dataStream.Write(BitConverter.GetBytes(stream.Length),0,8);
 
             var buffer = new byte[bufferSize];
             int read;
@@ -60,7 +60,7 @@ namespace EasyTcp3.ClientUtils
             {
                 var length = new byte[8];
                 dataStream.Read(length, 0, length.Length);
-                count = BitConverter.ToInt64(length);
+                count = BitConverter.ToInt64(length, 0);
             }
 
             var buffer = new byte[bufferSize];

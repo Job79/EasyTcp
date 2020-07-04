@@ -22,11 +22,11 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if(client?.BaseSocket == null) throw new Exception("Client is not connected");
             
-            await using var networkStream = client.Protocol.GetStream(client);
-            await using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
+            using var networkStream = client.Protocol.GetStream(client);
+            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
             
-            if(sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(array.Length));
-            await dataStream.WriteAsync(array);
+            if(sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(array.Length),0, 4);
+            await dataStream.WriteAsync(array,0,array.Length);
         }
 
         /// <summary>
@@ -42,15 +42,15 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             
-            await using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            await using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            using var networkStream = message.Client.Protocol.GetStream(message.Client);
+            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
 
             // Get length from stream
             if (count == 0)
             {
                 var length = new byte[4];
                 await dataStream.ReadAsync(length, 0, length.Length);
-                count = BitConverter.ToInt32(length); 
+                count = BitConverter.ToInt32(length, 0); 
             }
 
             var receivedArray = new byte[count];
