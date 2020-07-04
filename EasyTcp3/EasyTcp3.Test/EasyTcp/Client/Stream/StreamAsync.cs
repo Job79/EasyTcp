@@ -27,10 +27,10 @@ namespace EasyTcp3.Test.EasyTcp.Client.Stream
             
             string testData = "123", data = "";
 
-            server.OnDataReceive += (sender, message) => //Receive stream from client
+            server.OnDataReceiveAsync += async (sender, message) => //Receive stream from client
             {
-                using var stream = new MemoryStream();
-                message.ReceiveStreamAsync(stream).Wait();
+                await using var stream = new MemoryStream();
+                await message.ReceiveStreamAsync(stream);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
 
@@ -55,14 +55,14 @@ namespace EasyTcp3.Test.EasyTcp.Client.Stream
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
-            server.OnDataReceive += (sender, message) => //Send stream if client requests
+            server.OnDataReceiveAsync += async (sender, message) => //Send stream if client requests
             {
-                using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
+                await using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
                 message.Client.Send("Stream");
-                message.Client.SendStreamAsync(dataStream).Wait();
+                await message.Client.SendStreamAsync(dataStream);
             };
             
-            client.OnDataReceive += async (sender, message) => //Receive stream from server
+            client.OnDataReceiveAsync += async (sender, message) => //Receive stream from server
             {
                 await using var stream = new MemoryStream();
                 await message.ReceiveStreamAsync(stream);
