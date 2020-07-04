@@ -8,7 +8,7 @@ namespace EasyTcp3.Examples
         static void Main()
         {
             // Run test methods here
-            MultiThreadedActionSpeedTest.Run();
+            ThroughputTest.Run();
         }
     }
 }
