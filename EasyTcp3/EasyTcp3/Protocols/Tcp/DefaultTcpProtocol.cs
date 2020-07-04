@@ -126,6 +126,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// </summary>
         public virtual void Dispose()
         {
+            ReceiveBuffer?.Dispose();
         }
         
         /*
