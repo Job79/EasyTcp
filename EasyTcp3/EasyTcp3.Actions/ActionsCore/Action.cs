@@ -30,7 +30,7 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <summary>
         /// List with EasyTcpAction filters
         /// </summary>
-        public List<IEasyTcpActionFilter> Filters;
+        public List<EasyTcpActionFilter> Filters;
 
         /// <summary>
         /// Instance of EasyTcpActionDelegate*
@@ -50,7 +50,7 @@ namespace EasyTcp3.Actions.ActionsCore
             if (classInstance == null) EasyTcpAction = Delegate.CreateDelegate(methodType, method);
             EasyTcpAction = Delegate.CreateDelegate(methodType, classInstance, method);
 
-            var filters = method.GetCustomAttributes().OfType<IEasyTcpActionFilter>().ToList();
+            var filters = method.GetCustomAttributes().OfType<EasyTcpActionFilter>().ToList();
             if (filters.Any()) Filters = filters;
         }
         

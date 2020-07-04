@@ -35,7 +35,7 @@ namespace EasyTcp3.Examples.Streams
             
             // Send stream without length prefix
             var stream2 = new MemoryStream(new byte[10000]);
-            client.SendStream(stream2, false);
+            client.SendStream(stream2, sendLengthPrefix: false);
             Console.ReadLine();
 
             // Writing / reading the base stream is also possible
@@ -56,7 +56,7 @@ namespace EasyTcp3.Examples.Streams
 
             // Receive stream with known length 
             await using var stream2 = new MemoryStream();
-            await message.ReceiveStreamAsync(stream2, 10000);
+            await message.ReceiveStreamAsync(stream2, count: 10000);
             Console.WriteLine($"Received {stream2.Length} bytes");
         }
     }

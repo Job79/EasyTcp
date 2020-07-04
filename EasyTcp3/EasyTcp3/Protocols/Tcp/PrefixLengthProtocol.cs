@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasyTcp3.Protocols.Tcp
 {
@@ -66,17 +67,17 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="data"></param>
         /// <param name="receivedBytes">ignored</param>
         /// <param name="client"></param>
-        public override void DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
+        public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
             if (!(ReceivingLength = !ReceivingLength))
             {
-                BufferSize = BitConverter.ToUInt16(client.Buffer, 0);
+                BufferSize = BitConverter.ToUInt16(data, 0);
                 if (BufferSize == 0) client.Dispose();
             }
             else
             {
                 BufferSize = 2;
-                client.DataReceiveHandler(new Message(client.Buffer, client));
+                await client.DataReceiveHandler(new Message(data, client));
             }
         }
     }

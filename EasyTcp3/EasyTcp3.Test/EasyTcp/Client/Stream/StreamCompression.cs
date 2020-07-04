@@ -1,40 +1,37 @@
 using System.IO;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Encryption;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
 
-namespace EasyTcp3.Test.Encryption.Ssl
+namespace EasyTcp3.Test.EasyTcp.Client.Stream
 {
-    public class StreamSsl
+    public class StreamCompression
     {
         [Test]
-        public void Stream()
+        public void Stream1() //Client -> -(Stream)> Server     (Client sends message to server)
         {
-            var certificate = new X509Certificate2("certificate.pfx", "password");
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer().UseSsl(certificate).Start(port);
+            using var server = new EasyTcpServer().Start(port);
 
-            using var client = new EasyTcpClient().UseSsl("localhost",true);
+            using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
 
             string testData = "123", data = null;
 
-            server.OnDataReceiveAsync += async (sender, message) => //Receive stream from client
+            server.OnDataReceive += (sender, message) => //Receive stream from client
             {
-                await using var stream = new MemoryStream();
-                message.ReceiveStream(stream);
+                using var stream = new MemoryStream();
+                message.ReceiveStream(stream, compression: true);
                 data = Encoding.UTF8.GetString(stream.ToArray());
             };
 
             //Send stream to server
             using var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData));
             client.Send("Stream");
-            client.SendStream(dataStream);
+            client.SendStream(dataStream, compression: true);
 
             TestHelper.WaitWhileTrue(() => data == null);
             Assert.AreEqual(testData, data);

@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
@@ -39,9 +38,9 @@ namespace EasyTcp3.Test.Actions.Filter
         public void Auth() => Interlocked.Increment(ref _counter);
     }
 
-    public class EasyTcpTestAuthorization : Attribute, IEasyTcpActionFilter
+    public class EasyTcpTestAuthorization : EasyTcpActionFilter
     {
-        public bool HasAccess(object sender, ActionMessage message)
+        public override bool HasAccess(object sender, ActionMessage message)
         {
             if (message.Client.Session.TryGetValue("role", out object role) && role as string == "user") return true;
             else return false;

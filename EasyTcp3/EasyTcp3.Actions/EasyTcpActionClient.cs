@@ -58,7 +58,7 @@ namespace EasyTcp3.Actions
             string nameSpace = null) : base(protocol)
         {
             AddActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace);
-            OnDataReceive += async (sender, message) =>
+            OnDataReceiveAsync += async (sender, message) =>
             {
                 try { await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message); }
                 catch (Exception ex) { FireOnError(ex); }

@@ -51,36 +51,24 @@ namespace EasyTcp3.Protocols
         /// <param name="message"></param>
         public void SendMessage(EasyTcpClient client, byte[] message);
         
-        /*
-         * Optional 
-         */
-
         /// <summary>
         /// Get receiving/sending stream
         /// </summary>
         /// <returns></returns>
-        public Stream GetStream(EasyTcpClient client) => new NetworkStream(client.BaseSocket);
-        
+        public Stream GetStream(EasyTcpClient client);
+
         /// <summary>
         /// Method that is triggered when client connects
         /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public bool OnConnect(EasyTcpClient client)
-        {
-            EnsureDataReceiverIsRunning(client);
-            return true;
-        }
+        public bool OnConnect(EasyTcpClient client);
 
         /// <summary>
         /// Method that is triggered when client connects to server
         /// Default behavior is starting listening for incoming data
         /// </summary>
         /// <param name="client"></param>
-        public bool OnConnectServer(EasyTcpClient client)
-        {
-            EnsureDataReceiverIsRunning(client);
-            return true;
-        }
+        public bool OnConnectServer(EasyTcpClient client);
     }
 }

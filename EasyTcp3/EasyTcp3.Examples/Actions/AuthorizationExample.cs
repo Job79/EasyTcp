@@ -62,7 +62,7 @@ namespace EasyTcp3.Examples.Actions
      * example filter attribute for authorization
      */
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public class EasyTcpAuthorization : Attribute, IEasyTcpActionFilter
+    public class EasyTcpAuthorization : EasyTcpActionFilter
     {
         private readonly UserRole[] _allowedRoles;
 
@@ -83,7 +83,7 @@ namespace EasyTcp3.Examples.Actions
         /// <param name="sender"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool HasAccess(object sender, ActionMessage message)
+        public override bool HasAccess(object sender, ActionMessage message)
         {
             var hasRole = message.Client.Session.TryGetValue("UserRole", out object userRole);
             if (!hasRole) return false;
