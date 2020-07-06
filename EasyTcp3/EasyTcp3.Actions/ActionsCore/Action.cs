@@ -47,7 +47,6 @@ namespace EasyTcp3.Actions.ActionsCore
             var classInstance = GetClassInstance(method, classInstances);
             var methodType = GetDelegateType(method);
 
-            if (classInstance == null) EasyTcpAction = Delegate.CreateDelegate(methodType, method);
             EasyTcpAction = Delegate.CreateDelegate(methodType, classInstance, method);
 
             var filters = method.GetCustomAttributes().OfType<EasyTcpActionFilter>().ToList();
@@ -147,6 +146,6 @@ namespace EasyTcp3.Actions.ActionsCore
         /// <param name="m"></param>
         /// <returns>true if method is a valid action</returns>
         public static bool IsValidAction(MethodInfo m) =>
-            m.GetCustomAttributes().OfType<EasyTcpAction>().Any() && GetDelegateType(m) != null;
+            m.GetCustomAttributes(typeof(EasyTcpAction), false).Any() && GetDelegateType(m) != null;
     }
 }
