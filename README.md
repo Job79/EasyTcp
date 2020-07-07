@@ -14,7 +14,7 @@
 - High performance (~430.000 round trips/second)*
 - Very lightweight
 - Async support
-- Actions wich makes creating API's realy simple (See EasyTcp.Actions)
+- EasyTcp.Actions wich makes creating API's realy simple
 - Support for sending raw streams/very large arrays
 - Serialistaion and compression
 - Different kinds of framing
