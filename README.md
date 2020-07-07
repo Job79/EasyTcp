@@ -12,7 +12,7 @@
 # Features
 - Simple and Easy to use
 - High performance (~430.000 round trips/second)*
-- Very lightweight (use only what you need)
+- Very lightweight
 - Async support
 - Actions wich makes creating API's realy simple (See EasyTcp.Actions)
 - Support for sending raw streams/very large arrays
