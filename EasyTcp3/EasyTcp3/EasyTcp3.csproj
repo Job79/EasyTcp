@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>3.5.0</PackageVersion>
+        <PackageVersion>3.6.2</PackageVersion>
         <Title>EasyTcp</Title>
         <Description>Easy and simple library for TCP clients and servers. Focused on performance and usability.</Description>
         <Copyright>Job79</Copyright>
@@ -14,6 +15,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp</PackageTags>
         <LangVersion>8</LangVersion>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/ICON.png</PackageIconUrl>
     </PropertyGroup>
 </Project>

@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2.2.1</PackageVersion>
+        <PackageVersion>2.3.1</PackageVersion>
         <Title>EasyTcp.Encryption</Title>
         <Description>This package adds ssl and encryption support to EasyTcp and EasyTcp.Actions</Description>
         <Copyright>Job79</Copyright>
@@ -14,6 +14,7 @@
         <PackageId>EasyTcp.Encryption</PackageId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Ssl Encryption</PackageTags>
+        <PackageIconUrl>https://github.com/Job79/EasyTcp/blob/master/ICON.ico</PackageIconUrl>
     </PropertyGroup>
 
     <ItemGroup>
