@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>3.6.2</PackageVersion>
+        <PackageVersion>3.6.3</PackageVersion>
         <Title>EasyTcp</Title>
         <Description>Easy and simple library for TCP clients and servers. Focused on performance and usability.</Description>
         <Copyright>Job79</Copyright>
