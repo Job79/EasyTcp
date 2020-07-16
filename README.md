@@ -3,7 +3,9 @@
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
   <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
-  <img src="https://img.shields.io/badge/build-passing-green.svg">
+  <img alt="Nuget" src="https://img.shields.io/nuget/dt/EasyTcp">
+  <a href="https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org"><img alt="Matrix" src="https://img.shields.io/matrix/EasyTcp3:matrix.org"></a>
+  <img alt="GitHub stars" src="https://img.shields.io/github/stars/job79/EasyTcp">
   <br/>
   Easy and simple library for TCP clients and servers. Focused on performance and usability.
   <br/><br/><br/>
@@ -117,5 +119,5 @@ Console.ReadLine();
 ```
 
 # Contribution / Help / Questions / Feedback
-Create a issue, pull request or send an email to jobse@pm.me
+[Join our matrix chat](https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org), create an issue or send an email to jobse@pm.me
 
