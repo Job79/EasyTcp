@@ -34,9 +34,7 @@ namespace EasyTcp3.Examples.Basic
             client.Send(1);
             client.Send(1.000);
             client.Send(true);
-            client.Send("Hello server!", true);
-            
-            // Async send compressed data
+            client.Send("Hello server!", true); // Async send compressed data
             
             /* Send data to server and get reply
              * OnDataReceive is not triggered when receiving a reply

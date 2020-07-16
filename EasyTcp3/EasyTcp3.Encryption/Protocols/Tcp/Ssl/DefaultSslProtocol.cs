@@ -14,6 +14,9 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
     /// </summary>
     public abstract class DefaultSslProtocol : IEasyTcpProtocol
     {
+        /// <summary>
+        /// Buffer with received data
+        /// </summary>
         public byte[] ReceiveBuffer;
         
         /// <summary>

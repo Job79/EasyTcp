@@ -1,24 +1,24 @@
 <p align="center">
-  <strong>EasyTcp</strong>
+  <img src="ICON.ico">
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
- <img src="https://img.shields.io/badge/version-3.5.0-green.svg">
-  <img src="https://img.shields.io/badge/build-passing-green.svg">
+  <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
+  <img alt="Nuget" src="https://img.shields.io/nuget/dt/EasyTcp">
+  <a href="https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org"><img alt="Matrix" src="https://img.shields.io/matrix/EasyTcp3:matrix.org"></a>
+  <img alt="GitHub stars" src="https://img.shields.io/github/stars/job79/EasyTcp">
   <br/>
   Easy and simple library for TCP clients and servers. Focused on performance and usability.
   <br/><br/><br/>
 </p>
 
-# Features
-- Simple and Easy to use
-- High performance (~430.000 round trips/second)*
-- Very lightweight (use only what you need)
-- Async support
-- Actions wich make creating API's realy simple (See EasyTcp.Actions)
+# Why EasyTcp
+- Very simple
+- Lightweight & High performance (~430.000 round trips/second)*
+- EasyTcp.Actions wich makes creating API's realy simple
 - Support for sending raw streams/very large arrays
 - Serialistaion and compression
 - Different kinds of framing
-- MIT license
+- Async support
 - Unit tested (~250 unit tests)
 
 \* Tested on local machine(linux, ryzen 7) with clients and server running under the same process. See EasyTcp.Examples/SpeedTest/ThroughputTest.cs
@@ -119,5 +119,5 @@ Console.ReadLine();
 ```
 
 # Contribution / Help / Questions / Feedback
-Create a issue, pull request or send an email to jobse@pm.me
+[Join our matrix chat](https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org), create an issue or send an email to jobse@pm.me
 
