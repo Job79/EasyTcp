@@ -2,7 +2,7 @@
   <img src="ICON.png" width="300px">
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
-  <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
+  <img alt="Nuget" src="https://img.shields.io/nuget/v/EasyTcp">
   <img alt="Nuget" src="https://img.shields.io/nuget/dt/EasyTcp">
   <a href="https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org"><img alt="Matrix" src="https://img.shields.io/matrix/EasyTcp3:matrix.org"></a>
   <img alt="GitHub stars" src="https://img.shields.io/github/stars/job79/EasyTcp">
