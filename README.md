@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>EasyTcp</strong>
+  <img src="ICON.ico">
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
   <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
@@ -12,13 +12,13 @@
 </p>
 
 # Why EasyTcp
-- Simple and Easy
+- Very simple
 - Lightweight & High performance (~430.000 round trips/second)*
-- Async support
 - EasyTcp.Actions wich makes creating API's realy simple
 - Support for sending raw streams/very large arrays
 - Serialistaion and compression
 - Different kinds of framing
+- Async support
 - Unit tested (~250 unit tests)
 
 \* Tested on local machine(linux, ryzen 7) with clients and server running under the same process. See EasyTcp.Examples/SpeedTest/ThroughputTest.cs
