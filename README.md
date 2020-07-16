@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>EasyTcp</strong>
+  <img src="ICON.ico">
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
   <img src="https://img.shields.io/badge/version-3.6.0-green.svg">
