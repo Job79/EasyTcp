@@ -14,7 +14,7 @@
         <PackageId>EasyTcp.Encryption</PackageId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Ssl Encryption</PackageTags>
-        <PackageIconUrl>https://github.com/Job79/EasyTcp/blob/master/ICON.ico</PackageIconUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/ICON.png</PackageIconUrl>
     </PropertyGroup>
 
     <ItemGroup>
