@@ -69,7 +69,7 @@ namespace EasyTcp3.Examples.Actions
 
         /*
          * Action methods,
-         * These method are automatically triggered when receiving an action
+         * These methods are automatically triggered when receiving an action
          * See EasyTcp.Actions/ActionCore/Action for all supported delegate types (different types of methods)
          */
 
