@@ -21,8 +21,9 @@ namespace EasyTcp3.Examples.SpeedTest
 
         public static void Run()
         {
-           
-
+            using var server = new EasyTcpServer().Start(Port);
+            server.OnDataReceive += (o, message) => message.Client.Send(message);
+            
             byte[] messageData = Encoding.UTF8.GetBytes(MessageDataString);
             var clientList = new ConcurrentQueue<EasyTcpClient>();
             int counter = 0;
@@ -37,10 +38,7 @@ namespace EasyTcp3.Examples.SpeedTest
                     Interlocked.Increment(ref counter);
                     message.Client.Send(message);
                 };
-                var socket = client.Protocol.GetSocket(AddressFamily.InterNetwork);
-                socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                if (client.Connect(IPAddress.Any, Port, socket: socket)) clientList.Enqueue(client);
+                if (client.Connect(IPAddress.Any, Port)) clientList.Enqueue(client);
             });
 
             while (true)
