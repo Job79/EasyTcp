@@ -122,7 +122,7 @@ Console.ReadLine();
 [Join our matrix chat](https://matrix.to/#/!UfWuzAAgKkyPzNyPxM:matrix.org?via=matrix.org), create an issue or send an email to jobse@pm.me
 
 # Thanks to
-List with people who directly / indirectly contributed to this project.
-@AndreiBlizorukov Fixed .gitignore
-@Kermalis, @AbnirHencazs Reporting important issues
-@Awware, @jchristn Inspiration
+List with people who directly / indirectly contributed to this project.<br/>
+@AndreiBlizorukov Fixed .gitignore<br/>
+@Kermalis, @AbnirHencazs Reporting important issues<br/>
+@Awware, @jchristn Inspiration<br/>
