@@ -12,10 +12,10 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace EasyTcp3.Test.EasyTcp
 {
-    public class Serialisation
+    public class Serialization
     {
         [Test]
-        public void TestJsonSerialisation()
+        public void TestJsonSerialization()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
@@ -34,7 +34,7 @@ namespace EasyTcp3.Test.EasyTcp
         }
 
         [Test]
-        public void TestJsonNetSerialisation()
+        public void TestJsonNetSerialization()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
@@ -53,7 +53,7 @@ namespace EasyTcp3.Test.EasyTcp
         }
 
         [Test]
-        public void TestStandardSerialisation()
+        public void TestStandardSerialization()
         {
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);

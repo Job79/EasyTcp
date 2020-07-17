@@ -3,7 +3,7 @@ using System.Numerics;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.EasyTcpPacketUtils;
 
-namespace EasyTcp3.Examples.Serialisation
+namespace EasyTcp3.Examples.Serialization
 {
     /* Custom IEasyTcpPacket
      * Data { get; set; } is used instead of standard serialisation

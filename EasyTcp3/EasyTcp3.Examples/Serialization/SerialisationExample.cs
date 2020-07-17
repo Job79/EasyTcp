@@ -8,19 +8,19 @@ using EasyTcp3.EasyTcpPacketUtils;
 using EasyTcp3.Server;
 using EasyTcp3.Server.ServerUtils;
 
-namespace EasyTcp3.Examples.Serialisation
+namespace EasyTcp3.Examples.Serialization
 {
-    /* Serialisation with EasyTcp,
-     * EasyTcp provides 2 methods that must be set before using serialisation (serialize(object), deserialize(byte[], Type))
+    /* Serialization with EasyTcp,
+     * EasyTcp provides 2 methods that must be set before using serialization (serialize(object), deserialize(byte[], Type))
      * See the examples for serialisation with Json(System.Text.Json, Json.Net) and BinaryFormatter
      */
-    public static class SerialisationExample
+    public static class SerializationExample
     {
         const ushort Port = 6524;
 
         public static void Connect()
         {
-            // Create new client with .net core 3 json serialisation
+            // Create new client with .net core 3 json serialization
             using var client = new EasyTcpClient
             {
                 Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o),
@@ -37,7 +37,7 @@ namespace EasyTcp3.Examples.Serialisation
 
         public static void Run()
         {
-            // Create new server with json.net serialisation
+            // Create new server with json.net serialization
             var server = new EasyTcpServer
             {
                 Serialize = o => Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(o)),
@@ -54,9 +54,9 @@ namespace EasyTcp3.Examples.Serialisation
             };
         }
 
-        public static void OtherSerialisationMethods()
+        public static void OtherSerializationMethods()
         {
-            // Serialisation with BinaryFormatter
+            // Serialization with BinaryFormatter
             using var client = new EasyTcpClient
             {
                 Serialize = o =>
