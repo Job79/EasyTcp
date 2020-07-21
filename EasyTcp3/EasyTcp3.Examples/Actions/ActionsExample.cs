@@ -38,7 +38,7 @@ namespace EasyTcp3.Examples.Actions
             };
             
             // Load more actions from other assembly
-            server.AddActions(Assembly.GetExecutingAssembly(), "EasyTcp3.Examples.Actions2");
+            // server.AddActions(Assembly.GetExecutingAssembly(), "EasyTcp3.Examples.Actions2");
             
             // Execute action
             server.ExecuteAction("SAY_HELLO", new Message());
