@@ -36,7 +36,7 @@ namespace EasyTcp3.Actions.ActionsCore
             catch (MissingMethodException ex)
             {
                 throw new Exception(
-                    "Could not load actions: class with EasyTcpAction doesn't have have parameterless constructor", ex);
+                    "Could not load actions: class with EasyTcpAction doesn't have a parameterless constructor", ex);
             }
             catch (ArgumentException ex)
             {
