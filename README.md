@@ -80,7 +80,7 @@ client.SendAction("BROADCAST","Hello everyone"); // Trigger the BROADCAST action
 ```
 
 ## EasyTcp.Encryption
-EasyTcp.Encryption adds ssl adn encryption support to EasyTcp. <br/>
+EasyTcp.Encryption adds ssl and custom encryption support to EasyTcp. <br/>
 See the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for documentation.
 ```cs
 using var certificate = new X509Certificate2("certificate.pfx", "password");
