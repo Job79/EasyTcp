@@ -14,7 +14,7 @@ namespace EasyTcp3.Protocols
     ///
     /// Feel free to open a pull request for any implemented protocol
     /// </summary>
-    public interface IEasyTcpProtocol : ICloneable, IDisposable
+    public interface IEasyTcpProtocol : IDisposable
     {
         /// <summary>
         /// Default socket for protocol
@@ -70,5 +70,11 @@ namespace EasyTcp3.Protocols
         /// </summary>
         /// <param name="client"></param>
         public bool OnConnectServer(EasyTcpClient client);
+        
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public object Clone();
     }
 }

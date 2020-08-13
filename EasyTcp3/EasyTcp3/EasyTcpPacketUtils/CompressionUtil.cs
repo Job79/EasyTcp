@@ -19,7 +19,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
             using var compressedStream = new MemoryStream();
             using var zipStream = new GZipStream(compressedStream, CompressionMode.Compress);
             zipStream.Write(data, 0, data.Length);
-            zipStream.Close();
+            zipStream.Dispose();
             return compressedStream.ToArray();
         }
 
