@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ICON.png" width="300px">
+  <img src="icon.png" width="300px">
   <br/>
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
   <img alt="Nuget" src="https://img.shields.io/nuget/v/EasyTcp">
