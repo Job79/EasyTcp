@@ -32,9 +32,7 @@ namespace EasyTcp3.ClientUtils
             try
             {
                 client.BaseSocket = socket ?? client.Protocol.GetSocket(endPoint.AddressFamily);
-                var result = client.BaseSocket.BeginConnect(endPoint, null, client);
-                result.AsyncWaitHandle.WaitOne(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
-                client.BaseSocket.EndConnect(result);
+                client.BaseSocket.ConnectAsync(endPoint).Wait(DefaultTimeout);
 
                 if (client.BaseSocket.Connected && client.Protocol.OnConnect(client))
                 {
