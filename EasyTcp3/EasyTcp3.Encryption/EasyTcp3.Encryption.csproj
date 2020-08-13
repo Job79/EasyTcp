@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2.3.1</PackageVersion>
+        <PackageVersion>2.3.2</PackageVersion>
         <Title>EasyTcp.Encryption</Title>
         <Description>This package adds ssl and encryption support to EasyTcp and EasyTcp.Actions</Description>
         <Copyright>Job79</Copyright>
@@ -14,7 +14,7 @@
         <PackageId>EasyTcp.Encryption</PackageId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Ssl Encryption</PackageTags>
-        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/ICON.png</PackageIconUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/icon.png</PackageIconUrl>
     </PropertyGroup>
 
     <ItemGroup>

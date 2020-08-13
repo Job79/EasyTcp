@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2.5.2</PackageVersion>
+        <PackageVersion>2.5.3</PackageVersion>
         <Title>EasyTcp.Actions</Title>
         <Description>This package adds support to EasyTcp for triggering specific functions based on received data. See github for examples.</Description>
         <Copyright>Job79</Copyright>
@@ -14,7 +14,7 @@
         <PackageId>EasyTcp.Actions</PackageId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Reflection Actions</PackageTags>
-        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/ICON.png</PackageIconUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/icon.png</PackageIconUrl>
     </PropertyGroup>
 
     <ItemGroup>
