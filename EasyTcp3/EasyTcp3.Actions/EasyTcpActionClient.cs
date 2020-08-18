@@ -60,7 +60,7 @@ namespace EasyTcp3.Actions
             AddActions(assembly ?? Assembly.GetCallingAssembly(), nameSpace);
             OnDataReceiveAsync += async (sender, message) =>
             {
-                try { await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, sender, message); }
+                try { await Actions.HandleAction(Interceptor, FireOnUnknownAction, sender, message); }
                 catch (Exception ex) { FireOnError(ex); }
             };
         }
@@ -72,7 +72,7 @@ namespace EasyTcp3.Actions
         /// <param name="message"></param>
         /// <returns></returns>
         public async Task ExecuteAction(int actionCode, Message message = null)
-            => await Actions.ExecuteAction(Interceptor, FireOnUnknownAction, this, new ActionMessage(message, actionCode));
+            => await Actions.HandleAction(Interceptor, FireOnUnknownAction, this, new ActionMessage(message, actionCode));
 
         /// <summary>
         /// Execute specific action

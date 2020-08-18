@@ -7,9 +7,8 @@ namespace EasyTcp3.Protocols
 {
     /// <summary>
     /// Interface for EasyTcp protocols,
-    /// A protocol determines all behavior of an EasyTcpClient
-    /// Protocol classes should also implement ICloneable and IDisposable
-    /// ICloneable is used by the server to give every client an unique copy of protocol
+    /// A protocol determines all behavior of an EasyTcpClient and EasyTcpServer
+    /// Protocol classes should also implement IDisposable
     /// See implemented protocols for examples
     ///
     /// Feel free to open a pull request for any implemented protocol

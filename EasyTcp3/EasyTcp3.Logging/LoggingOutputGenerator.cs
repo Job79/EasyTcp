@@ -62,7 +62,7 @@ namespace EasyTcp3.Logging
         }
         
         /// <summary>
-        /// Dictionary with unsafe charchers
+        /// Dictionary with unsafe characters
         /// </summary>
         private static Dictionary<string, string> _escapeChars = new Dictionary<string, string>
             {{"\r", "\\r"}, {"\n", "\\n"}, {"\t", "\\t"}, {"\a", "\\a"}, {"\b", "\\b"}, {"\f", "\\f"}};
