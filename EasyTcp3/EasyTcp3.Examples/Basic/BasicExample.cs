@@ -22,7 +22,7 @@ namespace EasyTcp3.Examples.Basic
             
             // Send hello world to server
             client.Send("Hello world!");
-        }
+        } // End of function, dispose/disconnect client because of using statement
         
         public static void Start()
         {
