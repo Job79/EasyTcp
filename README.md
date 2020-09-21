@@ -11,21 +11,29 @@
   <br/><br/><br/>
 </p>
 
-# Why EasyTcp
-- Very simple
-- Lightweight & High performance (~430.000 round trips/second)*
-- EasyTcp.Actions wich makes creating API's realy simple
-- Support for sending raw streams/very large arrays
-- Serialistaion and compression
-- Different kinds of framing
-- Async support
-- Unit tested (~250 unit tests)
+## What is EasyTcp?
+EasyTcp is a library that makes creating tcp servers and clients simple without giving up performance (~400.000 round trips/second)* <br/> 
+It has inbuild serialisation, compression, different types of framing and an (optional) async interface.
 
 \* Tested on local machine(linux, ryzen 7) with clients and server running under the same process. See EasyTcp.Examples/SpeedTest/ThroughputTest.cs
 
-# Packages
-## EasyTcp
-EasyTcp3 is a package that makes creating tcp servers and clients simple. <br/>
+## Example
+The folowing code will create a tcp server that writes all received data to the terminal. <br/>
+Then it will create a client that connects with the server and send the message  ("Hello Server")
+```cs
+using var server = new EasyTcpServer().Start(8080);
+server.OnDataReceive += (sender, message) => Console.WriteLine(message);
+
+using var client = new EasyTcpClient();
+if(!client.Connect("127.0.0.1", 8080)) return; // Abort if connection attempt failed
+client.Send("Hello server");
+Console.ReadLine();
+```
+
+## Different packages
+### EasyTcp
+EasyTcp is the package that contains all the basic functions. <br/>
+It makes creating tcp clients and servers really simple, 
 It is very fast, simple, supports framing, serialisation, disconnect detection, event handlers and more. <br/>
 See the [EasyTcp.Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples) folder for documentation.
 ```cs
