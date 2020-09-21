@@ -20,12 +20,10 @@ namespace EasyTcp3.Server.ServerUtils
         public static T EnableServerKeepAlive<T>(this T server, int keepAliveTime = 300, int keepAliveInterval = 30,
             int keepAliveRetryCount = 2) where T : EasyTcpServer
         {
-            if (server == null) throw new ArgumentException("Could not enable keepAlive: client is null");
-            if (server.BaseSocket == null)
-                throw new ArgumentException("Could not enable keepAlive: client is not connected");
+            if (server == null) throw new ArgumentException("Could not enable keepAlive: server is null");
 
             server.OnConnect += (s, client) =>
-                client.EnableClientKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
+                client.BaseSocket.EnableKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
             return server;
         }
     }
