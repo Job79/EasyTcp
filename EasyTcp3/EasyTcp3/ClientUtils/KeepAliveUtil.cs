@@ -34,7 +34,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="keepAliveTime">the number of seconds a TCP connection will remain alive/idle before keepalive probes are sent to the remote</param>
         /// <param name="keepAliveInterval">the number of seconds a TCP connection will wait for a keepalive response before sending another keepalive probe</param>
         /// <param name="keepAliveRetryCount">the number of TCP keep alive probes that will be sent before the connection is terminated</param>
-        private static void EnableKeepAlive(this Socket socket, int keepAliveTime, int keepAliveInterval,
+        internal static void EnableKeepAlive(this Socket socket, int keepAliveTime, int keepAliveInterval,
             int keepAliveRetryCount)
         {
             socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
