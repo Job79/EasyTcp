@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using EasyTcp3.EasyTcpPacketUtils;
 
@@ -32,6 +33,17 @@ namespace EasyTcp3
             Data = data;
             Client = client;
         }
+        
+        /// <summary>
+        /// MetaData of message, empty when not used by protocol
+        /// </summary>
+        public Dictionary<string, object> MetaData 
+        {
+            get => (_metaData ??= new Dictionary<string, object>());
+            set => _metaData = value;
+        }
+        
+        private Dictionary<string, object> _metaData;
 
         /// <summary>
         /// Determines whether received data is a valid UShort 
