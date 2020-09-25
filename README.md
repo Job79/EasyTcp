@@ -30,6 +30,7 @@ Console.ReadLine();
 
 // Output terminal: "Hello server"
 ```
+See also [EasyTcp/Examples](https://github.com/Job79/EasyTcp/tree/master/EasyTcp3/EasyTcp3.Examples)
 
 ## Different packages
 EasyTcp has different packages, this to keep the project maintainable and the dependencies small (in disk size).
