@@ -1,10 +1,9 @@
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
 using System;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 
 namespace EasyTcp3.ClientUtils
 {
-#if (NETCOREAPP3_0 || NETCOREAPP3_1)
     /// <summary>
     /// Class with all KeepAlive functions for the EasyTcpClient
     /// </summary>
@@ -43,5 +42,5 @@ namespace EasyTcp3.ClientUtils
             socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, keepAliveRetryCount);
         }
     }
-#endif
 }
+#endif

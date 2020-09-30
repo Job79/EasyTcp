@@ -4,11 +4,10 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.EasyTcp
 {

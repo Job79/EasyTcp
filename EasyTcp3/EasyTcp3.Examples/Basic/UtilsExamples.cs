@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.ClientUtils.Async;
 using EasyTcp3.EasyTcpPacketUtils;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Examples.Basic
 {

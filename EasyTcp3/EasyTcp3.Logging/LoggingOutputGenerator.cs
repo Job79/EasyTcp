@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Logging
 {
