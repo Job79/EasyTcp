@@ -2,8 +2,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Encryption;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Examples.Encryption
 {

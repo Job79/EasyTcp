@@ -3,9 +3,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.Encryption;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.Encryption.Ssl
 {

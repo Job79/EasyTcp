@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Protocols.Tcp
 {

@@ -1,9 +1,9 @@
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
 using System;
 using EasyTcp3.ClientUtils;
 
-namespace EasyTcp3.Server.ServerUtils
+namespace EasyTcp3.ServerUtils
 {
-#if (NETCOREAPP3_0 || NETCOREAPP3_1)
     /// <summary>
     /// Class with all KeepAlive functions for the EasyTcpServer
     /// </summary>
@@ -27,5 +27,5 @@ namespace EasyTcp3.Server.ServerUtils
             return server;
         }
     }
-#endif
 }
+#endif

@@ -4,9 +4,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.Json;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.ServerUtils;
 using EasyTcp3.EasyTcpPacketUtils;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.Serialization
 {

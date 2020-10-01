@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>3.7.7</PackageVersion>
+        <PackageVersion>3.7.8</PackageVersion>
         <Title>EasyTcp</Title>
         <Description>Easy and simple library for TCP clients and servers. Focused on performance and usability.</Description>
         <Copyright>Job79</Copyright>

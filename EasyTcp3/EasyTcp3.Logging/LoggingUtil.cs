@@ -1,5 +1,4 @@
 using System;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Logging
 {

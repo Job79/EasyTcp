@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
+using EasyTcp3.ServerUtils;
 using EasyTcp3.EasyTcpPacketUtils;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.ReverseShell.Server
 {

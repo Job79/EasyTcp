@@ -4,8 +4,8 @@ using System.Net;
 using EasyTcp3.Actions;
 using EasyTcp3.Actions.ActionUtils;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server.ServerUtils;
 using NUnit.Framework;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.Actions
 {
