@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using EasyTcp3.Protocols;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {

@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using EasyTcp3.EasyTcpPacketUtils;
 
-namespace EasyTcp3.Server.ServerUtils
+namespace EasyTcp3.ServerUtils
 {
     /// <summary>
     /// Class with SendAll functions

@@ -2,7 +2,7 @@ using System.IO;
 using System.Threading.Tasks;
 using EasyTcp3.Actions;
 using EasyTcp3.ClientUtils.Async;
-using EasyTcp3.Server.ServerUtils;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Examples.Streams
 {

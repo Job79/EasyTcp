@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace EasyTcp3.Server.ServerUtils
+namespace EasyTcp3.ServerUtils
 {
     /// <summary>
     /// Class with Start functions

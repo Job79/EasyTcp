@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard1.7;netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>1.2.2</PackageVersion>
+        <PackageVersion>1.2.4</PackageVersion>
         <Title>EasyTcp.Logging</Title>
         <Description>This package adds logging support to EasyTcp, EasyTcp.Actions and EasyTcp.Encryption</Description>
         <Copyright>Job79</Copyright>

@@ -3,8 +3,7 @@ using EasyEncrypt2;
 using EasyTcp3.Encryption.Protocols.Tcp;
 using EasyTcp3.Encryption.Protocols.Tcp.Ssl;
 using EasyTcp3.Protocols.Tcp;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
+using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Examples.Protocols
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
-namespace EasyTcp3.Server
+namespace EasyTcp3
 {
     /// <summary>
     /// EasyTcp server,

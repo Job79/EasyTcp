@@ -1,6 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
 using EasyTcp3.Encryption.Protocols.Tcp.Ssl;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Encryption
 {

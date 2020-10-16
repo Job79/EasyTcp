@@ -2,13 +2,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Sockets;
+using EasyTcp3.ServerUtils;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.Server;
-using EasyTcp3.Server.ServerUtils;
 
 namespace EasyTcp3.Examples.SpeedTest
 {

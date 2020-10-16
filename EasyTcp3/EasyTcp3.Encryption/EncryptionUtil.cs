@@ -1,7 +1,6 @@
 using EasyEncrypt2;
 using EasyTcp3.EasyTcpPacketUtils;
 using EasyTcp3.Encryption.Protocols.Tcp;
-using EasyTcp3.Server;
 
 namespace EasyTcp3.Encryption
 {
