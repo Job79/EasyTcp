@@ -145,13 +145,12 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         public abstract object Clone();
 
         /// <summary>
-        /// Dispose instance of sslStream, networkStream and certificate
+        /// Dispose instance of sslStream and networkStream
         /// </summary>
         public virtual void Dispose()
         {
             SslStream?.Dispose();
             NetworkStream?.Dispose();
-            Certificate?.Dispose();
         }
 
         /// <summary>

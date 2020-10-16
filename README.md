@@ -119,5 +119,5 @@ Create an issue or send an email to jobse@pm.me
 # Thanks to
 List with people who directly / indirectly contributed to this project.<br/>
 @AndreiBlizorukov Fixed .gitignore<br/>
-@Kermalis, @AbnirHencazs Reporting important issues<br/>
+@Kermalis, @AbnirHencazs, @bnaambo Reporting important issues<br/>
 @Awware, @jchristn Inspiration<br/>
