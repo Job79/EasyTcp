@@ -28,7 +28,7 @@ namespace EasyTcp3.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to the connected clients</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void SendAll(this EasyTcpServer server, byte[] data, bool compression = false)
         {
             if (compression) data = CompressionUtil.Compress(data);
@@ -101,7 +101,7 @@ namespace EasyTcp3.ServerUtils
         /// <param name="server"></param>
         /// <param name="data">data to send to the connected clients</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null,
             bool compression = false)
             => server.SendAll((encoding ?? Encoding.UTF8).GetBytes(data), compression);
@@ -111,7 +111,7 @@ namespace EasyTcp3.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to the connected clients</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void SendAll(this EasyTcpServer server, IEasyTcpPacket data, bool compression = false)
             => server.SendAll(data.Data, compression);
         
@@ -120,7 +120,7 @@ namespace EasyTcp3.ServerUtils
         /// </summary>
         /// <param name="server"></param>
         /// <param name="data">data to send to the connected clients</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void SendAll(this EasyTcpServer server, object data, bool compression = false)
             => server.SendAll(server?.Serialize(data), compression);
     }

@@ -4,28 +4,28 @@ using System.IO.Compression;
 namespace EasyTcp3.EasyTcpPacketUtils
 {
     /// <summary>
-    /// Class that contains functions for compressing data with GZIP
-    /// TODO change compression type to Deflate for better performance on old hardware
+    /// Class that contains functions for compressing data with Deflate 
     /// </summary>
     public static class CompressionUtil
     {
         /// <summary>
-        /// Compress byte[] of data using GZIP
+        /// Compress byte[] of data using Deflate and add magic number
         /// </summary>
         /// <param name="data">uncompressed data</param>
-        /// <returns>compressed data</returns>
+        /// <returns>magic number + compressed data</returns>
         public static byte[] Compress(byte[] data)
         {
             if(data == null || data.Length == 0) throw new InvalidDataException("Could not compress data: data array is empty");
             using var compressedStream = new MemoryStream();
-            using var zipStream = new GZipStream(compressedStream, CompressionMode.Compress);
-            zipStream.Write(data, 0, data.Length);
-            zipStream.Dispose();
+            compressedStream.Write(new byte[] { 0x78, 0x9C },0,2);
+            var deflateStream = new DeflateStream(compressedStream, CompressionMode.Compress);
+            deflateStream.Write(data, 0, data.Length);
+            deflateStream.Dispose();
             return compressedStream.ToArray();
         }
 
         /// <summary>
-        /// Decompress byte[] of data using GZIP
+        /// Decompress byte[] of data using Deflate
         /// </summary>
         /// <param name="data">compressed data</param>
         /// <returns>decompressed data</returns>
@@ -33,23 +33,21 @@ namespace EasyTcp3.EasyTcpPacketUtils
         {
             if(data == null || data.Length == 0) throw new InvalidDataException("Could not decompress data: data array is empty");
             using var compressedStream = new MemoryStream(data);
-            using var zipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
+            compressedStream.Seek(2, SeekOrigin.Current);
+            using var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress);
             using var resultStream = new MemoryStream();
-            zipStream.CopyTo(resultStream);
+            deflateStream.CopyTo(resultStream);
             return resultStream.ToArray();
         }
         
         /// <summary>
-        /// Determines whether the receive data is compressed with GZIP by looking for the magic number
+        /// Determines whether the receive data is compressed with Deflate by looking for the magic number
         /// </summary>
         /// <returns>true if compressed</returns>
-        public static bool IsCompressed(byte[] data) => data.Length > 4 && data[0] == 31 && data[1] == 139;
-        /*  public static bool IsCompressed(byte[] data) =>
-            data.Length > 4 && data[0] == 31 && data[1] == 139 && data[2] == 8 && data[3] == 0 && data[4] == 0 &&
-            data[5] == 0 && data[6] == 0 && data[7] == 0 && (data[8] == 4 || data[8] == 2) && data[9] == 0; */
+        public static bool IsCompressed(byte[] data) => data.Length > 2 && data[0] == 0x78 && data[1] == 0x9C;
         
         /// <summary>
-        /// Determines whether the receive data is compressed with GZIP by looking for the magic number
+        /// Determines whether the receive data is compressed with Deflate by looking for the magic number
         /// </summary>
         /// <returns>true if compressed</returns>
         public static bool IsCompressed(this IEasyTcpPacket packet) => IsCompressed(packet.Data);
@@ -59,7 +57,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// </summary>
         /// <param name="packet">packet to compress</param>
         /// <typeparam name="T">packet type</typeparam>
-        /// <returns>instance of packet parameter</returns>
+        /// <returns>compressed package</returns>
         public static T Compress<T>(this T packet) where T : IEasyTcpPacket
         {
             if (packet.IsCompressed()) return packet;
@@ -70,9 +68,9 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// <summary>
         /// Decompress package if data is compressed
         /// </summary>
-        /// <param name="packet">decompressed package</param>
+        /// <param name="packet">compressed package</param>
         /// <typeparam name="T">packet type</typeparam>
-        /// <returns>instance of packet parameter</returns>
+        /// <returns>decompressed package</returns>
         public static T Decompress<T>(this T packet) where T : IEasyTcpPacket
         {
             if (!packet.IsCompressed()) return packet;

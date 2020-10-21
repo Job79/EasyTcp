@@ -16,7 +16,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream">input stream</param>
-        /// <param name="compression"></param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not readable</exception>
@@ -27,7 +27,7 @@ namespace EasyTcp3.ClientUtils.Async
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
             var networkStream = client.Protocol.GetStream(client);
-            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress, true) : networkStream;
+            var dataStream = compression ? new DeflateStream(networkStream, CompressionMode.Compress, true) : networkStream;
 
             if (sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(stream.Length), 0, 8);
 
@@ -46,7 +46,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="message"></param>
         /// <param name="stream">output stream for receiving data</param>
-        /// <param name="compression"></param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not writable</exception>
@@ -58,7 +58,7 @@ namespace EasyTcp3.ClientUtils.Async
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
             var networkStream = message.Client.Protocol.GetStream(message.Client);
-            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            var dataStream = compression ? new DeflateStream(networkStream, CompressionMode.Decompress, true) : networkStream;
 
             //Get length of stream
             if (count == 0)

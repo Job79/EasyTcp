@@ -50,7 +50,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null,
             bool compression = false)
@@ -146,7 +146,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, string data, TimeSpan? timeout = null,
             Encoding encoding = null, bool compression = false) =>
@@ -158,7 +158,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
             bool compression = false) =>
@@ -170,7 +170,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, object data, TimeSpan? timeout = null,
             bool compression = false) =>

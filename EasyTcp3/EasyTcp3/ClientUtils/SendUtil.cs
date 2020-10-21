@@ -22,7 +22,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void Send(this EasyTcpClient client, byte[] data, bool compression = false)
         {
             if (compression) data = CompressionUtil.Compress(data);
@@ -91,7 +91,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void Send(this EasyTcpClient client, string data,
             Encoding encoding = null, bool compression = false)
             => client.Send((encoding ?? Encoding.UTF8).GetBytes(data), compression);
@@ -101,7 +101,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void Send(this EasyTcpClient client, IEasyTcpPacket data, bool compression = false)
             => client.Send(data.Data, compression);
 
@@ -110,7 +110,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="compression">compress data using GZIP if set to true</param>
+        /// <param name="compression">compress data using Deflate if set to true</param>
         public static void Send(this EasyTcpClient client, object data, bool compression = false)
             => client.Send(client?.Serialize(data), compression);
     }
