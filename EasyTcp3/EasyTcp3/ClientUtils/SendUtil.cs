@@ -106,7 +106,7 @@ namespace EasyTcp3.ClientUtils
             => client.Send(data.Data, compression);
 
         /// <summary>
-        /// Send data (object) to remote host
+        /// Serialize and send data (object) to remote host
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>

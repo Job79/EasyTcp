@@ -15,7 +15,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// </summary>
         /// <param name="client"></param>
         /// <param name="endPoint">endPoint of remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns>
         public static async Task<bool> ConnectAsync(this EasyTcpClient client, EndPoint endPoint, Socket socket = null)
         {
@@ -49,7 +49,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of remote host</param>
         /// <param name="port">port of remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns>
         public static async Task<bool> ConnectAsync(this EasyTcpClient client, IPAddress ipAddress, ushort port,
             Socket socket = null)
@@ -61,7 +61,7 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="client"></param>
         /// <param name="ipAddress">ipAddress of remote host as string</param>
         /// <param name="port">port of remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns>
         /// <exception cref="ArgumentException">ipAddress is not a valid IPv4/IPv6 address</exception>
         public static async Task<bool> ConnectAsync(this EasyTcpClient client, string ipAddress, ushort port,

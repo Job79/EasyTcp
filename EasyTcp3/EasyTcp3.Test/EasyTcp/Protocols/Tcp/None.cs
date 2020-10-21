@@ -14,7 +14,7 @@ namespace EasyTcp3.Test.EasyTcp.Protocols.Tcp
         public void TestReceivingAndSendingData()
         {
             ushort port = TestHelper.GetPort(); 
-            var protocol = new NoneProtocol();
+            var protocol = new PlainTcpProtocol();
             using var server = new EasyTcpServer(protocol).Start(port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
             
@@ -31,10 +31,10 @@ namespace EasyTcp3.Test.EasyTcp.Protocols.Tcp
         public void TestSplittingData()
         {
             ushort port = TestHelper.GetPort(); 
-            using var server = new EasyTcpServer(new NoneProtocol()).Start(port);
+            using var server = new EasyTcpServer(new PlainTcpProtocol()).Start(port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
             
-            using var client = new EasyTcpClient(new NoneProtocol(4));
+            using var client = new EasyTcpClient(new PlainTcpProtocol(4));
             Assert.IsTrue(client.Connect("127.0.0.1",port));
             
             var data = "testMessage";

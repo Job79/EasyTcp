@@ -7,11 +7,11 @@ namespace EasyTcp3.ClientUtils
     /// <summary>
     /// Class with the SendLargeArray/ReceiveLargeArray functions 
     /// </summary>
-    public static class ArrayUtil
+    public static class LargeArrayUtil
     {
         /// <summary>
         /// Send array to the remote host
-        /// Host can only receive an array when not listening for incoming messages
+        /// Host can only receive an array when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="client"></param>
         /// <param name="array"></param>
@@ -20,18 +20,20 @@ namespace EasyTcp3.ClientUtils
         public static void SendLargeArray(this EasyTcpClient client, byte[] array, bool compression = false,
             bool sendLengthPrefix = true)
         {
-            if (client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (!client.IsConnected()) throw new Exception("Could not send array: Client is not connected");
 
-            using var networkStream = client.Protocol.GetStream(client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
+            var networkStream = client.Protocol.GetStream(client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress, true) : networkStream;
 
             if (sendLengthPrefix) dataStream.Write(BitConverter.GetBytes(array.Length), 0, 4);
             dataStream.Write(array, 0, array.Length);
+            
+            if(compression) dataStream.Dispose();
         }
 
         /// <summary>
         /// Receive array from remote host
-        /// Use this method only when not listening for incoming messages (In the OnReceive event)
+        /// Use this method only when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="message"></param>
         /// <param name="compression"></param>
@@ -41,11 +43,10 @@ namespace EasyTcp3.ClientUtils
         public static byte[] ReceiveLargeArray(this Message message, bool compression = false, int count = 0,
             int bufferSize = 1024)
         {
-            if (message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (message?.Client.IsConnected() != true) throw new Exception("Could not receive array: Client is not connected or message is null");
 
             using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            using var dataStream =
-                compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress, true) : networkStream;
 
             // Get length from stream
             if (count == 0)
@@ -62,6 +63,8 @@ namespace EasyTcp3.ClientUtils
                    (read = dataStream.Read(receivedArray, totalReceivedBytes,
                        Math.Min(bufferSize, count - totalReceivedBytes))) > 0)
                 totalReceivedBytes += read;
+            
+            if(compression) dataStream.Dispose();
             return receivedArray;
         }
     }

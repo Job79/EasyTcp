@@ -12,7 +12,7 @@ namespace EasyTcp3.Protocols.Tcp
     public class DelimiterProtocol : DefaultTcpProtocol 
     {
         /// <summary>
-        /// Sequence of bytes that determines end of receiving message
+        /// Sequence of bytes that determine the end of a received message
         /// </summary>
         public readonly byte[] Delimiter;
 
@@ -37,7 +37,7 @@ namespace EasyTcp3.Protocols.Tcp
         public sealed override int BufferSize { get; protected set; }
 
         /// <summary></summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
+        /// <param name="delimiter">sequence of bytes that determine the end of a received message</param>
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
         /// <param name="autoRemoveDelimiter">determines whether the Delimiter gets automatically removed from received data</param>
         /// <exception cref="ArgumentException">delimiter is invalid</exception>
@@ -51,10 +51,10 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary></summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
+        /// <param name="delimiter">sequence of chars that determine the end of a received message</param>
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
         /// <param name="autoRemoveDelimiter">determines whether the Delimiter gets automatically removed from received data</param>
-        /// <param name="encoding">encoding used to convert delimiter to byte[]</param>
+        /// <param name="encoding">encoding used to convert delimiter to a byte[]</param>
         public DelimiterProtocol(string delimiter, bool autoAddDelimiter = true, bool autoRemoveDelimiter = true,
             Encoding encoding = null) : this(
             (encoding ?? Encoding.UTF8).GetBytes(delimiter), autoAddDelimiter, autoRemoveDelimiter)
@@ -63,22 +63,26 @@ namespace EasyTcp3.Protocols.Tcp
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        /// returned data will be send to remote host
+        /// Returned data will be send to remote host.
+        /// Adding the delimiter is done here when AutoAddDelimiter is true.
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not create message: Data array is empty");
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
 
-            byte[] message = new byte[AutoAddDelimiter ? messageLength + Delimiter.Length : messageLength];
-            if (AutoAddDelimiter) Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
+            byte[] message;
+            if (AutoAddDelimiter)
+            {
+                message = new byte[messageLength + Delimiter.Length]; 
+                Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
+            }
+            else message = new byte[messageLength];
 
             // Add data to message
             int offset = 0;
@@ -93,16 +97,10 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Return new instance of protocol 
-        /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone() => new DelimiterProtocol(Delimiter, AutoAddDelimiter, AutoRemoveDelimiter);
-        
-        /// <summary>
         /// Handle received data
         /// </summary>
-        /// <param name="data">received data, has size of clients buffer</param>
-        /// <param name="receivedBytes">amount of received bytes</param>
+        /// <param name="data">received data, has the size of the clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes, can be smaller then the buffer</param>
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
@@ -123,5 +121,11 @@ namespace EasyTcp3.Protocols.Tcp
             await client.DataReceiveHandler(new Message(receivedData, client));
             ReceivedBytes.Clear();
         }
+        
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone() => new DelimiterProtocol(Delimiter, AutoAddDelimiter, AutoRemoveDelimiter);
     }
 }

@@ -165,7 +165,7 @@ namespace EasyTcp3.ClientUtils
             client.SendAndGetReply(data.Data, timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
+        /// Serialize and send data (object) to remote host. Then wait and return the reply
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>

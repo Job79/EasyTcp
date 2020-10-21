@@ -3,7 +3,7 @@ using System;
 namespace EasyTcp3.Logging
 {
     /// <summary>
-    /// Object that holds information for the log functions
+    /// Object that holds all information needed by the logging system
     /// </summary>
     public class LogMessage
     {
@@ -11,6 +11,7 @@ namespace EasyTcp3.Logging
         /// Type of log message
         /// </summary>
         public LoggingType Type { get; }
+        
         /// <summary>
         /// EasyTcpClient or EasyTcpServer as object
         /// </summary>
@@ -51,7 +52,7 @@ namespace EasyTcp3.Logging
 
         /*
          * Fields with information,
-         * may be null depending on logMessage type
+         * may be null, depended on logMessage type
          */
         public Message Message { get; }
         public EasyTcpClient Client { get; }

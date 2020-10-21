@@ -27,7 +27,7 @@ namespace EasyTcp3.ServerUtils
         /// Send data (byte[]) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, byte[] data, bool compression = false)
         {
@@ -39,7 +39,7 @@ namespace EasyTcp3.ServerUtils
         /// Send data (ushort) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, ushort data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -47,7 +47,7 @@ namespace EasyTcp3.ServerUtils
         /// Send data (short) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, short data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -55,21 +55,21 @@ namespace EasyTcp3.ServerUtils
         /// Send data (uint) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, uint data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
         /// Send data (int) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, int data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
         /// Send data (ulong) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, ulong data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -77,14 +77,14 @@ namespace EasyTcp3.ServerUtils
         /// Send data (long) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, long data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
         /// Send data (double) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, double data) =>
             server.SendAll(BitConverter.GetBytes(data));
 
@@ -92,14 +92,14 @@ namespace EasyTcp3.ServerUtils
         /// Send data (bool) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         public static void SendAll(this EasyTcpServer server, bool data) => server.SendAll(BitConverter.GetBytes(data));
 
         /// <summary>
         /// Send data (string) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, string data, Encoding encoding = null,
@@ -110,16 +110,16 @@ namespace EasyTcp3.ServerUtils
         /// Send data (IEasyTcpPacket) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, IEasyTcpPacket data, bool compression = false)
             => server.SendAll(data.Data, compression);
         
         /// <summary>
-        /// Send data (object) to connected clients
+        /// Serialize and send data (object) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="data">data to send to connected clients</param>
+        /// <param name="data">data to send to the connected clients</param>
         /// <param name="compression">compress data using GZIP if set to true</param>
         public static void SendAll(this EasyTcpServer server, object data, bool compression = false)
             => server.SendAll(server?.Serialize(data), compression);

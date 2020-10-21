@@ -3,12 +3,12 @@ using System;
 namespace EasyTcp3.Logging
 {
     /// <summary>
-    /// Class with functions to enable logging for 1 server/client 
+    /// Class with functions to enable logging for a server/client 
     /// </summary>
     public static class LoggingUtil
     {
         /// <summary>
-        /// Enable logging for client
+        /// Enable logging (EasyTcpClient) 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="logger"></param>
@@ -25,7 +25,7 @@ namespace EasyTcp3.Logging
         }
         
         /// <summary>
-        /// Enable logging for server
+        /// Enable logging (EasyTcpServer)
         /// </summary>
         /// <param name="server"></param>
         /// <param name="logger"></param>
@@ -42,7 +42,7 @@ namespace EasyTcp3.Logging
         }
 
         /// <summary>
-        /// Enable custom logging for client
+        /// Enable custom logging (EasyTcpClient) 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="logger"></param>
@@ -52,7 +52,7 @@ namespace EasyTcp3.Logging
             => client.UseCustomClientLogging(message => logger(message.ToString()));
 
         /// <summary>
-        /// Enable custom logging for server
+        /// Enable custom logging (EasyTcpServer) 
         /// </summary>
         /// <param name="server"></param>
         /// <param name="logger"></param>

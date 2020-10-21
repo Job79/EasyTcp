@@ -8,11 +8,11 @@ namespace EasyTcp3.ClientUtils.Async
     /// <summary>
     /// Class with the SendLargeArrayAsync/ReceiveLargeArrayAsync functions 
     /// </summary>
-    public static class ArrayAsyncUtil
+    public static class LargeArrayAsyncUtil
     {
         /// <summary>
         /// Send array to the remote host
-        /// Host can only receive an array when not listening for incoming messages
+        /// Host can only receive an array when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="client"></param>
         /// <param name="array"></param>
@@ -22,16 +22,18 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if(client?.BaseSocket == null) throw new Exception("Client is not connected");
             
-            using var networkStream = client.Protocol.GetStream(client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
+            var networkStream = client.Protocol.GetStream(client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress, true) : networkStream;
             
             if(sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(array.Length),0, 4);
             await dataStream.WriteAsync(array,0,array.Length);
+            
+            if(compression) dataStream.Dispose();
         }
 
         /// <summary>
         /// Receive array from remote host
-        /// Use this method only when not listening for incoming messages (In the OnReceive event)
+        /// Use this method only when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="message"></param>
         /// <param name="compression"></param>
@@ -42,8 +44,8 @@ namespace EasyTcp3.ClientUtils.Async
         {
             if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             
-            using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            var networkStream = message.Client.Protocol.GetStream(message.Client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress, true) : networkStream;
 
             // Get length from stream
             if (count == 0)
@@ -59,6 +61,8 @@ namespace EasyTcp3.ClientUtils.Async
             while (totalReceivedBytes < count &&
                    (read = await dataStream.ReadAsync(receivedArray, totalReceivedBytes, Math.Min(bufferSize, count - totalReceivedBytes))) > 0)
                 totalReceivedBytes += read;
+            
+            if(compression) dataStream.Dispose();
             return receivedArray;
         }
     }

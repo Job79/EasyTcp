@@ -10,15 +10,17 @@ namespace EasyTcp3.ServerUtils
     public static class StartUtil
     {
         /// <summary>
-        /// Start accepting new connections
+        /// Start server and start listening for new connections
         /// </summary>
         /// <param name="server"></param>
         /// <param name="endPoint">server endpoint</param>
-        /// <param name="dualMode">determines if the socket is a dual-mode socket (IPv4 and IPv6)</param>
+        /// <param name="dualMode">determines whether the server is started in dual-mode (IPv4 and IPv6)</param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static T Start<T>(this T server, IPEndPoint endPoint, bool dualMode = false,
             Socket socket = null) where T : EasyTcpServer
         {
+            if(server == null) throw new Exception("Could not start server: server is null");
+            if(server.Protocol == null) throw new Exception("Could not start server: protocol is null");
             if (server.IsRunning) throw new Exception("Could not start server: server is already running");
             if (endPoint == null) throw new ArgumentException("Could not start server: endPoint is null");
             if (dualMode && endPoint.AddressFamily != AddressFamily.InterNetworkV6)
@@ -33,7 +35,7 @@ namespace EasyTcp3.ServerUtils
         }
 
         /// <summary>
-        /// Start accepting new connections
+        /// Start server and start listening for new connections
         /// </summary>
         /// <param name="server"></param>
         /// <param name="ipAddress"></param>
@@ -45,7 +47,7 @@ namespace EasyTcp3.ServerUtils
             => Start(server, new IPEndPoint(ipAddress, Math.Max(port, (ushort) 1)), dualMode, socket);
 
         /// <summary>
-        /// Start listening for new connections
+        /// Start server and start listening for new connections
         /// </summary>
         /// <param name="server"></param>
         /// <param name="ipAddress">ipAddress as string</param>
@@ -61,7 +63,7 @@ namespace EasyTcp3.ServerUtils
         }
 
         /// <summary>
-        /// Start listening for new connections on 0.0.0.0
+        /// Start server and start listening for new connections on 0.0.0.0
         /// </summary>
         /// <param name="server"></param>
         /// <param name="port"></param>

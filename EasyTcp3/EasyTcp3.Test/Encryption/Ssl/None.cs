@@ -16,12 +16,12 @@ namespace EasyTcp3.Test.Encryption.Ssl
         {
             ushort port = TestHelper.GetPort();
             var certificate = new X509Certificate2("certificate.pfx", "password");
-            using var protocol = new NoneSslProtocol(certificate);
+            using var protocol = new PlainSslProtocol(certificate);
             using var server = new EasyTcpServer(protocol).Start(port);
             server.OnDataReceive += (sender, message)
                 => message.Client.Send(message);
 
-            using var cprotocol = new NoneSslProtocol("localhost", acceptInvalidCertificates: true);
+            using var cprotocol = new PlainSslProtocol("localhost", acceptInvalidCertificates: true);
             using var client = new EasyTcpClient(cprotocol);
             Assert.IsTrue(client.Connect("127.0.0.1", port));
 

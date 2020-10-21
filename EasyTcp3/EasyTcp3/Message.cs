@@ -6,8 +6,7 @@ using EasyTcp3.EasyTcpPacketUtils;
 namespace EasyTcp3
 {
     /// <summary>
-    /// Parameter of the OnDataReceive events
-    /// Represents received data
+    /// Class that represents received data
     /// </summary>
     public class Message : IEasyTcpPacket
     {
@@ -18,7 +17,7 @@ namespace EasyTcp3
 
         /// <summary>
         /// Server: Sender of message
-        /// Client: Receiver of message
+        /// Client: Current client 
         /// </summary>
         public readonly EasyTcpClient Client;
 
@@ -35,11 +34,12 @@ namespace EasyTcp3
         }
         
         /// <summary>
-        /// MetaData of message, empty when not used by protocol
+        /// List with MetaData of received message
+        /// Available to custom protocols to store information.
         /// </summary>
         public Dictionary<string, object> MetaData 
         {
-            get => (_metaData ??= new Dictionary<string, object>());
+            get => _metaData ??= new Dictionary<string, object>();
             set => _metaData = value;
         }
         
@@ -162,19 +162,13 @@ namespace EasyTcp3
         public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.From<T>(Data);
 
         /// <summary>
-        /// Deserialize object from byte[] 
+        /// Deserialize byte[] to custom object
         /// </summary>
-        /// <returns></returns>
+        /// <returns>byte[] as custom object</returns>
         public T Deserialize<T>()
         {
-            try
-            {
-                return (T) Client.Deserialize(Data, typeof(T));
-            }
-            catch
-            {
-                return default;
-            }
+            try { return (T) Client.Deserialize(Data, typeof(T)); }
+            catch { return default; }
         }
     }
 }

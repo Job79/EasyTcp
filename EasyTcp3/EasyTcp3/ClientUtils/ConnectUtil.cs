@@ -20,7 +20,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="client"></param>
         /// <param name="endPoint">endPoint of remote host</param>
         /// <param name="timeout">maximum time for connecting with remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns> 
         public static bool Connect(this EasyTcpClient client, EndPoint endPoint, TimeSpan? timeout = null,
             Socket socket = null)
@@ -32,7 +32,7 @@ namespace EasyTcp3.ClientUtils
             try
             {
                 client.BaseSocket = socket ?? client.Protocol.GetSocket(endPoint.AddressFamily);
-                client.BaseSocket.ConnectAsync(endPoint).Wait(DefaultTimeout);
+                client.BaseSocket.ConnectAsync(endPoint).Wait((int)(timeout?.TotalMilliseconds ?? DefaultTimeout));
 
                 if (client.BaseSocket.Connected && client.Protocol.OnConnect(client))
                 {
@@ -56,7 +56,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="ipAddress">ipAddress of remote host</param>
         /// <param name="port">port of remote host</param>
         /// <param name="timeout">maximum time for connecting with remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns> 
         public static bool Connect(this EasyTcpClient client, IPAddress ipAddress, ushort port,
             TimeSpan? timeout = null, Socket socket = null)
@@ -69,7 +69,7 @@ namespace EasyTcp3.ClientUtils
         /// <param name="ipAddress">ipAddress of remote host as string</param>
         /// <param name="port">port of remote host</param>
         /// <param name="timeout">maximum time for connecting with remote host</param>
-        /// <param name="socket">socket for EasyTcpClient, new one is create when null</param>
+        /// <param name="socket">baseSocket for EasyTcpClient, new one is created when null</param>
         /// <returns>determines whether the client connected successfully</returns>  
         public static bool Connect(this EasyTcpClient client, string ipAddress, ushort port, TimeSpan? timeout = null,
             Socket socket = null)

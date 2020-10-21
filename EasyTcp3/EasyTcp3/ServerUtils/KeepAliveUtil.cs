@@ -1,11 +1,12 @@
 #if (NETCOREAPP3_0 || NETCOREAPP3_1)
 using System;
+using System.ComponentModel;
 using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.ServerUtils
 {
     /// <summary>
-    /// Class with all KeepAlive functions for the EasyTcpServer
+    /// Class with KeepAlive functions for the EasyTcpServer
     /// </summary>
     public static class KeepAliveUtil
     {
@@ -21,9 +22,11 @@ namespace EasyTcp3.ServerUtils
             int keepAliveRetryCount = 2) where T : EasyTcpServer
         {
             if (server == null) throw new ArgumentException("Could not enable keepAlive: server is null");
-
+            
             server.OnConnect += (s, client) =>
                 client.BaseSocket.EnableKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
+            
+            if (server.IsRunning) throw new WarningException("Keep alive is only enabled for all upcoming connections, it is recommend to enable keep alive before starting the server");
             return server;
         }
     }

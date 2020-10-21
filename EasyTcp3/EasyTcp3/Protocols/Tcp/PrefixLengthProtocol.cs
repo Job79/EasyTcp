@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace EasyTcp3.Protocols.Tcp
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header
-    /// Header is an ushort as byte[] with length of incoming message
+    /// Header is an ushort as byte[] with the length of the incoming message.
     /// </summary>
     public class PrefixLengthProtocol : DefaultTcpProtocol 
     {
@@ -16,7 +17,7 @@ namespace EasyTcp3.Protocols.Tcp
         protected bool ReceivingLength = true;
 
         /// <summary>
-        /// Size of (next) buffer used by receive event 
+        /// The size of the (next) buffer, used by receive event
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
 
@@ -31,13 +32,13 @@ namespace EasyTcp3.Protocols.Tcp
         /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not create message: Data array is empty");
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength > ushort.MaxValue) 
+                throw new ArgumentException("Could not create message: Message can't be created & send because it is too big. Send message with the LargeArrayUtil, StreamUtil or use another protocol.");
             byte[] message = new byte[2 + messageLength];
 
             // Write length of data to message
@@ -56,16 +57,10 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Return new instance of protocol 
+        /// Handle received data
         /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone() => new PrefixLengthProtocol();
-        
-        /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by the header 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="receivedBytes">ignored</param>
+        /// <param name="data">received data, has size of clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
@@ -80,5 +75,11 @@ namespace EasyTcp3.Protocols.Tcp
                 await client.DataReceiveHandler(new Message(data, client));
             }
         }
+        
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone() => new PrefixLengthProtocol();
     }
 }

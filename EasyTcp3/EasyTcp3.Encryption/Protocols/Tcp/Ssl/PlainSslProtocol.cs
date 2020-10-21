@@ -9,7 +9,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
     /// Protocol that doesn't implements any framing
     /// Useful when communicating with an already existing server/client
     /// </summary>
-    public class NoneSslProtocol : DefaultSslProtocol
+    public class PlainSslProtocol : DefaultSslProtocol
     {
         /// <summary>
         /// Default size of buffer when not specified in constructor
@@ -26,7 +26,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// </summary>
         /// <param name="certificate">server certificate</param>
         /// <param name="bufferSize"></param>
-        public NoneSslProtocol(X509Certificate certificate, int bufferSize = DefaultBufferSize) : base(certificate)
+        public PlainSslProtocol(X509Certificate certificate, int bufferSize = DefaultBufferSize) : base(certificate)
             => BufferSize = bufferSize;
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="bufferSize"></param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
-        public NoneSslProtocol(string serverName, int bufferSize = DefaultBufferSize, bool acceptInvalidCertificates = false) : base(serverName, acceptInvalidCertificates)
+        public PlainSslProtocol(string serverName, int bufferSize = DefaultBufferSize, bool acceptInvalidCertificates = false) : base(serverName, acceptInvalidCertificates)
             => BufferSize = bufferSize; 
         
         /// <summary>
@@ -73,8 +73,8 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <returns>new object</returns>
         public override object Clone()
         {
-            if (Certificate != null) return new NoneSslProtocol(Certificate, BufferSize);
-            else return new NoneSslProtocol(ServerName, BufferSize, AcceptInvalidCertificates);
+            if (Certificate != null) return new PlainSslProtocol(Certificate, BufferSize);
+            else return new PlainSslProtocol(ServerName, BufferSize, AcceptInvalidCertificates);
         } 
         
         /// <summary>

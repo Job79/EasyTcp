@@ -45,7 +45,7 @@ namespace EasyTcp3.Examples.Protocols
             bool autoRemoveDelimiter = true; // Determines whether to automatically remove the delimiter when triggering the OnDataReceive event
             using var delimiterProtocol = new DelimiterProtocol("\r\n", autoAddDelimiter, autoRemoveDelimiter);
 
-            /* None protocol,
+            /* PlainTcp protocol,
              * doesn't determine the end of a message
              * Reads all available bytes into 1 byte[]
              * Doesn't work with ReceiveStream/ReceiveLargeArray
@@ -55,13 +55,13 @@ namespace EasyTcp3.Examples.Protocols
              *     message: "data"
              */
             int bufferSize = 1024; // Max data(chunk) size 
-            var nonProtocol = new NoneProtocol(bufferSize);
+            var plainTcpProtocol = new PlainTcpProtocol(bufferSize);
             
             // Create client that uses a specific protocol
-            using var client = new EasyTcpClient(nonProtocol);
+            using var client = new EasyTcpClient(plainTcpProtocol);
             
             // Create a server that uses a specific protocol
-            using var server = new EasyTcpServer(nonProtocol).Start(Port);
+            using var server = new EasyTcpServer(plainTcpProtocol).Start(Port);
             
             /*             EasyTcp.Encryption
              * 
@@ -89,7 +89,6 @@ namespace EasyTcp3.Examples.Protocols
             
             var encrypter = new EasyEncrypt();
             using var encryptedPrefixLengthProtocol = new EncryptedPrefixLengthProtocol(encrypter);
-            
         }
     }
 }

@@ -8,19 +8,22 @@ using EasyTcp3.Protocols.Tcp;
 namespace EasyTcp3
 {
     /// <summary>
-    /// EasyTcp client,
-    /// Provides a simple high performance tcp client
+    /// EasyTcp client
+    /// Class with all EasyTcpClient properties and basic functions.
+    /// See the "ClientUtils" classes for all the other functions.
     /// </summary>
     public class EasyTcpClient : IDisposable
     {
         /// <summary>
-        /// BaseSocket of client,
-        /// null if client is not connected to remote host
+        /// BaseSocket of client
+        /// null if client is not connected to remote host.
         /// </summary>
         public Socket BaseSocket { get; set; }
 
         /// <summary>
-        /// Protocol for client, protocol determines all behavior of this client
+        /// Protocol used for this connection
+        /// The used protocol determines the internal behavior of the client. 
+        /// The protocol can't be changed when connected. 
         /// </summary>
         public IEasyTcpProtocol Protocol
         {
@@ -36,29 +39,30 @@ namespace EasyTcp3
 
         /// <summary>
         /// List with session variables
+        /// Available to store custom information.
         /// </summary>
         public Dictionary<string, object> Session
         {
-            get => (_session ??= new Dictionary<string, object>());
+            get => _session ??= new Dictionary<string, object>();
             set => _session = value;
         }
         
         private Dictionary<string, object> _session;
 
         /// <summary>
-        /// Function used by send functions to Serialize objects
+        /// Function used by send functions to Serialize custom objects
         /// </summary>
         public Func<object, byte[]> Serialize = o =>
             throw new Exception("Assign a function to serialize first before using serialisation");
 
         /// <summary>
-        /// Function used by receive to Deserialize byte[] to object 
+        /// Function used by receive to Deserialize byte[] to custom object 
         /// </summary>
         public Func<byte[], Type, object> Deserialize = (b, t) =>
             throw new Exception("Assign a function to deserialize first before using serialisation");
 
         /// <summary>
-        /// Event that is fired when client connected to remote host 
+        /// Event that is fired when client connects to remote host 
         /// </summary>
         public event EventHandler<EasyTcpClient> OnConnect;
 
@@ -68,12 +72,12 @@ namespace EasyTcp3
         public event EventHandler<EasyTcpClient> OnDisconnect;
 
         /// <summary>
-        /// Async event that is fired when client receives data from remote host
+        /// Event that is fired when client receives data from remote host
         /// </summary>
         public event EventHandler<Message> OnDataReceive;
         
         /// <summary>
-        /// Event that is fired when client receives data from remote host
+        /// Async event that is fired when client receives data from remote host
         /// </summary>
         public event OnDataReceiveAsyncDelegate OnDataReceiveAsync;
         
@@ -88,7 +92,7 @@ namespace EasyTcp3
         public event EventHandler<Message> OnDataSend;
 
         /// <summary>
-        /// Event that is fired when error occurs
+        /// Event that is fired when an (internal) error occurs
         /// </summary>
         public event EventHandler<Exception> OnError;
 
@@ -106,12 +110,11 @@ namespace EasyTcp3
         /// Fire the OnDataSend event
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="client"></param>
-        public void FireOnDataSend(byte[] data, EasyTcpClient client) => OnDataSend?.Invoke(this, new Message(data, client));
+        public void FireOnDataSend(byte[] data) => OnDataSend?.Invoke(this, new Message(data, this));
 
         /// <summary>
         /// Fire the OnError event,
-        /// throw error if event is not used and library is compiled with debug mode
+        /// throw error if event handler isn't used
         /// </summary>
         /// <param name="exception"></param>
         public void FireOnError(Exception exception)
@@ -121,40 +124,37 @@ namespace EasyTcp3
         }
 
         /// <summary>
-        /// Fire the OnDataReceive event
+        /// Execute custom action when receiving data 
+        /// </summary>
+        public Func<Message, Task> DataReceiveHandler;
+        
+        /// <summary>
+        /// Fire the OnDataReceive & OnDataReceiveAsync events
         /// </summary>
         /// <param name="message">received message</param>
-        public async Task FireOnDataReceiveEvent(Message message)
+        private async Task FireOnDataReceiveEvent(Message message)
         {
             if (OnDataReceiveAsync != null) await OnDataReceiveAsync.Invoke(this, message);
             OnDataReceive?.Invoke(this, message);
         } 
 
         /// <summary>
-        /// Execute custom action when receiving data 
-        /// </summary>
-        public Func<Message, Task> DataReceiveHandler;
-
-        /// <summary>
-        /// Set DataReceiveHandler back to default behavior (calling OnDataReceive)
+        /// Set DataReceiveHandler back to default behavior (calling private function FireOnDataReceiveEvent)
         /// </summary>
         public void ResetDataReceiveHandler() => DataReceiveHandler = FireOnDataReceiveEvent;
 
-        /// <summary></summary>
+        /// <summary>
+        /// Construct new EasyTcpClient
+        /// </summary>
         /// <param name="protocol"></param>
         public EasyTcpClient(IEasyTcpProtocol protocol = null)
         {
             Protocol = protocol ?? new PrefixLengthProtocol();
-            ResetDataReceiveHandler();
+            ResetDataReceiveHandler(); // Set DataReceiveHandler to default behavior
         }
 
-        /// <summary></summary>
-        /// <param name="socket"></param>
-        /// <param name="protocol"></param>
-        public EasyTcpClient(Socket socket, IEasyTcpProtocol protocol = null) : this(protocol) => BaseSocket = socket;
-
         /// <summary>
-        /// Dispose current instance of the baseSocket if not null
+        /// Dispose and disconnect EasyTcpClient
         /// </summary>
         public void Dispose()
         {

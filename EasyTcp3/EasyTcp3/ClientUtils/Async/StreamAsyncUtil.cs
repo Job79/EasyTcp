@@ -12,7 +12,7 @@ namespace EasyTcp3.ClientUtils.Async
     {
         /// <summary>
         /// Send stream to the remote host
-        /// Host can only receive a stream when not listening for incoming messages
+        /// Host can only receive a stream when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream">input stream</param>
@@ -21,14 +21,13 @@ namespace EasyTcp3.ClientUtils.Async
         /// <param name="bufferSize"></param>
         /// <exception cref="InvalidDataException">stream is not readable</exception>
         public static async Task SendStreamAsync(this EasyTcpClient client, Stream stream, bool compression = false,
-            bool sendLengthPrefix = true,
-            int bufferSize = 1024)
+            bool sendLengthPrefix = true, int bufferSize = 1024)
         {
             if (client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
-            using var networkStream = client.Protocol.GetStream(client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            var networkStream = client.Protocol.GetStream(client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress, true) : networkStream;
 
             if (sendLengthPrefix) await dataStream.WriteAsync(BitConverter.GetBytes(stream.Length), 0, 8);
 
@@ -37,11 +36,13 @@ namespace EasyTcp3.ClientUtils.Async
 
             while ((read = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 await dataStream.WriteAsync(buffer, 0, read);
+                
+            if(compression) dataStream.Dispose();
         }
 
         /// <summary>
         /// Receive stream from remote host
-        /// Use this method only when not listening for incoming messages (In the OnReceive event)
+        /// Use this method only when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="message"></param>
         /// <param name="stream">output stream for receiving data</param>
@@ -56,8 +57,8 @@ namespace EasyTcp3.ClientUtils.Async
             if (message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
-            using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            var networkStream = message.Client.Protocol.GetStream(message.Client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
 
             //Get length of stream
             if (count == 0)
@@ -80,6 +81,7 @@ namespace EasyTcp3.ClientUtils.Async
             }
 
             if (stream.CanSeek) stream.Seek(0, SeekOrigin.Begin);
+            if(compression) dataStream.Dispose();
         }
     }
 }

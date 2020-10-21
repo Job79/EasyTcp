@@ -15,10 +15,10 @@ namespace EasyTcp3.ClientUtils.Async
         private const int DefaultTimeout = -1;
 
         /// <summary>
-        /// Return next received data 
+        /// Capture and return next received data 
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="timeout">maximum time to wait for a message, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a message, if time expired return null</param>
         /// <returns>received message</returns>
         public static async Task<Message> ReceiveAsync(this EasyTcpClient client, TimeSpan? timeout = null)
         {

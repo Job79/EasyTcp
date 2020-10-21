@@ -16,7 +16,12 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <summary>
         /// Buffer with received data
         /// </summary>
-        public byte[] ReceiveBuffer;
+        protected byte[] ReceiveBuffer;
+        
+        /// <summary>
+        /// AsyncEventArgs used to accept new connections
+        /// </summary>
+        protected SocketAsyncEventArgs AcceptArgs;
         
         /// <summary>
         /// Instance of SslStream,
@@ -75,6 +80,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         
         /// <summary>
         /// Get receiving/sending stream
+        /// TODO Not encrypted and disposed when using largeArray / streams
         /// </summary>
         /// <returns></returns>
         public Stream GetStream(EasyTcpClient client) => NetworkStream; 
@@ -85,15 +91,15 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="server"></param>
         public virtual void StartAcceptingClients(EasyTcpServer server)
         {
-            if (server.AcceptArgs == null)
+            if (AcceptArgs == null)
             {
                 server.BaseSocket.Listen(50000);
-                server.AcceptArgs = new SocketAsyncEventArgs {UserToken = server};
-                server.AcceptArgs.Completed += (_, ar) => OnConnectCallback(ar);
+                AcceptArgs = new SocketAsyncEventArgs {UserToken = server};
+                AcceptArgs.Completed += (_, ar) => OnConnectCallback(ar);
             }
 
-            server.AcceptArgs.AcceptSocket = null;
-            if (!server.BaseSocket.AcceptAsync(server.AcceptArgs)) OnConnectCallback(server.AcceptArgs);
+            AcceptArgs.AcceptSocket = null;
+            if (!server.BaseSocket.AcceptAsync(AcceptArgs)) OnConnectCallback(AcceptArgs);
         }
 
         /// <summary>
@@ -128,7 +134,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             if (client?.BaseSocket == null || !client.BaseSocket.Connected)
                 throw new Exception("Could not send data: Client not connected or null");
 
-            client.FireOnDataSend(message, client);
+            client.FireOnDataSend(message);
             SslStream.BeginWrite(message, 0, message.Length, ar =>
             {
                 var stream = ar.AsyncState as SslStream;
@@ -150,6 +156,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         {
             SslStream?.Dispose();
             NetworkStream?.Dispose();
+            AcceptArgs?.Dispose();
         }
 
         /// <summary>
@@ -251,9 +258,9 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 
             try
             {
-                var client = new EasyTcpClient(ar.AcceptSocket,
-                    (IEasyTcpProtocol) server.Protocol.Clone())
+                var client = new EasyTcpClient((IEasyTcpProtocol) server.Protocol.Clone())
                 {
+                    BaseSocket = ar.AcceptSocket,
                     Serialize = server.Serialize,
                     Deserialize = server.Deserialize
                 };
@@ -263,12 +270,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 client.OnError += (_, exception) => server.FireOnError(exception);
 
                 StartAcceptingClients(server);
-
-                if (!client.Protocol.OnConnectServer(client)) return;
-                server.FireOnConnect(client);
-                if (client.BaseSocket != null) // Check if user aborted OnConnect with Client.Dispose()
-                    lock (server.UnsafeConnectedClients)
-                        server.UnsafeConnectedClients.Add(client);
+                if (client.Protocol.OnConnectServer(client)) server.FireOnConnect(client);
             }
             catch (Exception ex)
             {

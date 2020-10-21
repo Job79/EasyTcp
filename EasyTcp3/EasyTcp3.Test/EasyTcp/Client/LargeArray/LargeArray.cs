@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net;
 using EasyTcp3.ClientUtils;
 using EasyTcp3.ClientUtils.Async;
+using EasyTcp3.EasyTcpPacketUtils;
 using NUnit.Framework;
 using EasyTcp3.ServerUtils;
 

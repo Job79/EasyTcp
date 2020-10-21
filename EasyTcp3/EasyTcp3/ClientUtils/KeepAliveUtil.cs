@@ -5,12 +5,12 @@ using System.Net.Sockets;
 namespace EasyTcp3.ClientUtils
 {
     /// <summary>
-    /// Class with all KeepAlive functions for the EasyTcpClient
+    /// Class with KeepAlive functions for the EasyTcpClient
     /// </summary>
     public static class KeepAliveUtil
     {
         /// <summary>
-        /// Enable keep alive
+        /// Enable keep alive for upcoming connection
         /// </summary>
         /// <param name="client"></param>
         /// <param name="keepAliveTime">the number of seconds a TCP connection will remain alive/idle before keepalive probes are sent to the remote</param>
@@ -21,8 +21,10 @@ namespace EasyTcp3.ClientUtils
             int keepAliveRetryCount = 2) where T : EasyTcpClient
         {
             if (client == null) throw new ArgumentException("Could not enable keepAlive: client is null");
-            client.OnConnect += (s, c) =>
-                c.BaseSocket.EnableKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
+            if (client.IsConnected())
+                client.BaseSocket.EnableKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
+            else client.OnConnect += (s, c) =>
+                    c.BaseSocket.EnableKeepAlive(keepAliveTime, keepAliveInterval, keepAliveRetryCount);
             return client;
         }
 

@@ -12,7 +12,7 @@ namespace EasyTcp3.ClientUtils
         /// Determines if client is still connected to endpoint
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="poll">uses poll if set to true, can be more accurate but decreases performance</param>
+        /// <param name="poll">use poll if set to true, can be more accurate but decreases performance</param>
         /// <returns>determines whether the client is still connected</returns>
         public static bool IsConnected(this EasyTcpClient client, bool poll = false)
         {
@@ -38,7 +38,7 @@ namespace EasyTcp3.ClientUtils
         /// <summary>
         /// Get ip of client
         /// </summary>
-        /// <param name="client"></param>s
+        /// <param name="client"></param>
         /// <returns>ip of client</returns>
         public static IPAddress GetIp(this EasyTcpClient client) =>
             client?.GetEndPoint()?.Address;

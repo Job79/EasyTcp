@@ -6,7 +6,7 @@ namespace EasyTcp3.EasyTcpPacketUtils
     public static class EasyTcpPacket
     {
         /// <summary>
-        /// Create package from byte array 
+        /// Create package from byte array
         /// </summary>
         /// <param name="data">data of new package</param>
         /// <param name="compression">compress data using GZIP if set to true</param>

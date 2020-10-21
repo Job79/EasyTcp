@@ -11,7 +11,7 @@ namespace EasyTcp3.ClientUtils
     {
         /// <summary>
         /// Send stream to the remote host
-        /// Host can only receive a stream when not listening for incoming messages
+        /// Host can only receive a stream when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream">input stream</param>
@@ -25,8 +25,8 @@ namespace EasyTcp3.ClientUtils
             if(client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanRead) throw new InvalidDataException("Stream is not readable");
 
-            using var networkStream = client.Protocol.GetStream(client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress) : networkStream;
+            var networkStream = client.Protocol.GetStream(client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Compress, true) : networkStream;
             
             if (sendLengthPrefix) dataStream.Write(BitConverter.GetBytes(stream.Length),0,8);
 
@@ -35,11 +35,13 @@ namespace EasyTcp3.ClientUtils
 
             while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
                 dataStream.Write(buffer, 0, read);
+            
+            if(compression) dataStream.Dispose();
         }
 
         /// <summary>
         /// Receive stream from remote host
-        /// Use this method only when not listening for incoming messages (In the OnReceive event)
+        /// Use this method only when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="message"></param>
         /// <param name="stream">output stream for receiving data</param>
@@ -52,8 +54,8 @@ namespace EasyTcp3.ClientUtils
             if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
             if (!stream.CanWrite) throw new InvalidDataException("Stream is not writable");
 
-            using var networkStream = message.Client.Protocol.GetStream(message.Client);
-            using var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress) : networkStream;
+            var networkStream = message.Client.Protocol.GetStream(message.Client);
+            var dataStream = compression ? new GZipStream(networkStream, CompressionMode.Decompress, true) : networkStream;
 
             //Get length of stream
             if (count == 0)
@@ -75,6 +77,7 @@ namespace EasyTcp3.ClientUtils
             }
             
             if (stream.CanSeek) stream.Seek(0, SeekOrigin.Begin);
+            if(compression) dataStream.Dispose();
         }
     }
 }
