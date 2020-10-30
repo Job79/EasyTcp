@@ -4,9 +4,6 @@ using EasyTcp3.Encryption.Protocols.Tcp;
 
 namespace EasyTcp3.Encryption
 {
-    /// <summary>
-    /// Class with functions for encrypting packages
-    /// </summary>
     public static class EncryptionUtil 
     {
         /// <summary>

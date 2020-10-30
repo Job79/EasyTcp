@@ -4,9 +4,6 @@ using System.IO.Compression;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with the SendLargeArray/ReceiveLargeArray functions 
-    /// </summary>
     public static class LargeArrayUtil
     {
         /// <summary>

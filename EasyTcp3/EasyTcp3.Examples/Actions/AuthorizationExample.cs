@@ -83,7 +83,7 @@ namespace EasyTcp3.Examples.Actions
         /// <param name="sender"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public override bool HasAccess(object sender, ActionMessage message)
+        public override bool HasAccess(object sender, Message message)
         {
             var hasRole = message.Client.Session.TryGetValue("UserRole", out object userRole);
             if (!hasRole) return false;

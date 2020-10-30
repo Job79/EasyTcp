@@ -4,9 +4,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with KeepAlive functions for the EasyTcpClient
-    /// </summary>
     public static class KeepAliveUtil
     {
         /// <summary>

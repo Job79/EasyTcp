@@ -1,16 +1,13 @@
 namespace EasyTcp3.Actions.ActionUtils
 {
-    /// <summary>
-    /// Functions used to convert a string to an action code (int)
-    /// </summary>
-    // http://www.cse.yorku.ca/~oz/hash.html
     public static class ActionCodeUtil
     {
         /// <summary>
-        /// Convert string to actionCode by using the djb2a hashing algorithm
+        /// Convert string to actionCode with the djb2a algorithm
+        /// The djb2a algorithm can be found here: http://www.cse.yorku.ca/~oz/hash.html 
         /// </summary>
         /// <param name="str">action string</param>
-        /// <returns>action string as int</returns>
+        /// <returns>hash of action string that will be used as action code</returns>
         public static int ToActionCode(this string str)
         {
             int hash = 5381;
@@ -19,7 +16,7 @@ namespace EasyTcp3.Actions.ActionUtils
         }
 
         /// <summary>
-        /// Determines whether specified string is equal to actionCode
+        /// Determines whether specified action string is equal to an actionCode
         /// </summary>
         /// <param name="actionCode">action code</param>
         /// <param name="str">action string</param>
@@ -28,12 +25,12 @@ namespace EasyTcp3.Actions.ActionUtils
             => actionCode == str.ToActionCode();
 
         /// <summary>
-        /// Determines whether specified string is equal to actionMessage.ActionCode
+        /// Determines whether specified action string is equal to actionMessage.ActionCode
         /// </summary>
-        /// <param name="actionMessage">action message</param>
+        /// <param name="message">message with actionCode</param>
         /// <param name="str">action string</param>
         /// <returns></returns>
-        public static bool IsAction(this ActionMessage actionMessage, string str)
-            => actionMessage.ActionCode.IsEqualToAction(str);
+        public static bool IsAction(this Message message, string str)
+            => message.GetActionCode().IsEqualToAction(str);
     }
 }

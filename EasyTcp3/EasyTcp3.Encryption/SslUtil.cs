@@ -3,9 +3,6 @@ using EasyTcp3.Encryption.Protocols.Tcp.Ssl;
 
 namespace EasyTcp3.Encryption
 {
-    /// <summary>
-    /// Class with functions for enabling ssl
-    /// </summary>
     public static class SslUtil
     {
         /// <summary>

@@ -4,9 +4,6 @@ using System.IO.Compression;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with all the SendStream and ReceiveStream functions
-    /// </summary>
     public static class StreamUtil
     {
         /// <summary>

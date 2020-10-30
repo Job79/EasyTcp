@@ -36,7 +36,7 @@ namespace EasyTcp3.Test.Actions
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer
             {
-                Interceptor = action => action.ActionCode.IsEqualToAction("ECHO") && action.ToString() == "data"
+                Interceptor = action => action.GetActionCode().IsEqualToAction("ECHO") && action.ToString() == "data"
             }.Start(port);
 
             using var client = new EasyTcpClient();

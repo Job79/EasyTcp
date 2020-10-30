@@ -40,7 +40,7 @@ namespace EasyTcp3.Test.Actions.Filter
 
     public class EasyTcpTestAuthorization : EasyTcpActionFilter
     {
-        public override bool HasAccess(object sender, ActionMessage message)
+        public override bool HasAccess(object sender, Message message)
         {
             if (message.Client.Session.TryGetValue("role", out object role) && role as string == "user") return true;
             else return false;

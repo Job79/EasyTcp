@@ -6,9 +6,6 @@ using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with all SendAndGetReply functions
-    /// </summary>
     public static class SendAndGetReplyUtil
     {
         /// <summary>
@@ -21,7 +18,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, TimeSpan? timeout = null, params byte[][] data)
         {
@@ -49,7 +46,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, byte[] data, TimeSpan? timeout = null,
@@ -64,7 +61,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, ushort data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -74,7 +71,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, short data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -84,7 +81,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, uint data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -94,7 +91,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, int data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -104,7 +101,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, ulong data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -114,7 +111,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, long data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -124,7 +121,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, double data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -134,7 +131,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, bool data, TimeSpan? timeout = null) =>
             client.SendAndGetReply(BitConverter.GetBytes(data), timeout);
@@ -144,7 +141,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
         /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
@@ -157,7 +154,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, IEasyTcpPacket data, TimeSpan? timeout = null,
@@ -169,7 +166,7 @@ namespace EasyTcp3.ClientUtils
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
-        /// <param name="timeout">maximum time to wait for a reply, if time expired this function returns null</param>
+        /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <param name="compression">compress data using Deflate if set to true</param>
         /// <returns>received reply</returns>
         public static Message SendAndGetReply(this EasyTcpClient client, object data, TimeSpan? timeout = null,

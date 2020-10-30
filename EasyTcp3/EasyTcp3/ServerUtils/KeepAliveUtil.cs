@@ -5,9 +5,6 @@ using EasyTcp3.ClientUtils;
 
 namespace EasyTcp3.ServerUtils
 {
-    /// <summary>
-    /// Class with KeepAlive functions for the EasyTcpServer
-    /// </summary>
     public static class KeepAliveUtil
     {
         /// <summary>

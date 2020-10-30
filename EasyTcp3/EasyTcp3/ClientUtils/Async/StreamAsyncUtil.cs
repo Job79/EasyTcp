@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils.Async
 {
-    /// <summary>
-    /// Class with all the SendStreamAsync and ReceiveStreamAsync functions
-    /// </summary>
     public static class StreamAsyncUtil
     {
         /// <summary>

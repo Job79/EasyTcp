@@ -4,9 +4,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with Connect functions
-    /// </summary>
     public static class ConnectUtil
     {
         /// <summary>

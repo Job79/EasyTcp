@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils.Async
 {
-    /// <summary>
-    /// Class with all ConnectAsync functions
-    /// </summary>
     public static class ConnectAsyncUtil
     {
         /// <summary>

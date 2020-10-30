@@ -5,9 +5,6 @@ using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
-    /// <summary>
-    /// Class with SendAllAction functions
-    /// </summary>
     public static class SendAllActionUtil
     {
         /// <summary>
@@ -226,7 +223,7 @@ namespace EasyTcp3.Actions.ActionUtils
         /// Send action (object) to connected clients
         /// </summary>
         /// <param name="server"></param>
-        /// <param name="action">action code as string</param>
+        /// <param name="action">action code</param>
         /// <param name="data">data to send to connected clients</param>
         /// <param name="compression">compress data using Deflate if set to true</param>
         public static void SendAllAction(this EasyTcpServer server, int action, object data, bool compression = false)

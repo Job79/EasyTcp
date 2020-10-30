@@ -5,9 +5,6 @@ using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
-    /// <summary>
-    /// Class with all SendAction functions
-    /// </summary>
     public static class SendActionUtil
     {
         /// <summary>

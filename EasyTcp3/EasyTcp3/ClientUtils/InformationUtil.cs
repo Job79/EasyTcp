@@ -3,9 +3,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with all basic functions for retrieving information
-    /// </summary>
     public static class InformationUtil
     {
         /// <summary>

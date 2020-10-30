@@ -4,9 +4,6 @@ using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils.Async
 {
-    /// <summary>
-    /// Class with async Receive functions
-    /// </summary>
     public static class ReceiveAsyncUtil
     {
         /// <summary>

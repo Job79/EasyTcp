@@ -4,9 +4,6 @@ using EasyTcp3.EasyTcpPacketUtils;
 
 namespace EasyTcp3.ClientUtils
 {
-    /// <summary>
-    /// Class with all Send functions
-    /// </summary>
     public static class SendUtil
     {
         /// <summary>

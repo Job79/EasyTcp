@@ -4,9 +4,6 @@ using System.Net.Sockets;
 
 namespace EasyTcp3.ServerUtils
 {
-    /// <summary>
-    /// Class with Start functions
-    /// </summary>
     public static class StartUtil
     {
         /// <summary>

@@ -3,9 +3,6 @@ using System.IO.Compression;
 
 namespace EasyTcp3.EasyTcpPacketUtils
 {
-    /// <summary>
-    /// Class that contains functions for compressing data with Deflate 
-    /// </summary>
     public static class CompressionUtil
     {
         /// <summary>

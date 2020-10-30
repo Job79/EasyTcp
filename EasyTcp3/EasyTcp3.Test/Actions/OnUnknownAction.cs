@@ -23,7 +23,7 @@ namespace EasyTcp3.Test.Actions
             int triggeredCounter = 0;
             server.OnUnknownAction += (sender, c) =>
             {
-                if(c.ActionCode.IsEqualToAction("INVALIDACTION") && c.ToString() == "data") Interlocked.Increment(ref triggeredCounter);
+                if(c.GetActionCode().IsEqualToAction("INVALIDACTION") && c.ToString() == "data") Interlocked.Increment(ref triggeredCounter);
             };
 
             using var client = new EasyTcpClient();

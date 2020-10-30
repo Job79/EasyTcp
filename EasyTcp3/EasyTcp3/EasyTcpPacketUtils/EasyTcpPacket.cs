@@ -1,8 +1,5 @@
 namespace EasyTcp3.EasyTcpPacketUtils
 {
-    /// <summary>
-    /// IEasyTcpPacket helper functions
-    /// </summary>
     public static class EasyTcpPacket
     {
         /// <summary>
