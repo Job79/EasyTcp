@@ -29,7 +29,7 @@ namespace EasyTcp3.Examples.Logging
             server.OnDataReceive += (s, message) => message.Client.Send("Hello client test!");
             
             // Create client with logging enabled
-            using var client = new EasyTcpClient().UseClientLogging(Console.WriteLine);
+            using var client = new EasyTcpClient().UseLogging(Console.WriteLine);
             if(!client.Connect("127.0.0.1", Port)) return;
             
              client.Send("Hello server!");

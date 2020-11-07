@@ -14,7 +14,7 @@ namespace EasyTcp3.Logging
         /// <param name="logger"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T UseCustomClientLogging<T>(this T client, Action<LogMessage> logger) where T : EasyTcpClient
+        public static T UseCustomLogging<T>(this T client, Action<LogMessage> logger) where T : EasyTcpClient
         {
             client.OnDataReceive += (sender, message) => logger(new LogMessage(message, LoggingType.DataReceived, sender));
             client.OnDataSend += (sender, message) => logger(new LogMessage(message, LoggingType.DataSend, sender));
@@ -48,8 +48,8 @@ namespace EasyTcp3.Logging
         /// <param name="logger"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T UseClientLogging<T>(this T client, Action<string> logger) where T : EasyTcpClient
-            => client.UseCustomClientLogging(message => logger(message.ToString()));
+        public static T UseLogging<T>(this T client, Action<string> logger) where T : EasyTcpClient
+            => client.UseCustomLogging(message => logger(message.ToString()));
 
         /// <summary>
         /// Enable custom logging (EasyTcpServer) 

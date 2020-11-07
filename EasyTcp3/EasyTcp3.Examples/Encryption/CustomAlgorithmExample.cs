@@ -26,7 +26,7 @@ namespace EasyTcp3.Examples.Encryption
             _encrypter = new EasyEncrypt("Password", "Salt2135321");
             
             // Create new client with encryption
-            var client = new EasyTcpClient().UseClientEncryption(_encrypter); 
+            var client = new EasyTcpClient().UseEncryption(_encrypter); 
             client.Connect("127.0.0.1", Port);
 
             // All data is now encrypted before sending

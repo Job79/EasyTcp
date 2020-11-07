@@ -23,7 +23,7 @@ namespace EasyTcp3.Test.Encryption
                 Console.WriteLine(message);
                 message.Client.Send(message);
             };
-            using var client = new EasyTcpClient().UseClientEncryption(encrypter);
+            using var client = new EasyTcpClient().UseEncryption(encrypter);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());
@@ -43,7 +43,7 @@ namespace EasyTcp3.Test.Encryption
                 Console.WriteLine(message);
                 message.Client.Send(message);
             };
-            using var client = new EasyTcpClient().UseClientEncryption(encrypter);
+            using var client = new EasyTcpClient().UseEncryption(encrypter);
             
             Assert.IsTrue(client.Connect(IPAddress.Any, port));
             Assert.AreEqual("Test", client.SendAndGetReply("Test").ToString());

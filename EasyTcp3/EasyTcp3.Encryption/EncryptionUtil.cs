@@ -35,7 +35,7 @@ namespace EasyTcp3.Encryption
         /// </summary>
         /// <param name="client"></param>
         /// <param name="encrypt"></param>
-        public static T UseClientEncryption<T>(this T client, EasyEncrypt encrypt) where T : EasyTcpClient
+        public static T UseEncryption<T>(this T client, EasyEncrypt encrypt) where T : EasyTcpClient
         {
             client.Protocol = new EncryptedPrefixLengthProtocol(encrypt);
             return client;

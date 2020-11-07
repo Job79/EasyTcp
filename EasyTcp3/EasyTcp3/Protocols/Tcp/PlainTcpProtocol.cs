@@ -13,7 +13,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <summary>
         /// Default size of buffer when not specified in constructor
         /// </summary>
-        private const int DefaultBufferSize = 1024;
+        internal const int DefaultBufferSize = 1024;
         
         /// <summary>
         /// The size of the (next) buffer, used by receive event
