@@ -15,23 +15,23 @@ namespace EasyTcp3.Protocols.Tcp
         /// AsyncEventArgs used to receive new data 
         /// </summary>
         protected SocketAsyncEventArgs ReceiveBuffer;
-        
+
         /// <summary>
         /// AsyncEventArgs used to accept new connections (null for clients)
         /// </summary>
         protected SocketAsyncEventArgs AcceptArgs;
-        
+
         /// <summary>
         /// Determines whether the DataReceiver is started
         /// </summary>
         protected bool IsListening;
-        
+
         /// <summary>
         /// NetworkStream used by getStream()
         /// Null when getStream() isn't used
         /// </summary>
         protected NetworkStream NetworkStream;
-        
+
         /// <summary>
         /// Get new instance of a tcp socket 
         /// </summary>
@@ -39,7 +39,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <returns>new instance of socket compatible with the tcp protocol</returns>
         public virtual Socket GetSocket(AddressFamily addressFamily) =>
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-        
+
         /// <summary>
         /// Start accepting new clients
         /// </summary>
@@ -65,16 +65,16 @@ namespace EasyTcp3.Protocols.Tcp
         {
             if (IsListening) return;
             IsListening = true;
-                                                                
+
             var protocol = (DefaultTcpProtocol) client.Protocol;
-                                               
+
             if (protocol.ReceiveBuffer == null)
-            {                                                                          
+            {
                 protocol.ReceiveBuffer = new SocketAsyncEventArgs {UserToken = client};
                 protocol.ReceiveBuffer.Completed += (_, ar) => OnReceiveCallback(ar);
             }
-                                        
-            protocol.ReceiveBuffer.SetBuffer(new byte[BufferSize], 0, BufferSize);                                 
+
+            protocol.ReceiveBuffer.SetBuffer(new byte[BufferSize], 0, BufferSize);
             if (!client.BaseSocket.ReceiveAsync(protocol.ReceiveBuffer)) OnReceiveCallback(protocol.ReceiveBuffer);
         }
 
@@ -97,7 +97,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// </summary>
         /// <returns></returns>
         public Stream GetStream(EasyTcpClient client) => NetworkStream ??= new NetworkStream(client.BaseSocket);
-        
+
         /// <summary>
         /// Method that is triggered when client connects to remote endpoint 
         /// </summary>
@@ -117,7 +117,7 @@ namespace EasyTcp3.Protocols.Tcp
             EnsureDataReceiverIsRunning(client);
             return true;
         }
-        
+
         /// <summary>
         /// Dispose protocol, automatically called by client.Dispose & server.Dispose 
         /// </summary>
@@ -127,16 +127,16 @@ namespace EasyTcp3.Protocols.Tcp
             AcceptArgs?.Dispose();
             NetworkStream?.Dispose();
         }
-        
+
         /*
          * Methods used by internal receivers that need to be implemented when using this class 
          */
-        
+
         /// <summary>
         /// The size of the (next) buffer, used by receive event 
         /// </summary>
         public abstract int BufferSize { get; protected set; }
-        
+
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         /// Returned data will be send to remote host.
@@ -152,7 +152,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="receivedBytes">amount of received bytes, can be smaller then the buffer</param>
         /// <param name="client"></param>
         public abstract Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
-        
+
         /// <summary>
         /// Return new instance of protocol
         /// Used by the server to create copies for all connected clients.
@@ -213,6 +213,7 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="ar"></param>
         protected virtual async void OnReceiveCallback(SocketAsyncEventArgs ar)
         {
+            receive_data:
             var client = ar.UserToken as EasyTcpClient;
             if (client == null) return;
             IsListening = false;
@@ -222,8 +223,15 @@ namespace EasyTcp3.Protocols.Tcp
                 if (ar.BytesTransferred != 0)
                 {
                     await DataReceive(ar.Buffer, ar.BytesTransferred, client);
-                    if (client.BaseSocket == null) HandleDisconnect(client); // Check if client is disposed by DataReceive
-                    else EnsureDataReceiverIsRunning(client);
+                    if (client.BaseSocket == null)
+                        HandleDisconnect(client); // Check if client is disposed by DataReceive
+                    else /* Continue listening for data  */
+                    {
+                        if (IsListening) return;
+                        IsListening = true;
+                        ar.SetBuffer(new byte[BufferSize], 0, BufferSize);
+                        if (!client.BaseSocket.ReceiveAsync(ar)) goto receive_data;
+                    }
                 }
                 else HandleDisconnect(client);
             }
