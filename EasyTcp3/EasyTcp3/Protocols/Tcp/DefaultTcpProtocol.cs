@@ -41,6 +41,12 @@ namespace EasyTcp3.Protocols.Tcp
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
 
         /// <summary>
+        /// Get receiving & sending stream
+        /// </summary>
+        /// <returns></returns>
+        public virtual Stream GetStream(EasyTcpClient client) => NetworkStream ??= new NetworkStream(client.BaseSocket);
+
+        /// <summary>
         /// Start accepting new clients
         /// </summary>
         /// <param name="server"></param>
@@ -93,12 +99,6 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Get receiving & sending stream
-        /// </summary>
-        /// <returns></returns>
-        public Stream GetStream(EasyTcpClient client) => NetworkStream ??= new NetworkStream(client.BaseSocket);
-
-        /// <summary>
         /// Method that is triggered when client connects to remote endpoint 
         /// </summary>
         /// <param name="client"></param>
@@ -124,8 +124,8 @@ namespace EasyTcp3.Protocols.Tcp
         public virtual void Dispose()
         {
             ReceiveBuffer?.Dispose();
-            AcceptArgs?.Dispose();
             NetworkStream?.Dispose();
+            AcceptArgs?.Dispose();
         }
 
         /*
@@ -223,6 +223,7 @@ namespace EasyTcp3.Protocols.Tcp
                 if (ar.BytesTransferred != 0)
                 {
                     await DataReceive(ar.Buffer, ar.BytesTransferred, client);
+
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else /* Continue listening for data  */

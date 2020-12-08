@@ -16,7 +16,7 @@ namespace EasyTcp3.Test.Encryption.Ssl
         {
             var certificate = new X509Certificate2("certificate.pfx", "password");
             ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpServer().UseSsl(certificate).Start(port);
+            using var server = new EasyTcpServer().UseServerSsl(certificate).Start(port);
 
             using var client = new EasyTcpClient().UseSsl("localhost",true);
             Assert.IsTrue(client.Connect(IPAddress.Any, port));

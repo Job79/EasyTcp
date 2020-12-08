@@ -7,7 +7,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header
-    /// Header is an ushort as byte[] with length of incoming message
+    /// Header is an ushort as byte[] with the length of the incoming message.
     /// </summary>
     public class PrefixLengthSslProtocol : DefaultSslProtocol
     {
@@ -17,7 +17,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         protected bool ReceivingLength = true;
 
         /// <summary>
-        /// Size of (next) buffer used by receive event 
+        /// The size of the (next) buffer, used by receive event
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
         
@@ -33,9 +33,10 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// </summary>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
-        public PrefixLengthSslProtocol(string serverName, bool acceptInvalidCertificates = false) : base(serverName, acceptInvalidCertificates)
+        public PrefixLengthSslProtocol(string serverName, bool acceptInvalidCertificates = false)
+            : base(serverName, acceptInvalidCertificates)
             => BufferSize = 2;
-        
+
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         /// returned data will be send to remote host
@@ -44,13 +45,13 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not create message: Data array is empty");
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength > ushort.MaxValue) 
+                throw new ArgumentException("Could not create message: Message can't be created & send because it is too big. Send message with the LargeArrayUtil, StreamUtil or use another protocol.");
             byte[] message = new byte[2 + messageLength];
 
             // Write length of data to message
@@ -69,20 +70,10 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Return new instance of protocol 
+        /// Handle received data
         /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone()
-        {
-            if (Certificate != null) return new PrefixLengthSslProtocol(Certificate);
-            else return new PrefixLengthSslProtocol(ServerName, AcceptInvalidCertificates);
-        } 
-        
-        /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by the header 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="receivedBytes">ignored</param>
+        /// <param name="data">received data, has size of clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
@@ -97,5 +88,15 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 await client.DataReceiveHandler(new Message(data, client));
             }
         }
+
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone()
+        {
+            if (Certificate != null) return new PrefixLengthSslProtocol(Certificate);
+            else return new PrefixLengthSslProtocol(ServerName, AcceptInvalidCertificates);
+        } 
     }
 }

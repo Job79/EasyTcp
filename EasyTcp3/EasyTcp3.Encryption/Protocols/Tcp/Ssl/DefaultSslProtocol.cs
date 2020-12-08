@@ -5,24 +5,28 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using EasyTcp3.Protocols;
-
 namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 {
     /// <summary>
-    /// Implementation of tcp protocol with ssl
+    /// Abstract implementation of the tcp/ssl protocol
     /// </summary>
     public abstract class DefaultSslProtocol : IEasyTcpProtocol
     {
         /// <summary>
-        /// Buffer with received data
+        /// Buffer used to receive new data 
         /// </summary>
         protected byte[] ReceiveBuffer;
-        
+
         /// <summary>
-        /// AsyncEventArgs used to accept new connections
+        /// AsyncEventArgs used to accept new connections (null for clients)
         /// </summary>
         protected SocketAsyncEventArgs AcceptArgs;
-        
+
+        /// <summary>
+        /// Determines whether the DataReceiver is started
+        /// </summary>
+        protected bool IsListening;
+
         /// <summary>
         /// Instance of SslStream,
         /// null for base protocol of server
@@ -37,19 +41,19 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 
         /// <summary>
         /// Certificate used by SslStream
-        /// null if protocol is used by client
+        /// ignored if protocol is used by a client
         /// </summary>
         protected readonly X509Certificate Certificate;
 
         /// <summary>
         /// ServerName used by SslStream.AuthenticateAsClient
-        /// null if protocol is used by server
+        /// ignored if protocol is used by a server
         /// </summary>
         protected readonly string ServerName;
 
         /// <summary>
         /// Determines whether the client accepts servers with invalid certificates
-        /// null if protocol is used by server
+        /// ignored if protocol is used by a server
         /// </summary>
         protected readonly bool AcceptInvalidCertificates;
 
@@ -71,19 +75,19 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Default socket for protocol
+        /// Get new instance of a tcp socket 
         /// </summary>
         /// <param name="addressFamily"></param>
-        /// <returns>new instance of socket compatible with protocol</returns>
+        /// <returns>new instance of socket compatible with the tcp protocol</returns>
         public virtual Socket GetSocket(AddressFamily addressFamily) =>
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-        
+
         /// <summary>
-        /// Get receiving/sending stream
-        /// TODO Not encrypted and disposed when using largeArray / streams
+        /// Get receiving & sending stream
+        /// TODO write tests
         /// </summary>
         /// <returns></returns>
-        public Stream GetStream(EasyTcpClient client) => NetworkStream; 
+        public Stream GetStream(EasyTcpClient client) => SslStream;
 
         /// <summary>
         /// Start accepting new clients
@@ -94,7 +98,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             if (AcceptArgs == null)
             {
                 server.BaseSocket.Listen(50000);
-                AcceptArgs = new SocketAsyncEventArgs {UserToken = server};
+                AcceptArgs = new SocketAsyncEventArgs { UserToken = server };
                 AcceptArgs.Completed += (_, ar) => OnConnectCallback(ar);
             }
 
@@ -112,17 +116,9 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             IsListening = true;
 
             var protocol = (DefaultSslProtocol)client.Protocol;
-            ((DefaultSslProtocol) client.Protocol).SslStream.BeginRead(protocol.ReceiveBuffer = new byte[BufferSize], 0,
-                protocol.ReceiveBuffer.Length, OnReceiveCallback, client);
+            ((DefaultSslProtocol)client.Protocol).SslStream.BeginRead(
+                protocol.ReceiveBuffer = new byte[BufferSize], 0, protocol.ReceiveBuffer.Length, OnReceiveCallback, client);
         }
-
-        /// <summary>
-        /// Create a new message from 1 or multiple byte arrays
-        /// returned data will be send to remote host
-        /// </summary>
-        /// <param name="data">data of message</param>
-        /// <returns>data to send to remote host</returns>
-        public abstract byte[] CreateMessage(params byte[][] data);
 
         /// <summary>
         /// Send message to remote host
@@ -135,32 +131,11 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 throw new Exception("Could not send data: Client not connected or null");
 
             client.FireOnDataSend(message);
-            SslStream.BeginWrite(message, 0, message.Length, ar =>
-            {
-                var stream = ar.AsyncState as SslStream;
-                stream?.EndWrite(ar);
-            }, SslStream);
+            SslStream.Write(message, 0, message.Length);
         }
 
         /// <summary>
-        /// Create new instance of current protocol,
-        /// used by server when accepting a new client
-        /// </summary>
-        /// <returns></returns>
-        public abstract object Clone();
-
-        /// <summary>
-        /// Dispose instance of sslStream and networkStream
-        /// </summary>
-        public virtual void Dispose()
-        {
-            SslStream?.Dispose();
-            NetworkStream?.Dispose();
-            AcceptArgs?.Dispose();
-        }
-
-        /// <summary>
-        /// Method that is triggered when client connects
+        /// Method that is triggered when client connects to remote endpoint 
         /// Authenticate as client and start accepting new data
         /// </summary>
         /// <param name="client"></param>
@@ -181,8 +156,8 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Method that is triggered when client connects to server
-        ///  Authenticate as server and start accepting new data
+        /// Method that is triggered when server accepted a new client
+        /// Authenticate as server and start accepting new data
         /// </summary>
         /// <param name="client"></param>
         public virtual bool OnConnectServer(EasyTcpClient client)
@@ -197,35 +172,55 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             return true;
         }
 
+        /// <summary>
+        /// Dispose protocol, automatically called by client.Dispose & server.Dispose 
+        /// </summary>
+        public virtual void Dispose()
+        {
+            SslStream?.Dispose();
+            NetworkStream?.Dispose();
+            AcceptArgs?.Dispose();
+        }
+
         /*
          * Methods used by internal receivers that need to be implemented when using this class 
          */
 
         /// <summary>
-        /// Size of (next) buffer used by receive event 
+        /// The size of the (next) buffer, used by receive event 
         /// </summary>
         public abstract int BufferSize { get; protected set; }
 
         /// <summary>
-        /// Handle received data, function should call <code>EasyTcpClient.DataReceiveHandler({Received message});</code> 
+        /// Create a new message from 1 or multiple byte arrays
+        /// Returned data will be send to remote host.
         /// </summary>
-        /// <param name="data">received data, has size of clients buffer</param>
-        /// <param name="receivedBytes">amount of received bytes</param>
+        /// <param name="data">data of message</param>
+        /// <returns>data to send to remote host</returns>
+        public abstract byte[] CreateMessage(params byte[][] data);
+
+        /// <summary>
+        /// Handle received data, function should call <code>EasyTcpClient.DataReceiveHandler({Received message});</code> to trigger the OnDataReceive events 
+        /// </summary>
+        /// <param name="data">received data, has the size of the clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes, can be smaller then the buffer</param>
         /// <param name="client"></param>
         public abstract Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client);
+
+        /// <summary>
+        /// Return new instance of protocol
+        /// Used by the server to create copies for all connected clients.
+        /// </summary>
+        /// <returns></returns>
+        public abstract object Clone();
 
         /*
          * Internal methods
          */
 
         /// <summary>
-        /// Determines whether the DataReceiver is started
-        /// </summary>
-        protected bool IsListening;
-        
-        /// <summary>
         /// Determines whether a certificate is valid
-        /// this function is a callback used by OnConnect
+        /// this function is a callback used by the OnConnect function
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="certificate"></param>
@@ -248,7 +243,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 
         /// <summary>
         /// Callback method that accepts new tcp connections
-        /// Fired when new client connects
+        /// Fired when new client connects.
         /// </summary>
         /// <param name="ar"></param>
         protected virtual void OnConnectCallback(SocketAsyncEventArgs ar)
@@ -258,7 +253,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
 
             try
             {
-                var client = new EasyTcpClient((IEasyTcpProtocol) server.Protocol.Clone())
+                var client = new EasyTcpClient((IEasyTcpProtocol)server.Protocol.Clone())
                 {
                     BaseSocket = ar.AcceptSocket,
                     Serialize = server.Serialize,
@@ -294,9 +289,8 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 int receivedBytes = SslStream.EndRead(ar);
                 if (receivedBytes != 0)
                 {
-                    var protocol = (DefaultSslProtocol)client.Protocol;
-                    await DataReceive(protocol.ReceiveBuffer, receivedBytes, client);
-                    
+                    await DataReceive(ReceiveBuffer, receivedBytes, client);
+
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
                     else EnsureDataReceiverIsRunning(client);

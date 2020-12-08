@@ -13,7 +13,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
     public class DelimiterSslProtocol : DefaultSslProtocol
     {
         /// <summary>
-        /// Sequence of bytes that determines end of receiving message
+        /// Sequence of bytes that determine the end of a received message
         /// </summary>
         public readonly byte[] Delimiter;
 
@@ -40,13 +40,13 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <summary>
         /// Constructor for servers
         /// </summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
+        /// <param name="delimiter">sequence of bytes that determine the end of a received message</param>
         /// <param name="certificate">server certificate</param> 
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
         /// <param name="autoRemoveDelimiter">determines whether the Delimiter gets automatically removed from received data</param>
         /// <exception cref="ArgumentException">delimiter is invalid</exception>
-        public DelimiterSslProtocol(byte[] delimiter, X509Certificate certificate, bool autoAddDelimiter = true,
-            bool autoRemoveDelimiter = true) : base(certificate)
+        public DelimiterSslProtocol(byte[] delimiter, X509Certificate certificate, bool autoAddDelimiter = true, bool autoRemoveDelimiter = true)
+            : base(certificate)
         {
             if (delimiter.Length == 0) throw new ArgumentException("Delimiter is invalid");
             BufferSize = 1;
@@ -58,31 +58,30 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <summary>
         /// Constructor for servers
         /// </summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
-        /// <param name="certificate">server certificate</param> 
+        /// <param name="delimiter">sequence of chars that determine the end of a received message</param>
+        /// <param name="certificate">server certificate</param>
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
         /// <param name="autoRemoveDelimiter">determines whether the Delimiter gets automatically removed from received data</param>
-        /// <param name="encoding">encoding used to convert delimiter to byte[]</param>
+        /// <param name="encoding">encoding used to convert delimiter to a byte[]</param>
         /// <exception cref="ArgumentException">delimiter is invalid</exception>
-        public DelimiterSslProtocol(string delimiter, X509Certificate certificate,
-            bool autoAddDelimiter = true, bool autoRemoveDelimiter = true, Encoding encoding = null) : this(
-            (encoding ?? Encoding.UTF8).GetBytes(delimiter), certificate, autoAddDelimiter,
-            autoRemoveDelimiter)
+        public DelimiterSslProtocol(string delimiter, X509Certificate certificate, bool autoAddDelimiter = true,
+            bool autoRemoveDelimiter = true, Encoding encoding = null)
+            : this((encoding ?? Encoding.UTF8).GetBytes(delimiter), certificate, autoAddDelimiter, autoRemoveDelimiter)
         {
         }
 
         /// <summary>
         /// Constructor for clients
         /// </summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
+        /// <param name="delimiter">sequence of bytes that determine the end of a received message</param>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
         /// <param name="autoRemoveDelimiter">determines whether the Delimiter gets automatically removed from received data</param>
         /// <exception cref="ArgumentException">delimiter is invalid</exception>
         public DelimiterSslProtocol(byte[] delimiter, string serverName, bool acceptInvalidCertificates = false,
-            bool autoAddDelimiter = true, bool autoRemoveDelimiter = true) : base(serverName,
-            acceptInvalidCertificates)
+            bool autoAddDelimiter = true, bool autoRemoveDelimiter = true)
+            : base(serverName, acceptInvalidCertificates)
         {
             if (delimiter.Length == 0) throw new ArgumentException("Delimiter is invalid");
             BufferSize = 1;
@@ -94,7 +93,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <summary>
         /// Constructor for clients
         /// </summary>
-        /// <param name="delimiter">sequence of bytes that determines end of receiving message</param>
+        /// <param name="delimiter">sequence of chars that determine the end of a received message</param>
         /// <param name="serverName">domain name of server, must be the same as in server certificate</param>
         /// <param name="acceptInvalidCertificates">determines whether the client accepts servers with invalid certificates</param>
         /// <param name="autoAddDelimiter">determines whether the Delimiter gets automatically added to the end of messages when calling Send</param>
@@ -102,30 +101,33 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         /// <param name="encoding">encoding used to convert delimiter to byte[]</param>
         /// <exception cref="ArgumentException">delimiter is invalid</exception>
         public DelimiterSslProtocol(string delimiter, string serverName, bool acceptInvalidCertificates = false,
-            bool autoAddDelimiter = true, bool autoRemoveDelimiter = true, Encoding encoding = null) : this(
-            (encoding ?? Encoding.UTF8).GetBytes(delimiter), serverName, acceptInvalidCertificates, autoAddDelimiter,
-            autoRemoveDelimiter)
+            bool autoAddDelimiter = true, bool autoRemoveDelimiter = true, Encoding encoding = null)
+            : this((encoding ?? Encoding.UTF8).GetBytes(delimiter), serverName, acceptInvalidCertificates, autoAddDelimiter, autoRemoveDelimiter)
         {
         }
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
-        /// returned data will be send to remote host
+        /// Returned data will be send to remote host.
+        /// Adding the delimiter is done here when AutoAddDelimiter is true.
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not create message: Data array is empty");
 
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
-            if (messageLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
 
-            byte[] message = new byte[AutoAddDelimiter ? messageLength + Delimiter.Length : messageLength];
-            if (AutoAddDelimiter) Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
+            byte[] message;
+            if (AutoAddDelimiter)
+            {
+                message = new byte[messageLength + Delimiter.Length];
+                Buffer.BlockCopy(Delimiter, 0, message, messageLength, Delimiter.Length);
+            }
+            else message = new byte[messageLength];
 
             // Add data to message
             int offset = 0;
@@ -140,23 +142,10 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Return new instance of protocol 
-        /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone()
-        {
-            if (Certificate != null)
-                return new DelimiterSslProtocol(Delimiter, Certificate, AutoAddDelimiter, AutoRemoveDelimiter);
-            else
-                return new DelimiterSslProtocol(Delimiter, ServerName, AcceptInvalidCertificates, AutoAddDelimiter,
-                    AutoRemoveDelimiter);
-        }
-
-        /// <summary>
         /// Handle received data
         /// </summary>
-        /// <param name="data">received data, has size of clients buffer</param>
-        /// <param name="receivedBytes">amount of received bytes</param>
+        /// <param name="data">received data, has the size of the clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes, can be smaller then the buffer</param>
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
@@ -176,6 +165,16 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
                 : ReceivedBytes.ToArray();
             await client.DataReceiveHandler(new Message(receivedData, client));
             ReceivedBytes.Clear();
+        }
+
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone()
+        {
+            if (Certificate != null) return new DelimiterSslProtocol(Delimiter, Certificate, AutoAddDelimiter, AutoRemoveDelimiter);
+            else return new DelimiterSslProtocol(Delimiter, ServerName, AcceptInvalidCertificates, AutoAddDelimiter, AutoRemoveDelimiter);
         }
     }
 }

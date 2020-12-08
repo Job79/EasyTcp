@@ -18,7 +18,7 @@ namespace EasyTcp3.Test.Encryption.Ssl
         {
             var certificate = new X509Certificate2("certificate.pfx", "password");
             var port = TestHelper.GetPort();
-            using var server = new EasyTcpServer().UseSsl(certificate).Start(port);
+            using var server = new EasyTcpServer().UseServerSsl(certificate).Start(port);
 
             int x = 0;
             server.OnDisconnect += (o, c) => Interlocked.Increment(ref x);
@@ -36,7 +36,7 @@ namespace EasyTcp3.Test.Encryption.Ssl
         {
             var certificate = new X509Certificate2("certificate.pfx", "password");
             var port = TestHelper.GetPort();
-            using var server = new EasyTcpServer().UseSsl(certificate).Start(port);
+            using var server = new EasyTcpServer().UseServerSsl(certificate).Start(port);
 
             var client = new EasyTcpClient().UseSsl("localhost", true);
             int x = 0;

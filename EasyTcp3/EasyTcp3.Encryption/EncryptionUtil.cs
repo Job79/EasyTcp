@@ -10,11 +10,11 @@ namespace EasyTcp3.Encryption
         /// Encrypt message with EasyEncrypt
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="encryption">instance of easyEncrypt class</param>
+        /// <param name="encrypter">instance of easyEncrypt class</param>
         /// <returns>encrypted data</returns>
-        public static T Encrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket 
+        public static T Encrypt<T>(this T data, EasyEncrypt encrypter) where T : IEasyTcpPacket 
         {
-            data.Data = encryption.Encrypt(data.Data);
+            data.Data = encrypter.Encrypt(data.Data);
             return data;
         }
 
@@ -22,11 +22,11 @@ namespace EasyTcp3.Encryption
         /// Decrypt message with EasyEncrypt
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="encryption">instance of easyEncrypt class</param>
+        /// <param name="encrypter">instance of easyEncrypt class</param>
         /// <returns>decrypted data</returns>
-        public static T Decrypt<T>(this T data, EasyEncrypt encryption) where T : IEasyTcpPacket
+        public static T Decrypt<T>(this T data, EasyEncrypt encrypter) where T : IEasyTcpPacket
         {
-            data.Data = encryption.Decrypt(data.Data);
+            data.Data = encrypter.Decrypt(data.Data);
             return data;
         }
 

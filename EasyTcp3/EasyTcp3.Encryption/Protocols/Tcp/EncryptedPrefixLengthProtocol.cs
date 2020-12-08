@@ -5,19 +5,18 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using EasyEncrypt2;
-using EasyTcp3.Protocols;
 using EasyTcp3.Protocols.Tcp;
 
 namespace EasyTcp3.Encryption.Protocols.Tcp
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header
-    /// Header is an ushort as byte[] with length of incoming message
+    /// Header is an ushort as byte[] with the length of the encrypted incoming message
     ///
     /// All data is encrypted before sending to remote host
     /// All received data is decrypted before triggering OnDataReceive
     /// </summary>
-    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol, IEasyTcpProtocol
+    public class EncryptedPrefixLengthProtocol : PrefixLengthProtocol
     {
         /// <summary>
         /// Encrypter instance, used to encrypt and decrypt data 
@@ -33,27 +32,25 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
         /// Get receiving/sending stream
         /// </summary>
         /// <returns></returns>
-        public Stream GetStream(EasyTcpClient client)
+        public override Stream GetStream(EasyTcpClient client)
         {
             Debug.WriteLine("EasyTcp: Stream encryption in currently not supported, continuing with not-encrypted stream");
             return new NetworkStream(client.BaseSocket); 
         }
 
         /// <summary>
-        /// Create a new encrypted message from 1 or multiple byte arrays
+        /// Create a new message from 1 or multiple byte arrays
         /// returned data will be send to remote host
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
         public override byte[] CreateMessage(params byte[][] data)
         {
-            if (data == null || data.Length == 0)
-                throw new ArgumentException("Could not create message: Data array is empty");
+            if (data == null || data.Length == 0) throw new ArgumentException("Could not create message: Data array is empty");
 
             // Calculate length of message
             var dataLength = data.Sum(t => t?.Length ?? 0);
-            if (dataLength == 0)
-                throw new ArgumentException("Could not create message: Data array only contains empty arrays");
+            if (dataLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
             byte[] mergedData = new byte[dataLength];
 
             // Add data to message
@@ -64,26 +61,23 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
                 Buffer.BlockCopy(d, 0, mergedData, offset, d.Length);
                 offset += d.Length;
             }
-
+            
             // Encrypt and create message
             var encryptedData = Encrypter.Encrypt(mergedData);
             var message = new byte[2 + encryptedData.Length];
             Buffer.BlockCopy(BitConverter.GetBytes((ushort) encryptedData.Length), 0, message, 0, 2);
             Buffer.BlockCopy(encryptedData, 0, message, 2, encryptedData.Length);
+
+            if (message.Length > ushort.MaxValue)
+                throw new ArgumentException("Could not create message: Message can't be created & send because it is too big. Send message with the LargeArrayUtil, StreamUtil or use another protocol.");
             return message;
         }
-
+ 
         /// <summary>
-        /// Return new instance of protocol 
+        /// Handle received data
         /// </summary>
-        /// <returns>new object</returns>
-        public override object Clone() => new EncryptedPrefixLengthProtocol(new EasyEncrypt(key: Encrypter.GetKey()));
-        
-        /// <summary>
-        /// Handle received data, trigger event and set new bufferSize determined by the header 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="receivedBytes">ignored</param>
+        /// <param name="data">received data, has size of clients buffer</param>
+        /// <param name="receivedBytes">amount of received bytes</param>
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
@@ -95,10 +89,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
             else
             {
                 BufferSize = 2;
-                try
-                {
-                    await client.DataReceiveHandler(new Message(data, client).Decrypt(Encrypter));
-                }
+                try { await client.DataReceiveHandler(new Message(data, client).Decrypt(Encrypter)); }
                 catch { OnDecryptionError(client); }
             }
         }
@@ -112,6 +103,12 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
             Encrypter?.Dispose();
         }
 
+        /// <summary>
+        /// Return new instance of protocol 
+        /// </summary>
+        /// <returns>new object</returns>
+        public override object Clone() => new EncryptedPrefixLengthProtocol(new EasyEncrypt(key: Encrypter.GetKey()));
+
         /*
          * Internal
          */
@@ -120,6 +117,6 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
         /// Handle decryption error 
         /// </summary>
         /// <param name="client"></param>
-        protected virtual void OnDecryptionError(EasyTcpClient client) => client.Dispose();
+        protected virtual void OnDecryptionError(EasyTcpClient client) => HandleDisconnect(client);
     }
 }

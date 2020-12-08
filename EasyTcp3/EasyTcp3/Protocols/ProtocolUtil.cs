@@ -6,6 +6,7 @@ namespace EasyTcp3.Protocols
     public static class ProtocolUtil
     {
         /// <summary>
+        /// Shortcut for delimiter protocol 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="delimiter"></param>
@@ -20,6 +21,7 @@ namespace EasyTcp3.Protocols
         }
 
         /// <summary>
+        /// Shortcut for delimiter protocol 
         /// </summary>
         /// <param name="server"></param>
         /// <param name="delimiter"></param>
@@ -34,6 +36,7 @@ namespace EasyTcp3.Protocols
         }
 
         /// <summary>
+        /// Shortcut for plain tcp protocol 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="bufferSize"></param>
@@ -45,6 +48,7 @@ namespace EasyTcp3.Protocols
         }
 
         /// <summary>
+        /// Shortcut for plain tcp protocol 
         /// </summary>
         /// <param name="server"></param>
         /// <param name="bufferSize"></param>

@@ -22,7 +22,7 @@ namespace EasyTcp3.Encryption
         /// </summary>
         /// <param name="server"></param>
         /// <param name="certificate">server certificate</param>
-        public static T UseSsl<T>(this T server, X509Certificate certificate) where T : EasyTcpServer
+        public static T UseServerSsl<T>(this T server, X509Certificate certificate) where T : EasyTcpServer
         {
             server.Protocol = new PrefixLengthSslProtocol(certificate);
             return server;
