@@ -39,7 +39,7 @@ namespace EasyTcp3.Examples.Encryption
             using var certificate = new X509Certificate2("certificate.pfx", "password");
             
             // Create and start server with ssl
-            using var server = new EasyTcpServer().UseSsl(certificate).Start(Port);
+            using var server = new EasyTcpServer().UseServerSsl(certificate).Start(Port);
 
             server.OnDataReceive += (sender, message) =>
             {
