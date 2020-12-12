@@ -10,15 +10,12 @@ using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.Actions
 {
-    /// <summary>
-    /// Tests that determine whether the interceptor works correctly
-    /// </summary>
     public class Interceptor
     {
         [Test]
-        public async Task TestInterceptorFalse()
+        public async Task TriggerInterceptorInvalid()
         {
-            ushort port = TestHelper.GetPort();
+            var port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer
             {
                 Interceptor = action => false
@@ -27,13 +24,14 @@ namespace EasyTcp3.Test.Actions
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
             var message = await client.SendActionAndGetReplyAsync("ECHO", "data", TimeSpan.FromMilliseconds(500));
+
             Assert.IsNull(message);
         }
 
         [Test]
-        public void TestInterceptorTrue()
+        public void TriggerInterceptorValid()
         {
-            ushort port = TestHelper.GetPort();
+            var port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer
             {
                 Interceptor = action => action.GetActionCode().IsEqualToAction("ECHO") && action.ToString() == "data"
@@ -42,6 +40,7 @@ namespace EasyTcp3.Test.Actions
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
             var message = client.SendActionAndGetReply("ECHO", "data");
+
             Assert.IsNotNull(message);
         }
     }

@@ -5,27 +5,21 @@ using NUnit.Framework;
 
 namespace EasyTcp3.Test.Actions
 {
-    /// <summary>
-    /// Test that determines whether all delegate types are successfully detected
-    /// </summary>
-    public class DetectAllTypes
+    public class DetectTypes
     {
         [Test]
-        public async Task TestDetectAllTypes()
+        public async Task RunActionsWithDifferentTypes()
         {
-            var client = new EasyTcpActionClient(nameSpace: "EasyTcp3.Test.Actions.Types");
-            for (int i = 1; i <= 7; i++)
+            for(var type = 1; type < 7; type++)
             {
-                await client.ExecuteAction(i);
-                Assert.AreEqual(i, TestActions.Counter);
-            }
+                TestActions.Counter = 0;
+                var client = new EasyTcpActionClient(nameSpace: "EasyTcp3.Test.Actions.Types");
+                var server = new EasyTcpActionServer(nameSpace: "EasyTcp3.Test.Actions.Types");
 
-            var server = new EasyTcpActionServer(nameSpace: "EasyTcp3.Test.Actions.Types");
-            TestActions.Counter = 0;
-            for (int i = 1; i <= 7; i++)
-            {
-                await server.ExecuteAction(i);
-                Assert.AreEqual(i, TestActions.Counter);
+                await client.ExecuteAction(type);
+                await server.ExecuteAction(type);
+
+                Assert.AreEqual(2, TestActions.Counter);
             }
         }
     }

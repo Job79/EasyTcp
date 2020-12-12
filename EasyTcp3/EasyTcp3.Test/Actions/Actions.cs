@@ -10,9 +10,7 @@ namespace EasyTcp3.Test.Actions
     {
         [EasyTcpAction(0)]
         public void Echo(Message e)
-        {
-            e.Client.Send(e);
-        }
+            => e.Client.Send(e);
         
         [EasyTcpAction("ECHO")]
         public static void Echo2(object s, Message e)

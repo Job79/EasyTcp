@@ -8,36 +8,32 @@ using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.Actions
 {
-    /// <summary>
-    /// Tests that determines whether actions are executed on message receive 
-    /// </summary>
-    public class ActionsCore
+    public class ActionsTrigger
     {
         [Test]
-        public void TestServerActionsTrigger()
+        public void TriggerActions_Server()
         {
-            ushort port = TestHelper.GetPort();
+            var port = TestHelper.GetPort();
             using var server = new EasyTcpActionServer().Start(port);
-
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
+            Assert.IsTrue(client.Connect("127.0.0.1", port));
 
-            string data = "test";
+            var data = "test";
             var reply = client.SendActionAndGetReply("ECHO", data);
+
             Assert.AreEqual(data, reply.ToString());
         }
 
         [Test]
-        public void TestClientActionsTrigger()
+        public void TriggerActions_Client()
         {
-            ushort port = TestHelper.GetPort();
+            var port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
-
             using var client = new EasyTcpActionClient();
             client.OnDataReceive += (sender, message) => Console.WriteLine("123");
-            Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
+            Assert.IsTrue(client.Connect("127.0.0.1", port));
 
-            string data = "test";
+            var data = "test";
             foreach (var c in server.GetConnectedClients())
             {
                 var reply = c.SendActionAndGetReply("ECHO", data);

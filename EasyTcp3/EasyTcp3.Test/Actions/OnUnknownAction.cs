@@ -8,26 +8,22 @@ using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.Actions
 {
-    /// <summary>
-    /// Tests that determine whether OnUnknownAction is working correctly
-    /// </summary>
     public class OnUnknownAction
     {
         [Test]
-        public void OnUnknownActionTrue()
+        public void TriggerOnUnknownAction_InvalidValidAction()
         {
-            ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpActionServer();
-            server.Start(port);
+            var port = TestHelper.GetPort();
+            using var server = new EasyTcpActionServer().Start(port);
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect("127.0.0.1", port));
+            var triggeredCounter = 0;
 
-            int triggeredCounter = 0;
             server.OnUnknownAction += (sender, c) =>
             {
-                if(c.GetActionCode().IsEqualToAction("INVALIDACTION") && c.ToString() == "data") Interlocked.Increment(ref triggeredCounter);
+                if(c.GetActionCode().IsEqualToAction("INVALIDACTION") && c.ToString() == "data")
+                    Interlocked.Increment(ref triggeredCounter);
             };
-
-            using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
             client.SendAction("INVALIDACTION", "data");
 
             TestHelper.WaitWhileFalse(() => triggeredCounter == 1);
@@ -35,17 +31,15 @@ namespace EasyTcp3.Test.Actions
         }
 
         [Test]
-        public void OnUnknownActionFalse()
+        public void TriggerOnUnknownAction_ValidAction()
         {
-            ushort port = TestHelper.GetPort();
-            using var server = new EasyTcpActionServer();
-            server.Start(port);
-
-            int triggeredCounter = 0;
-            server.OnUnknownAction += (sender, c) => Interlocked.Increment(ref triggeredCounter);
-
+            var port = TestHelper.GetPort();
+            using var server = new EasyTcpActionServer().Start(port);
             using var client = new EasyTcpClient();
-            Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
+            Assert.IsTrue(client.Connect("127.0.0.1", port));
+            int triggeredCounter = 0;
+
+            server.OnUnknownAction += (sender, c) => Interlocked.Increment(ref triggeredCounter);
             client.SendAction("ECHO", "data");
 
             TestHelper.WaitWhileTrue(() => triggeredCounter == 0);
