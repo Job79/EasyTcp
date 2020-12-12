@@ -33,66 +33,6 @@ namespace EasyTcp3.ServerUtils
         }
 
         /// <summary>
-        /// Send data (ushort) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, ushort data) =>
-            server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (short) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, short data) =>
-            server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (uint) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, uint data) => server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (int) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, int data) => server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (ulong) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, ulong data) =>
-            server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (long) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, long data) => server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (double) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, double data) =>
-            server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
-        /// Send data (bool) to connected clients
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="data">data to send to the connected clients</param>
-        public static void SendAll(this EasyTcpServer server, bool data) => server.SendAll(BitConverter.GetBytes(data));
-
-        /// <summary>
         /// Send data (string) to connected clients
         /// </summary>
         /// <param name="server"></param>

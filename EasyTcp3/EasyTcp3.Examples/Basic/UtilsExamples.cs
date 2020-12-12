@@ -28,12 +28,9 @@ namespace EasyTcp3.Examples.Basic
             // Async connect to remote host with IP and Port
             if(!await client.ConnectAsync("127.0.0.1", Port)) return;
             
-            // Async send data to server
+            // Send data to server
             client.Send("Hello server!");
-            client.Send(1);
-            client.Send(1.000);
-            client.Send(true);
-            client.Send("Hello server!", true); // Async send compressed data
+            client.Send("Hello server!", true); // Send compressed data
             
             /* Send data to server and get reply
              * OnDataReceive is not triggered when receiving a reply
