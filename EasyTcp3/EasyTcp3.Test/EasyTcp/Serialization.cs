@@ -6,7 +6,6 @@ using System.Text;
 using EasyTcp3.ClientUtils;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Test.EasyTcp
@@ -19,16 +18,12 @@ namespace EasyTcp3.Test.EasyTcp
             ushort port = TestHelper.GetPort();
             using var server = new EasyTcpServer().Start(port);
             server.OnDataReceive += (sender, message) => message.Client.Send(message);
-
-            using var client = new EasyTcpClient
-            {
-                Serialize = o => JsonSerializer.SerializeToUtf8Bytes(o),
-                Deserialize = (b, t) => JsonSerializer.Deserialize(b, t)
-            };
-            Assert.IsTrue(client.Connect(IPAddress.Loopback, port));
+            using var client = new EasyTcpClient();
+            Assert.IsTrue(client.Connect("127.0.0.1", port));
 
             var testData = new List<string> {"testdata", "testdata2"};
             var reply = client.SendAndGetReply(testData);
+
             Assert.AreEqual(testData, reply.Deserialize<List<string>>());
         }
 

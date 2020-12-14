@@ -174,7 +174,13 @@ namespace EasyTcp3
         /// </summary>
         /// <param name="protocol"></param>
         public EasyTcpServer(IEasyTcpProtocol protocol = null)
-            => Protocol = protocol ?? new PrefixLengthProtocol();
+        {
+            Protocol = protocol ?? new PrefixLengthProtocol();
+#if (NETCOREAPP3_1 || NET5_0)
+            Serialize = o => System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(o);
+            Deserialize = (b, t) => System.Text.Json.JsonSerializer.Deserialize(b, t);
+#endif
+        }
 
         /// <summary>
         /// Dispose current instance of baseSocket if not null
