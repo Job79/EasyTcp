@@ -12,7 +12,7 @@
 
 ## EasyTcp?
 EasyTcp is a library that makes creating tcp servers and clients simple without giving up performance* <br/> 
-It has build in serialisation, compression, different types of framing and an (optional) async interface.
+It has built-in serialisation, compression, different types of framing and an (optional) async interface.
 
 \* ~400.000 round trips/second, tested on local machine(linux, ryzen 7) with clients and server running under the same process. See EasyTcp.Examples/SpeedTest/ThroughputTest.cs
 
