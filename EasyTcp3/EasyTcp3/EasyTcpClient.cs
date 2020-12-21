@@ -10,7 +10,7 @@ namespace EasyTcp3
     /// <summary>
     /// EasyTcp client
     /// Class with all EasyTcpClient properties and basic functions.
-    /// See the "ClientUtils" classes for all the other functions.
+    /// See the "ClientUtils" folder for all the other functions.
     /// </summary>
     public class EasyTcpClient : IDisposable
     {
@@ -129,7 +129,7 @@ namespace EasyTcp3
         public Func<Message, Task> DataReceiveHandler;
         
         /// <summary>
-        /// Fire the OnDataReceive & OnDataReceiveAsync events
+        /// Fire the OnDataReceive and OnDataReceiveAsync events
         /// </summary>
         /// <param name="message">received message</param>
         private async Task FireOnDataReceiveEvent(Message message)

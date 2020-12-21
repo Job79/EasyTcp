@@ -85,7 +85,7 @@ namespace EasyTcp3.Test.EasyTcp.Client
             using var client = new EasyTcpClient();
             Assert.IsTrue(client.Connect(IPAddress.Any, _port));
 
-            string data = "123";
+            string data = "ECHO";
             var m = client.SendAndGetReply(data, _timeout);
             Assert.AreEqual(data, m.ToString());
         }

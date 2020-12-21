@@ -1,7 +1,8 @@
 using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 
 namespace EasyTcp3.ClientUtils.Async
 {
@@ -13,27 +14,38 @@ namespace EasyTcp3.ClientUtils.Async
         private const int DefaultTimeout = 5_000;
 
         /// <summary>
-        /// Send data (byte[][]) to remote host. Then wait and return the reply
+        /// Send data to remote host. Then wait and return the reply 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <returns>received reply</returns>
-        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, TimeSpan? timeout = null,
-            params byte[][] data)
+        public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, TimeSpan? timeout = null, params byte[][] data)
         {
-            var receive = client.ReceiveAsync(timeout??TimeSpan.FromMilliseconds(DefaultTimeout)); 
+            Message reply = null;
+            using var signal = new SemaphoreSlim(0, 1); // Use SemaphoreSlim as async ManualResetEventSlim
+
+            client.DataReceiveHandler = message =>
+            {
+                reply = message;
+                client.ResetDataReceiveHandler();
+                signal.Release(); // Function is no longer used when signal is disposed, therefore this is completely safe
+                return Task.CompletedTask;
+            };
+
             client.Send(data);
-            return await receive;
+            await signal.WaitAsync(timeout ?? TimeSpan.FromMilliseconds(DefaultTimeout));
+            if(reply == null) client.ResetDataReceiveHandler();
+            return reply;
         }
 
         /// <summary>
-        /// Send data (byte[]) to remote host. Then wait and return the reply
+        /// Send data to remote host. Then wait and return the reply 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
+        /// <param name="compression">compress data using deflate if set to true</param>
         /// <returns>received reply</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, byte[] data,
             TimeSpan? timeout = null, bool compression = false)
@@ -43,37 +55,37 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Send data (string) to remote host. Then wait and return the reply
+        /// Send data to remote host. Then wait and return the reply 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
         /// <param name="encoding">encoding type (Default: UTF8)</param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
+        /// <param name="compression">compress data using deflate if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, string data,
             TimeSpan? timeout = null, Encoding encoding = null, bool compression = false)
             => await client.SendAndGetReplyAsync((encoding ?? Encoding.UTF8).GetBytes(data), timeout, compression);
 
         /// <summary>
-        /// Send data (IEasyTcpPacket) to remote host. Then wait and return the reply
+        /// Send data to remote host. Then wait and return the reply 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
+        /// <param name="compression">compress data using deflate if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, IEasyTcpPacket data,
             TimeSpan? timeout = null, bool compression = false)
             => await client.SendAndGetReplyAsync(data.Data, timeout, compression);
 
         /// <summary>
-        /// Serialize and send data (object) to remote host. Then wait and return the reply
+        /// Send data to remote host. Then wait and return the reply 
         /// </summary>
         /// <param name="client"></param>
         /// <param name="data">data to send to remote host</param>
         /// <param name="timeout">maximum time to wait for a reply, return null when time expires</param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
+        /// <param name="compression">compress data using deflate if set to true</param>
         /// <returns>received data or null</returns>
         public static async Task<Message> SendAndGetReplyAsync(this EasyTcpClient client, object data,
             TimeSpan? timeout = null, bool compression = false)

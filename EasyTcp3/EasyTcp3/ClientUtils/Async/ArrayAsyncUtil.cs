@@ -1,23 +1,21 @@
 using System;
-using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
 namespace EasyTcp3.ClientUtils.Async
 {
-    public static class LargeArrayAsyncUtil
+    public static class ArrayAsyncUtil
     {
         /// <summary>
         /// Send array to the remote host
-        /// Host can only receive an array when not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="client"></param>
         /// <param name="array"></param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
-        /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send</param>
-        public static async Task SendLargeArrayAsync(this EasyTcpClient client, byte[] array,bool compression = false, bool sendLengthPrefix = true)
+        /// <param name="compression">compress data using deflate if set to true</param>
+        /// <param name="sendLengthPrefix">determines whether prefix with length of the data is send to the remote host</param>
+        public static async Task SendArrayAsync(this EasyTcpClient client, byte[] array, bool compression = false, bool sendLengthPrefix = true)
         {
-            if(client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (client?.BaseSocket == null) throw new Exception("Could not send array: client is not connected");
             
             var networkStream = client.Protocol.GetStream(client);
             var dataStream = compression ? new DeflateStream(networkStream, CompressionMode.Compress, true) : networkStream;
@@ -29,17 +27,16 @@ namespace EasyTcp3.ClientUtils.Async
         }
 
         /// <summary>
-        /// Receive array from remote host
-        /// Use this method only when not listening for incoming messages (Inside OnReceive event handlers)
+        /// Receive array from the remote host
+        /// Use this method only when not client is not listening for incoming messages (Inside OnReceive event handlers)
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="compression">compress data using Deflate if set to true</param>
+        /// <param name="compression">compress data using deflate if set to true</param>
         /// <param name="count">length of data, use prefix when 0</param>
         /// <param name="bufferSize"></param>
-        /// <exception cref="InvalidDataException">stream is not writable</exception>
-        public static async Task<byte[]> ReceiveLargeArrayAsync(this Message message, bool compression = false, int count = 0, int bufferSize = 1024)
+        public static async Task<byte[]> ReceiveArrayAsync(this Message message, bool compression = false, int count = 0, int bufferSize = 1024)
         {
-            if(message?.Client?.BaseSocket == null) throw new Exception("Client is not connected");
+            if (message?.Client?.BaseSocket == null) throw new Exception("Could not receive array: client is not connected or message is invalid");
             
             var networkStream = message.Client.Protocol.GetStream(message.Client);
             var dataStream = compression ? new DeflateStream(networkStream, CompressionMode.Decompress, true) : networkStream;

@@ -1,8 +1,8 @@
-namespace EasyTcp3.EasyTcpPacketUtils
+namespace EasyTcp3.PacketUtils
 {
     /// <summary>
     /// Interface used by multiple EasyTcp functions,
-    /// implement when a class needs to be send over the network and standard serialization is to slow / not possible
+    /// implement when a class needs to be send over the network and standard serialization is too slow / not possible
     /// </summary>
     public interface IEasyTcpPacket
     {

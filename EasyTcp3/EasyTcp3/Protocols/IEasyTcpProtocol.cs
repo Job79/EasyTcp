@@ -22,6 +22,13 @@ namespace EasyTcp3.Protocols
         public Socket GetSocket(AddressFamily addressFamily);
 
         /// <summary>
+        /// Get receiving/sending stream
+        /// Stream will NOT be disposed, use 1 stream instance per client.
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream(EasyTcpClient client);
+
+        /// <summary>
         /// Start accepting new clients
         /// Bind is already called.
         /// </summary>
@@ -41,6 +48,7 @@ namespace EasyTcp3.Protocols
         /// </summary>
         /// <param name="data">data of message</param>
         /// <returns>data to send to remote host</returns>
+        /// TODO remove function
         public byte[] CreateMessage(params byte[][] data);
 
         /// <summary>
@@ -50,14 +58,7 @@ namespace EasyTcp3.Protocols
         /// <param name="client"></param>
         /// <param name="message"></param>
         public void SendMessage(EasyTcpClient client, byte[] message);
-        
-        /// <summary>
-        /// Get receiving & sending stream
-        /// Stream will NOT be disposed, use 1 stream instance per client.
-        /// </summary>
-        /// <returns></returns>
-        public Stream GetStream(EasyTcpClient client);
-
+         
         /// <summary>
         /// Method that is triggered when client connects to remote endpoint 
         /// Start here with listening for incoming data.

@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 using EasyTcp3.ServerUtils;
 
 namespace EasyTcp3.Actions.ActionUtils

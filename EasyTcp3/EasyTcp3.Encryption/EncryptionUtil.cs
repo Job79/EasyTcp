@@ -1,5 +1,5 @@
 using EasyEncrypt2;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 using EasyTcp3.Encryption.Protocols.Tcp;
 
 namespace EasyTcp3.Encryption

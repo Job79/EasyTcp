@@ -6,16 +6,16 @@ namespace EasyTcp3.ClientUtils
     public static class InformationUtil
     {
         /// <summary>
-        /// Determines if client is still connected to endpoint
+        /// Determines whether client is still connected to the remote endpoint
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="poll">use poll if set to true, can be more accurate but decreases performance</param>
+        /// <param name="poll">use poll if set to true, more accurate but decreases performance</param>
         /// <returns>determines whether the client is still connected</returns>
         public static bool IsConnected(this EasyTcpClient client, bool poll = false)
         {
             if (client?.BaseSocket == null) return false;
-            if (!client.BaseSocket.Connected || !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) &&
-                client.BaseSocket.Available.Equals(0))
+            if (!client.BaseSocket.Connected ||
+                    !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) && client.BaseSocket.Available.Equals(0))
             {
                 client.FireOnDisconnect();
                 client.Dispose();

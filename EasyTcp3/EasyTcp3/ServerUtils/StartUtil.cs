@@ -41,7 +41,7 @@ namespace EasyTcp3.ServerUtils
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static T Start<T>(this T server, IPAddress ipAddress, ushort port,
             bool dualMode = false, Socket socket = null) where T : EasyTcpServer
-            => Start(server, new IPEndPoint(ipAddress, Math.Max(port, (ushort) 1)), dualMode, socket);
+            => Start(server, new IPEndPoint(ipAddress, port), dualMode, socket);
 
         /// <summary>
         /// Start server and start listening for new connections
@@ -56,7 +56,7 @@ namespace EasyTcp3.ServerUtils
         {
             if (!IPAddress.TryParse(ipAddress, out IPAddress address))
                 throw new ArgumentException("Could not start server: ipAddress is not a valid IPv4/IPv6 address");
-            return Start(server, new IPEndPoint(address, Math.Max(port, (ushort) 1)), dualMode, socket);
+            return Start(server, new IPEndPoint(address, port), dualMode, socket);
         }
 
         /// <summary>
@@ -66,6 +66,6 @@ namespace EasyTcp3.ServerUtils
         /// <param name="port"></param>
         /// <param name="socket">baseSocket for EasyTcpServer, new one is create when null</param>
         public static T Start<T>(this T server, ushort port, Socket socket = null) where T : EasyTcpServer
-            => Start(server, new IPEndPoint(IPAddress.Any, Math.Max(port, (ushort) 1)), false, socket);
+            => Start(server, new IPEndPoint(IPAddress.Any, port), false, socket);
     }
 }

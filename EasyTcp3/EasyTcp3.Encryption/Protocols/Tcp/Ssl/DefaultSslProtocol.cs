@@ -83,7 +83,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
 
         /// <summary>
-        /// Get receiving & sending stream
+        /// Get receiving/sending stream
         /// TODO write tests
         /// </summary>
         /// <returns></returns>
@@ -173,7 +173,7 @@ namespace EasyTcp3.Encryption.Protocols.Tcp.Ssl
         }
 
         /// <summary>
-        /// Dispose protocol, automatically called by client.Dispose & server.Dispose 
+        /// Dispose protocol, automatically called by client.Dispose and server.Dispose 
         /// </summary>
         public virtual void Dispose()
         {

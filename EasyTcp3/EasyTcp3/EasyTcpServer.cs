@@ -11,7 +11,7 @@ namespace EasyTcp3
     /// <summary>
     /// EasyTcp server
     /// Class with all EasyTcpServer properties and basic functions.
-    /// See the "ServerUtils" classes for all the other functions.
+    /// See the "ServerUtils" folder for all the other functions.
     /// </summary>
     public class EasyTcpServer : IDisposable
     {

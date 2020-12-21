@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using EasyTcp3.ClientUtils.Async;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils.Async
 {

@@ -1,4 +1,4 @@
-namespace EasyTcp3.EasyTcpPacketUtils
+namespace EasyTcp3.PacketUtils
 {
     public static class EasyTcpPacket
     {
@@ -10,6 +10,6 @@ namespace EasyTcp3.EasyTcpPacketUtils
         /// <typeparam name="T">package type</typeparam>
         /// <returns>new package</returns>
         public static T From<T>(byte[] data, bool compression = false) where T : IEasyTcpPacket, new()
-            => compression ? new T {Data = data}.Compress() : new T {Data = data};
+            => compression ? new T { Data = data }.Compress() : new T { Data = data };
     }
 }

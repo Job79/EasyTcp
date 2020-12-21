@@ -1,20 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2.5.4</PackageVersion>
+        <PackageId>EasyTcp.Actions</PackageId>
         <Title>EasyTcp.Actions</Title>
         <Description>This package adds support to EasyTcp for triggering specific functions based on received data. See github for examples.</Description>
-        <Copyright>Job79</Copyright>
-        <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
+        <PackageVersion>2.5.4</PackageVersion>
         <Authors>Job79</Authors>
-        <PackageId>EasyTcp.Actions</PackageId>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Copyright>Job79</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Job79/EasyTcp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Reflection Actions</PackageTags>
         <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/icon.png</PackageIconUrl>
+        <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591</NoWarn>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 
 namespace EasyTcp3
 {

@@ -1,20 +1,20 @@
 using System.IO;
 using System.IO.Compression;
 
-namespace EasyTcp3.EasyTcpPacketUtils
+namespace EasyTcp3.PacketUtils
 {
     public static class CompressionUtil
     {
         /// <summary>
-        /// Compress byte[] of data using Deflate and add magic number
+        /// Compress byte[] of data using deflate and add magic number
         /// </summary>
         /// <param name="data">uncompressed data</param>
         /// <returns>magic number + compressed data</returns>
         public static byte[] Compress(byte[] data)
         {
-            if(data == null || data.Length == 0) throw new InvalidDataException("Could not compress data: data array is empty");
+            if (data == null || data.Length == 0) throw new InvalidDataException("Could not compress data: data array is empty");
             using var compressedStream = new MemoryStream();
-            compressedStream.Write(new byte[] { 0x78, 0x9C },0,2);
+            compressedStream.Write(new byte[] { 0x78, 0x9C }, 0, 2);
             var deflateStream = new DeflateStream(compressedStream, CompressionMode.Compress);
             deflateStream.Write(data, 0, data.Length);
             deflateStream.Dispose();
@@ -22,13 +22,13 @@ namespace EasyTcp3.EasyTcpPacketUtils
         }
 
         /// <summary>
-        /// Decompress byte[] of data using Deflate
+        /// Decompress byte[] of data using deflate
         /// </summary>
-        /// <param name="data">compressed data</param>
+        /// <param name="data">magic number + compressed data</param>
         /// <returns>decompressed data</returns>
         public static byte[] Decompress(byte[] data)
         {
-            if(data == null || data.Length == 0) throw new InvalidDataException("Could not decompress data: data array is empty");
+            if (data == null || data.Length == 0) throw new InvalidDataException("Could not decompress data: data array is empty");
             using var compressedStream = new MemoryStream(data);
             compressedStream.Seek(2, SeekOrigin.Current);
             using var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress);
@@ -36,19 +36,19 @@ namespace EasyTcp3.EasyTcpPacketUtils
             deflateStream.CopyTo(resultStream);
             return resultStream.ToArray();
         }
-        
+
         /// <summary>
-        /// Determines whether the receive data is compressed with Deflate by looking for the magic number
+        /// Determines whether the receive data is compressed with deflate by looking for the magic number
         /// </summary>
         /// <returns>true if compressed</returns>
-        public static bool IsCompressed(byte[] data) => data.Length > 2 && data[0] == 0x78 && data[1] == 0x9C;
-        
+        public static bool IsCompressed(byte[] d) => d.Length > 2 && d[0] == 0x78 && d[1] == 0x9C;
+
         /// <summary>
-        /// Determines whether the receive data is compressed with Deflate by looking for the magic number
+        /// Determines whether the receive data is compressed with deflate by looking for the magic number
         /// </summary>
         /// <returns>true if compressed</returns>
         public static bool IsCompressed(this IEasyTcpPacket packet) => IsCompressed(packet.Data);
-       
+
         /// <summary>
         /// Compress package if not already compressed
         /// </summary>
@@ -80,6 +80,6 @@ namespace EasyTcp3.EasyTcpPacketUtils
                 //Ignore error, data is invalid
             }
             return packet;
-        } 
+        }
     }
 }

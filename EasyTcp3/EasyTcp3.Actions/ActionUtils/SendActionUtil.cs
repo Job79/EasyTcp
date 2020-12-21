@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 using EasyTcp3.ClientUtils;
-using EasyTcp3.EasyTcpPacketUtils;
+using EasyTcp3.PacketUtils;
 
 namespace EasyTcp3.Actions.ActionUtils
 {
