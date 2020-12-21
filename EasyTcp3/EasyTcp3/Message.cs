@@ -60,9 +60,10 @@ namespace EasyTcp3
         /// <summary>
         /// Convert data to custom IEasyTcpPacket 
         /// </summary>
-        /// <typeparam name="T">Packet type</typeparam>
+        /// <typeparam name="T">packet type</typeparam>
         /// <returns>data as custom IEasyTcpPacket</returns>
-        public T ToPacket<T>() where T : IEasyTcpPacket, new() => EasyTcpPacket.From<T>(Data);
+        public T ToPacket<T>() where T : IEasyTcpPacket, new()
+            => new T { Data = this.Data };
 
         /// <summary>
         /// Deserialize byte[] to custom object
