@@ -19,10 +19,23 @@ namespace EasyTcp3.Protocols.Tcp
         /// The size of the (next) buffer, used by receive event
         /// </summary>
         public sealed override int BufferSize { get; protected set; }
+        public sealed override int BufferCount { get; protected set; }
+        public sealed override int BufferOffset { get; protected set; }
+        public const int MaxBufferCount = 1024;
+
+        protected readonly int MaxMessageLength;
+        protected readonly bool Extended;
 
         /// <summary></summary>
-        public PrefixLengthProtocol() => BufferSize = 2;
-
+        /// <param name="maxMessageLength">TODO</param>
+        public PrefixLengthProtocol(int maxMessageLength = ushort.MaxValue)
+        {
+            MaxMessageLength = maxMessageLength;
+            Extended = maxMessageLength > ushort.MaxValue;
+            BufferSize = Extended ? 4 : 2;
+            BufferCount = BufferSize;
+        }
+ 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
         /// returned data will be send to remote host
@@ -36,15 +49,16 @@ namespace EasyTcp3.Protocols.Tcp
             // Calculate length of message
             var messageLength = data.Sum(t => t?.Length ?? 0);
             if (messageLength == 0) throw new ArgumentException("Could not create message: Data array only contains empty arrays");
-            if (messageLength > ushort.MaxValue) 
-                throw new ArgumentException("Could not create message: Message can't be created & send because it is too big. Send message with the LargeArrayUtil, StreamUtil or use another protocol.");
-            byte[] message = new byte[2 + messageLength];
+            if (messageLength > MaxMessageLength) 
+                throw new ArgumentException("Could not create message: Message can't be created and send because it is too big. Increaes the MaxMessageLength or send message with the LargeArrayUtil or StreamUtil");
+            byte[] message = new byte[(Extended ? 4 : 2) + messageLength];
 
             // Write length of data to message
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort) messageLength), 0, message, 0, 2);
+            if(Extended) Buffer.BlockCopy(BitConverter.GetBytes((int) messageLength), 0, message, 0, 4);
+            else Buffer.BlockCopy(BitConverter.GetBytes((ushort) messageLength), 0, message, 0, 2);
 
             // Add data to message
-            int offset = 2;
+            int offset = Extended ? 4 : 2;
             foreach (var d in data)
             {
                 if (d == null) continue;
@@ -63,15 +77,28 @@ namespace EasyTcp3.Protocols.Tcp
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            if (!(ReceivingLength = !ReceivingLength))
+            if(ReceivingLength)
             {
-                BufferSize = BitConverter.ToUInt16(data, 0);
+                BufferSize = Extended ? BitConverter.ToInt32(data, 0) : BitConverter.ToUInt16(data, 0);
                 if (BufferSize == 0) client.Dispose();
+                BufferCount = Math.Min(BufferSize, MaxBufferCount);
+                ReceivingLength = false;
             }
             else
             {
-                BufferSize = 2;
-                await client.DataReceiveHandler(new Message(data, client));
+                if(BufferOffset + receivedBytes == BufferSize)
+                {
+                    BufferSize = Extended ? 4 : 2;
+                    BufferOffset = 0;
+                    BufferCount = BufferSize;
+                    ReceivingLength = true;
+                    await client.DataReceiveHandler(new Message(data, client));
+                }
+                else
+                {
+                    BufferOffset += receivedBytes;
+                    BufferCount = Math.Min(BufferSize - BufferOffset, MaxBufferCount);
+                }
             }
         }
         
@@ -79,6 +106,6 @@ namespace EasyTcp3.Protocols.Tcp
         /// Return new instance of protocol 
         /// </summary>
         /// <returns>new object</returns>
-        public override object Clone() => new PrefixLengthProtocol();
+        public override object Clone() => new PrefixLengthProtocol(MaxMessageLength);
     }
 }

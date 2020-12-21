@@ -25,7 +25,8 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
 
         /// <summary></summary>
         /// <param name="encrypter"></param>
-        public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter)
+        /// <param name="maxMessageLength">TODO</param>
+        public EncryptedPrefixLengthProtocol(EasyEncrypt encrypter, int maxMessageLength = ushort.MaxValue) : base(maxMessageLength)
             => Encrypter = encrypter;
 
         /// <summary>
@@ -64,9 +65,11 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
             
             // Encrypt and create message
             var encryptedData = Encrypter.Encrypt(mergedData);
-            var message = new byte[2 + encryptedData.Length];
-            Buffer.BlockCopy(BitConverter.GetBytes((ushort) encryptedData.Length), 0, message, 0, 2);
-            Buffer.BlockCopy(encryptedData, 0, message, 2, encryptedData.Length);
+            var message = new byte[(Extended ? 4 : 2) + encryptedData.Length];
+
+            if(Extended) Buffer.BlockCopy(BitConverter.GetBytes((int) encryptedData.Length), 0, message, 0, 4);
+            else Buffer.BlockCopy(BitConverter.GetBytes((ushort) encryptedData.Length), 0, message, 0, 2);
+            Buffer.BlockCopy(encryptedData, 0, message, Extended ? 4 : 2, encryptedData.Length);
 
             if (message.Length > ushort.MaxValue)
                 throw new ArgumentException("Could not create message: Message can't be created & send because it is too big. Send message with the LargeArrayUtil, StreamUtil or use another protocol.");
@@ -81,16 +84,29 @@ namespace EasyTcp3.Encryption.Protocols.Tcp
         /// <param name="client"></param>
         public override async Task DataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-            if (!(ReceivingLength = !ReceivingLength))
+            if(ReceivingLength)
             {
-                BufferSize = BitConverter.ToUInt16(data, 0);
+                BufferSize = Extended ? BitConverter.ToInt32(data, 0) : BitConverter.ToUInt16(data, 0);
                 if (BufferSize == 0) client.Dispose();
+                BufferCount = Math.Min(BufferSize, MaxBufferCount);
+                ReceivingLength = false;
             }
             else
             {
-                BufferSize = 2;
-                try { await client.DataReceiveHandler(new Message(data, client).Decrypt(Encrypter)); }
-                catch { OnDecryptionError(client); }
+                if(BufferOffset + receivedBytes == BufferSize)
+                {
+                    BufferSize = Extended ? 4 : 2;
+                    BufferOffset = 0;
+                    BufferCount = BufferSize;
+                    ReceivingLength = true;
+                    try { await client.DataReceiveHandler(new Message(data, client).Decrypt(Encrypter)); }
+                    catch { OnDecryptionError(client); }
+                }
+                else
+                {
+                    BufferOffset += receivedBytes;
+                    BufferCount = Math.Min(BufferSize - BufferOffset, MaxBufferCount);
+                }
             }
         }
         

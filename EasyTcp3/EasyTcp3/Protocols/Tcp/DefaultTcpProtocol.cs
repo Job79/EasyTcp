@@ -41,7 +41,7 @@ namespace EasyTcp3.Protocols.Tcp
             new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
 
         /// <summary>
-        /// Get receiving & sending stream
+        /// Get receiving/sending stream
         /// </summary>
         /// <returns></returns>
         public virtual Stream GetStream(EasyTcpClient client) => NetworkStream ??= new NetworkStream(client.BaseSocket);
@@ -72,16 +72,18 @@ namespace EasyTcp3.Protocols.Tcp
             if (IsListening) return;
             IsListening = true;
 
-            var protocol = (DefaultTcpProtocol) client.Protocol;
+            // Get protocol from client because this function can be used like this:
+            // server.EnsureDataReceiverIsRunning(client)
+            var p = (DefaultTcpProtocol) client.Protocol;
 
-            if (protocol.ReceiveBuffer == null)
+            if (p.ReceiveBuffer == null)
             {
-                protocol.ReceiveBuffer = new SocketAsyncEventArgs {UserToken = client};
-                protocol.ReceiveBuffer.Completed += (_, ar) => OnReceiveCallback(ar);
+                p.ReceiveBuffer = new SocketAsyncEventArgs {UserToken = client};
+                p.ReceiveBuffer.Completed += (_, ar) => p.OnReceiveCallback(ar);
             }
 
-            protocol.ReceiveBuffer.SetBuffer(new byte[BufferSize], 0, BufferSize);
-            if (!client.BaseSocket.ReceiveAsync(protocol.ReceiveBuffer)) OnReceiveCallback(protocol.ReceiveBuffer);
+            p.ReceiveBuffer.SetBuffer(new byte[p.BufferSize], p.BufferOffset, p.BufferCount);
+            if (!client.BaseSocket.ReceiveAsync(p.ReceiveBuffer)) OnReceiveCallback(p.ReceiveBuffer);
         }
 
         /// <summary>
@@ -119,7 +121,7 @@ namespace EasyTcp3.Protocols.Tcp
         }
 
         /// <summary>
-        /// Dispose protocol, automatically called by client.Dispose & server.Dispose 
+        /// Dispose protocol, automatically called by client.Dispose and server.Dispose 
         /// </summary>
         public virtual void Dispose()
         {
@@ -136,6 +138,16 @@ namespace EasyTcp3.Protocols.Tcp
         /// The size of the (next) buffer, used by receive event 
         /// </summary>
         public abstract int BufferSize { get; protected set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public virtual int BufferOffset { get => 0; protected set {} }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public virtual int BufferCount { get => BufferSize; protected set {} }
 
         /// <summary>
         /// Create a new message from 1 or multiple byte arrays
@@ -226,11 +238,13 @@ namespace EasyTcp3.Protocols.Tcp
 
                     if (client.BaseSocket == null)
                         HandleDisconnect(client); // Check if client is disposed by DataReceive
-                    else /* Continue listening for data  */
+                    else if(!IsListening) /* Continue listening for data  */
                     {
-                        if (IsListening) return;
                         IsListening = true;
-                        ar.SetBuffer(new byte[BufferSize], 0, BufferSize);
+                        
+                        if(BufferOffset == 0 || BufferSize != ar.Buffer.Length) ar.SetBuffer(new byte[BufferSize], BufferOffset, BufferCount);
+                        else ar.SetBuffer(BufferOffset, BufferCount);
+
                         if (!client.BaseSocket.ReceiveAsync(ar)) goto receive_data;
                     }
                 }
