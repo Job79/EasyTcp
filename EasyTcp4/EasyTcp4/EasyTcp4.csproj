@@ -2,7 +2,7 @@
     <PropertyGroup>
         <PackageId>EasyTcp</PackageId>
         <Title>EasyTcp</Title>
-        <Description>Simple library for TCP clients and servers. Focused on performance and usability.</Description>
+        <Description>Simple framework for TCP clients and servers. Focused on performance and usability.</Description>
         <PackageVersion>4.0.0</PackageVersion>
         <Authors>Job79</Authors>
         <Copyright>Job79</Copyright>
