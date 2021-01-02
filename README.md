@@ -11,8 +11,7 @@ It tries to make tcp simple without giving up on functionality or performance.
 
 ## Different packages
 
-EasyTcp has multiple packages with different purposes.
-Functionality is split up in multiple packages to keep the project maintainable and the binaries small.
+EasyTcp has multiple packages, this to keep the project maintainable and the dependencies small. Every package has his own goal and all packages are compatible with eachother.
 
 | Package            | Functionality                     |
 |--------------------|-----------------------------------|
