@@ -13,7 +13,7 @@ namespace EasyTcp4.Actions
         /// <summary>
         /// Dictionary with all loaded actions of server [action code, action method]
         /// </summary>
-        protected readonly Dictionary<int, LoadedAction> Actions = new Dictionary<int, LoadedAction>();
+        public Dictionary<int, LoadedAction> Actions = new Dictionary<int, LoadedAction>();
 
         /// <summary>
         /// Function that determines whether an action should be executed

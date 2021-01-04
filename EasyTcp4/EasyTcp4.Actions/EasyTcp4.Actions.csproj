@@ -2,7 +2,7 @@
     <PropertyGroup>
         <PackageId>EasyTcp.Actions</PackageId>
         <Title>EasyTcp.Actions</Title>
-        <Description>Support for EasyTcp to triggering specific functions based on received data. See github for examples.</Description>
+        <Description>Support for EasyTcp to triggering specific functions with an attribute based on received data. See github for examples.</Description>
         <PackageVersion>4.0.0</PackageVersion>
         <Authors>Job79</Authors>
         <Copyright>Job79</Copyright>
