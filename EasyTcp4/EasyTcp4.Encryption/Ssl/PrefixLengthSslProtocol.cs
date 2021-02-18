@@ -8,7 +8,7 @@ namespace EasyTcp4.Encryption.Ssl
 {
     /// <summary>
     /// Protocol that determines the length of a message based on a small header
-    /// Header is an ushort or int as byte[] with the length of the message.
+    /// Header is an int as byte[] with the length of the message.
     /// </summary>
     public class PrefixLengthSslProtocol : SslProtocol
     {
@@ -28,8 +28,7 @@ namespace EasyTcp4.Encryption.Ssl
         public override int BufferCount
         {
             get => ReceivedHeader ?
-                Math.Min(BufferSize - BufferOffset, 10240) : // Do not receive more than 10240 bytes at once
-                MaxMessageLength > ushort.MaxValue ? 4 : 2;
+                Math.Min(BufferSize - BufferOffset, 10240) : 4; // Do not receive more than 10240 bytes at once
             protected set { }
         }
 
@@ -40,8 +39,6 @@ namespace EasyTcp4.Encryption.Ssl
 
         /// <summary>
         /// Maximimum amount of bytes for one message
-        /// 2 bytes will be used for the header when MaxMessageLength is smaller then 65535,
-        /// for bigger messages 4 bytes are used for the header 
         /// </summary>
         protected readonly int MaxMessageLength;
 
@@ -51,7 +48,7 @@ namespace EasyTcp4.Encryption.Ssl
         public PrefixLengthSslProtocol(X509Certificate certificate, int maxMessageLength = ushort.MaxValue) : base(certificate)
         {
             MaxMessageLength = maxMessageLength;
-            BufferSize = maxMessageLength > ushort.MaxValue ? 4 : 2;
+            BufferSize = 4;
             BufferCount = BufferSize;
         }
 
@@ -63,7 +60,7 @@ namespace EasyTcp4.Encryption.Ssl
                 int maxMessageLength = ushort.MaxValue) : base(serverName, acceptInvalidCertificates)
         {
             MaxMessageLength = maxMessageLength;
-            BufferSize = maxMessageLength > ushort.MaxValue ? 4 : 2;
+            BufferSize = 4;
             BufferCount = BufferSize;
         }
 
@@ -84,10 +81,9 @@ namespace EasyTcp4.Encryption.Ssl
                 throw new ArgumentException("Could not send message: message is too big, increase maxMessageLength or send message with SendArray/SendStream");
             
             // Add header to message 
-            int offset = MaxMessageLength > ushort.MaxValue ? 4 : 2;
+            int offset = 4;
             byte[] message = new byte[offset + messageLength];
-            if (offset == 4) Buffer.BlockCopy(BitConverter.GetBytes((int)messageLength), 0, message, 0, offset);
-            else Buffer.BlockCopy(BitConverter.GetBytes((ushort)messageLength), 0, message, 0, offset);
+            Buffer.BlockCopy(BitConverter.GetBytes((int)messageLength), 0, message, 0, offset);
 
             // Add data to message
             foreach (var d in messageData)
@@ -100,7 +96,7 @@ namespace EasyTcp4.Encryption.Ssl
 
             // Send data
             // Remove prefix in OnDataSend with an offset
-            client.FireOnDataSend(message, MaxMessageLength > ushort.MaxValue ? 4 : 2);
+            client.FireOnDataSend(message, 4);
             SslStream.Write(message, 0, message.Length);
         }
 
@@ -115,7 +111,7 @@ namespace EasyTcp4.Encryption.Ssl
             if (!ReceivedHeader)
             {
                 ReceivedHeader = true;
-                BufferSize = MaxMessageLength > ushort.MaxValue ? BitConverter.ToInt32(data, 0) : BitConverter.ToUInt16(data, 0);
+                BufferSize = BitConverter.ToInt32(data, 0);
                 if (BufferSize == 0) client.Dispose();
             }
             else
@@ -123,7 +119,7 @@ namespace EasyTcp4.Encryption.Ssl
                 if (BufferOffset + receivedBytes == BufferSize)
                 {
                     ReceivedHeader = false;
-                    BufferSize = MaxMessageLength > ushort.MaxValue ? 4 : 2;
+                    BufferSize = 4;
                     BufferOffset = 0;
                     await client.DataReceiveHandler(new Message(data, client));
                 }
