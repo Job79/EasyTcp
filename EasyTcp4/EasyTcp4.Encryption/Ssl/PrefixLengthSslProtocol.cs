@@ -49,7 +49,6 @@ namespace EasyTcp4.Encryption.Ssl
         {
             MaxMessageLength = maxMessageLength;
             BufferSize = 4;
-            BufferCount = BufferSize;
         }
 
         /// <summary></summary>
@@ -61,7 +60,6 @@ namespace EasyTcp4.Encryption.Ssl
         {
             MaxMessageLength = maxMessageLength;
             BufferSize = 4;
-            BufferCount = BufferSize;
         }
 
 
@@ -92,7 +90,6 @@ namespace EasyTcp4.Encryption.Ssl
                 Buffer.BlockCopy(d, 0, message, offset, d.Length);
                 offset += d.Length;
             }
-
 
             // Send data
             // Remove prefix in OnDataSend with an offset

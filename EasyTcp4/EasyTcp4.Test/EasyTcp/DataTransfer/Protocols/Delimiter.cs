@@ -1,22 +1,20 @@
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyTcp4.ClientUtils;
-using EasyTcp4.Encryption.Ssl;
+using EasyTcp4.Protocols.Tcp;
 using NUnit.Framework;
 
-namespace EasyTcp4.Test.Encryption.Ssl.Protocols
+namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocol
 {
-    public class PrefixLength
+    public class Delimiter
     {
         [Test]
-        public async Task PrefixLengthSslProtocolReceiveData()
+        public async Task PrefixLengthProtocolReceiveData()
         {
-            using var certificate = new X509Certificate2("certificate.pfx", "password");
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthSslProtocol("localhost", true)),
-                    new EasyTcpServer(new PrefixLengthSslProtocol(certificate)));
+                    new EasyTcpClient(new DelimiterProtocol("\r\n")),
+                    new EasyTcpServer(new DelimiterProtocol("\r\n")));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
@@ -28,12 +26,11 @@ namespace EasyTcp4.Test.Encryption.Ssl.Protocols
 
 
         [Test]
-        public async Task PrefixLengthSslProtocolReceiveLargeData()
+        public async Task PrefixLengthProtocolReceiveLargeData()
         {
-            using var certificate = new X509Certificate2("certificate.pfx", "password");
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthSslProtocol("localhost", true, int.MaxValue)),
-                    new EasyTcpServer(new PrefixLengthSslProtocol(certificate, int.MaxValue)));
+                    new EasyTcpClient(new DelimiterProtocol("\r\n")),
+                    new EasyTcpServer(new DelimiterProtocol("\r\n")));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));

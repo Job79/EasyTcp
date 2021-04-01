@@ -46,7 +46,6 @@ namespace EasyTcp4.Protocols.Tcp
         {
             MaxMessageLength = maxMessageLength;
             BufferSize = 4;
-            BufferCount = BufferSize;
         }
 
         /// <summary>

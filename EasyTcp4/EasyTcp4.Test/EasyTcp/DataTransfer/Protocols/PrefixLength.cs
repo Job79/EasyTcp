@@ -17,21 +17,6 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocol
                     new EasyTcpServer(new PrefixLengthProtocol()));
 
             int receivedBytes = 0;
-            conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Length);
-            conn.Client.Send(new byte[1000]);
-
-            await TestHelper.WaitWhileFalse(() => receivedBytes == 1000);
-            Assert.AreEqual(1000, receivedBytes);
-        }
-
-        [Test]
-        public async Task PrefixLengthProtocolReceiveDataContent()
-        {
-            using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol()),
-                    new EasyTcpServer(new PrefixLengthProtocol()));
-
-            int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
             conn.Client.Send(Enumerable.Repeat<byte>(100, short.MaxValue * 2).ToArray());
 

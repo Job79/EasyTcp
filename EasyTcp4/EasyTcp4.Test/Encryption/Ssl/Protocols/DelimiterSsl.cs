@@ -8,15 +8,15 @@ using NUnit.Framework;
 
 namespace EasyTcp4.Test.Encryption.Ssl.Protocols
 {
-    public class PrefixLength
+    public class Delimiter
     {
         [Test]
-        public async Task PrefixLengthSslProtocolReceiveData()
+        public async Task DelimiterSslProtocolReceiveData()
         {
             using var certificate = new X509Certificate2("certificate.pfx", "password");
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthSslProtocol("localhost", true)),
-                    new EasyTcpServer(new PrefixLengthSslProtocol(certificate)));
+                    new EasyTcpClient(new DelimiterSslProtocol("localhost", "\r\n", acceptInvalidCertificates: true)),
+                    new EasyTcpServer(new DelimiterSslProtocol(certificate, "\r\n")));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
@@ -27,13 +27,13 @@ namespace EasyTcp4.Test.Encryption.Ssl.Protocols
         }
 
 
-        [Test]
-        public async Task PrefixLengthSslProtocolReceiveLargeData()
+       // [Test]
+/*        public async Task PrefixLengthSslProtocolReceiveLargeData()
         {
             using var certificate = new X509Certificate2("certificate.pfx", "password");
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthSslProtocol("localhost", true, int.MaxValue)),
-                    new EasyTcpServer(new PrefixLengthSslProtocol(certificate, int.MaxValue)));
+                    new EasyTcpClient(new DelimiterSslProtocol("localhost", "\r\n", acceptInvalidCertificates: true)),
+                    new EasyTcpServer(new DelimiterSslProtocol(certificate, "\r\n")));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
@@ -44,5 +44,6 @@ namespace EasyTcp4.Test.Encryption.Ssl.Protocols
             await TestHelper.WaitWhileFalse(() => receivedBytes == ushort.MaxValue * 6);
             Assert.AreEqual(ushort.MaxValue * 6, receivedBytes);
         }
+		*/
     }
 }
