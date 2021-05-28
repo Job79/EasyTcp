@@ -7,14 +7,16 @@ using NUnit.Framework;
 
 namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
 {
-    public class PrefixLength
+    public class Delimiter
     {
+        private const string DelimiterString = "|";
+
         [Test]
-        public async Task PrefixLengthProtocolReceiveData()
+        public async Task DelimiterProtocolReceiveData()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol()),
-                    new EasyTcpServer(new PrefixLengthProtocol()));
+                    new EasyTcpClient(new DelimiterProtocol(DelimiterString)),
+                    new EasyTcpServer(new DelimiterProtocol(DelimiterString)));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Length);
@@ -25,11 +27,11 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
         }
 
         [Test]
-        public async Task PrefixLengthProtocolReceiveDataContent()
+        public async Task DelimiterProtocolReceiveDataContent()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol()),
-                    new EasyTcpServer(new PrefixLengthProtocol()));
+                    new EasyTcpClient(new DelimiterProtocol(DelimiterString)),
+                    new EasyTcpServer(new DelimiterProtocol(DelimiterString)));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
@@ -41,11 +43,11 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
 
 
         [Test]
-        public async Task PrefixLengthProtocolReceiveLargeData()
+        public async Task DelimiterProtocolReceiveLargeData()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol(int.MaxValue)),
-                    new EasyTcpServer(new PrefixLengthProtocol(int.MaxValue)));
+                    new EasyTcpClient(new DelimiterProtocol(DelimiterString)),
+                    new EasyTcpServer(new DelimiterProtocol(DelimiterString)));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
