@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,12 +52,12 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
-            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 128).ToArray());
-            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 128).ToArray());
-            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 128).ToArray());
+            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 8).ToArray());
+            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 8).ToArray());
+            conn.Client.Send(Enumerable.Repeat<byte>(100, ushort.MaxValue * 8).ToArray());
 
-            await TestHelper.WaitWhileFalse(() => receivedBytes == ushort.MaxValue * 384);
-            Assert.AreEqual(ushort.MaxValue * 384, receivedBytes);
+            await TestHelper.WaitWhileFalse(() => receivedBytes == ushort.MaxValue * 24, TimeSpan.FromSeconds(5));
+            Assert.AreEqual(ushort.MaxValue * 24, receivedBytes);
         }
     }
 }
