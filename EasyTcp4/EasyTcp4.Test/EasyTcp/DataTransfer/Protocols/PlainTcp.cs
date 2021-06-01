@@ -7,14 +7,14 @@ using NUnit.Framework;
 
 namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
 {
-    public class PrefixLength
+    public class PlainTcp
     {
         [Test]
-        public async Task PrefixLengthProtocolReceiveData()
+        public async Task PlainTcpProtocolReceiveData()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol()),
-                    new EasyTcpServer(new PrefixLengthProtocol()));
+                    new EasyTcpClient(new PlainTcpProtocol()),
+                    new EasyTcpServer(new PlainTcpProtocol()));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Length);
@@ -25,11 +25,11 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
         }
 
         [Test]
-        public async Task PrefixLengthProtocolReceiveDataContent()
+        public async Task PlainTcpProtocolReceiveDataContent()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol()),
-                    new EasyTcpServer(new PrefixLengthProtocol()));
+                    new EasyTcpClient(new PlainTcpProtocol()),
+                    new EasyTcpServer(new PlainTcpProtocol()));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
@@ -41,11 +41,11 @@ namespace EasyTcp4.Test.EasyTcp.DataTransfer.Protocols
 
 
         [Test]
-        public async Task PrefixLengthProtocolReceiveLargeData()
+        public async Task PlainTcpProtocolReceiveLargeData()
         {
             using var conn = await TestHelper.GetTestConnection(
-                    new EasyTcpClient(new PrefixLengthProtocol(int.MaxValue)),
-                    new EasyTcpServer(new PrefixLengthProtocol(int.MaxValue)));
+                    new EasyTcpClient(new PlainTcpProtocol()),
+                    new EasyTcpServer(new PlainTcpProtocol()));
 
             int receivedBytes = 0;
             conn.Server.OnDataReceive += (_, m) => Interlocked.Add(ref receivedBytes, m.Data.Count(x=>x == 100));
