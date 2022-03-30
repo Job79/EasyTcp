@@ -1,8 +1,6 @@
 # EasyTcp
 <p>
   <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-green.svg">
-  <img alt="Nuget version" src="https://img.shields.io/nuget/v/EasyTcp">
-  <img alt="Nuget downloads" src="https://img.shields.io/nuget/dt/EasyTcp">
   <img alt="GitHub starts" src="https://img.shields.io/github/stars/job79/EasyTcp">
 </p>
 
