@@ -30,7 +30,7 @@ namespace EasyTcp4.Actions.Utils
             if (message.Data.Length <= 4) message.Data = null;
             else
             {
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
                 message.Data = message.Data[4..]; // More optimized solution
 #else
                 var data = new byte[message.Data.Length - 4];

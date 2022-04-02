@@ -72,7 +72,7 @@ namespace EasyTcp4.Encryption.Ssl
         /// <param name="client">client that received the data</param>
         public override async Task OnDataReceive(byte[] data, int receivedBytes, EasyTcpClient client)
         {
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 | NET6_0)
             await client.DataReceiveHandler(new Message(data[..receivedBytes], client)); // More optimized solution
 #else
             byte[] receivedData = new byte[receivedBytes];
