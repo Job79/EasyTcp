@@ -158,7 +158,7 @@ namespace EasyTcp4
         {
             Protocol = protocol ?? new PrefixLengthProtocol();
             ResetDataReceiveHandler(); // Set DataReceiveHandler to default behavior
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
             Serialize = o => System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(o);
             Deserialize = (b, t) => System.Text.Json.JsonSerializer.Deserialize(b, t);
 #endif

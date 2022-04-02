@@ -11,7 +11,7 @@
         <RepositoryUrl>https://github.com/Job79/EasyTcp</RepositoryUrl>
         <PackageTags>Socket Networking Tcp TcpClient TcpServer Server SimpleTcp EasyTcp AsyncTcp Reflection Actions</PackageTags>
         <PackageIconUrl>https://raw.githubusercontent.com/Job79/EasyTcp/master/icon.png</PackageIconUrl>
-        <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
 
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
