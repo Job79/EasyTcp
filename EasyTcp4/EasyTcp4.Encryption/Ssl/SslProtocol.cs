@@ -152,7 +152,6 @@ namespace EasyTcp4.Encryption.Ssl
             AcceptArgs?.Dispose();
             SslStream?.Dispose();
             NetworkStream?.Dispose();
-            Certificate?.Dispose();
         }
 
         /*
