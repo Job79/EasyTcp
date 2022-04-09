@@ -3,7 +3,7 @@
         <PackageId>EasyTcp.Actions</PackageId>
         <Title>EasyTcp.Actions</Title>
         <Description>Support for EasyTcp to triggering specific functions with an attribute based on received data. See github for examples.</Description>
-        <PackageVersion>4.0.0</PackageVersion>
+        <PackageVersion>4.0.2</PackageVersion>
         <Authors>Job79</Authors>
         <Copyright>Job79</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,6 +19,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\EasyTcp4\EasyTcp4.csproj" />
+      <PackageReference Include="EasyTcp" Version="4.0.1" />
     </ItemGroup>
 </Project>
