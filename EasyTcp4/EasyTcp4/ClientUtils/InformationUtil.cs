@@ -9,13 +9,11 @@ namespace EasyTcp4.ClientUtils
         /// Determines whether client is still connected to the remote endpoint
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="poll">use poll if set to true, more accurate but decreases performance</param>
         /// <returns>determines whether the client is still connected</returns>
-        public static bool IsConnected(this EasyTcpClient client, bool poll = false)
+        public static bool IsConnected(this EasyTcpClient client)
         {
             if (client?.BaseSocket == null) return false;
-            if (!client.BaseSocket.Connected ||
-                    !poll && client.BaseSocket.Poll(0, SelectMode.SelectRead) && client.BaseSocket.Available.Equals(0))
+            if (!client.BaseSocket.Connected)
             {
                 client.FireOnDisconnect();
                 client.Dispose();
