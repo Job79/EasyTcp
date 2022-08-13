@@ -18,7 +18,7 @@
         <LangVersion>8</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="EasyTcp" Version="4.0.1" />
+      <PackageReference Include="EasyTcp" Version="4.0.2" />
     </ItemGroup>
 
 </Project>
