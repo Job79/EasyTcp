@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="NUnit" Version="3.13.3" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.4.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
         <ProjectReference Include="..\EasyTcp4\EasyTcp4.csproj" />
         <ProjectReference Include="..\EasyTcp4.Actions\EasyTcp4.Actions.csproj" />
